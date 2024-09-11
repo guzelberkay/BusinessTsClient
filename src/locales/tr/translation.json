@@ -1,0 +1,57 @@
+{
+  "localization": {
+    "locale": "TR",
+    "english": "Ingilizce",
+    "turkish": "Türkçe",
+    "language": "Dil"
+  },
+  "greetings": {
+    "test": "Merhaba! Bu bir test metnidir",
+    "welcome": "Uygulamamıza hoş geldiniz!"
+  },
+  "navigation": {
+    "home": "Anasayfa",
+    "about": "Hakkımızda",
+    "services": "Hizmetler",
+    "contact": "Iletisim",
+    "dashboard": "Panel",
+    "profile": "Profil",
+    "account": "Hesap",
+    "notifications": "Bildirimler",
+    "messages": "Mesajlar",
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol"
+  },
+  "authentication": {
+    "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
+    "createAccount": "Hesap Oluştur",
+    "name": "Ad",
+    "surname": "Soyad",
+    "email": "E-posta",
+    "password": "Sifre",
+    "rePassword": "Sifre Tekrarı",
+    "successful": "Başarılı",
+    "error": "Hata",
+    "registrationSuccessful": "Kayıt Başarılı"
+  },
+  "errorPage": {
+    "404": "Sayfa Bulunamadı",
+    "goBack": "Geri Git",
+    "goHome": "Ana Sayfaya Git"
+  },
+  "footer": {
+    "copyright": "Copyright © 2024 BilgeAdam Teknoloji. Tüm hakları saklıdır.",
+    "privacyPolicy": "Gizlilik Politikası",
+    "cookiePolicy": "Çerez Politikası",
+    "aboutGDPR": "KVKK Hakkında",
+    "home": "Anasayfa",
+    "terms": "Sartlar",
+    "privacy": "Gizlilik",
+    "contact": "Iletisim",
+    "description": "BilgeAdam Teknoloji, 1.800'den fazla profesyonelden oluşan ekibiyle global bir yazılım ve teknoloji hizmetleri şirketidir.",
+    "followUs": "Bizi Takip Edin",
+    "links": "Linkler",
+    "about": "Hakkımızda",
+    "services": "Hizmetler"
+  }
+}
