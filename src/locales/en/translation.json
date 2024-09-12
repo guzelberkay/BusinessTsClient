@@ -32,7 +32,9 @@
     "rePassword": "RePassword",
     "successful": "Successful",
     "error": "Error",
-    "registrationSuccessful": "Registration Successful"
+    "registrationSuccessful": "Registration Successful",
+    "accountHasBeenActivated": "Your account has been successfully activated!",
+    "accountGreeting": " Congratulations! You can now actively use your account. You can enjoy all the features our platform has to offer and start making your personal settings."
   },
 
   "errorPage": {
