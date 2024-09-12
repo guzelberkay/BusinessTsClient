@@ -1,0 +1,59 @@
+{
+  "localization": {
+    "locale": "EN",
+    "english": "English",
+    "turkish": "Turkish",
+    "language": "Language"
+  },
+  "greetings": {
+    "test": "Hello! This is a test text.",
+    "welcome": "Welcome to our application!"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "account": "Account",
+    "notifications": "Notifications",
+    "messages": "Messages",
+    "login": "Sign in",
+    "register": "Sign up"
+  },
+  "authentication": {
+    "alreadyHaveAnAccount": "Already have an account?",
+    "createAccount": "Create Account",
+    "name": "Name",
+    "surname": "Surname",
+    "email": "Email",
+    "password": "Password",
+    "rePassword": "RePassword",
+    "successful": "Successful",
+    "error": "Error",
+    "registrationSuccessful": "Registration Successful"
+  },
+
+  "errorPage": {
+    "404": "Page Not Found",
+    "goBack": "Go Back",
+    "goHome": "Go to Home Page"
+  },
+
+  "footer": {
+    "copyright": "Copyright © 2024 BilgeAdam Technologies. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "cookiePolicy": "Cookie Policy",
+    "aboutGDPR": "About GDPR",
+    "home": "Home",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "contact": "Contact",
+    "description": "BilgeAdam Technologies is a global software and technology services company with a team of 1,800+ professionals.",
+    "followUs": "Follow Us",
+    "links": "Useful Links",
+    "about": "About",
+    "services": "Services"
+  }
+}
