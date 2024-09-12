@@ -86,27 +86,16 @@ export default function Router() {
                     path: 'test',
                     element: <PrivateRoute element={<TestPage />} roles={['ADMIN']} />,
                 },
-                // Other protected routes can be added here.
-            ]
-        }
-        ,
-        // Routes that use the PostAuthTemplate layout
-        {
-            element: (
-                <PostAuthTemplate>
-                    <Suspense fallback={<Loader />}>
-                        <Outlet />
-                    </Suspense>
-                </PostAuthTemplate>
-            ),
-            children: [
                 {
                     path: 'product',
                     element: <PrivateRoute element={<ProductPage />} roles={['ADMIN']} />,
                 },
                 // Other protected routes can be added here.
+
             ]
         }
+
+
     ]);
 
     return routes;
