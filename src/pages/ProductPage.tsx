@@ -84,7 +84,7 @@ const ProductPage = () => {
 
 
     return (
-        <div style={{ height: "auto", width: "inherit" }}>
+        <div style={{ height: "auto"}}>
             <TextField
                 label="Search By Name"
                 variant="outlined"
