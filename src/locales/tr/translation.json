@@ -32,7 +32,9 @@
     "rePassword": "Sifre Tekrarı",
     "successful": "Başarılı",
     "error": "Hata",
-    "registrationSuccessful": "Kayıt Başarılı"
+    "registrationSuccessful": "Kayıt Başarılı",
+    "accountHasBeenActivated" :"Hesabınız Başarıyla Aktif Edildi!",
+    "accountGreeting" : "Tebrikler! Artık hesabınızı aktif olarak kullanabilirsiniz. Platformumuzun sunduğu tüm özelliklerden yararlanabilir ve kişisel ayarlarınızı yapmaya başlayabilirsiniz."
   },
   "errorPage": {
     "404": "Sayfa Bulunamadı",

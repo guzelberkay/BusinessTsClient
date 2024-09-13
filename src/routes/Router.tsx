@@ -5,6 +5,7 @@ import { Outlet, useRoutes, Navigate } from "react-router-dom";
 import { delay } from "../util/delay";
 import Loader from "../components/atoms/loader/Loader";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
+import VerifyAccount from "../pages/VerifyAccount";
 import ProductPage from "../pages/ProductPage.tsx";
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
@@ -72,6 +73,17 @@ export default function Router() {
                 </Suspense>
             ,
         },
+        {
+            path: 'dev/v1/auth/verify-account',
+            element: (
+                <PreAuthTemplate>
+                    <Suspense fallback={<Loader />}>
+                        <VerifyAccount />
+                    </Suspense>
+                </PreAuthTemplate>
+            ),
+        },
+
         // Routes that use the PostAuthTemplate layout
         {
             element: (
