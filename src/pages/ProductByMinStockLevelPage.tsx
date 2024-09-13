@@ -126,11 +126,13 @@ const ProductByMinStockLevelPage = () => {
                             text: t("swal.productautoordermodechanged"),
                             icon: "success",
                         });
-                        await dispatch(fetchFindAllProduct({
-                            page: 0,
-                            size: 100,
-                            searchText: searchText,
-                        }));
+                        await dispatch(
+                            fetchFindAllByMinimumStockLevel({
+                                page: 0,
+                                size: 100,
+                                searchText: searchText,
+                            })
+                        ).then((res) => setProducts(res.payload.data))
                     }
                 }
             } catch (error) {
