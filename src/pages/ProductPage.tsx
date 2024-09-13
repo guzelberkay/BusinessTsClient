@@ -15,36 +15,10 @@ import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../store";
 import {fetchChangeAutoOrderModeOfProduct, fetchFindAllProduct} from "../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
+import {useTranslation} from "react-i18next";
 
 
-const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", flex: 1.5, headerAlign: "center" },
-    { field: "description", headerName: "Description", flex: 1.5, headerAlign: "center" },
-    {
-        field: "price", headerName: "Price $", flex: 1, headerAlign: "center",
-        renderCell: (params) => {
-            // Check if the value is valid
-            const value = params.value;
-            if (typeof value === 'number' && !isNaN(value)) {
-                // Format the number as currency
-                return new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }).format(value);
-            }
-            return '$0.00'; // Return default value if not a valid number
-        },
-    },
 
-    { field: "stockCount", headerName: "Stock Count", flex: 1, headerAlign: "center" },
-    { field: "minimumStockLevel", headerName: "Minimum Stock Level", headerAlign: "center", flex: 1.5 },
-    { field: "isAutoOrderEnabled", headerName: "Auto Order", headerAlign: "center", flex: 1 },
-    { field: "status", headerName: "Status", headerAlign: "center", flex: 1 },
-
-
-];
 
 
 const ProductPage = () => {
@@ -61,6 +35,7 @@ const ProductPage = () => {
     const [price, setPrice] = useState(0);
     const [description, setDescription] = useState('');
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
+    const {t} = useTranslation()
 
 
     useEffect(() => {
@@ -83,6 +58,35 @@ const ProductPage = () => {
         console.log(selectedRowIds);
     };
 
+    const columns: GridColDef[] = [
+        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
+        { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
+        {
+            field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
+            renderCell: (params) => {
+                // Check if the value is valid
+                const value = params.value;
+                if (typeof value === 'number' && !isNaN(value)) {
+                    // Format the number as currency
+                    return new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(value);
+                }
+                return '$0.00'; // Return default value if not a valid number
+            },
+        },
+
+        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center" },
+        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5 },
+        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 },
+        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
+
+
+    ];
+
     const handleChangeAutoOrderMode = async () => {
         for (let id of selectedRowIds) {
             const selectedProduct = products.find(
@@ -93,11 +97,11 @@ const ProductPage = () => {
             setLoading(true);
             try {
                 const result = await Swal.fire({
-                    title: "Are you sure?",
-                    text: "You are about to change auto order status. (This action can cause to create orders for this product.)",
+                    title: t("swal.areyousure"),
+                    text: t("swal.changeorderstatus"),
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonText: "Yes, change it!"
+                    confirmButtonText: t("swal.yeschangeit"),
                 });
 
                 if (result.isConfirmed) {
@@ -105,16 +109,16 @@ const ProductPage = () => {
 
                     if (data.payload.message !=="Success") {
                         await Swal.fire({
-                            title: "Error!",
+                            title: t("swal.error"),
                             text: data.payload.message,
                             icon: "error",
-                            confirmButtonText: "OK",
+                            confirmButtonText: t("swal.ok"),
                         });
                         return;
                     } else {
                         await Swal.fire({
-                            title: "Changed!",
-                            text: "Your product's auto order mod has been changed.",
+                            title: t("swal.changed"),
+                            text: t("swal.productautoordermodechanged"),
                             icon: "success",
                         });
                         await dispatch(fetchFindAllProduct({
@@ -135,7 +139,7 @@ const ProductPage = () => {
     return (
         <div style={{ height: "auto"}}>
             <TextField
-                label="Search By Name"
+                label={t("stockService.searchbyname")}
                 variant="outlined"
                 onChange={(event) => setSearchText(event.target.value)}
                 value={searchText}
@@ -186,7 +190,7 @@ const ProductPage = () => {
             />
 
             <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
-                <Grid item xs={12} sm={6} md={3} lg={2}>
+                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleSomething}
                         variant="contained"
@@ -197,7 +201,7 @@ const ProductPage = () => {
                     >
                         Approve
                     </Button>
-                </Grid>
+                </Grid>*/}
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleChangeAutoOrderMode}
@@ -207,10 +211,10 @@ const ProductPage = () => {
                         //startIcon={<DeclineIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        Change Auto Order Mode
+                        {t("stockService.changeautoordermode")}
                     </Button>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} lg={2}>
+                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleSomething}
                         variant="contained"
@@ -221,7 +225,7 @@ const ProductPage = () => {
                     >
                         Cancel
                     </Button>
-                </Grid>
+                </Grid>*/}
             </Grid>
         </div>
     );
