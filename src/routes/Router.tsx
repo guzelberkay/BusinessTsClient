@@ -8,6 +8,7 @@ import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import VerifyAccount from "../pages/VerifyAccount";
 import ProductPage from "../pages/ProductPage.tsx";
 import ProductByMinStockLevelPage from "../pages/ProductByMinStockLevelPage.tsx";
+import OrderPage from "../pages/OrderPage.tsx";
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
@@ -106,6 +107,10 @@ export default function Router() {
                 {
                     path: 'products-by-min-stock-level',
                     element: <PrivateRoute element={<ProductByMinStockLevelPage />} roles={['ADMIN']} />,
+                },
+                {
+                    path: 'order',
+                    element: <PrivateRoute element={<OrderPage />} roles={['ADMIN']} />,
                 },
                 // Other protected routes can be added here.
 

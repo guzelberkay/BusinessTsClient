@@ -81,6 +81,12 @@
     "minstockcount": "Min. Stock Count",
     "autoorder": "Auto Order",
     "status": "Status",
-    "searchbyname": "Search by Name"
+    "searchbyname": "Search by Name",
+    "customername": "Customer Name",
+    "suppliername": "Supplier Name",
+    "quantity": "Quantity",
+    "unitprice": "Unit Price",
+    "total": "Total",
+    "ordertype": "Order Type"
   }
 }

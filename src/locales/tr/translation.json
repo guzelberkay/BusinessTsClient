@@ -78,6 +78,12 @@
     "minstockcount": "Min. Stok Sayısı",
     "autoorder": "Otomatik Sipariş",
     "status": "Durum",
-    "searchbyname": "İsme Göre Ara"
+    "searchbyname": "İsme Göre Ara",
+    "customername": "Müşteri Adı",
+    "suppliername": "Tedarikçi Adı",
+    "quantity": "Miktar",
+    "unitprice": "Birim Fiyat",
+    "total": "Toplam",
+    "ordertype": "Sipariş Tipi"
   }
 }
