@@ -13,7 +13,8 @@ import {
 
 import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../store";
-import {fetchFindAllProduct} from "../store/feature/stockSlice.tsx";
+import {fetchChangeAutoOrderModeOfProduct, fetchFindAllProduct} from "../store/feature/stockSlice.tsx";
+import Swal from "sweetalert2";
 
 
 const columns: GridColDef[] = [
@@ -82,9 +83,57 @@ const ProductPage = () => {
         console.log(selectedRowIds);
     };
 
+    const handleChangeAutoOrderMode = async () => {
+        for (let id of selectedRowIds) {
+            const selectedProduct = products.find(
+                (selectedProduct) => selectedProduct.id === id
+            );
+            if (!selectedProduct) continue;
+
+            setLoading(true);
+            try {
+                const result = await Swal.fire({
+                    title: "Are you sure?",
+                    text: "You are about to change auto order status. (This action can cause to create orders for this product.)",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, change it!"
+                });
+
+                if (result.isConfirmed) {
+                    const data = await dispatch(fetchChangeAutoOrderModeOfProduct(selectedProduct.id));
+
+                    if (data.payload.message !=="Success") {
+                        await Swal.fire({
+                            title: "Error!",
+                            text: data.payload.message,
+                            icon: "error",
+                            confirmButtonText: "OK",
+                        });
+                        return;
+                    } else {
+                        await Swal.fire({
+                            title: "Changed!",
+                            text: "Your product's auto order mod has been changed.",
+                            icon: "success",
+                        });
+                        await dispatch(fetchFindAllProduct({
+                            page: 0,
+                            size: 100,
+                            searchText: searchText,
+                        }));
+                    }
+                }
+            } catch (error) {
+                localStorage.removeItem("token");
+            }
+        }
+        setSelectedRowIds([]);
+        setLoading(false);
+    };
 
     return (
-        <div style={{ height: "auto", width: "inherit" }}>
+        <div style={{ height: "auto"}}>
             <TextField
                 label="Search By Name"
                 variant="outlined"
@@ -105,11 +154,11 @@ const ProductPage = () => {
                         paginationModel: { page: 1, pageSize: 5 },
                     },
                 }}
-                getRowClassName={(params) =>
-                    params.row.isExpenditureApproved
-                        ? "approved-row" // Eğer onaylandıysa, yeşil arka plan
-                        : "unapproved-row" // Onaylanmadıysa, kırmızı arka plan
-                }
+                // getRowClassName={(params) =>
+                //     params.row.isExpenditureApproved
+                //         ? "approved-row" // Eğer onaylandıysa, yeşil arka plan
+                //         : "unapproved-row" // Onaylanmadıysa, kırmızı arka plan
+                // }
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
@@ -124,13 +173,13 @@ const ProductPage = () => {
                     },
                     "& .MuiDataGrid-cell": {
                         textAlign: "center",
-                    },
+                    }/*,
                     "& .approved-row": {
                         backgroundColor: "#e0f2e9", // Onaylananlar için yeşil arka plan
                     },
                     "& .unapproved-row": {
                         backgroundColor: "#ffe0e0", // Onaylanmayanlar için kırmızı arka plan
-                    },
+                    },*/
 
                 }}
                 rowSelectionModel={selectedRowIds}
@@ -142,7 +191,7 @@ const ProductPage = () => {
                         onClick={handleSomething}
                         variant="contained"
                         color="success"
-                        disabled={loading || selectedRowIds.length === 0}
+                        disabled={isActivating || selectedRowIds.length === 0}
                         //startIcon={<ApproveIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -151,14 +200,14 @@ const ProductPage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleSomething}
+                        onClick={handleChangeAutoOrderMode}
                         variant="contained"
-                        color="error"
-                        disabled={isActivating || selectedRowIds.length === 0}
+                        color="info"
+                        disabled={loading || selectedRowIds.length === 0}
                         //startIcon={<DeclineIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        Reject
+                        Change Auto Order Mode
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
