@@ -118,6 +118,7 @@ export default function LeftDrawer({
                     <DrawerButton
                         name="notifications"
                         icon={<Notifications />}
+                        
                     />
                 </List>
             </Box>

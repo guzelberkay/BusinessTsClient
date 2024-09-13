@@ -4,6 +4,7 @@ import PostAuthTemplate from "../components/core/PostAuthTemplate";
 import { Outlet, useRoutes, Navigate } from "react-router-dom";
 import { delay } from "../util/delay";
 import Loader from "../components/atoms/loader/Loader";
+import SideBarNotifications from "../components/molecules/SideBarNotifications";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
@@ -44,13 +45,23 @@ export default function Router() {
             ),
         },
         {
+            path: 'notifications',
+            element: (
+                <PostAuthTemplate>
+                    <Suspense fallback={<Loader />}>
+                        <SideBarNotifications/>
+                    </Suspense>
+                </PostAuthTemplate>
+            ),
+        },
+        {
             path: 'register',
             element: (
-                <PreAuthTemplate>
+                <PostAuthTemplate>
                     <Suspense fallback={<Loader />}>
                         <Register />
                     </Suspense>
-                </PreAuthTemplate>
+                </PostAuthTemplate>
             ),
         },
         {
