@@ -34,7 +34,11 @@
     "error": "Hata",
     "registrationSuccessful": "Kayıt Başarılı",
     "accountHasBeenActivated" :"Hesabınız Başarıyla Aktif Edildi!",
-    "accountGreeting" : "Tebrikler! Artık hesabınızı aktif olarak kullanabilirsiniz. Platformumuzun sunduğu tüm özelliklerden yararlanabilir ve kişisel ayarlarınızı yapmaya başlayabilirsiniz."
+    "accountGreeting" : "Tebrikler! Artık hesabınızı aktif olarak kullanabilirsiniz. Platformumuzun sunduğu tüm özelliklerden yararlanabilir ve kişisel ayarlarınızı yapmaya başlayabilirsiniz.",
+    "passwordMismatch": "Şifreler eşleşmemektedir.Lütfen sifrenizi tekrardan giriniz.",
+    "requiredField" : "Zorunlu Alan",
+    "invalidEmail": "Girdiğiniz e-posta adresi gecersizdir.",
+    "fillAllFields" : "Lütfen tüm alanları doldurun."
   },
   "errorPage": {
     "404": "Sayfa Bulunamadı",

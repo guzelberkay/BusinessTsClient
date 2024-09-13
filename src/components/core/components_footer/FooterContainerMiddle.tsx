@@ -2,8 +2,8 @@
 import { Container, Divider, Grid, Typography } from '@mui/material'
 import logo from '../../../images/logo.png'
 import { useTranslation } from 'react-i18next';
-import { Facebook as FacebookIcon, X as XIcon, Google as GoogleIcon } from '@mui/icons-material';
-
+import { Facebook as FacebookIcon, X as XIcon, LinkedIn as LinkedInIcon, Instagram as InstagramIcon } from '@mui/icons-material';
+import CustomMediumIcon from '../../atoms/CustomMediumIcon';
 const EasyTextFieldStye = {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     color: '#E0E0E0',
@@ -13,9 +13,9 @@ const EasyTextFieldStye = {
 const EasyClickableTextStye = {
     cursor: 'pointer',
     '&:hover': {
-      color: 'primary.main',
+        color: 'primary.main',
     }
-  }
+}
 function FooterContact() {
     const { t } = useTranslation();
     //#region UI
@@ -26,10 +26,10 @@ function FooterContact() {
             backgroundPosition: 'top',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
-          }}>
+        }}>
             <Container >
                 <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
-                    <Grid item xs={12} md={4} sx={{...EasyTextFieldStye, marginLeft: {xs: "1rem", md: "0"}}}>
+                    <Grid item xs={12} md={4} sx={{ ...EasyTextFieldStye, marginLeft: { xs: "1rem", md: "0" } }}>
                         <Grid container>
                             <Grid item xs={2} display={"flex"} alignItems={"center"}>
                                 <img src={logo} alt="logo" style={{ height: "52px" }} />
@@ -55,7 +55,7 @@ function FooterContact() {
                             </Grid>
                         </Grid>
                         <Grid container>
-                            <Typography sx={{letterSpacing: ".1rem", fontSize: "0.8rem", margin: "1rem 0 1rem 0" }}>
+                            <Typography sx={{ letterSpacing: ".1rem", fontSize: "0.8rem", margin: "1rem 0 1rem 0" }}>
                                 {t('footer.description')}
                             </Typography>
                         </Grid>
@@ -77,12 +77,18 @@ function FooterContact() {
                             </Typography>
                         </Grid>
                         <Grid container sx={{ margin: "1rem 0 1rem 0" }}>
-                            <FacebookIcon fontSize='large' sx={{ margin: "0 1rem 0 0", color: "primary.main" }} />
-                            <XIcon fontSize='large' sx={{ margin: "0 1rem 0 0", color: "primary.main" }} />
-                            <GoogleIcon fontSize='large' sx={{ margin: "0 1rem 0 0", color: "primary.main" }} />
+                            <LinkedInIcon fontSize='medium' sx={{ margin: "0 1rem 0 0", color: "primary.main", cursor: 'pointer' }} onClick={() => window.open("https://www.linkedin.com/company/bilgeadam/")} />
+
+                            <CustomMediumIcon fontSize='medium' sx={{ margin: "0 1rem 0 0", color: "primary.main", cursor: 'pointer' }} onClick={() => window.open("https://medium.com/batech")} />
+
+                            <XIcon fontSize='medium' sx={{ margin: "0 1rem 0 0", color: "primary.main", cursor: 'pointer' }} onClick={() => window.open("https://x.com/bilgeadam")} />
+
+                            <FacebookIcon fontSize='medium' sx={{ margin: "0 1rem 0 0", color: "primary.main", cursor: 'pointer' }} onClick={() => window.open("https://www.facebook.com/bilgeadam")} />
+
+                            <InstagramIcon fontSize='medium' sx={{ margin: "0 1rem 0 0", color: "primary.main", cursor: 'pointer' }} onClick={() => window.open("https://www.instagram.com/bilgeadam_teknoloji/")} />
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} md={3} sx={{...EasyTextFieldStye, marginTop: {xs: "1rem", md: "0"}, marginLeft: {xs: "1rem", md: "0"}}}>
+                    <Grid item xs={12} md={3} sx={{ ...EasyTextFieldStye, marginTop: { xs: "1rem", md: "0" }, marginLeft: { xs: "1rem", md: "0" } }}>
                         <Grid container padding={"0.7rem 0"}>
                             <Typography
                                 variant="subtitle1"

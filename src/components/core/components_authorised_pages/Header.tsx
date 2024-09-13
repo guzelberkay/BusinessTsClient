@@ -20,25 +20,15 @@ interface HeaderProps {
  * @returns {React.ReactNode} - The rendered Header component.
  */
 export default function Header({ drawerState, setDrawerState }: HeaderProps) {
-    // Closes the drawer by setting its state to false
-    const handleDrawerClose = () => {
-        setDrawerState(false);
-    };
-
-    // Opens the drawer by setting its state to true
-    const handleDrawerOpen = () => {
-        setDrawerState(true);
-    };
     //#region UI
     return (
         <>
             <CssBaseline /> {/* Provides a consistent baseline for styles */}
             <Appbar 
                 drawerState={drawerState} 
-                handleDrawerOpen={handleDrawerOpen} 
-                handleDrawerClose={handleDrawerClose} 
+                setDrawerState={setDrawerState} 
             />
-            <Drawer open={drawerState} handleDrawerClose={handleDrawerClose} />
+            <Drawer open={drawerState} setDrawerState={setDrawerState} />
         </>
     );
     //#endregion UI

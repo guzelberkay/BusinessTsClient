@@ -34,7 +34,11 @@
     "error": "Error",
     "registrationSuccessful": "Registration Successful",
     "accountHasBeenActivated": "Your account has been successfully activated!",
-    "accountGreeting": " Congratulations! You can now actively use your account. You can enjoy all the features our platform has to offer and start making your personal settings."
+    "accountGreeting": " Congratulations! You can now actively use your account. You can enjoy all the features our platform has to offer and start making your personal settings.",
+    "passwordMismatch": "Passwords do not match. Please enter again.",
+    "requiredField" : "Required Field",
+    "invalidEmail": "The entered email address is invalid.",
+    "fillAllFields" : "Please fill in all fields."
   },
 
   "errorPage": {
