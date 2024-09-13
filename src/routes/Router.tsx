@@ -6,6 +6,7 @@ import { delay } from "../util/delay";
 import Loader from "../components/atoms/loader/Loader";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import VerifyAccount from "../pages/VerifyAccount";
+import ProductPage from "../pages/ProductPage.tsx";
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
@@ -82,7 +83,7 @@ export default function Router() {
                 </PreAuthTemplate>
             ),
         },
-       
+
         // Routes that use the PostAuthTemplate layout
         {
             element: (
@@ -97,9 +98,16 @@ export default function Router() {
                     path: 'test',
                     element: <PrivateRoute element={<TestPage />} roles={['ADMIN']} />,
                 },
+                {
+                    path: 'product',
+                    element: <PrivateRoute element={<ProductPage />} roles={['ADMIN']} />,
+                },
                 // Other protected routes can be added here.
+
             ]
         }
+
+
     ]);
 
     return routes;

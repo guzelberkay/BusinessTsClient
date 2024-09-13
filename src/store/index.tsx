@@ -1,12 +1,14 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {authSlice, languageSlice} from "./feature";
+import {authSlice, languageSlice,stockSlice} from "./feature";
 
 import {useSelector} from "react-redux";
+
 
 const store = configureStore({
     reducer: {
         auth: authSlice,
         pageSettings: languageSlice,
+        stockSlice: stockSlice
     },
 });
 
