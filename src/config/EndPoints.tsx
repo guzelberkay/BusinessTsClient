@@ -7,6 +7,9 @@ const endpoints = {
   stock_movement: "/stock-movement",
   supplier: "/supplier",
   ware_house: "/ware-house",
+  user: "/user",
+  role:"/role"
+
 };
 
 export default endpoints;
