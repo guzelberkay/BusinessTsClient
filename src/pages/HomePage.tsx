@@ -67,6 +67,12 @@ function HomePage() {
                             Product Page</Button>
                     </Typography>
                 </Grid>
+                <Grid item xs={12}  sx={{textAlign: "center"}}>
+                    <Typography variant="h3">
+                        <Button onClick={() => window.location.href = "http://localhost:3000/products-by-min-stock-level"} variant="contained">test
+                            Products By Min Stock Level Page</Button>
+                    </Typography>
+                </Grid>
 
             </Grid>
         </Container>
