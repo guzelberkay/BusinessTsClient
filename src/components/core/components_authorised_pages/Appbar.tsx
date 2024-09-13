@@ -10,10 +10,12 @@ import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import LanguageIcon from "@mui/icons-material/Language";
+import PersonIcon from "@mui/icons-material/Person";
 import { Menu, Avatar, Divider } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store";
@@ -131,8 +133,7 @@ const demoUser = {
 // Props interface for the Appbar component
 interface AppbarProps {
   drawerState: boolean;
-  handleDrawerOpen: () => void;
-  handleDrawerClose: () => void;
+  setDrawerState: (state: boolean) => void; // Function to set the drawer state
 }
 
 /**
@@ -143,20 +144,19 @@ interface AppbarProps {
  *
  * @param {Object} param0 - The component props.
  * @param {boolean} param0.drawerState - Indicates if the drawer is open or closed.
- * @param {function} param0.handleDrawerOpen - Function to open the drawer.
- * @param {function} param0.handleDrawerClose - Function to close the drawer.
+ * @param {function} param0.setDrawerState - Function to set the drawer state.
  * @returns {React.ReactNode} - The rendered Appbar component.
  */
 function Appbar({
   drawerState,
-  handleDrawerOpen,
-  handleDrawerClose,
+  setDrawerState
 }: AppbarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+  
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -189,18 +189,18 @@ function Appbar({
   };
 
   // Toggles the language setting
-  const handeLanguageChange = () => {
+  const handleLanguageChange = () => {
     dispatch(toggleLanguage());
   };
 
   // Navigates to the specified page element in mobile menu
-  const handePageElementChangeRenderMobileMenu = (element: string) => {
+  const handlePageElementChangeRenderMobileMenu = (element: string) => {
     handleMobileMenuClose();
     navigate(`/${element}`);
   };
 
   // General navigation to a page element
-  const handePageElementChange = (element: string) => {
+  const handlePageElementChange = (element: string) => {
     navigate(`/${element}`);
   };
 
@@ -227,7 +227,7 @@ function Appbar({
       <Divider />
       <MenuItem
         sx={{ color: "primary.main" }}
-        onClick={() => handeLanguageChange()}
+        onClick={handleLanguageChange}
       >
         {t("localization.locale")}
       </MenuItem>
@@ -235,6 +235,7 @@ function Appbar({
   );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
+  
   // Render the mobile menu
   const renderMobileMenu = (
     <Menu
@@ -247,9 +248,7 @@ function Appbar({
       onClose={handleMobileMenuClose}
       PaperProps={easyStyleMenu}
     >
-      <MenuItem
-        onClick={() => handePageElementChangeRenderMobileMenu("messages")}
-      >
+      <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("messages")}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
             <MailIcon />
@@ -257,38 +256,41 @@ function Appbar({
         </IconButton>
         <p>{t("navigation.messages")}</p>
       </MenuItem>
-      <MenuItem
-        onClick={() => handePageElementChangeRenderMobileMenu("notifications")}
-      >
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
+      <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("notifications")}>
+        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
           <Badge badgeContent={17} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
         <p>{t("navigation.notifications")}</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-        >
-          <AccountCircle />
+      <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("profile")}>
+        <IconButton size="large" color="inherit">
+          <PersonIcon />
         </IconButton>
-        <p>{t("navigation.profile")}</p>
+        {t("navigation.profile")}
+      </MenuItem>
+      <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("account")}>
+        <IconButton size="large" color="inherit">
+          <ManageAccountsIcon />
+        </IconButton>
+        {t("navigation.account")}
+      </MenuItem>
+      <Divider />
+      <MenuItem sx={{ color: "primary.main" }} onClick={handleLanguageChange}>
+        <IconButton size="large" color="inherit">
+          <LanguageIcon />
+        </IconButton>
+        {t("localization.locale")}
       </MenuItem>
     </Menu>
   );
 
   // Toggles the drawer open/close state
   const handleDrawerState = () => {
-    drawerState ? handleDrawerClose() : handleDrawerOpen();
+    setDrawerState(!drawerState);
   };
+
   //#region UI
   return (
     <>
@@ -297,7 +299,7 @@ function Appbar({
           <IconButton
             onClick={handleDrawerState}
             color="inherit"
-            aria-label="open drawer"
+            aria-label="toggle drawer"
             edge="start"
           >
             {drawerState ? <ChevronLeft /> : <ChevronRight />}
@@ -335,7 +337,7 @@ function Appbar({
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
-              onClick={() => handePageElementChange("messages")}
+              onClick={() => handlePageElementChange("messages")}
             >
               <Badge badgeContent={4} color="error">
                 <MailIcon fontSize="large" />
@@ -345,7 +347,7 @@ function Appbar({
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
-              onClick={() => handePageElementChange("notifications")}
+              onClick={() => handlePageElementChange("notifications")}
             >
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon fontSize="large" />
