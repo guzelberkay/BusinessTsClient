@@ -87,6 +87,7 @@
     "quantity": "Quantity",
     "unitprice": "Unit Price",
     "total": "Total",
-    "ordertype": "Order Type"
+    "ordertype": "Order Type",
+    "createdat": "Created At"
   }
 }

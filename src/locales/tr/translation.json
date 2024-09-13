@@ -84,6 +84,7 @@
     "quantity": "Miktar",
     "unitprice": "Birim Fiyat",
     "total": "Toplam",
-    "ordertype": "Sipariş Tipi"
+    "ordertype": "Sipariş Tipi",
+    "createdat": "Oluşturulma Tarihi"
   }
 }

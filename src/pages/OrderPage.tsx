@@ -101,6 +101,7 @@ const OrderPage = () => {
                 return '$0.00'; // Return default value if not a valid number
             }, },
         { field: "orderType", headerName: t("stockService.ordertype"), headerAlign: "center", flex: 1.5 },
+        { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
         { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 
 
