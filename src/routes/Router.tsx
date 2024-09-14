@@ -57,11 +57,11 @@ export default function Router() {
         {
             path: 'register',
             element: (
-                <PostAuthTemplate>
+                <PreAuthTemplate>
                     <Suspense fallback={<Loader />}>
                         <Register />
                     </Suspense>
-                </PostAuthTemplate>
+                </PreAuthTemplate>
             ),
         },
         {
