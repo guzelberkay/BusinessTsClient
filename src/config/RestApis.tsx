@@ -24,6 +24,9 @@ const apis = {
     stock_service_stock_movement: base_url + host + Ports.stock + profile + version + EndPoints.stock_movement,
     stock_service_supplier: base_url + host + Ports.stock + profile + version + EndPoints.supplier,
     stock_service_ware_house: base_url + host + Ports.stock + profile + version + EndPoints.ware_house,
+    notification_service: base_url + host + Ports.notification + profile + version + EndPoints.notifications,
+
+   
   
 };
 
