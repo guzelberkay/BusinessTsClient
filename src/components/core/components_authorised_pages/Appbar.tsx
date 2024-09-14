@@ -2,7 +2,7 @@ import React from "react";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import MuiAppBar from "@mui/material/AppBar";
 import { styled, alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -14,26 +14,21 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { Menu, Avatar, Divider } from "@mui/material";
+import Menu from "@mui/material/Menu";
+import { Avatar, Divider } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store";
-import {
-  toggleLanguage,
-} from "../../../store/feature/languageSlice";
+import { toggleLanguage } from "../../../store/feature/languageSlice";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import DropdownNotification from "../../atoms/DropdownNotifications"; 
 
 const drawerWidth = 240;
-
-// Interface defining the props for the AppBar component
-interface AppBarProps extends MuiAppBarProps {
-  drawerState: boolean;
-}
 
 // Styled AppBar component that adjusts based on the drawer state
 const EasyStyleAppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "drawerState",
-})<AppBarProps>(({ theme, drawerState }) => ({
+})(({ theme, drawerState }) => ({
   width: `calc(100% - ${drawerWidth}px)`,
   marginLeft: `${drawerWidth}px`,
   transition: theme.transitions.create(["margin", "width"], {
@@ -50,7 +45,7 @@ const EasyStyleAppBar = styled(MuiAppBar, {
   }),
 }));
 
-// Styled component for the search bar
+// Styled components for search bar
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -67,7 +62,6 @@ const Search = styled("div")(({ theme }) => ({
   },
 }));
 
-// Wrapper for the search icon
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
@@ -78,7 +72,6 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   justifyContent: "center",
 }));
 
-// Styled input base for the search field
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
@@ -92,7 +85,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-// Menu styling for dropdowns
 const easyStyleMenu = {
   elevation: 0,
   sx: {
@@ -121,92 +113,69 @@ const easyStyleMenu = {
   },
 };
 
-// Demo user information
 const demoUser = {
   name: "Demo User",
   role: "Manager",
   avatar: "https://xsgames.co/randomusers/assets/avatars/male/38.jpg",
 };
 
-// Props interface for the Appbar component
 interface AppbarProps {
   drawerState: boolean;
   handleDrawerOpen: () => void;
   handleDrawerClose: () => void;
 }
 
-/**
- * Appbar component that renders the top navigation bar of the application.
- *
- * This component includes a search bar, user profile menu, and navigation icons.
- * It handles drawer state changes and provides responsive design for mobile and desktop views.
- *
- * @param {Object} param0 - The component props.
- * @param {boolean} param0.drawerState - Indicates if the drawer is open or closed.
- * @param {function} param0.handleDrawerOpen - Function to open the drawer.
- * @param {function} param0.handleDrawerClose - Function to close the drawer.
- * @returns {React.ReactNode} - The rendered Appbar component.
- */
 function Appbar({
   drawerState,
   handleDrawerOpen,
   handleDrawerClose,
 }: AppbarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isNotificationOpen = Boolean(notificationAnchorEl);
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  // Opens the profile menu
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  // Closes the mobile menu
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
-  // Closes the main menu
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
 
-  // Opens the mobile menu
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  // Navigates to the specified page element
-  const handlePageElementChangeRenderMenu = (element: string) => {
-    handleMenuClose();
+  const handlePageElementChange = (element: string) => {
     navigate(`/${element}`);
+    handleMenuClose();
   };
 
-  // Toggles the language setting
-  const handeLanguageChange = () => {
+  const handleLanguageChange = () => {
     dispatch(toggleLanguage());
   };
 
-  // Navigates to the specified page element in mobile menu
-  const handePageElementChangeRenderMobileMenu = (element: string) => {
-    handleMobileMenuClose();
-    navigate(`/${element}`);
+  const handleNotificationMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setNotificationAnchorEl(event.currentTarget);
   };
 
-  // General navigation to a page element
-  const handePageElementChange = (element: string) => {
-    navigate(`/${element}`);
+  const handleNotificationMenuClose = () => {
+    setNotificationAnchorEl(null);
   };
 
   const menuId = "primary-search-account-menu";
 
-  // Render the profile menu
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -218,24 +187,55 @@ function Appbar({
       onClose={handleMenuClose}
       PaperProps={easyStyleMenu}
     >
-      <MenuItem onClick={() => handlePageElementChangeRenderMenu("profile")}>
+      <MenuItem onClick={() => handlePageElementChange("profile")}>
         {t("navigation.profile")}
       </MenuItem>
-      <MenuItem onClick={() => handlePageElementChangeRenderMenu("account")}>
+      <MenuItem onClick={() => handlePageElementChange("account")}>
         {t("navigation.account")}
       </MenuItem>
       <Divider />
       <MenuItem
         sx={{ color: "primary.main" }}
-        onClick={() => handeLanguageChange()}
+        onClick={handleLanguageChange}
       >
         {t("localization.locale")}
       </MenuItem>
     </Menu>
   );
 
+  const renderNotificationMenu = (
+    <Menu
+      anchorEl={notificationAnchorEl}
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isNotificationOpen}
+      onClose={handleNotificationMenuClose}
+      PaperProps={{
+        elevation: 3,
+        sx: {
+          overflow: "visible",
+          mt: 1.5,
+          "&:before": {
+            content: '""',
+            display: "block",
+            position: "absolute",
+            top: 0,
+            right: 14,
+            width: 10,
+            height: 10,
+            bgcolor: "background.paper",
+            transform: "translateY(-50%) rotate(45deg)",
+            zIndex: 0,
+          },
+        },
+      }}
+    >
+      <DropdownNotification />
+    </Menu>
+  );
+
   const mobileMenuId = "primary-search-account-menu-mobile";
-  // Render the mobile menu
+
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -248,7 +248,7 @@ function Appbar({
       PaperProps={easyStyleMenu}
     >
       <MenuItem
-        onClick={() => handePageElementChangeRenderMobileMenu("messages")}
+        onClick={() => handlePageElementChange("messages")}
       >
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
@@ -257,16 +257,18 @@ function Appbar({
         </IconButton>
         <p>{t("navigation.messages")}</p>
       </MenuItem>
+      
       <MenuItem
-        onClick={() => handePageElementChangeRenderMobileMenu("notifications")}
+        onClick={() => handlePageElementChange("notifications")}
       >
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
+          onClick={handleNotificationMenuOpen}
         >
           <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
+            <NotificationsIcon fontSize="large" />
           </Badge>
         </IconButton>
         <p>{t("navigation.notifications")}</p>
@@ -275,7 +277,7 @@ function Appbar({
         <IconButton
           size="large"
           aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
+          aria-controls={menuId}
           aria-haspopup="true"
         >
           <AccountCircle />
@@ -289,7 +291,7 @@ function Appbar({
   const handleDrawerState = () => {
     drawerState ? handleDrawerClose() : handleDrawerOpen();
   };
-  //#region UI
+
   return (
     <>
       <EasyStyleAppBar position="fixed" drawerState={drawerState}>
@@ -335,7 +337,7 @@ function Appbar({
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
-              onClick={() => handePageElementChange("messages")}
+              onClick={() => handlePageElementChange("messages")}
             >
               <Badge badgeContent={4} color="error">
                 <MailIcon fontSize="large" />
@@ -345,7 +347,7 @@ function Appbar({
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
-              onClick={() => handePageElementChange("notifications")}
+              onClick={handleNotificationMenuOpen}
             >
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon fontSize="large" />
@@ -390,9 +392,9 @@ function Appbar({
       </EasyStyleAppBar>
       {renderMobileMenu}
       {renderMenu}
+      {renderNotificationMenu}
     </>
   );
-  //#endregion UI
 }
 
 export default Appbar;
