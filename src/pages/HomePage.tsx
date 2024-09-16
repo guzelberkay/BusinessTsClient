@@ -95,6 +95,12 @@ function HomePage() {
                             Ware House Page</Button>
                     </Typography>
                 </Grid>
+                <Grid item xs={12}  sx={{textAlign: "center"}}>
+                    <Typography variant="h3">
+                        <Button onClick={() => window.location.href = "http://localhost:3000/product-categories"} variant="contained">StockService -
+                            Product Categories Page</Button>
+                    </Typography>
+                </Grid>
             </Grid>
         </Container>
     )
