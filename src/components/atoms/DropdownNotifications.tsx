@@ -4,7 +4,6 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 
-// Example notifications data
 const notifications = [
   { id: 1, text: "New message from John", time: "2 minutes ago" },
   { id: 2, text: "Your report is ready", time: "10 minutes ago" },
