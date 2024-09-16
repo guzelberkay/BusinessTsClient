@@ -128,7 +128,6 @@ export const deleteNotification = createAsyncThunk(
   }
 );
 
-
 // Slice - Reducers
 const notificationSlice = createSlice({
   name: 'notifications',

@@ -8,12 +8,27 @@ import {
   deleteNotification,
 } from "../../store/feature/notificationSlice";
 import {
-  List, ListItemButton, ListItemText, Divider,
-  Button, Typography, Paper, Box, MenuItem,
-  Select, InputLabel, FormControl, Dialog,
-  DialogTitle, DialogContent, DialogActions,
-  TextField, Checkbox,
+  List,
+  ListItemButton,
+  ListItemText,
+  Divider,
+  Button,
+  Typography,
+  Paper,
+  Box,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Checkbox,
+  IconButton
 } from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
 
 interface Notification {
   id: number;
@@ -24,7 +39,7 @@ interface Notification {
   userId: string;
 }
 
-export default function SideBarNotifications() {
+const SideBarNotifications: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const [selectedNotificationIds, setSelectedNotificationIds] = useState<Set<number>>(new Set());
   const [sortOrder, setSortOrder] = useState("dateDesc");
@@ -45,7 +60,7 @@ export default function SideBarNotifications() {
         dispatch(fetchGetAllNotifications());
       }
     }
-  }, [dispatch, showUnreadOnly]);
+  }, [dispatch, showUnreadOnly, status]);
 
   const handleToggleSelect = (id: number) => {
     if (selectionMode) {
@@ -70,7 +85,6 @@ export default function SideBarNotifications() {
     setShowUnreadOnly(!showUnreadOnly);
   };
 
-  
   const handleDeleteClick = () => {
     if (selectedNotificationIds.size > 0) {
       dispatch(deleteNotification(Array.from(selectedNotificationIds))).then(() => {
@@ -79,7 +93,6 @@ export default function SideBarNotifications() {
       });
     }
   };
-  
 
   const handleNotificationClick = (notification: Notification) => {
     if (selectionMode) return;
@@ -93,6 +106,20 @@ export default function SideBarNotifications() {
       });
     }
   };
+
+  const handleDeleteNotification = () => {
+    if (selectedNotification) {
+      // Pass an array with a single ID
+      dispatch(deleteNotification([selectedNotification.id])).then(() => {
+        setOpen(false); // Close dialog after deletion
+        setSelectedNotification(null); // Clear selected notification
+      }).catch((error) => {
+        // Optionally handle errors
+        console.error('Failed to delete notification:', error);
+      });
+    }
+  };
+  
 
   const sortedNotifications = [...notificationList].sort((a, b) => {
     switch (sortOrder) {
@@ -125,133 +152,134 @@ export default function SideBarNotifications() {
   };
 
   return (
-    <Box sx={{ padding: 4, maxWidth: 800, margin: '0 auto' }}>
-      <Paper elevation={3} sx={{ width: "100%", padding: 4 }}>
-        <Box sx={{ height: 600, overflow: "auto" }}>
-          <Typography variant="h6" gutterBottom>
-            Bildirimler
-          </Typography>
+    <Box sx={{ padding: 4, maxWidth: 900, margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
+      <Paper elevation={3} sx={{ width: "100%", padding: 4, display: 'flex', flexDirection: 'column', height: 'calc(100vh - 200px)' }}>
+        <Typography variant="h5" gutterBottom>
+          Notifications
+        </Typography>
 
+        <Box sx={{ mb: 2, display: 'flex', gap: 2, flexDirection: 'column' }}>
           <TextField
             fullWidth
             label="Search"
             variant="outlined"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ mb: 2 }}
           />
 
-          <FormControl fullWidth sx={{ mb: 2 }}>
+          <FormControl fullWidth>
             <InputLabel>Sort By</InputLabel>
             <Select
               value={sortOrder}
               onChange={handleSortChange}
               label="Sort By"
             >
-              <MenuItem value="dateDesc">Tarih: Önce En Yeni</MenuItem>
-              <MenuItem value="dateAsc">Tarih: Önce En Eski</MenuItem>
+              <MenuItem value="dateDesc">Date: Newest First</MenuItem>
+              <MenuItem value="dateAsc">Date: Oldest First</MenuItem>
             </Select>
           </FormControl>
 
-          <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Checkbox
               checked={selectionMode}
               onChange={handleSelectionModeToggle}
-              sx={{ mr: 2 }}
               disabled={filteredNotifications.length === 0}
             />
-            <Typography>Seçim Modu</Typography>
+            <Typography>Select Mode</Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleShowUnreadToggle}
+            >
+              {showUnreadOnly ? "Show All Notifications" : "Show Unread Only"}
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDeleteClick}
+              disabled={selectedNotificationIds.size === 0}
+            >
+              Delete Selected
+            </Button>
           </Box>
-
-          <Button
-            variant="contained"
-            onClick={handleShowUnreadToggle}
-            sx={{ mb: 2, mr: 2 }}
-          >
-            {showUnreadOnly ? "Tüm Bildirimler" : "Okunmayanlar"}
-          </Button>
-
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleDeleteClick}
-            disabled={selectedNotificationIds.size === 0}
-            sx={{ mb: 2 }}
-          >
-            Seçili Bildirimleri Sil
-          </Button>
-
-          <List>
-            {displayedNotifications.length > 0 ? (
-              displayedNotifications.map((notif) => (
-                <React.Fragment key={notif.id}>
-                  <ListItemButton
-                    onClick={() => handleNotificationClick(notif)}
-                    sx={{
-                      backgroundColor: notif.isRead ? 'white' : 'grey.300',
-                      borderRadius: 1,
-                      mb: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: 1
-                    }}
-                  >
-                    <Checkbox
-                      checked={selectedNotificationIds.has(notif.id)}
-                      onChange={() => handleToggleSelect(notif.id)}
-                      sx={{ mr: 2 }}
-                      disabled={!selectionMode}
-                    />
-                    <ListItemText
-                      primary={notif.title || "No Title"}
-                      secondary={new Date(notif.createdAt).toLocaleDateString()}
-                      sx={{ color: notif.isRead ? 'text.primary' : 'text.secondary' }}
-                    />
-                  </ListItemButton>
-                  <Divider />
-                </React.Fragment>
-              ))
-            ) : (
-              <Typography variant="body2" color="textSecondary" align="center">
-                Hiçbir bildirim bulunamadı
-              </Typography>
-            )}
-          </List>
         </Box>
+
+        <List sx={{ overflow: 'auto', maxHeight: '100%' }}>
+          {displayedNotifications.length > 0 ? (
+            displayedNotifications.map((notif) => (
+              <React.Fragment key={notif.id}>
+                <ListItemButton
+                  onClick={() => handleNotificationClick(notif)}
+                  sx={{
+                    backgroundColor: notif.isRead ? 'background.paper' : 'action.hover',
+                    borderRadius: 1,
+                    mb: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: 2,
+                    '&:hover': {
+                      backgroundColor: 'action.selected'
+                    }
+                  }}
+                >
+                  <Checkbox
+                    checked={selectedNotificationIds.has(notif.id)}
+                    onChange={() => handleToggleSelect(notif.id)}
+                    disabled={!selectionMode}
+                  />
+                  <ListItemText
+                    primary={notif.title || "No Title"}
+                    secondary={new Date(notif.createdAt).toLocaleDateString()}
+                    sx={{ color: notif.isRead ? 'text.primary' : 'text.secondary' }}
+                  />
+                </ListItemButton>
+                <Divider />
+              </React.Fragment>
+            ))
+          ) : (
+            <Typography variant="body2" color="textSecondary" align="center">
+              No notifications found
+            </Typography>
+          )}
+        </List>
       </Paper>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-        <DialogTitle>{selectedNotification?.title}</DialogTitle>
-        <DialogContent dividers>
-          <Typography variant="body1">
-            {selectedNotification?.message}
-          </Typography>
+        <DialogTitle>
+          {selectedNotification?.title}
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={handleClose}
+            sx={{ position: 'absolute', right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">{selectedNotification?.message}</Typography>
           <Typography
             variant="body2"
             color="textSecondary"
             sx={{ mt: 2 }}
           >
-            {selectedNotification &&
-              new Date(selectedNotification.createdAt).toLocaleString()}
+            {selectedNotification && new Date(selectedNotification.createdAt).toLocaleString()}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Kapat
+            Close
           </Button>
           <Button
-            onClick={() => {
-              if (selectedNotification) {
-                dispatch(deleteNotification(selectedNotification.id));
-                handleClose();
-              }
-            }}
+            onClick={handleDeleteNotification}
             color="error"
           >
-            Sil
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
     </Box>
   );
-}
+};
+
+export default SideBarNotifications;
