@@ -91,6 +91,9 @@
     "contactinfo" : "Iletisim Bilgileri",
     "address" : "Adres",
     "notes" : "Notlar",
-    "location" : "Konum"
+    "location" : "Konum",
+    "productname": "Urun Adi",
+    "warehousename": "Depo Adi",
+    "stockmovementtype": "Stok Hareket Tipi"
   }
 }

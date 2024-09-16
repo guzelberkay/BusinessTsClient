@@ -93,6 +93,9 @@
     "searchbyproductname": "Search by Product Name",
     "address" : "Address",
     "notes" : "Notes",
-    "location" : "Location"
+    "location" : "Location",
+    "productname": "Product Name",
+    "warehousename": "Ware House Name",
+    "stockmovementtype": "Stock Movement Type"
   }
 }

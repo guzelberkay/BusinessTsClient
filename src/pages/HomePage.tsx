@@ -101,6 +101,12 @@ function HomePage() {
                             Product Categories Page</Button>
                     </Typography>
                 </Grid>
+                <Grid item xs={12}  sx={{textAlign: "center"}}>
+                    <Typography variant="h3">
+                        <Button onClick={() => window.location.href = "http://localhost:3000/stock-movements"} variant="contained">StockService -
+                            Stock Movement Page</Button>
+                    </Typography>
+                </Grid>
             </Grid>
         </Container>
     )
