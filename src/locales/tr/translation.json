@@ -85,6 +85,8 @@
     "unitprice": "Birim Fiyat",
     "total": "Toplam",
     "ordertype": "Sipariş Tipi",
-    "createdat": "Oluşturulma Tarihi"
+    "createdat": "Oluşturulma Tarihi",
+    "productName": "Urun Adı",
+    "searchbyproductname": "Urun Adına Göre Ara"
   }
 }

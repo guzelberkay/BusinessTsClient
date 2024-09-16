@@ -88,6 +88,8 @@
     "unitprice": "Unit Price",
     "total": "Total",
     "ordertype": "Order Type",
-    "createdat": "Created At"
+    "createdat": "Created At",
+    "productName": "Product Name",
+    "searchbyproductname": "Search by Product Name"
   }
 }
