@@ -9,6 +9,7 @@ import VerifyAccount from "../pages/VerifyAccount";
 import ProductPage from "../pages/ProductPage.tsx";
 import ProductByMinStockLevelPage from "../pages/ProductByMinStockLevelPage.tsx";
 import OrderPage from "../pages/OrderPage.tsx";
+import HRMPage from "../pages/HRMPage.tsx";
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
@@ -111,6 +112,10 @@ export default function Router() {
                 {
                     path: 'order',
                     element: <PrivateRoute element={<OrderPage />} roles={['ADMIN']} />,
+                },
+                {
+                    path: 'hrm-page',
+                    element: <PrivateRoute element={<HRMPage />} roles={['ADMIN']} />,
                 },
                 // Other protected routes can be added here.
 

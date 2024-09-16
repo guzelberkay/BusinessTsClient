@@ -8,7 +8,8 @@ const endpoints = {
   supplier: "/supplier",
   ware_house: "/ware-house",
   user: "/user",
-  role:"/role"
+  role:"/role",
+  employee:"/employee"
 
 };
 
