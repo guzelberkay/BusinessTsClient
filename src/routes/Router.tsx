@@ -7,6 +7,7 @@ import Loader from "../components/atoms/loader/Loader";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import VerifyAccount from "../pages/VerifyAccount";
 import ProductPage from "../pages/ProductPage.tsx";
+import AnalyticsDash from "../pages/AnalyticsDash.tsx";
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
@@ -31,6 +32,16 @@ export default function Router() {
                 <PreAuthTemplate>
                     <Suspense fallback={<Loader />}>
                         <HomePage />
+                    </Suspense>
+                </PreAuthTemplate>
+            ),
+        },
+        {
+            path: '/analyticdash',
+            element: (
+                <PreAuthTemplate>
+                    <Suspense fallback={<Loader />}>
+                        <AnalyticsDash />
                     </Suspense>
                 </PreAuthTemplate>
             ),
