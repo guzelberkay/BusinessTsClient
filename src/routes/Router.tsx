@@ -106,7 +106,7 @@ export default function Router() {
                     element: <PrivateRoute element={<TestPage />} roles={['ADMIN']} />,
                 },
                 {
-                    path: 'product',
+                    path: 'products',
                     element: <PrivateRoute element={<ProductPage />} roles={['ADMIN']} />,
                 },
                 {

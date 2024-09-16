@@ -61,7 +61,7 @@ function HomePage() {
                 </Grid>
                 <Grid item xs={12}  sx={{textAlign: "center"}}>
                     <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/product"} variant="contained">StockService -
+                        <Button onClick={() => window.location.href = "http://localhost:3000/products"} variant="contained">StockService -
                             Product Page</Button>
                     </Typography>
                 </Grid>

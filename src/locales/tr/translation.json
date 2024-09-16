@@ -20,7 +20,16 @@
     "notifications": "Bildirimler",
     "messages": "Mesajlar",
     "login": "Giriş Yap",
-    "register": "Kayıt Ol"
+    "register": "Kayıt Ol",
+    "stock": "Stok",
+    "products": "Urunler",
+    "buyorders": "Alis Siparisleri",
+    "sellorders": "Satis Siparisleri",
+    "suppliers": "Tedarikciler",
+    "warehouses": "Depolar",
+    "productcategories": "Urun Kategorileri",
+    "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
+    "stockmovements": "Stok Hareketleri"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -95,5 +104,6 @@
     "productname": "Urun Adi",
     "warehousename": "Depo Adi",
     "stockmovementtype": "Stok Hareket Tipi"
+
   }
 }
