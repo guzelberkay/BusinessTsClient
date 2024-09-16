@@ -14,9 +14,9 @@ import {
 import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../store";
 import {
-    fetchChangeAutoOrderModeOfProduct,
-    fetchFindAllByMinimumStockLevel, fetchFindAllOrder,
-    fetchFindAllProduct
+    fetchChangeAutoOrderModeOfProduct, fetchFindAllBuyOrder,
+    fetchFindAllByMinimumStockLevel,
+    fetchFindAllProduct, fetchFindAllProductCategory, fetchFindAllSellOrder, fetchFindAllSupplier
 } from "../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
@@ -26,14 +26,14 @@ import {IProduct} from "../model/IProduct.tsx";
 
 
 
-const OrderPage = () => {
+const ProductCategoryPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const orders = useAppSelector((state) => state.stockSlice.orderList);
+    const [productCategories,setProductCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -45,12 +45,14 @@ const OrderPage = () => {
 
     useEffect(() => {
         dispatch(
-            fetchFindAllOrder({
+            fetchFindAllProductCategory({
                 page: 0,
                 size: 100,
                 searchText: searchText,
             })
-        )
+        ).then(data => {
+            setProductCategories(data.payload.data);
+        })
     }, [dispatch, searchText, loading, isActivating]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
@@ -64,47 +66,8 @@ const OrderPage = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "customerId", headerName: t("stockService.customername"), flex: 1.5, headerAlign: "center" },
-        { field: "supplierId", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center" },
-        { field: "quantity", headerName: t("stockService.quantity"), flex: 1.5, headerAlign: "center" },
-        {
-            field: "unitPrice", headerName: t("stockService.unitprice"), flex: 1, headerAlign: "center",
-            renderCell: (params) => {
-                // Check if the value is valid
-                const value = params.value;
-                if (typeof value === 'number' && !isNaN(value)) {
-                    // Format the number as currency
-                    return new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }).format(value);
-                }
-                return '$0.00'; // Return default value if not a valid number
-            },
-        },
-
-        { field: "total", headerName: t("stockService.total"), flex: 1, headerAlign: "center",
-            renderCell: (params) => {
-                // Check if the value is valid
-                const value = params.value;
-                if (typeof value === 'number' && !isNaN(value)) {
-                    // Format the number as currency
-                    return new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }).format(value);
-                }
-                return '$0.00'; // Return default value if not a valid number
-            }, },
-        { field: "orderType", headerName: t("stockService.ordertype"), headerAlign: "center", flex: 1.5 },
-        { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
+        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
         { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
-
-
     ];
 
 
@@ -123,8 +86,9 @@ const OrderPage = () => {
             <DataGrid
                 slots={{
                     toolbar: GridToolbar,
+
                 }}
-                rows={orders}
+                rows={productCategories}
                 columns={columns}
                 initialState={{
                     pagination: {
@@ -205,4 +169,4 @@ const OrderPage = () => {
 }
 
 
-export default OrderPage
+export default ProductCategoryPage
