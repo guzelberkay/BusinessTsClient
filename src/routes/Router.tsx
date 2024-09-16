@@ -10,6 +10,8 @@ import ProductPage from "../pages/ProductPage.tsx";
 import ProductByMinStockLevelPage from "../pages/ProductByMinStockLevelPage.tsx";
 import BuyOrderPage from "../pages/BuyOrderPage.tsx";
 import SellOrderPage from "../pages/SellOrderPage.tsx";
+import SupplierPage from "../pages/SupplierPage.tsx";
+import WareHousePage from "../pages/WareHousePage.tsx";
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
@@ -116,6 +118,14 @@ export default function Router() {
                 {
                     path: 'sell-orders',
                     element: <PrivateRoute element={<SellOrderPage />} roles={['ADMIN']} />,
+                },
+                {
+                    path: 'suppliers',
+                    element: <PrivateRoute element={<SupplierPage />} roles={['ADMIN']} />,
+                },
+                {
+                    path: 'ware-houses',
+                    element: <PrivateRoute element={<WareHousePage />} roles={['ADMIN']} />,
                 },
                 // Other protected routes can be added here.
 

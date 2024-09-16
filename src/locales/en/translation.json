@@ -90,6 +90,9 @@
     "ordertype": "Order Type",
     "createdat": "Created At",
     "productName": "Product Name",
-    "searchbyproductname": "Search by Product Name"
+    "searchbyproductname": "Search by Product Name",
+    "address" : "Address",
+    "notes" : "Notes",
+    "location" : "Location"
   }
 }

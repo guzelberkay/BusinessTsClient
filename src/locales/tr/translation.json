@@ -78,7 +78,7 @@
     "minstockcount": "Min. Stok Sayısı",
     "autoorder": "Otomatik Sipariş",
     "status": "Durum",
-    "searchbyname": "İsme Göre Ara",
+    "searchbyname": "Ada Göre Ara",
     "customername": "Müşteri Adı",
     "suppliername": "Tedarikçi Adı",
     "quantity": "Miktar",
@@ -87,6 +87,10 @@
     "ordertype": "Sipariş Tipi",
     "createdat": "Oluşturulma Tarihi",
     "productName": "Urun Adı",
-    "searchbyproductname": "Urun Adına Göre Ara"
+    "searchbyproductname": "Urun Adına Göre Ara",
+    "contactinfo" : "Iletisim Bilgileri",
+    "address" : "Adres",
+    "notes" : "Notlar",
+    "location" : "Konum"
   }
 }
