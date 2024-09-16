@@ -61,5 +61,33 @@
     "links": "Useful Links",
     "about": "About",
     "services": "Services"
+  },
+  "swal": {
+    "areyousure": "Are you sure?",
+    "changeorderstatus": "You are about to change auto order status. (This action can cause to create orders for this product.)",
+    "warning": "Warning",
+    "yeschangeit": "Yes, change it!",
+    "error": "Error!",
+    "ok": "OK",
+    "changed": "Changed!",
+    "productautoordermodechanged": "Your product's auto order mod has been changed."
+
+  },
+  "stockService": {
+    "changeautoordermode": "Change Auto Order Mode",
+    "description": "Description",
+    "price": "Price $",
+    "stockcount": "Stock Count",
+    "minstockcount": "Min. Stock Count",
+    "autoorder": "Auto Order",
+    "status": "Status",
+    "searchbyname": "Search by Name",
+    "customername": "Customer Name",
+    "suppliername": "Supplier Name",
+    "quantity": "Quantity",
+    "unitprice": "Unit Price",
+    "total": "Total",
+    "ordertype": "Order Type",
+    "createdat": "Created At"
   }
 }

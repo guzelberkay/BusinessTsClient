@@ -59,5 +59,32 @@
     "links": "Linkler",
     "about": "Hakkımızda",
     "services": "Hizmetler"
+  },
+  "swal": {
+    "areyousure": "Emin misin?",
+    "changeorderstatus": "Otomatik sipariş durumunu değiştirmek üzeresiniz. (Bu işlem bu ürün için sipariş oluşturulmasına neden olabilir.)",
+    "warning": "Uyarı",
+    "yeschangeit": "Evet, değiştir",
+    "error": "Hata!",
+    "ok": "Tamam",
+    "changed": "Değiştirildi!",
+    "productautoordermodechanged": "Ürünün otomatik sipariş modu değiştirildi!"
+  },
+  "stockService": {
+    "changeautoordermode": "Otomatik Sipariş Modunu Değiştir",
+    "description": "Açıklama",
+    "price": "Fiyat $",
+    "stockcount": "Stok Sayısı",
+    "minstockcount": "Min. Stok Sayısı",
+    "autoorder": "Otomatik Sipariş",
+    "status": "Durum",
+    "searchbyname": "İsme Göre Ara",
+    "customername": "Müşteri Adı",
+    "suppliername": "Tedarikçi Adı",
+    "quantity": "Miktar",
+    "unitprice": "Birim Fiyat",
+    "total": "Toplam",
+    "ordertype": "Sipariş Tipi",
+    "createdat": "Oluşturulma Tarihi"
   }
 }
