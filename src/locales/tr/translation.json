@@ -20,7 +20,16 @@
     "notifications": "Bildirimler",
     "messages": "Mesajlar",
     "login": "Giriş Yap",
-    "register": "Kayıt Ol"
+    "register": "Kayıt Ol",
+    "stock": "Stok",
+    "products": "Urunler",
+    "buyorders": "Alis Siparisleri",
+    "sellorders": "Satis Siparisleri",
+    "suppliers": "Tedarikciler",
+    "warehouses": "Depolar",
+    "productcategories": "Urun Kategorileri",
+    "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
+    "stockmovements": "Stok Hareketleri"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -78,13 +87,23 @@
     "minstockcount": "Min. Stok Sayısı",
     "autoorder": "Otomatik Sipariş",
     "status": "Durum",
-    "searchbyname": "İsme Göre Ara",
+    "searchbyname": "Ada Göre Ara",
     "customername": "Müşteri Adı",
     "suppliername": "Tedarikçi Adı",
     "quantity": "Miktar",
     "unitprice": "Birim Fiyat",
     "total": "Toplam",
     "ordertype": "Sipariş Tipi",
-    "createdat": "Oluşturulma Tarihi"
+    "createdat": "Oluşturulma Tarihi",
+    "productName": "Urun Adı",
+    "searchbyproductname": "Urun Adına Göre Ara",
+    "contactinfo" : "Iletisim Bilgileri",
+    "address" : "Adres",
+    "notes" : "Notlar",
+    "location" : "Konum",
+    "productname": "Urun Adi",
+    "warehousename": "Depo Adi",
+    "stockmovementtype": "Stok Hareket Tipi"
+
   }
 }

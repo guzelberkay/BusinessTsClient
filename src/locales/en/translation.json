@@ -20,7 +20,16 @@
     "notifications": "Notifications",
     "messages": "Messages",
     "login": "Sign in",
-    "register": "Sign up"
+    "register": "Sign up",
+    "stock": "Stock",
+    "products": "Products",
+    "buyorders": "Buy Orders",
+    "sellorders": "Sell Orders",
+    "suppliers": "Suppliers",
+    "warehouses": "Warehouses",
+    "productcategories": "Product Categories",
+    "productsbyminstocklevel": "Products By Min. Stock Level",
+    "stockmovements": "Stock Movements"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -88,6 +97,14 @@
     "unitprice": "Unit Price",
     "total": "Total",
     "ordertype": "Order Type",
-    "createdat": "Created At"
+    "createdat": "Created At",
+    "productName": "Product Name",
+    "searchbyproductname": "Search by Product Name",
+    "address" : "Address",
+    "notes" : "Notes",
+    "location" : "Location",
+    "productname": "Product Name",
+    "warehousename": "Ware House Name",
+    "stockmovementtype": "Stock Movement Type"
   }
 }
