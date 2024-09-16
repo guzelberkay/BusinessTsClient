@@ -100,9 +100,27 @@ export const fetchFindAllCustomer = createAsyncThunk(
     async (payload:IfetchFindAllCustomer) => {
         const values = { page: payload.page, size: payload.size, searchText: payload.searchText };
         
-        const result = await axios.get(
+        const result = await axios.post(
             RestApis.crm_service_customer+"/find-all",
-          
+          values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                }
+            }
+        );
+        return result.data;
+    }
+);
+interface IfetchFindByNameCustomer{
+    firstName:string;
+}
+export const fetchfindByNameCustomer = createAsyncThunk(
+    'crm/fetchfindByNameCustomer',
+    async (payload: IfetchFindByNameCustomer) => {
+        const result = await axios.get(
+            `${RestApis.crm_service_customer}/find-by-name?firstName=${payload.firstName}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -117,7 +135,7 @@ export const fetchFindAllCustomer = createAsyncThunk(
 export const fetchCustomerById = createAsyncThunk(
     'crm/fetchCustomerById',
     async (id:number) => {
-        const result = await axios.get(
+        const result = await axios.post(
             RestApis.crm_service_customer+"/find-by-id?id="+id,
             {
                 headers: {
@@ -142,6 +160,9 @@ const crmSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchFindAllCustomer.fulfilled, (state, action: PayloadAction<IResponse>) => {
+                state.customerList = action.payload.data;
+            })
+            .addCase(fetchfindByNameCustomer.fulfilled, (state, action: PayloadAction<IResponse>) => {
                 state.customerList = action.payload.data;
             })
         }

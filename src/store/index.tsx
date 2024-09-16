@@ -1,6 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {authSlice, languageSlice,stockSlice,userSlice} from "./feature";
-import {authSlice, languageSlice,stockSlice, crmSlice} from "./feature";
+import {authSlice, languageSlice,stockSlice, crmSlice, userSlice} from "./feature";
 
 import {useSelector} from "react-redux";
 

@@ -14,20 +14,19 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "../store";
 
-import {fetchFindAllCustomer} from "../store/feature/crmSlice.tsx";
+import {fetchFindAllCustomer, fetchfindByNameCustomer} from "../store/feature/crmSlice.tsx";
+import Swal from "sweetalert2";
+import {useTranslation} from "react-i18next";
 
 
 
-const columns: GridColDef[] = [
-    { field: "firstName", headerName: "Name", flex: 1.5, headerAlign: "center" },
-    { field: "lastName", headerName: "LastName", flex: 1.5, headerAlign: "center" },
-    { field: "email", headerName: "Email", flex: 1.5, headerAlign: "center" },
-    { field: "phone", headerName: "Phone", flex: 1.5, headerAlign: "center" },
-    { field: "address", headerName: "Address", flex: 1.5, headerAlign: "center" },
-    { field: "status", headerName: "Status", headerAlign: "center", flex: 1 },
-]
+
 
 const CustomerPage = () => {
+
+   
+
+
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
@@ -44,6 +43,8 @@ const CustomerPage = () => {
     const [address, setAddress] = useState('');
     const [status, setStatus] = useState('');
 
+    const {t} = useTranslation()
+
     useEffect(() => {
         dispatch(fetchFindAllCustomer({
             page: 0,
@@ -56,22 +57,40 @@ const CustomerPage = () => {
         setSelectedRowIds(newSelectionModel as number[]);
     }
 
+    const handleSearchByName = async () => {
+        const result = await dispatch(fetchfindByNameCustomer({
+            firstName
+        }));
+        console.log(result);
+        // dispatch(fetchfindByNameCustomer({
+        //     firstName: firstName
+        // }));
+    }
+
     const handleSomething = () => {
         console.log(selectedRowIds);
     };
 
+    const columns: GridColDef[] = [
+        { field: "firstName", headerName: "Ad", flex: 1.5, headerAlign: "center" },
+        { field: "lastName", headerName: "Soyad", flex: 1.5, headerAlign: "center" },
+        { field: "email", headerName: "Email", flex: 1.5, headerAlign: "center" },
+        { field: "phone", headerName: "Telefon", flex: 1.5, headerAlign: "center" },
+        { field: "address", headerName: "Adres", flex: 1.5, headerAlign: "center" },
+        { field: "status", headerName: "Durum", headerAlign: "center", flex: 1 },
+    ]
+
 
     return (
-        <div style={{ height: "auto", width: "inherit" }}>
+        <div style={{ height: "auto"}}>
 
             <TextField
-                fullWidth
-                id="firstName"
-                label="First Name"
-                value={firstName}
-                onChange={(e) => setSearchText(e.target.value)}
-                style={{ marginBottom: "1%", marginTop: "1%" }}
+                label="Ad"
                 variant="outlined"
+                onChange={(event) =>{setSearchText(event.target.value); handleSearchByName()} }
+                value={searchText}
+                style={{ marginBottom: "1%", marginTop: "1%" }}
+                fullWidth
                 inputProps={{ maxLength: 50 }}
             />
 
@@ -86,11 +105,11 @@ const CustomerPage = () => {
                         paginationModel: {page: 1, pageSize: 5 },
                     }
                 }}
-                getRowClassName={(params)=>
-                    params.row.isExpenditureApproved
-                        ? "approved-row"
-                        : "unapproved-row"
-                }
+                // getRowClassName={(params)=>
+                //     params.row.isExpenditureApproved
+                //         ? "approved-row"
+                //         : "unapproved-row"
+                // }
                 pageSizeOptions={[5,10]}
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
@@ -102,13 +121,16 @@ const CustomerPage = () => {
                     "& .MuiDataGrid-columnHeaderTitle": {
                         fontWeight: "bold",
                     },
-                    "& .approved-row": {
-                        backgroundColor: "rgba(77, 148, 255,1)",
+                    "& .MuiDataGrid-cell": {
+                        textAlign: "center",
+                    },
+                    // "& .approved-row": {
+                    //     backgroundColor: "rgba(77, 148, 255,1)",
                         
-                    },
-                    "& .unapproved-row": {
-                        backgroundColor: "rgba(242, 242, 242,1)",
-                    },
+                    // },
+                    // "& .unapproved-row": {
+                    //     backgroundColor: "rgba(242, 242, 242,1)",
+                    // },
             
                 }}
                 rowSelectionModel={selectedRowIds}
