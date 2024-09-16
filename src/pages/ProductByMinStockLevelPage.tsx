@@ -13,22 +13,27 @@ import {
 
 import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../store";
-import {fetchChangeAutoOrderModeOfProduct, fetchFindAllProduct} from "../store/feature/stockSlice.tsx";
+import {
+    fetchChangeAutoOrderModeOfProduct,
+    fetchFindAllByMinimumStockLevel,
+    fetchFindAllProduct
+} from "../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+import {IProduct} from "../model/IProduct.tsx";
 
 
 
 
 
-const ProductPage = () => {
+const ProductByMinStockLevelPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const products = useAppSelector((state) => state.stockSlice.productList);
+    const [products, setProducts] = useState<IProduct[]>([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -40,12 +45,12 @@ const ProductPage = () => {
 
     useEffect(() => {
         dispatch(
-            fetchFindAllProduct({
+            fetchFindAllByMinimumStockLevel({
                 page: 0,
                 size: 100,
                 searchText: searchText,
             })
-        )
+        ).then((res) => setProducts(res.payload.data))
     }, [dispatch, searchText, loading, isActivating]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
@@ -121,11 +126,13 @@ const ProductPage = () => {
                             text: t("swal.productautoordermodechanged"),
                             icon: "success",
                         });
-                        await dispatch(fetchFindAllProduct({
-                            page: 0,
-                            size: 100,
-                            searchText: searchText,
-                        }));
+                        await dispatch(
+                            fetchFindAllByMinimumStockLevel({
+                                page: 0,
+                                size: 100,
+                                searchText: searchText,
+                            })
+                        ).then((res) => setProducts(res.payload.data))
                     }
                 }
             } catch (error) {
@@ -232,4 +239,4 @@ const ProductPage = () => {
 }
 
 
-export default ProductPage
+export default ProductByMinStockLevelPage

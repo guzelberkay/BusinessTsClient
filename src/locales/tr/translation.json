@@ -20,7 +20,16 @@
     "notifications": "Bildirimler",
     "messages": "Mesajlar",
     "login": "Giriş Yap",
-    "register": "Kayıt Ol"
+    "register": "Kayıt Ol",
+    "stock": "Stok",
+    "products": "Urunler",
+    "buyorders": "Alis Siparisleri",
+    "sellorders": "Satis Siparisleri",
+    "suppliers": "Tedarikciler",
+    "warehouses": "Depolar",
+    "productcategories": "Urun Kategorileri",
+    "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
+    "stockmovements": "Stok Hareketleri"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -34,7 +43,11 @@
     "error": "Hata",
     "registrationSuccessful": "Kayıt Başarılı",
     "accountHasBeenActivated" :"Hesabınız Başarıyla Aktif Edildi!",
-    "accountGreeting" : "Tebrikler! Artık hesabınızı aktif olarak kullanabilirsiniz. Platformumuzun sunduğu tüm özelliklerden yararlanabilir ve kişisel ayarlarınızı yapmaya başlayabilirsiniz."
+    "accountGreeting" : "Tebrikler! Artık hesabınızı aktif olarak kullanabilirsiniz. Platformumuzun sunduğu tüm özelliklerden yararlanabilir ve kişisel ayarlarınızı yapmaya başlayabilirsiniz.",
+    "passwordMismatch": "Şifreler eşleşmemektedir.Lütfen sifrenizi tekrardan giriniz.",
+    "requiredField" : "Zorunlu Alan",
+    "invalidEmail": "Girdiğiniz e-posta adresi gecersizdir.",
+    "fillAllFields" : "Lütfen tüm alanları doldurun."
   },
   "errorPage": {
     "404": "Sayfa Bulunamadı",
@@ -55,5 +68,42 @@
     "links": "Linkler",
     "about": "Hakkımızda",
     "services": "Hizmetler"
+  },
+  "swal": {
+    "areyousure": "Emin misin?",
+    "changeorderstatus": "Otomatik sipariş durumunu değiştirmek üzeresiniz. (Bu işlem bu ürün için sipariş oluşturulmasına neden olabilir.)",
+    "warning": "Uyarı",
+    "yeschangeit": "Evet, değiştir",
+    "error": "Hata!",
+    "ok": "Tamam",
+    "changed": "Değiştirildi!",
+    "productautoordermodechanged": "Ürünün otomatik sipariş modu değiştirildi!"
+  },
+  "stockService": {
+    "changeautoordermode": "Otomatik Sipariş Modunu Değiştir",
+    "description": "Açıklama",
+    "price": "Fiyat $",
+    "stockcount": "Stok Sayısı",
+    "minstockcount": "Min. Stok Sayısı",
+    "autoorder": "Otomatik Sipariş",
+    "status": "Durum",
+    "searchbyname": "Ada Göre Ara",
+    "customername": "Müşteri Adı",
+    "suppliername": "Tedarikçi Adı",
+    "quantity": "Miktar",
+    "unitprice": "Birim Fiyat",
+    "total": "Toplam",
+    "ordertype": "Sipariş Tipi",
+    "createdat": "Oluşturulma Tarihi",
+    "productName": "Urun Adı",
+    "searchbyproductname": "Urun Adına Göre Ara",
+    "contactinfo" : "Iletisim Bilgileri",
+    "address" : "Adres",
+    "notes" : "Notlar",
+    "location" : "Konum",
+    "productname": "Urun Adi",
+    "warehousename": "Depo Adi",
+    "stockmovementtype": "Stok Hareket Tipi"
+
   }
 }

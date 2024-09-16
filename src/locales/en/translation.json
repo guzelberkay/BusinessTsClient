@@ -20,7 +20,16 @@
     "notifications": "Notifications",
     "messages": "Messages",
     "login": "Sign in",
-    "register": "Sign up"
+    "register": "Sign up",
+    "stock": "Stock",
+    "products": "Products",
+    "buyorders": "Buy Orders",
+    "sellorders": "Sell Orders",
+    "suppliers": "Suppliers",
+    "warehouses": "Warehouses",
+    "productcategories": "Product Categories",
+    "productsbyminstocklevel": "Products By Min. Stock Level",
+    "stockmovements": "Stock Movements"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -34,7 +43,11 @@
     "error": "Error",
     "registrationSuccessful": "Registration Successful",
     "accountHasBeenActivated": "Your account has been successfully activated!",
-    "accountGreeting": " Congratulations! You can now actively use your account. You can enjoy all the features our platform has to offer and start making your personal settings."
+    "accountGreeting": " Congratulations! You can now actively use your account. You can enjoy all the features our platform has to offer and start making your personal settings.",
+    "passwordMismatch": "Passwords do not match. Please enter again.",
+    "requiredField" : "Required Field",
+    "invalidEmail": "The entered email address is invalid.",
+    "fillAllFields" : "Please fill in all fields."
   },
 
   "errorPage": {
@@ -57,5 +70,41 @@
     "links": "Useful Links",
     "about": "About",
     "services": "Services"
+  },
+  "swal": {
+    "areyousure": "Are you sure?",
+    "changeorderstatus": "You are about to change auto order status. (This action can cause to create orders for this product.)",
+    "warning": "Warning",
+    "yeschangeit": "Yes, change it!",
+    "error": "Error!",
+    "ok": "OK",
+    "changed": "Changed!",
+    "productautoordermodechanged": "Your product's auto order mod has been changed."
+
+  },
+  "stockService": {
+    "changeautoordermode": "Change Auto Order Mode",
+    "description": "Description",
+    "price": "Price $",
+    "stockcount": "Stock Count",
+    "minstockcount": "Min. Stock Count",
+    "autoorder": "Auto Order",
+    "status": "Status",
+    "searchbyname": "Search by Name",
+    "customername": "Customer Name",
+    "suppliername": "Supplier Name",
+    "quantity": "Quantity",
+    "unitprice": "Unit Price",
+    "total": "Total",
+    "ordertype": "Order Type",
+    "createdat": "Created At",
+    "productName": "Product Name",
+    "searchbyproductname": "Search by Product Name",
+    "address" : "Address",
+    "notes" : "Notes",
+    "location" : "Location",
+    "productname": "Product Name",
+    "warehousename": "Ware House Name",
+    "stockmovementtype": "Stock Movement Type"
   }
 }

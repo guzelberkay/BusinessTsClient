@@ -9,6 +9,9 @@ const endpoints = {
   ware_house: "/ware-house",
   // CRM Endpoints
   customer: "/customer",
+  user: "/user",
+  role:"/role"
+
 };
 
 export default endpoints;
