@@ -16,6 +16,7 @@ import  {AppDispatch, useAppSelector} from "../store";
 import {fetchChangeAutoOrderModeOfProduct, fetchFindAllProduct} from "../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+import { CustomGridToolbar } from "../components/atoms/CustomGridToolbar.tsx";
 
 
 
@@ -59,10 +60,10 @@ const ProductPage = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
+        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center", sortable: false }, // set sortable to false
+        { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center", sortable: false },
         {
-            field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
+            field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center", sortable: false,
             renderCell: (params) => {
                 // Check if the value is valid
                 const value = params.value;
@@ -79,10 +80,10 @@ const ProductPage = () => {
             },
         },
 
-        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center" },
-        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5 },
-        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
+        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center", sortable: false },
+        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5, sortable: false },
+        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1, sortable: false },
+        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1, sortable: false },
 
 
     ];
@@ -149,7 +150,7 @@ const ProductPage = () => {
             />
             <DataGrid
                 slots={{
-                    toolbar: GridToolbar,
+                    toolbar: CustomGridToolbar, // Custom toolbar component
                 }}
                 rows={products}
                 columns={columns}
@@ -167,6 +168,7 @@ const ProductPage = () => {
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
                 autoHeight={true}
+                disableColumnMenu={true}  // This disables the column menu
                 sx={{
                     "& .MuiDataGrid-columnHeaders": {
                         backgroundColor: "rgba(224, 224, 224, 1)",
