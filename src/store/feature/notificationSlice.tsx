@@ -103,7 +103,7 @@ export const markNotificationAsRead = createAsyncThunk(
 );
 
 // Delete notification
-// Slice - Thunks
+
 export const deleteNotification = createAsyncThunk(
   'notifications/deleteNotifications',
   async (notificationIds: number[]) => {

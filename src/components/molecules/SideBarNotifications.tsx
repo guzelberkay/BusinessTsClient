@@ -109,10 +109,9 @@ const SideBarNotifications: React.FC = () => {
 
   const handleDeleteNotification = () => {
     if (selectedNotification) {
-      // Pass an array with a single ID
       dispatch(deleteNotification([selectedNotification.id])).then(() => {
-        setOpen(false); // Close dialog after deletion
-        setSelectedNotification(null); // Clear selected notification
+        setOpen(false); 
+        setSelectedNotification(null); 
       }).catch((error) => {
         // Optionally handle errors
         console.error('Failed to delete notification:', error);

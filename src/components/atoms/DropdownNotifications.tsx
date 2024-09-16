@@ -33,7 +33,6 @@ const DropdownNotification: React.FC = () => {
     dispatch(fetchGetAllNotifications());
   }, [dispatch]);
 
-  // Sort and slice the notifications
   const sortedNotifications = [...notifications]
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, 4);
@@ -42,7 +41,6 @@ const DropdownNotification: React.FC = () => {
     setSelectedNotification(notification);
     setOpen(true);
     if (!notification.isRead) {
-      // Optional: Mark as read when opening the dialog
       dispatch(markNotificationAsRead(notification.id)).then(() => {
         const updatedNotification = { ...notification, isRead: true };
         setSelectedNotification(updatedNotification);
@@ -55,14 +53,12 @@ const DropdownNotification: React.FC = () => {
     setSelectedNotification(null);
   };
 
-
   const handleDeleteNotification = () => {
     if (selectedNotification) {
       dispatch(deleteNotification([selectedNotification.id])).then(() => {
-        setOpen(false); 
-        setSelectedNotification(null); // Clear selected notification
+        setOpen(false);
+        setSelectedNotification(null);
       }).catch((error) => {
-       
         console.error('Failed to delete notification:', error);
       });
     }
