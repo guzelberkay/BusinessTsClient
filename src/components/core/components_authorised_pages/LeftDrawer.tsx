@@ -97,6 +97,7 @@ export default function LeftDrawer({
                         open={openTest1}
                         menuItems={['Element1', 'Element2', 'Element3']}
                         menuIcons={[<ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />]}
+                        menuNavigations={['test1', 'test2', 'test3']}
                     />
                     <DrawerCollapseButton
                         name="test2"
@@ -105,13 +106,14 @@ export default function LeftDrawer({
                         open={openTest2}
                         menuItems={['Element1', 'Element2', 'Element3', 'Element4', 'Element5']}
                         menuIcons={[<ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />]}
+                        menuNavigations={['test1', 'test2', 'test3', 'test4', 'test5']}
                     />
                 </List>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Divider sx={{ width: drawerWidth - 32 }} />
                 </Box>
                 <List>
-                    <DrawerButton name="notifications" icon={<Notifications />} />
+                    <DrawerButton name="notifications" icon={<Notifications />} navigation='notifications'/>
                 </List>
             </Box>
         </SwipeableDrawer>
