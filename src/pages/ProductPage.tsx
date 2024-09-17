@@ -188,9 +188,6 @@ const ProductPage = () => {
         setSelectedRowIds([]);
         setLoading(false);
     };
-    {console.log(selectedSupplier)}
-    {console.log(selectedWarehouse)}
-    {console.log(selectedProductCategory)}
     return (
         <div style={{ height: "auto"}}>
             <TextField
