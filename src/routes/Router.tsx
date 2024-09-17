@@ -7,6 +7,7 @@ import Loader from "../components/atoms/loader/Loader";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import VerifyAccount from "../pages/VerifyAccount";
 import ProductPage from "../pages/ProductPage.tsx";
+import CustomerPage from "../pages/CustomerPage.tsx";
 import ProductByMinStockLevelPage from "../pages/ProductByMinStockLevelPage.tsx";
 
 import HRMPage from "../pages/HRMPage.tsx";
@@ -144,6 +145,10 @@ export default function Router() {
                     element: <PrivateRoute element={<HRMPage />} roles={['ADMIN']} />,
                 },
                 // Other protected routes can be added here.
+                {
+                    path: 'customer',
+                    element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN']} />,
+                }
 
             ]
         }
