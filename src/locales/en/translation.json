@@ -82,7 +82,8 @@
     "changed": "Changed!",
     "productautoordermodechanged": "Your product's auto order mod has been changed.",
     "loginFailed": "Failed to login!",
-    "errorOccurred": "An error has occurred. Please try again."
+    "errorOccurred": "An error has occurred. Please try again.",
+    "success": "Success!"
 
   },
   "stockService": {
@@ -108,7 +109,15 @@
     "location" : "Location",
     "productname": "Product Name",
     "warehousename": "Ware House Name",
-    "stockmovementtype": "Stock Movement Type"
+    "stockmovementtype": "Stock Movement Type",
+    "productsuccesfullyadded": "Product Succesfully Added",
+    "cancel": "CANCEL",
+    "save": "SAVE",
+    "addproduct": "ADD PRODUCT",
+    "pleaseselectsupplier": "Please Select Supplier",
+    "pleaseselectwarehouse": "Please Select Warehouse",
+    "pleaseselectcategory": "Please Select Category",
+    "minstocklevel": "Min. Stock Level"
   },
 
   "dashboard": {

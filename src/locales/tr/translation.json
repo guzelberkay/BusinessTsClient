@@ -30,7 +30,8 @@
     "productcategories": "Urun Kategorileri",
     "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
     "stockmovements": "Stok Hareketleri",
-    "customer": "Musteri"
+    "customer": "Musteri",
+    "success": "Basarili"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -80,7 +81,8 @@
     "changed": "Değiştirildi!",
     "productautoordermodechanged": "Ürünün otomatik sipariş modu değiştirildi!",
     "loginFailed": "Giriş Yapılamadı!",
-    "errorOccurred": "Bir hata oluştu. Lütfen tekrar deneyin."
+    "errorOccurred": "Bir hata oluştu. Lütfen tekrar deneyin.",
+    "success": "Basarılı!"
   },
   "stockService": {
     "changeautoordermode": "Otomatik Sipariş Modunu Değiştir",
@@ -106,7 +108,15 @@
     "location" : "Konum",
     "productname": "Urun Adi",
     "warehousename": "Depo Adi",
-    "stockmovementtype": "Stok Hareket Tipi"
+    "stockmovementtype": "Stok Hareket Tipi",
+    "productsuccesfullyadded": "Urun Basariyla Eklendi",
+    "cancel": "IPTAL",
+    "save": "KAYDET",
+    "addproduct": "URUN EKLE",
+    "pleaseselectsupplier": "Tedarikci Seciniz",
+    "pleaseselectwarehouse": "Depo Seciniz",
+    "pleaseselectcategory": "Kategori Seciniz",
+    "minstocklevel": "Min. Stok Seviyesi"
 
   },
 

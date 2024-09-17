@@ -16,7 +16,7 @@ import  {AppDispatch, useAppSelector} from "../store";
 import {
     fetchChangeAutoOrderModeOfProduct,
     fetchFindAllProduct, fetchFindAllProductCategory,
-    fetchFindAllSupplier, fetchFindAllWareHouse
+    fetchFindAllSupplier, fetchFindAllWareHouse, fetchSaveProduct
 } from "../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
@@ -87,6 +87,29 @@ const ProductPage = () => {
             setProductCategories(res.payload.data);
         })
     };
+
+    const handleSaveProduct = async () => {
+        setLoading(true);
+        dispatch(fetchSaveProduct({productCategoryId:selectedProductCategory as any,supplierId:selectedSupplier as any,wareHouseId:selectedWarehouse as any,name,description,price,stockCount,minimumStockLevel})).then(() => {
+            setName('');
+            setDescription('');
+            setPrice(0);
+            setStockCount(0);
+            setMinimumStockLevel(0);
+            setSelectedProductCategory({} as IProductCategory);
+            setSelectedSupplier({} as ISupplier);
+            setSelectedWareHouse({} as IWareHouse);
+            setLoading(false);
+            setOpenAddProductModel(false);
+            Swal.fire({
+                title: t("swal.success"),
+                text: t("stockService.productsuccesfullyadded"),
+                icon: "success",
+            });
+        })
+
+        setOpenAddProductModel(false)
+    }
 
     const columns: GridColDef[] = [
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
@@ -167,6 +190,7 @@ const ProductPage = () => {
     };
     {console.log(selectedSupplier)}
     {console.log(selectedWarehouse)}
+    {console.log(selectedProductCategory)}
     return (
         <div style={{ height: "auto"}}>
             <TextField
@@ -229,7 +253,7 @@ const ProductPage = () => {
                         //startIcon={<ApproveIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        Add Product
+                        {t("stockService.addproduct")}
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
@@ -259,10 +283,10 @@ const ProductPage = () => {
 
 
                 <Dialog open={openAddProductModal} onClose={() => setOpenAddProductModel(false)} fullWidth maxWidth='sm'>
-                    <DialogTitle>Add Product</DialogTitle>
+                    <DialogTitle>{t("stockService.addproduct")}</DialogTitle>
                     <DialogContent>
                         <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
-                            <InputLabel>{t('Please Select Supplier')}</InputLabel>
+                            <InputLabel>{t('stockService.pleaseselectsupplier')}</InputLabel>
                             <Select
                                 value={selectedSupplier}
                                 onChange={event => setSelectedSupplier(event.target.value as ISupplier)}
@@ -277,7 +301,7 @@ const ProductPage = () => {
                             </Select>
                         </FormControl>
                         <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
-                            <InputLabel>{t('Please Select Ware House')}</InputLabel>
+                            <InputLabel>{t('stockService.pleaseselectwarehouse')}</InputLabel>
                             <Select
                                 value={selectedWarehouse}
                                 onChange={event => setSelectedWareHouse(event.target.value as IWareHouse)}
@@ -292,7 +316,7 @@ const ProductPage = () => {
                             </Select>
                         </FormControl>
                         <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
-                            <InputLabel>{t('Please Select Product Category')}</InputLabel>
+                            <InputLabel>{t('stockService.pleaseselectcategory')}</InputLabel>
                             <Select
                                 value={selectedProductCategory}
                                 onChange={event => setSelectedProductCategory(event.target.value as IProductCategory)}
@@ -308,7 +332,7 @@ const ProductPage = () => {
                         </FormControl>
                         <TextField
                             sx={{marginTop:'15px'}}
-                            label="Product Name"
+                            label={t('stockService.productname')}
                             name="name"
                             value={name}
                             onChange={e => setName(e.target.value)}
@@ -317,7 +341,7 @@ const ProductPage = () => {
                         />
                         <TextField
                             sx={{marginTop:'15px'}}
-                            label="Description"
+                            label={t('stockService.description')}
                             name="description"
                             value={description}
                             onChange={e => setDescription(e.target.value)}
@@ -326,7 +350,7 @@ const ProductPage = () => {
                         />
                         <TextField
                             sx={{marginTop:'15px'}}
-                            label="Price"
+                            label={t('stockService.price')}
                             name="price"
                             value={price}
                             onChange={e => setPrice((Number)(e.target.value))}
@@ -335,7 +359,7 @@ const ProductPage = () => {
                         />
                         <TextField
                             sx={{marginTop:'15px'}}
-                            label="Stock Count"
+                            label={t('stockService.stockcount')}
                             name="stockCount"
                             value={stockCount}
                             onChange={e => setStockCount((Number)(e.target.value))}
@@ -344,7 +368,7 @@ const ProductPage = () => {
                         />
                         <TextField
                             sx={{marginTop:'15px'}}
-                            label="Min. Stock Level"
+                            label={t('stockService.minstocklevel')}
                             name="minStockLevel"
                             value={minimumStockLevel}
                             onChange={e => setMinimumStockLevel((Number)(e.target.value))}
@@ -353,8 +377,8 @@ const ProductPage = () => {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => setOpenAddProductModel(false)} color="error" variant="contained">Cancel</Button>
-                        <Button onClick={() => setOpenAddProductModel(false)} color="success" variant="contained" disabled={selectedSupplier === null || selectedWarehouse === null || selectedProductCategory === null || name === '' || description === '' || price === 0 || stockCount === 0 || minimumStockLevel === 0}>Ok</Button>
+                        <Button onClick={() => setOpenAddProductModel(false)} color="error" variant="contained">{t('stockService.cancel')}</Button>
+                        <Button onClick={() => handleSaveProduct()} color="success" variant="contained" disabled={selectedSupplier === null || selectedWarehouse === null || selectedProductCategory === null || name === '' || description === '' || price === 0 || stockCount === 0 || minimumStockLevel === 0}>{t('stockService.save')}</Button>
                     </DialogActions>
                 </Dialog>
             </Grid>

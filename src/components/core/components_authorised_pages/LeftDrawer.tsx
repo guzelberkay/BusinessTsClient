@@ -5,7 +5,7 @@ import {
     Notifications,
     FormatListNumbered,
     ConfirmationNumber,
-    ProductionQuantityLimits
+    ProductionQuantityLimits, Shop, Sell, SupportAgent, Warehouse, Category, Inventory, ShowChart
 } from '@mui/icons-material';
 import { styled, alpha } from "@mui/material/styles";
 import { useAppSelector } from '../../../store';
@@ -103,7 +103,7 @@ export default function LeftDrawer({
                         TopLevelIcon={<FormatListNumbered />}
                         open={openTest1}
                         menuItems={['products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements']}
-                        menuIcons={[<ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />]}
+                        menuIcons={[<ProductionQuantityLimits />, <Shop />, <Sell />, <SupportAgent />, <Warehouse />, <Category />, <Inventory />, <ShowChart />]}
                         menuNavigations={['products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories','products-by-min-stock-level', 'stock-movements']}
                     />
                     <DrawerCollapseButton
