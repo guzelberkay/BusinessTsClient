@@ -29,7 +29,8 @@
     "warehouses": "Depolar",
     "productcategories": "Urun Kategorileri",
     "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
-    "stockmovements": "Stok Hareketleri"
+    "stockmovements": "Stok Hareketleri",
+    "customer": "Musteri"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",

@@ -29,7 +29,8 @@
     "warehouses": "Warehouses",
     "productcategories": "Product Categories",
     "productsbyminstocklevel": "Products By Min. Stock Level",
-    "stockmovements": "Stock Movements"
+    "stockmovements": "Stock Movements",
+    "customer": "Customer"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
