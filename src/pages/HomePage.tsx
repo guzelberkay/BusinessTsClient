@@ -4,7 +4,6 @@ import {useTranslation} from "react-i18next";
 import {AppDispatch} from "../store/index"
 import {useDispatch} from "react-redux";
 import {
-    fetchFindAllOrder,
     fetchFindAllProduct,
     fetchFindAllProductCategory,
     fetchFindAllStockMovement,
@@ -21,7 +20,6 @@ function HomePage() {
 
     //TO TEST DATAS WILL DELETE IT LATER
     useEffect(() => {
-        dispatch(fetchFindAllOrder({page: 0, size: 10, searchText: ''})).then((res) => console.log(res.payload.data));
         dispatch(fetchFindAllProduct({page: 0, size: 10, searchText: ''})).then((res) => console.log(res.payload.data));
         dispatch(fetchFindAllProductCategory({
             page: 0,
@@ -63,23 +61,52 @@ function HomePage() {
                 </Grid>
                 <Grid item xs={12}  sx={{textAlign: "center"}}>
                     <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/product"} variant="contained">test
+                        <Button onClick={() => window.location.href = "http://localhost:3000/products"} variant="contained">StockService -
                             Product Page</Button>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}  sx={{textAlign: "center"}}>
                     <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/products-by-min-stock-level"} variant="contained">test
+                        <Button onClick={() => window.location.href = "http://localhost:3000/products-by-min-stock-level"} variant="contained">StockService -
                             Products By Min Stock Level Page</Button>
                     </Typography>
                 </Grid>
                 <Grid item xs={12}  sx={{textAlign: "center"}}>
                     <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/order"} variant="contained">test
-                            Order Page</Button>
+                        <Button onClick={() => window.location.href = "http://localhost:3000/buy-orders"} variant="contained">StockService -
+                           Buy Order Page</Button>
                     </Typography>
                 </Grid>
-
+                <Grid item xs={12}  sx={{textAlign: "center"}}>
+                    <Typography variant="h3">
+                        <Button onClick={() => window.location.href = "http://localhost:3000/sell-orders"} variant="contained">StockService -
+                            Sell Order Page</Button>
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}  sx={{textAlign: "center"}}>
+                    <Typography variant="h3">
+                        <Button onClick={() => window.location.href = "http://localhost:3000/suppliers"} variant="contained">StockService -
+                            Supplier Page</Button>
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}  sx={{textAlign: "center"}}>
+                    <Typography variant="h3">
+                        <Button onClick={() => window.location.href = "http://localhost:3000/ware-houses"} variant="contained">StockService -
+                            Ware House Page</Button>
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}  sx={{textAlign: "center"}}>
+                    <Typography variant="h3">
+                        <Button onClick={() => window.location.href = "http://localhost:3000/product-categories"} variant="contained">StockService -
+                            Product Categories Page</Button>
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}  sx={{textAlign: "center"}}>
+                    <Typography variant="h3">
+                        <Button onClick={() => window.location.href = "http://localhost:3000/stock-movements"} variant="contained">StockService -
+                            Stock Movement Page</Button>
+                    </Typography>
+                </Grid>
             </Grid>
         </Container>
     )

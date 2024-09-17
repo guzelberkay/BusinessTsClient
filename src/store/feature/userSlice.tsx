@@ -189,7 +189,6 @@ export const fetchUserRoles = createAsyncThunk(
                 }
             }
         );
-        
         return result.data;
     }
 )
