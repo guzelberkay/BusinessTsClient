@@ -250,13 +250,39 @@ interface IfetchFindAllOrder{
     page:number;
     size:number;
 }
-export const fetchFindAllOrder = createAsyncThunk(
-    'stock/fetchFindAllOrder',
+export const fetchFindAllBuyOrder = createAsyncThunk(
+    'stock/fetchFindAllBuyOrder',
     async (payload:IfetchFindAllOrder) => {
         const values = { searchText: payload.searchText,page: payload.page,size: payload.size };
 
         const result = await axios.post(
-            RestApis.stock_service_order+"/find-all",
+            RestApis.stock_service_order+"/find-all-buy-orders",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+interface IfetchFindAllOrder{
+
+    searchText:string;
+    page:number;
+    size:number;
+}
+export const fetchFindAllSellOrder = createAsyncThunk(
+    'stock/fetchFindAllBuyOrder',
+    async (payload:IfetchFindAllOrder) => {
+        const values = { searchText: payload.searchText,page: payload.page,size: payload.size };
+
+        const result = await axios.post(
+            RestApis.stock_service_order+"/find-all-sell-orders",
             values,
             {
                 headers: {
@@ -854,9 +880,6 @@ const stockSlice = createSlice({
         build.addCase(fetchFindAllProductCategory.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.productCategoryList = action.payload.data;
         });
-        build.addCase(fetchFindAllOrder.fulfilled, (state, action: PayloadAction<IResponse>) => {
-            state.orderList = action.payload.data;
-        });
         build.addCase(fetchFindAllProduct.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.productList = action.payload.data;
         });
@@ -877,5 +900,4 @@ const stockSlice = createSlice({
 
 
 export default stockSlice.reducer;
-// eslint-disable-next-line no-empty-pattern
 export const {} = stockSlice.actions

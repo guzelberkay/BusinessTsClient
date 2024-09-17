@@ -17,6 +17,7 @@ interface DrawerCollapseButtonProps {
   open: boolean;
   menuItems: string[];
   menuIcons: React.ReactNode[];
+  menuNavigations: string[];
 }
 /**
  * DrawerCollapseButton component that renders a collapsible navigation button in the drawer.
@@ -32,6 +33,7 @@ interface DrawerCollapseButtonProps {
  * @param {boolean} param0.open - Indicates whether the collapse is open or closed.
  * @param {Array<string>} param0.menuItems - An array of names for the nested menu items.
  * @param {Array<React.ReactNode>} param0.menuIcons - An array of icons corresponding to the nested menu items.
+ * @param {Array<string>} param0.menuNavigations - An array of routes corresponding to the nested menu items.
  * @returns {React.ReactNode} - The rendered DrawerCollapseButton component with nested items.
  */
 const DrawerCollapseButton: React.FC<DrawerCollapseButtonProps> = ({
@@ -41,6 +43,7 @@ const DrawerCollapseButton: React.FC<DrawerCollapseButtonProps> = ({
   open,
   menuItems,
   menuIcons,
+  menuNavigations,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -54,7 +57,7 @@ const DrawerCollapseButton: React.FC<DrawerCollapseButtonProps> = ({
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {menuItems.map((text, index) => (
-            <ListItemButton onClick={() => navigate(`/${text}`)} sx={{ pl: 4 }}>
+            <ListItemButton onClick={() => navigate(`/${menuNavigations[index]}`)} sx={{ pl: 4 }}>
               <ListItemIcon>{menuIcons[index]}</ListItemIcon>
               <ListItemText primary={t("navigation."+text)} />
             </ListItemButton>

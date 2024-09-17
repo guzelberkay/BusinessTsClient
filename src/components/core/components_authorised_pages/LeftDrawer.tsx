@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { List, Divider, SwipeableDrawer, Typography, Box } from '@mui/material';
-import { Dashboard, Notifications, FormatListNumbered, ConfirmationNumber } from '@mui/icons-material';
+import {
+    Dashboard,
+    Notifications,
+    FormatListNumbered,
+    ConfirmationNumber,
+    ProductionQuantityLimits
+} from '@mui/icons-material';
 import { styled, alpha } from "@mui/material/styles";
 import { useAppSelector } from '../../../store';
 import DrawerButton from '../../atoms/DrawerButton';
@@ -91,27 +97,20 @@ export default function LeftDrawer({
                 <List>
                     <DrawerButton name="dashboard" icon={<Dashboard />} />
                     <DrawerCollapseButton
-                        name="test1"
+                        name="stock"
                         handleOpen={handleTest1Click}
                         TopLevelIcon={<FormatListNumbered />}
                         open={openTest1}
-                        menuItems={['Element1', 'Element2', 'Element3']}
-                        menuIcons={[<ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />]}
-                    />
-                    <DrawerCollapseButton
-                        name="test2"
-                        handleOpen={handleTest2Click}
-                        TopLevelIcon={<FormatListNumbered />}
-                        open={openTest2}
-                        menuItems={['Element1', 'Element2', 'Element3', 'Element4', 'Element5']}
-                        menuIcons={[<ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />]}
+                        menuItems={['products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements']}
+                        menuIcons={[<ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />]}
+                        menuNavigations={['products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories','products-by-min-stock-level', 'stock-movements']}
                     />
                 </List>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Divider sx={{ width: drawerWidth - 32 }} />
                 </Box>
                 <List>
-                    <DrawerButton name="notifications" icon={<Notifications />} />
+                    <DrawerButton name="notifications" icon={<Notifications />} navigation='notifications'/>
                 </List>
             </Box>
         </SwipeableDrawer>
