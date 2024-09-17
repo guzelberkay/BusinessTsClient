@@ -106,5 +106,26 @@
     "productname": "Product Name",
     "warehousename": "Ware House Name",
     "stockmovementtype": "Stock Movement Type"
+  },
+
+  "dashboard": {
+    "numberofemployees" : "Number of Employees ",
+    "last": "Last",
+    "days": "days",
+    "dailyincome": "Daily Income",
+    "dailyexpense": "Daily Expense",
+    "products": "Products",
+    "product": "Product",
+    "name": "Name",
+    "buy": "Buy",
+    "sell": "Sell",
+    "price":"Price",
+    "latest": "Latest",
+    "viewall": "View All",
+    "all": "All",
+    "users": "Users",
+    "customers": "Customers",
+   "employees": "Employees",
+   "sales": "Sales"
   }
 }

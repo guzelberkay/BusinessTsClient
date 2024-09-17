@@ -14,6 +14,7 @@ import SupplierPage from "../pages/SupplierPage.tsx";
 import WareHousePage from "../pages/WareHousePage.tsx";
 import ProductCategoryPage from "../pages/ProductCategoryPage.tsx";
 import StockMovementPage from "../pages/StockMovementPage.tsx";
+import DashBoard from "../pages/DashBoard.tsx";
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
@@ -103,7 +104,7 @@ export default function Router() {
             children: [
                 {
                     path: 'test',
-                    element: <PrivateRoute element={<TestPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN']} />,
                 },
                 {
                     path: 'products',
