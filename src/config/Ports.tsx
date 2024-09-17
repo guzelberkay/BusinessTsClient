@@ -2,7 +2,8 @@
 const ports = {
   auth: "9090", // Example: Port for the authentication service
   stock: "9099",
-  notification: "9095" 
+  notification: "9095", 
+  user_management: "9097"
 };
 
 export default ports;

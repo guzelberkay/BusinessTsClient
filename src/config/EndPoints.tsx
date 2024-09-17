@@ -8,7 +8,8 @@ const endpoints = {
   supplier: "/supplier",
   ware_house: "/ware-house",
   notifications: "/notifications",
-
+  user: "/user",
+  role:"/role"
 };
 
 export default endpoints;

@@ -18,16 +18,24 @@ const apis = {
   // Construct the URL for the authentication service
   auth_service:
     base_url + host + Ports.auth + profile + version + EndPoints.auth, // Example: http://localhost:9090/dev/v1/auth
+    //#region Stock
     stock_service_product_category: base_url + host + Ports.stock + profile + version + EndPoints.product_category,
     stock_service_order: base_url + host + Ports.stock + profile + version + EndPoints.order,
     stock_service_product: base_url + host + Ports.stock + profile + version + EndPoints.product,
     stock_service_stock_movement: base_url + host + Ports.stock + profile + version + EndPoints.stock_movement,
     stock_service_supplier: base_url + host + Ports.stock + profile + version + EndPoints.supplier,
     stock_service_ware_house: base_url + host + Ports.stock + profile + version + EndPoints.ware_house,
+    //#endregion Stock
+    
+    //#region Notification
     notification_service: base_url + host + Ports.notification + profile + version + EndPoints.notifications,
+    //#endregion Notification
 
-   
-  
+    //#region User Management
+    user_management_service_user: base_url + host + Ports.user_management + profile + version + EndPoints.user,
+    user_management_service_role: base_url + host + Ports.user_management + profile + version + EndPoints.role,
+    //#endregion User Management
+    
 };
 
 export default apis;

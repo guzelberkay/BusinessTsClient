@@ -133,6 +133,7 @@ export const fetchFindByIdProductCategory = createAsyncThunk(
 
         const result = await axios.post(
             RestApis.stock_service_product_category+"/find-by-id?id="+id,
+            null,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -148,19 +149,45 @@ export const fetchFindByIdProductCategory = createAsyncThunk(
 //#endregion Product Category
 
 //#region Order
-interface IfetchSaveOrder{
+interface IfetchSaveSellOrder{
     customerId:number;
     productId:number;
     quantity:number;
 }
 
-export const fetchSaveOrder = createAsyncThunk(
-    'stock/fetchSaveOrder',
-    async (payload:IfetchSaveOrder) => {
+export const fetchSaveSellOrder = createAsyncThunk(
+    'stock/fetchSaveSellOrder',
+    async (payload:IfetchSaveSellOrder) => {
         const values = { customerId: payload.customerId,productId: payload.productId,quantity: payload.quantity };
 
         const result = await axios.post(
-            RestApis.stock_service_order+"/save",
+            RestApis.stock_service_order+"/save-sell-order",
+            values,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+interface IfetchBuySellOrder{
+    supplierId:number;
+    productId:number;
+    quantity:number;
+}
+
+export const fetchBuySellOrder = createAsyncThunk(
+    'stock/fetchBuySellOrder',
+    async (payload:IfetchBuySellOrder) => {
+        const values = {supplierId: payload.supplierId,productId: payload.productId,quantity: payload.quantity };
+
+        const result = await axios.post(
+            RestApis.stock_service_order+"/save-buy-order",
             values,
             {
                 headers: {
@@ -223,13 +250,39 @@ interface IfetchFindAllOrder{
     page:number;
     size:number;
 }
-export const fetchFindAllOrder = createAsyncThunk(
-    'stock/fetchFindAllOrder',
+export const fetchFindAllBuyOrder = createAsyncThunk(
+    'stock/fetchFindAllBuyOrder',
     async (payload:IfetchFindAllOrder) => {
         const values = { searchText: payload.searchText,page: payload.page,size: payload.size };
 
         const result = await axios.post(
-            RestApis.stock_service_order+"/find-all",
+            RestApis.stock_service_order+"/find-all-buy-orders",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+interface IfetchFindAllOrder{
+
+    searchText:string;
+    page:number;
+    size:number;
+}
+export const fetchFindAllSellOrder = createAsyncThunk(
+    'stock/fetchFindAllBuyOrder',
+    async (payload:IfetchFindAllOrder) => {
+        const values = { searchText: payload.searchText,page: payload.page,size: payload.size };
+
+        const result = await axios.post(
+            RestApis.stock_service_order+"/find-all-sell-orders",
             values,
             {
                 headers: {
@@ -250,6 +303,7 @@ export const fetchFindByIdOrder = createAsyncThunk(
 
         const result = await axios.post(
             RestApis.stock_service_order+"/find-by-id?id="+id,
+            null,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -266,6 +320,8 @@ export const fetchFindByIdOrder = createAsyncThunk(
 
 //#region Product
 interface IfetchSaveProduct{
+    supplierId:number;
+    wareHouseId:number;
     productCategoryId:number;
     name:string;
     description:string;
@@ -277,7 +333,7 @@ interface IfetchSaveProduct{
 export const fetchSaveProduct = createAsyncThunk(
     'stock/fetchSaveProduct',
     async (payload:IfetchSaveProduct) => {
-        const values = { productCategoryId: payload.productCategoryId,name: payload.name,description: payload.description,price: payload.price,stockCount: payload.stockCount,minimumStockLevel: payload.minimumStockLevel };
+        const values = {   supplierId: payload.supplierId,wareHouseId: payload.wareHouseId,productCategoryId: payload.productCategoryId,name: payload.name,description: payload.description,price: payload.price,stockCount: payload.stockCount,minimumStockLevel: payload.minimumStockLevel };
 
         const result = await axios.post(
             RestApis.stock_service_product+"/save",
@@ -367,6 +423,33 @@ export const fetchFindAllProduct = createAsyncThunk(
     }
 );
 
+interface IfetchFindAllByMinimumStockLevel{
+
+    searchText:string;
+    page:number;
+    size:number;
+}
+export const fetchFindAllByMinimumStockLevel = createAsyncThunk(
+    'stock/fetchFindAllByMinimumStockLevel',
+    async (payload:IfetchFindAllByMinimumStockLevel) => {
+        const values = { searchText: payload.searchText,page: payload.page,size: payload.size };
+
+        const result = await axios.post(
+            RestApis.stock_service_product+"/find-all-by-minimum-stock-level",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+
 export const fetchFindByIdProduct = createAsyncThunk(
     'stock/fetchFindByIdProduct',
     async (id:number) => {
@@ -374,6 +457,27 @@ export const fetchFindByIdProduct = createAsyncThunk(
 
         const result = await axios.post(
             RestApis.stock_service_product+"/find-by-id?id="+id,
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+export const fetchChangeAutoOrderModeOfProduct = createAsyncThunk(
+    'stock/fetchChangeAutoOrderModeOfProduct',
+    async (id:number) => {
+
+
+        const result = await axios.post(
+            RestApis.stock_service_product+"/change-auto-order-mode/"+id,
+            "null",
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -494,6 +598,7 @@ export const fetchFindByIdStockMovement = createAsyncThunk(
 
         const result = await axios.post(
             RestApis.stock_service_stock_movement+"/find-by-id?id="+id,
+            null,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -616,6 +721,26 @@ export const fetchFindByIdSupplier = createAsyncThunk(
 
         const result = await axios.post(
             RestApis.stock_service_supplier+"/find-by-id?id="+id,
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+export const fetchApproveOrder = createAsyncThunk(
+    'stock/fetchApproveOrder',
+    async (id:number) => {
+
+
+        const result = await axios.post(
+            RestApis.stock_service_supplier+"/approve-order?id="+id,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -731,6 +856,7 @@ export const fetchFindByIdWareHouse = createAsyncThunk(
 
         const result = await axios.post(
             RestApis.stock_service_ware_house+"/find-by-id?id="+id,
+            null,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -747,15 +873,12 @@ export const fetchFindByIdWareHouse = createAsyncThunk(
 const stockSlice = createSlice({
     name: 'stock',
     initialState: initialStockState,
-    reducers: {closeModal: (state) => {
+    reducers: {closeModal: () => {
 
         },},
     extraReducers: (build)=>{
         build.addCase(fetchFindAllProductCategory.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.productCategoryList = action.payload.data;
-        });
-        build.addCase(fetchFindAllOrder.fulfilled, (state, action: PayloadAction<IResponse>) => {
-            state.orderList = action.payload.data;
         });
         build.addCase(fetchFindAllProduct.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.productList = action.payload.data;
@@ -777,4 +900,5 @@ const stockSlice = createSlice({
 
 
 export default stockSlice.reducer;
+// eslint-disable-next-line no-empty-pattern
 export const {} = stockSlice.actions
