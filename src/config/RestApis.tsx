@@ -25,12 +25,20 @@ const apis = {
     stock_service_stock_movement: base_url + host + Ports.stock + profile + version + EndPoints.stock_movement,
     stock_service_supplier: base_url + host + Ports.stock + profile + version + EndPoints.supplier,
     stock_service_ware_house: base_url + host + Ports.stock + profile + version + EndPoints.ware_house,
+    
     //#endregion Stock
+    
+    //#region CRM
+        crm_service_customer: base_url + host + Ports.crm + profile + version + EndPoints.customer,
+    //#endregion CRM
 
     //#region User Management
     user_management_service_user: base_url + host + Ports.user_management + profile + version + EndPoints.user,
     user_management_service_role: base_url + host + Ports.user_management + profile + version + EndPoints.role,
     //#endregion User Management
+
+    //#endregion HRM
+    hrm_service_employee: base_url + host + Ports.hrm + profile + version + EndPoints.employee
     
   
 };

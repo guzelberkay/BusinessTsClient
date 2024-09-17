@@ -16,13 +16,12 @@ import  {AppDispatch, useAppSelector} from "../store";
 import {fetchChangeAutoOrderModeOfProduct, fetchFindAllProduct} from "../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import { CustomGridToolbar } from "../components/atoms/CustomGridToolbar.tsx";
 
 
 
 
 
-const ProductPage = () => {
+const HRMPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
@@ -60,10 +59,10 @@ const ProductPage = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center", sortable: false }, // set sortable to false
-        { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center", sortable: false },
+        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
+        { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
         {
-            field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center", sortable: false,
+            field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
             renderCell: (params) => {
                 // Check if the value is valid
                 const value = params.value;
@@ -80,65 +79,21 @@ const ProductPage = () => {
             },
         },
 
-        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center", sortable: false },
-        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5, sortable: false },
-        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1, sortable: false },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1, sortable: false },
+        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center" },
+        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5 },
+        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 },
+        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 
 
     ];
 
-    const handleChangeAutoOrderMode = async () => {
-        for (let id of selectedRowIds) {
-            const selectedProduct = products.find(
-                (selectedProduct) => selectedProduct.id === id
-            );
-            if (!selectedProduct) continue;
-
-            setLoading(true);
-            try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("swal.changeorderstatus"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("swal.yeschangeit"),
-                });
-
-                if (result.isConfirmed) {
-                    const data = await dispatch(fetchChangeAutoOrderModeOfProduct(selectedProduct.id));
-
-                    if (data.payload.message !=="Success") {
-                        await Swal.fire({
-                            title: t("swal.error"),
-                            text: data.payload.message,
-                            icon: "error",
-                            confirmButtonText: t("swal.ok"),
-                        });
-                        return;
-                    } else {
-                        await Swal.fire({
-                            title: t("swal.changed"),
-                            text: t("swal.productautoordermodechanged"),
-                            icon: "success",
-                        });
-                        await dispatch(fetchFindAllProduct({
-                            page: 0,
-                            size: 100,
-                            searchText: searchText,
-                        }));
-                    }
-                }
-            } catch (error) {
-                localStorage.removeItem("token");
-            }
-        }
-        setSelectedRowIds([]);
-        setLoading(false);
-    };
+    
 
     return (
         <div style={{ height: "auto"}}>
+
+            
+            <h1 style={{textAlign: "center",color:"red"}}>HRM SAYFASI DENEME</h1>
             <TextField
                 label={t("stockService.searchbyname")}
                 variant="outlined"
@@ -148,9 +103,10 @@ const ProductPage = () => {
                 fullWidth
                 inputProps={{ maxLength: 50 }}
             />
+            
             <DataGrid
                 slots={{
-                    toolbar: CustomGridToolbar, // Custom toolbar component
+                    toolbar: GridToolbar,
                 }}
                 rows={products}
                 columns={columns}
@@ -168,7 +124,6 @@ const ProductPage = () => {
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
                 autoHeight={true}
-                disableColumnMenu={true}  // This disables the column menu
                 sx={{
                     "& .MuiDataGrid-columnHeaders": {
                         backgroundColor: "rgba(224, 224, 224, 1)",
@@ -206,7 +161,7 @@ const ProductPage = () => {
                 </Grid>*/}
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleChangeAutoOrderMode}
+                       
                         variant="contained"
                         color="info"
                         disabled={loading || selectedRowIds.length === 0}
@@ -234,4 +189,4 @@ const ProductPage = () => {
 }
 
 
-export default ProductPage
+export default HRMPage
