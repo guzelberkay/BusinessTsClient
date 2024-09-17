@@ -50,20 +50,6 @@ export default function LeftDrawer({
     const language = useAppSelector(state => state.pageSettings.language);
     const formattedDate = today.toLocaleDateString(language, options);
 
-    // State for collapsible menu items
-    const [openTest1, setOpenTest1] = React.useState(false);
-    const [openTest2, setOpenTest2] = React.useState(false);
-
-    // Toggles the state of the first collapsible menu
-    const handleTest1Click = () => {
-        setOpenTest1(!openTest1);
-    };
-
-    // Toggles the state of the second collapsible menu
-    const handleTest2Click = () => {
-        setOpenTest2(!openTest2);
-    };
-
     return (
         <SwipeableDrawer
             onClose={() => setDrawerState(false)}
@@ -99,18 +85,14 @@ export default function LeftDrawer({
                     <DrawerButton name="dashboard" icon={<Dashboard />} />
                     <DrawerCollapseButton
                         name="stock"
-                        handleOpen={handleTest1Click}
                         TopLevelIcon={<FormatListNumbered />}
-                        open={openTest1}
                         menuItems={['products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements']}
                         menuIcons={[<ProductionQuantityLimits />, <Shop />, <Sell />, <SupportAgent />, <Warehouse />, <Category />, <Inventory />, <ShowChart />]}
                         menuNavigations={['products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories','products-by-min-stock-level', 'stock-movements']}
                     />
                     <DrawerCollapseButton
                         name="customer"
-                        handleOpen={handleTest2Click}
                         TopLevelIcon={<FormatListNumbered />}
-                        open={openTest2}
                         menuItems={['customer']}
                         menuIcons={[<ProductionQuantityLimits />]}
                         menuNavigations={['customer']}
