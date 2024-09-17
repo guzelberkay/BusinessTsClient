@@ -20,16 +20,7 @@
     "notifications": "Bildirimler",
     "messages": "Mesajlar",
     "login": "Giriş Yap",
-    "register": "Kayıt Ol",
-    "stock": "Stok",
-    "products": "Urunler",
-    "buyorders": "Alis Siparisleri",
-    "sellorders": "Satis Siparisleri",
-    "suppliers": "Tedarikciler",
-    "warehouses": "Depolar",
-    "productcategories": "Urun Kategorileri",
-    "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
-    "stockmovements": "Stok Hareketleri"
+    "register": "Kayıt Ol"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -77,7 +68,9 @@
     "error": "Hata!",
     "ok": "Tamam",
     "changed": "Değiştirildi!",
-    "productautoordermodechanged": "Ürünün otomatik sipariş modu değiştirildi!"
+    "productautoordermodechanged": "Ürünün otomatik sipariş modu değiştirildi!",
+    "loginFailed": "Giriş Yapılamadı!",
+    "errorOccurred": "Bir hata oluştu. Lütfen tekrar deneyin."
   },
   "stockService": {
     "changeautoordermode": "Otomatik Sipariş Modunu Değiştir",
@@ -87,23 +80,13 @@
     "minstockcount": "Min. Stok Sayısı",
     "autoorder": "Otomatik Sipariş",
     "status": "Durum",
-    "searchbyname": "Ada Göre Ara",
+    "searchbyname": "İsme Göre Ara",
     "customername": "Müşteri Adı",
     "suppliername": "Tedarikçi Adı",
     "quantity": "Miktar",
     "unitprice": "Birim Fiyat",
     "total": "Toplam",
     "ordertype": "Sipariş Tipi",
-    "createdat": "Oluşturulma Tarihi",
-    "productName": "Urun Adı",
-    "searchbyproductname": "Urun Adına Göre Ara",
-    "contactinfo" : "Iletisim Bilgileri",
-    "address" : "Adres",
-    "notes" : "Notlar",
-    "location" : "Konum",
-    "productname": "Urun Adi",
-    "warehousename": "Depo Adi",
-    "stockmovementtype": "Stok Hareket Tipi"
-
+    "createdat": "Oluşturulma Tarihi"
   }
 }

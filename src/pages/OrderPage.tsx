@@ -13,22 +13,27 @@ import {
 
 import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../store";
-import {fetchChangeAutoOrderModeOfProduct, fetchFindAllProduct} from "../store/feature/stockSlice.tsx";
+import {
+    fetchChangeAutoOrderModeOfProduct,
+    fetchFindAllByMinimumStockLevel, fetchFindAllOrder,
+    fetchFindAllProduct
+} from "../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+import {IProduct} from "../model/IProduct.tsx";
 
 
 
 
 
-const ProductPage = () => {
+const OrderPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const products = useAppSelector((state) => state.stockSlice.productList);
+    const orders = useAppSelector((state) => state.stockSlice.orderList);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -40,7 +45,7 @@ const ProductPage = () => {
 
     useEffect(() => {
         dispatch(
-            fetchFindAllProduct({
+            fetchFindAllOrder({
                 page: 0,
                 size: 100,
                 searchText: searchText,
@@ -59,10 +64,11 @@ const ProductPage = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
+        { field: "customerId", headerName: t("stockService.customername"), flex: 1.5, headerAlign: "center" },
+        { field: "supplierId", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center" },
+        { field: "quantity", headerName: t("stockService.quantity"), flex: 1.5, headerAlign: "center" },
         {
-            field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
+            field: "unitPrice", headerName: t("stockService.unitprice"), flex: 1, headerAlign: "center",
             renderCell: (params) => {
                 // Check if the value is valid
                 const value = params.value;
@@ -79,65 +85,32 @@ const ProductPage = () => {
             },
         },
 
-        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center" },
-        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5 },
-        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 },
+        { field: "total", headerName: t("stockService.total"), flex: 1, headerAlign: "center",
+            renderCell: (params) => {
+                // Check if the value is valid
+                const value = params.value;
+                if (typeof value === 'number' && !isNaN(value)) {
+                    // Format the number as currency
+                    return new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(value);
+                }
+                return '$0.00'; // Return default value if not a valid number
+            }, },
+        { field: "orderType", headerName: t("stockService.ordertype"), headerAlign: "center", flex: 1.5 },
+        { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
         { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 
 
     ];
 
-    const handleChangeAutoOrderMode = async () => {
-        for (let id of selectedRowIds) {
-            const selectedProduct = products.find(
-                (selectedProduct) => selectedProduct.id === id
-            );
-            if (!selectedProduct) continue;
-
-            setLoading(true);
-            try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("swal.changeorderstatus"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("swal.yeschangeit"),
-                });
-
-                if (result.isConfirmed) {
-                    const data = await dispatch(fetchChangeAutoOrderModeOfProduct(selectedProduct.id));
-
-                    if (data.payload.message !=="Success") {
-                        await Swal.fire({
-                            title: t("swal.error"),
-                            text: data.payload.message,
-                            icon: "error",
-                            confirmButtonText: t("swal.ok"),
-                        });
-                        return;
-                    } else {
-                        await Swal.fire({
-                            title: t("swal.changed"),
-                            text: t("swal.productautoordermodechanged"),
-                            icon: "success",
-                        });
-                        await dispatch(fetchFindAllProduct({
-                            page: 0,
-                            size: 100,
-                            searchText: searchText,
-                        }));
-                    }
-                }
-            } catch (error) {
-                localStorage.removeItem("token");
-            }
-        }
-        setSelectedRowIds([]);
-        setLoading(false);
-    };
 
     return (
         <div style={{ height: "auto"}}>
+            {/*//TODO I WILL CHANGE THIS SEARCH METHOD LATER*/}
             <TextField
                 label={t("stockService.searchbyname")}
                 variant="outlined"
@@ -151,7 +124,7 @@ const ProductPage = () => {
                 slots={{
                     toolbar: GridToolbar,
                 }}
-                rows={products}
+                rows={orders}
                 columns={columns}
                 initialState={{
                     pagination: {
@@ -202,7 +175,7 @@ const ProductPage = () => {
                         Approve
                     </Button>
                 </Grid>*/}
-                <Grid item xs={12} sm={6} md={3} lg={2}>
+                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleChangeAutoOrderMode}
                         variant="contained"
@@ -213,7 +186,7 @@ const ProductPage = () => {
                     >
                         {t("stockService.changeautoordermode")}
                     </Button>
-                </Grid>
+                </Grid>*/}
                 {/*<Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleSomething}
@@ -232,4 +205,4 @@ const ProductPage = () => {
 }
 
 
-export default ProductPage
+export default OrderPage

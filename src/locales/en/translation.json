@@ -20,16 +20,7 @@
     "notifications": "Notifications",
     "messages": "Messages",
     "login": "Sign in",
-    "register": "Sign up",
-    "stock": "Stock",
-    "products": "Products",
-    "buyorders": "Buy Orders",
-    "sellorders": "Sell Orders",
-    "suppliers": "Suppliers",
-    "warehouses": "Warehouses",
-    "productcategories": "Product Categories",
-    "productsbyminstocklevel": "Products By Min. Stock Level",
-    "stockmovements": "Stock Movements"
+    "register": "Sign up"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -79,7 +70,9 @@
     "error": "Error!",
     "ok": "OK",
     "changed": "Changed!",
-    "productautoordermodechanged": "Your product's auto order mod has been changed."
+    "productautoordermodechanged": "Your product's auto order mod has been changed.",
+    "loginFailed": "Failed to login!",
+    "errorOccurred": "An error has occurred. Please try again."
 
   },
   "stockService": {
@@ -97,14 +90,6 @@
     "unitprice": "Unit Price",
     "total": "Total",
     "ordertype": "Order Type",
-    "createdat": "Created At",
-    "productName": "Product Name",
-    "searchbyproductname": "Search by Product Name",
-    "address" : "Address",
-    "notes" : "Notes",
-    "location" : "Location",
-    "productname": "Product Name",
-    "warehousename": "Ware House Name",
-    "stockmovementtype": "Stock Movement Type"
+    "createdat": "Created At"
   }
 }

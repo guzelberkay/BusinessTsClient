@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import RestApis from "../../config/RestApis";
 import axios from "axios";
+import { IResponse } from "../../model/IResponse";
+import Swal from "sweetalert2";
 
 
 interface IAuthState {
@@ -50,10 +52,8 @@ export const fetchRegister = createAsyncThunk(
             return response.data; 
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response) {
-                // Axios error with response
                 return rejectWithValue(error.response.data);
             } else {
-                // Fallback error message
                 return rejectWithValue({ message: 'Kayıt işlemi sırasında bir hata oluştu.' });
             }
         }
@@ -81,12 +81,38 @@ export const fetchVerifyAccount = createAsyncThunk(
             console.log(response.data);
             return response.data; 
         } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response) {
-                // Axios error with response
+            if (axios.isAxiosError(error) && error.response) { 
                 return rejectWithValue(error.response.data);
             } else {
-                // General error message
                 return rejectWithValue({ message: 'An error occurred during the verification process.' });
+            }
+        }
+    }
+);
+
+interface IFetchLogin{
+    email: string;
+    password: string;
+}
+
+export const fetchLogin = createAsyncThunk(
+    'auth/fetchLogin',
+    async (payload: IFetchLogin, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(RestApis.auth_service + '/login', {
+                email: payload.email,
+                password: payload.password
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
+        } catch (error: any) {
+            if (axios.isAxiosError(error) && error.response) {
+                return rejectWithValue(error.response.data);
+            } else {
+                return rejectWithValue({ message: 'Giriş işlemi sırasında bir hata oluştu.' });
             }
         }
     }
@@ -119,6 +145,25 @@ const authSlice = createSlice({
             state.isLoadingVerifyAccount = false;
             
         });
+        build.addCase(fetchLogin.pending,(state)=>{
+            state.isLoadingLogin = true;
+        })
+        build.addCase(fetchLogin.fulfilled,(state,action: PayloadAction<IResponse>)=>{            
+            state.isLoadingLogin = false;
+            if(action.payload.code === 200){
+                state.token = action.payload.data.token;
+                state.isAuth = true;
+                localStorage.setItem('token',action.payload.data.token);
+            }else
+            
+                Swal.fire('Hata!',action.payload.message,'error');
+            
+        });
+        // build.addCase(fetchLogin.rejected, (state, action) => {
+        //     state.isLoadingLogin = false;
+        //     const errorMessage = action.error.message || 'Giriş işlemi sırasında bir hata oluştu.';
+        //     Swal.fire('Hata!', errorMessage, 'error');
+        // });
        
        
         
