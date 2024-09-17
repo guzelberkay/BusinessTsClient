@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Header from "./components_authorised_pages/Header";
-import { CssBaseline, Box } from "@mui/material";
+import { CssBaseline, Box, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { ReactNode } from "react";
+import { useSwipeable } from 'react-swipeable';
 
 const drawerWidth = 240;
 
@@ -39,34 +40,54 @@ const EasyStyleDrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 interface PostAuthTemplateProps {
-    children: ReactNode; // Define children as ReactNode
+    children: ReactNode;
 }
 
 /**
- * PageParent component that provides a layout with a collapsible drawer and header.
- * It manages the state of the drawer and renders the child components within the main content area.
+ * PostAuthTemplate component that provides a layout with a collapsible drawer and header.
+ *
+ * This component manages the state of the drawer and renders child components within the main content area.
+ * It also handles swipe gestures for opening and closing the drawer on mobile devices.
  *
  * @param {Object} props - The component props.
  * @param {React.ReactNode} props.children - The child components to be rendered.
- * @returns {JSX.Element} The rendered PageParent component.
+ * @returns {JSX.Element} The rendered PostAuthTemplate component.
  */
 function PostAuthTemplate({ children }: PostAuthTemplateProps) {
     const [drawerState, setDrawerState] = useState(false);
+    const isSmallScreen = useMediaQuery('(max-width:600px)');
 
     // Updates the drawer state based on user actions
     const handleDrawerStateChange = (newState: boolean) => {
         setDrawerState(newState);
     };
 
+    // Closes the drawer
+    const handleDrawerClose = () => {
+        setDrawerState(false);
+    };
+
+    // Opens the drawer
+    const handleDrawerOpen = () => {
+        setDrawerState(true);
+    };
+    
+    // Swipe handlers for mobile interactions
+    const handlers = useSwipeable({
+        onSwipedRight: handleDrawerOpen,  // Open drawer on swipe right
+        onSwipedLeft: handleDrawerClose,   // Close drawer on swipe left
+        trackMouse: true, // Optional: enables mouse swipes for testing
+    });
+
     return (
         <>
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex" }} {...handlers}>
                 <CssBaseline />
                 <Header
                     drawerState={drawerState}
                     setDrawerState={handleDrawerStateChange}
                 />
-                <EasyStyleMain open={drawerState} sx={{ minHeight: "100vh" }}>
+                <EasyStyleMain open={drawerState} sx={{ minHeight: "100vh" }} onClick={() => isSmallScreen && setDrawerState(false)}>
                     <EasyStyleDrawerHeader />
                     {children} {/* Render child components here */}
                 </EasyStyleMain>

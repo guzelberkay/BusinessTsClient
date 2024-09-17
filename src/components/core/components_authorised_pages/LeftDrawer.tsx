@@ -1,8 +1,7 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import { List, Divider, Drawer, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { List, Divider, SwipeableDrawer, Typography, Box } from '@mui/material';
 import { Dashboard, Notifications, FormatListNumbered, ConfirmationNumber } from '@mui/icons-material';
+import { styled, alpha } from "@mui/material/styles";
 import { useAppSelector } from '../../../store';
 import DrawerButton from '../../atoms/DrawerButton';
 import DrawerCollapseButton from '../../atoms/DrawerCollapseButton';
@@ -21,44 +20,47 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 // Interface defining the props for the LeftDrawer component
 interface LeftDrawerProps {
     open: boolean; // Indicates whether the drawer is open or closed
-    handleDrawerClose: () => void; // Function to close the drawer
+    setDrawerState: (state: boolean) => void; // Function to set the drawer state
 }
 
 /**
- * LeftDrawer component that renders a navigation drawer on the left side of the application.
+ * LeftDrawer component that renders a swipeable side drawer with navigation options.
  *
- * This component includes various navigation buttons and collapsible sections.
- * It displays the current date and handles the opening and closing of sections within the drawer.
+ * This component includes buttons for dashboard, notifications, and collapsible menu items.
+ * It manages its own state for collapsible sections and displays the current date.
  *
  * @param {Object} param0 - The component props.
  * @param {boolean} param0.open - Indicates if the drawer is open or closed.
- * @param {function} param0.handleDrawerClose - Function to close the drawer.
+ * @param {function} param0.setDrawerState - Function to update the drawer's open state.
  * @returns {React.ReactNode} - The rendered LeftDrawer component.
  */
 export default function LeftDrawer({
     open,
-    handleDrawerClose,
+    setDrawerState
 }: LeftDrawerProps) {
     const today = new Date();
     const options = { year: 'numeric', month: 'long', day: 'numeric' } as const;
     const language = useAppSelector(state => state.pageSettings.language);
     const formattedDate = today.toLocaleDateString(language, options);
+
+    // State for collapsible menu items
     const [openTest1, setOpenTest1] = React.useState(false);
     const [openTest2, setOpenTest2] = React.useState(false);
 
-    // Toggles the state of the first collapsible section
+    // Toggles the state of the first collapsible menu
     const handleTest1Click = () => {
         setOpenTest1(!openTest1);
     };
 
-    // Toggles the state of the second collapsible section
+    // Toggles the state of the second collapsible menu
     const handleTest2Click = () => {
         setOpenTest2(!openTest2);
     };
-    //#region UI
+
     return (
-        <Drawer
-            onClose={handleDrawerClose}
+        <SwipeableDrawer
+            onClose={() => setDrawerState(false)}
+            onOpen={() => setDrawerState(true)}
             sx={{
                 width: drawerWidth,
                 flexShrink: 0,
@@ -82,18 +84,12 @@ export default function LeftDrawer({
                         textDecoration: "none",
                     }}
                 >
-                    {formattedDate} {/* Display formatted current date */}
+                    {formattedDate}
                 </Typography>
             </DrawerHeader>
-            <Box
-                sx={{ width: drawerWidth }}
-                role="presentation"
-            >
+            <Box sx={{ width: drawerWidth }} role="presentation">
                 <List>
-                    <DrawerButton
-                        name="dashboard"
-                        icon={<Dashboard />}
-                    />
+                    <DrawerButton name="dashboard" icon={<Dashboard />} />
                     <DrawerCollapseButton
                         name="test1"
                         handleOpen={handleTest1Click}
@@ -101,6 +97,7 @@ export default function LeftDrawer({
                         open={openTest1}
                         menuItems={['Element1', 'Element2', 'Element3']}
                         menuIcons={[<ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />]}
+                        menuNavigations={['test1', 'test2', 'test3']}
                     />
                     <DrawerCollapseButton
                         name="test2"
@@ -109,19 +106,16 @@ export default function LeftDrawer({
                         open={openTest2}
                         menuItems={['Element1', 'Element2', 'Element3', 'Element4', 'Element5']}
                         menuIcons={[<ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />, <ConfirmationNumber />]}
+                        menuNavigations={['test1', 'test2', 'test3', 'test4', 'test5']}
                     />
                 </List>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Divider sx={{ width: drawerWidth - 32 }} />
                 </Box>
                 <List>
-                    <DrawerButton
-                        name="notifications"
-                        icon={<Notifications />}
-                    />
+                    <DrawerButton name="notifications" icon={<Notifications />} navigation='notifications'/>
                 </List>
             </Box>
-        </Drawer>
+        </SwipeableDrawer>
     );
-    //#endregion UI
 }

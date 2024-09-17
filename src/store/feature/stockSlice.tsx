@@ -443,6 +443,26 @@ export const fetchFindByIdProduct = createAsyncThunk(
 
     }
 );
+
+export const fetchChangeAutoOrderModeOfProduct = createAsyncThunk(
+    'stock/fetchChangeAutoOrderModeOfProduct',
+    async (id:number) => {
+
+
+        const result = await axios.post(
+            RestApis.stock_service_product+"/change-auto-order-mode/"+id,
+            "null",
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
 //#endregion
 
 //#region Stock Movement
