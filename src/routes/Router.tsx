@@ -9,6 +9,8 @@ import VerifyAccount from "../pages/VerifyAccount";
 import ProductPage from "../pages/ProductPage.tsx";
 import CustomerPage from "../pages/CustomerPage.tsx";
 import ProductByMinStockLevelPage from "../pages/ProductByMinStockLevelPage.tsx";
+
+import HRMPage from "../pages/HRMPage.tsx";
 import BuyOrderPage from "../pages/BuyOrderPage.tsx";
 import SellOrderPage from "../pages/SellOrderPage.tsx";
 import SupplierPage from "../pages/SupplierPage.tsx";
@@ -137,6 +139,10 @@ export default function Router() {
                 {
                     path: 'stock-movements',
                     element: <PrivateRoute element={<StockMovementPage />} roles={['ADMIN']} />,
+                },
+                {
+                    path: 'hrm-page',
+                    element: <PrivateRoute element={<HRMPage />} roles={['ADMIN']} />,
                 },
                 // Other protected routes can be added here.
                 {
