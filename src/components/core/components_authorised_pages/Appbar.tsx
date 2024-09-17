@@ -24,6 +24,7 @@ import {
 } from "../../../store/feature/languageSlice";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import DropdownNotification from "../../atoms/DropdownNotifications";
 
 const drawerWidth = 240;
 
@@ -153,9 +154,11 @@ function Appbar({
                 }: AppbarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isNotificationOpen = Boolean(notificationAnchorEl);
 
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
@@ -203,6 +206,45 @@ function Appbar({
   const handlePageElementChange = (element: string) => {
     navigate(`/${element}`);
   };
+
+  const handleNotificationMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setNotificationAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationMenuClose = () => {
+    setNotificationAnchorEl(null);
+  };
+
+  const renderNotificationMenu = (
+      <Menu
+          anchorEl={notificationAnchorEl}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isNotificationOpen}
+          onClose={handleNotificationMenuClose}
+          PaperProps={{
+            elevation: 3,
+            sx: {
+              overflow: "visible",
+              mt: 1.5,
+              "&:before": {
+                content: '""',
+                display: "block",
+                position: "absolute",
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: "background.paper",
+                transform: "translateY(-50%) rotate(45deg)",
+                zIndex: 0,
+              },
+            },
+          }}
+      >
+        <DropdownNotification />
+      </Menu>
+  );
 
   const menuId = "primary-search-account-menu";
 
@@ -347,9 +389,9 @@ function Appbar({
                   size="large"
                   aria-label="show 17 new notifications"
                   color="inherit"
-                  onClick={() => handlePageElementChange("notifications")}
+                  onClick={handleNotificationMenuOpen}
               >
-                <Badge badgeContent={17} color="error">
+                <Badge badgeContent={""} color="error">  {/*Sayaç eklenecek */}
                   <NotificationsIcon fontSize="large" />
                 </Badge>
               </IconButton>
@@ -392,6 +434,7 @@ function Appbar({
         </EasyStyleAppBar>
         {renderMobileMenu}
         {renderMenu}
+        {renderNotificationMenu}
       </>
   );
   //#endregion UI
