@@ -34,8 +34,8 @@ const DropdownNotification: React.FC = () => {
   }, [dispatch]);
 
   const sortedNotifications = [...notifications]
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .slice(0, 4);
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 4);
 
   const handleClickOpen = (notification: Notification) => {
     setSelectedNotification(notification);
@@ -65,53 +65,53 @@ const DropdownNotification: React.FC = () => {
   };
 
   return (
-    <div>
-      {sortedNotifications.length === 0 ? (
-        <MenuItem>
-          <ListItemText primary="No notifications" />
-        </MenuItem>
-      ) : (
-        sortedNotifications.map((notification) => (
-          <MenuItem key={notification.id} onClick={() => handleClickOpen(notification)}>
-            <ListItemText
-              primary={notification.title}
-              secondary={new Date(notification.createdAt).toLocaleTimeString()}
-            />
-          </MenuItem>
-        ))
-      )}
-      <Divider />
-      <MenuItem component={Link} to="/notifications">
-        <Typography variant="body2" color="text.secondary">
-          Tüm Bildirimleri Gör
-        </Typography>
-      </MenuItem>
-
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{selectedNotification?.title}</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1">{selectedNotification?.message}</Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            sx={{ mt: 2 }}
-          >
-            {selectedNotification && new Date(selectedNotification.createdAt).toLocaleString()}
+      <div>
+        {sortedNotifications.length === 0 ? (
+            <MenuItem>
+              <ListItemText primary="No notifications" />
+            </MenuItem>
+        ) : (
+            sortedNotifications.map((notification) => (
+                <MenuItem key={notification.id} onClick={() => handleClickOpen(notification)}>
+                  <ListItemText
+                      primary={notification.title}
+                      secondary={new Date(notification.createdAt).toLocaleTimeString()}
+                  />
+                </MenuItem>
+            ))
+        )}
+        <Divider />
+        <MenuItem component={Link} to="/notifications">
+          <Typography variant="body2" color="text.secondary">
+            Tüm Bildirimleri Gör
           </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
-          <Button
-            onClick={handleDeleteNotification}
-            color="error"
-          >
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        </MenuItem>
+
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>{selectedNotification?.title}</DialogTitle>
+          <DialogContent>
+            <Typography variant="body1">{selectedNotification?.message}</Typography>
+            <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ mt: 2 }}
+            >
+              {selectedNotification && new Date(selectedNotification.createdAt).toLocaleString()}
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Close
+            </Button>
+            <Button
+                onClick={handleDeleteNotification}
+                color="error"
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
   );
 };
 
