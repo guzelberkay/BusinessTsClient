@@ -900,5 +900,4 @@ const stockSlice = createSlice({
 
 
 export default stockSlice.reducer;
-// eslint-disable-next-line no-empty-pattern
 export const {} = stockSlice.actions

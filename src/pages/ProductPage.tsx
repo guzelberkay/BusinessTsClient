@@ -5,18 +5,25 @@ import {
     GridRowSelectionModel, GridToolbar,
 } from "@mui/x-data-grid";
 import {
-    Button,
-    Grid,
+    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
+    Grid, InputLabel, Select,
     TextField
 
 } from "@mui/material";
 
 import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../store";
-import {fetchChangeAutoOrderModeOfProduct, fetchFindAllProduct} from "../store/feature/stockSlice.tsx";
+import {
+    fetchChangeAutoOrderModeOfProduct,
+    fetchFindAllProduct, fetchFindAllProductCategory,
+    fetchFindAllSupplier, fetchFindAllWareHouse
+} from "../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import { CustomGridToolbar } from "../components/atoms/CustomGridToolbar.tsx";
+import MenuItem from "@mui/material/MenuItem";
+import {ISupplier} from "../model/ISupplier.tsx";
+import {IWareHouse} from "../model/IWareHouse.tsx";
+import {IProductCategory} from "../model/IProductCategory.tsx";
 
 
 
@@ -33,11 +40,24 @@ const ProductPage = () => {
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
-    const [price, setPrice] = useState(0);
-    const [description, setDescription] = useState('');
+
+
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation()
 
+    //MODAL
+    const [openAddProductModal, setOpenAddProductModel] = useState(false);
+    const [warehouses, setWarehouses] = useState<ISupplier[]>({} as ISupplier[]);
+    const [selectedSupplier,setSelectedSupplier] = useState<ISupplier>({} as ISupplier);
+    const [wareHouses, setWareHouses] = useState<IWareHouse[]>({} as IWareHouse[]);
+    const [selectedWarehouse,setSelectedWareHouse] = useState<IWareHouse>({} as IWareHouse);
+    const [productCategories, setProductCategories] = useState<IProductCategory[]>({} as IProductCategory[]);
+    const [selectedProductCategory,setSelectedProductCategory] = useState<IProductCategory>({} as IProductCategory);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState(0);
+    const [stockCount, setStockCount] = useState(0);
+    const [minimumStockLevel, setMinimumStockLevel] = useState(0);
 
     useEffect(() => {
         dispatch(
@@ -55,15 +75,24 @@ const ProductPage = () => {
 
 
 
-    const handleSomething = () => {
-        console.log(selectedRowIds);
+    const handleOpenAddProductModal = () => {
+        setOpenAddProductModel(true);
+        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 100})).then((res) => {
+            setWarehouses(res.payload.data);
+        })
+        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 100})).then((res) => {
+            setWareHouses(res.payload.data);
+        })
+        dispatch(fetchFindAllProductCategory({searchText:'',page: 0, size: 100})).then((res) => {
+            setProductCategories(res.payload.data);
+        })
     };
 
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center", sortable: false }, // set sortable to false
-        { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center", sortable: false },
+        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
+        { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
         {
-            field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center", sortable: false,
+            field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
             renderCell: (params) => {
                 // Check if the value is valid
                 const value = params.value;
@@ -80,10 +109,10 @@ const ProductPage = () => {
             },
         },
 
-        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center", sortable: false },
-        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5, sortable: false },
-        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1, sortable: false },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1, sortable: false },
+        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center" },
+        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5 },
+        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 },
+        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 
 
     ];
@@ -136,7 +165,8 @@ const ProductPage = () => {
         setSelectedRowIds([]);
         setLoading(false);
     };
-
+    {console.log(selectedSupplier)}
+    {console.log(selectedWarehouse)}
     return (
         <div style={{ height: "auto"}}>
             <TextField
@@ -150,7 +180,7 @@ const ProductPage = () => {
             />
             <DataGrid
                 slots={{
-                    toolbar: CustomGridToolbar, // Custom toolbar component
+                    toolbar: GridToolbar,
                 }}
                 rows={products}
                 columns={columns}
@@ -168,7 +198,6 @@ const ProductPage = () => {
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
                 autoHeight={true}
-                disableColumnMenu={true}  // This disables the column menu
                 sx={{
                     "& .MuiDataGrid-columnHeaders": {
                         backgroundColor: "rgba(224, 224, 224, 1)",
@@ -192,18 +221,17 @@ const ProductPage = () => {
             />
 
             <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleSomething}
+                        onClick={handleOpenAddProductModal}
                         variant="contained"
                         color="success"
-                        disabled={isActivating || selectedRowIds.length === 0}
                         //startIcon={<ApproveIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        Approve
+                        Add Product
                     </Button>
-                </Grid>*/}
+                </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleChangeAutoOrderMode}
@@ -228,6 +256,107 @@ const ProductPage = () => {
                         Cancel
                     </Button>
                 </Grid>*/}
+
+
+                <Dialog open={openAddProductModal} onClose={() => setOpenAddProductModel(false)} fullWidth maxWidth='sm'>
+                    <DialogTitle>Add Product</DialogTitle>
+                    <DialogContent>
+                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                            <InputLabel>{t('Please Select Supplier')}</InputLabel>
+                            <Select
+                                value={selectedSupplier}
+                                onChange={event => setSelectedSupplier(event.target.value as ISupplier)}
+                                label="Suppliers"
+                            >
+                                {Object.values(warehouses).map(supplier => (
+                                    <MenuItem key={supplier.id} value={supplier.id}>
+                                        {supplier.name}
+                                    </MenuItem>
+                                ))}
+
+                            </Select>
+                        </FormControl>
+                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                            <InputLabel>{t('Please Select Ware House')}</InputLabel>
+                            <Select
+                                value={selectedWarehouse}
+                                onChange={event => setSelectedWareHouse(event.target.value as IWareHouse)}
+                                label="Ware Houses"
+                            >
+                                {Object.values(wareHouses).map(warehouse => (
+                                    <MenuItem key={warehouse.id} value={warehouse.id}>
+                                        {warehouse.name}
+                                    </MenuItem>
+                                ))}
+
+                            </Select>
+                        </FormControl>
+                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                            <InputLabel>{t('Please Select Product Category')}</InputLabel>
+                            <Select
+                                value={selectedProductCategory}
+                                onChange={event => setSelectedProductCategory(event.target.value as IProductCategory)}
+                                label="Product Categories"
+                            >
+                                {Object.values(productCategories).map(productCategory => (
+                                    <MenuItem key={productCategory.id} value={productCategory.id}>
+                                        {productCategory.name}
+                                    </MenuItem>
+                                ))}
+
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            sx={{marginTop:'15px'}}
+                            label="Product Name"
+                            name="name"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop:'15px'}}
+                            label="Description"
+                            name="description"
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop:'15px'}}
+                            label="Price"
+                            name="price"
+                            value={price}
+                            onChange={e => setPrice((Number)(e.target.value))}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop:'15px'}}
+                            label="Stock Count"
+                            name="stockCount"
+                            value={stockCount}
+                            onChange={e => setStockCount((Number)(e.target.value))}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop:'15px'}}
+                            label="Min. Stock Level"
+                            name="minStockLevel"
+                            value={minimumStockLevel}
+                            onChange={e => setMinimumStockLevel((Number)(e.target.value))}
+                            required
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setOpenAddProductModel(false)} color="error" variant="contained">Cancel</Button>
+                        <Button onClick={() => setOpenAddProductModel(false)} color="success" variant="contained" disabled={selectedSupplier === null || selectedWarehouse === null || selectedProductCategory === null || name === '' || description === '' || price === 0 || stockCount === 0 || minimumStockLevel === 0}>Ok</Button>
+                    </DialogActions>
+                </Dialog>
             </Grid>
         </div>
     );
