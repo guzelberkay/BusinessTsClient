@@ -79,7 +79,9 @@
     "error": "Error!",
     "ok": "OK",
     "changed": "Changed!",
-    "productautoordermodechanged": "Your product's auto order mod has been changed."
+    "productautoordermodechanged": "Your product's auto order mod has been changed.",
+    "loginFailed": "Failed to login!",
+    "errorOccurred": "An error has occurred. Please try again."
 
   },
   "stockService": {
