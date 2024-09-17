@@ -36,6 +36,9 @@ const apis = {
     user_management_service_user: base_url + host + Ports.user_management + profile + version + EndPoints.user,
     user_management_service_role: base_url + host + Ports.user_management + profile + version + EndPoints.role,
     //#endregion User Management
+
+    //#endregion HRM
+    hrm_service_employee: base_url + host + Ports.hrm + profile + version + EndPoints.employee
     
   
 };

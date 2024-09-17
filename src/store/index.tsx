@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {authSlice, languageSlice,stockSlice, crmSlice, userSlice} from "./feature";
+import {authSlice, languageSlice,stockSlice, crmSlice, userSlice, hrmSlice} from "./feature";
 
 import {useSelector} from "react-redux";
 
@@ -11,6 +11,7 @@ const store = configureStore({
         pageSettings: languageSlice,
         stockSlice: stockSlice,
         crmSlice:crmSlice,
+        hrmSlice: hrmSlice,
         userSlice: userSlice
     },
 });

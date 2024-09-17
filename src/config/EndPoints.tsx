@@ -10,7 +10,8 @@ const endpoints = {
   // CRM Endpoints
   customer: "/customer",
   user: "/user",
-  role:"/role"
+  role:"/role",
+  employee:"/employee"
 
 };
 

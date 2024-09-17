@@ -3,6 +3,7 @@ import crmSlice from "./crmSlice.tsx";
 import languageSlice from "./languageSlice";
 import stockSlice from "./stockSlice.tsx";
 import userSlice from "./userSlice.tsx";
+import hrmSlice from "./hrmSlice.tsx";
 
 
 export {
@@ -10,6 +11,7 @@ export {
     languageSlice,
     stockSlice,
     userSlice,
+    hrmSlice,
     crmSlice
-    
+
 };
