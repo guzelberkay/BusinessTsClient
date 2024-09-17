@@ -7,6 +7,7 @@ import Loader from "../components/atoms/loader/Loader";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import VerifyAccount from "../pages/VerifyAccount";
 import ProductPage from "../pages/ProductPage.tsx";
+import AnalyticsDash from "../pages/AnalyticsDash.tsx";
 import CustomerPage from "../pages/CustomerPage.tsx";
 import ProductByMinStockLevelPage from "../pages/ProductByMinStockLevelPage.tsx";
 
@@ -42,6 +43,16 @@ export default function Router() {
                 <PreAuthTemplate>
                     <Suspense fallback={<Loader />}>
                         <HomePage />
+                    </Suspense>
+                </PreAuthTemplate>
+            ),
+        },
+        {
+            path: '/analyticdash',
+            element: (
+                <PreAuthTemplate>
+                    <Suspense fallback={<Loader />}>
+                        <AnalyticsDash />
                     </Suspense>
                 </PreAuthTemplate>
             ),
