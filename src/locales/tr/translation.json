@@ -158,5 +158,26 @@
    "customers": "Müşteriler",
    "employees": "Çalışanlar",
    "sales": "Satışlar"
+  },
+
+  "dashboard": {
+    "numberofemployees" : "Çalışan Sayısı",
+    "last": "Son",
+    "days": "gün",
+    "dailyincome": "Günlük Gelir",
+    "dailyexpense": "Günlük Gider",
+    "products": "Ürünler",
+    "product": "Ürün",
+    "name": "Adı",
+    "buy": "Alış",
+    "sell": "Satış",
+    "price":"Fiyat",
+    "latest": "Son",
+    "viewall": "Hepsini Gör",
+    "all": "Tüm",
+    "users": "Kullanıcılar",
+    "customers": "Müşteriler",
+    "employees": "Çalışanlar",
+    "sales": "Satışlar"
   }
 }
