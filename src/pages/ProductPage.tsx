@@ -39,6 +39,7 @@ const ProductPage = () => {
     const products = useAppSelector((state) => state.stockSlice.productList);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
 
 
@@ -118,7 +119,7 @@ const ProductPage = () => {
             );
             if (!selectedProduct) continue;
 
-            setLoading(true);
+            setIsDeleting(true);
             try {
                 const result = await Swal.fire({
                     title: t("swal.areyousure"),
@@ -158,7 +159,7 @@ const ProductPage = () => {
             }
         }
         setSelectedRowIds([]);
-        setLoading(false);
+        setIsDeleting(false);
     }
 
     const columns: GridColDef[] = [
@@ -309,7 +310,7 @@ const ProductPage = () => {
                         onClick={handleDelete}
                         variant="contained"
                         color="error"
-                        disabled={isActivating || selectedRowIds.length === 0}
+                        disabled={isDeleting || selectedRowIds.length === 0}
                         //startIcon={<CancelIcon/>}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
