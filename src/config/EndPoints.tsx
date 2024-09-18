@@ -11,7 +11,8 @@ const endpoints = {
   customer: "/customer",
   user: "/user",
   role:"/role",
-  employee:"/employee"
+  employee:"/employee",
+  notifications: "/notifications",
 
 };
 
