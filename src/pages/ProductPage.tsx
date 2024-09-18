@@ -14,7 +14,7 @@ import {
 import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../store";
 import {
-    fetchChangeAutoOrderModeOfProduct,
+    fetchChangeAutoOrderModeOfProduct, fetchDeleteProduct,
     fetchFindAllProduct, fetchFindAllProductCategory,
     fetchFindAllSupplier, fetchFindAllWareHouse, fetchSaveProduct
 } from "../store/feature/stockSlice.tsx";
@@ -39,6 +39,7 @@ const ProductPage = () => {
     const products = useAppSelector((state) => state.stockSlice.productList);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
 
 
@@ -111,6 +112,56 @@ const ProductPage = () => {
         setOpenAddProductModel(false)
     }
 
+    const handleDelete = async () => {
+        for (let id of selectedRowIds) {
+            const selectedProduct = products.find(
+                (selectedProduct) => selectedProduct.id === id
+            );
+            if (!selectedProduct) continue;
+
+            setIsDeleting(true);
+            try {
+                const result = await Swal.fire({
+                    title: t("swal.areyousure"),
+                    text: t("stockService.deleteproduct"),
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: t("stockService.yesdeleteit"),
+                    cancelButtonText: t("stockService.cancel"),
+                });
+
+                if (result.isConfirmed) {
+                    const data = await dispatch(fetchDeleteProduct(selectedProduct.id));
+
+                    if (data.payload.message !=="Success") {
+                        await Swal.fire({
+                            title: t("swal.error"),
+                            text: data.payload.message,
+                            icon: "error",
+                            confirmButtonText: t("swal.ok"),
+                        });
+                        return;
+                    } else {
+                        await Swal.fire({
+                            title: t("stockService.deleted"),
+                            text: t("stockService.productdeleted"),
+                            icon: "success",
+                        });
+                        await dispatch(fetchFindAllProduct({
+                            page: 0,
+                            size: 100,
+                            searchText: searchText,
+                        }));
+                    }
+                }
+            } catch (error) {
+                localStorage.removeItem("token");
+            }
+        }
+        setSelectedRowIds([]);
+        setIsDeleting(false);
+    }
+
     const columns: GridColDef[] = [
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
         { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
@@ -155,6 +206,7 @@ const ProductPage = () => {
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonText: t("swal.yeschangeit"),
+                    cancelButtonText: t("stockService.cancel"),
                 });
 
                 if (result.isConfirmed) {
@@ -255,6 +307,18 @@ const ProductPage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
+                        onClick={handleDelete}
+                        variant="contained"
+                        color="error"
+                        disabled={isDeleting || selectedRowIds.length === 0}
+                        //startIcon={<CancelIcon/>}
+                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        {t("stockService.delete")}
+                    </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
+                    <Button
                         onClick={handleChangeAutoOrderMode}
                         variant="contained"
                         color="info"
@@ -265,18 +329,7 @@ const ProductPage = () => {
                         {t("stockService.changeautoordermode")}
                     </Button>
                 </Grid>
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
-                    <Button
-                        onClick={handleSomething}
-                        variant="contained"
-                        color="warning"
-                        disabled={isActivating || selectedRowIds.length === 0}
-                        //startIcon={<CancelIcon/>}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    >
-                        Cancel
-                    </Button>
-                </Grid>*/}
+
 
 
                 <Dialog open={openAddProductModal} onClose={() => setOpenAddProductModel(false)} fullWidth maxWidth='sm'>
