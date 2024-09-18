@@ -20,6 +20,7 @@ import ProductCategoryPage from "../pages/ProductCategoryPage.tsx";
 import StockMovementPage from "../pages/StockMovementPage.tsx";
 import DashBoard from "../pages/DashBoard.tsx";
 import Login from "../pages/Login.tsx";
+import ResetPassword from "../pages/ResetPassword.tsx";
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
@@ -102,6 +103,17 @@ export default function Router() {
                 <PreAuthTemplate>
                     <Suspense fallback={<Loader />}>
                         <VerifyAccount />
+                    </Suspense>
+                </PreAuthTemplate>
+            ),
+        },
+
+        {
+            path: 'dev/v1/auth/reset-password',
+            element: (
+                <PreAuthTemplate>
+                    <Suspense fallback={<Loader />}>
+                        <ResetPassword />
                     </Suspense>
                 </PreAuthTemplate>
             ),

@@ -118,6 +118,63 @@ export const fetchLogin = createAsyncThunk(
     }
 );
 
+interface IFetchForgotPassword{
+    email: string;
+}
+
+export const fetchForgotPassword = createAsyncThunk(
+    'auth/fetchForgotPassword',
+    async (payload: IFetchForgotPassword, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(RestApis.auth_service + '/forget-password?email=' + payload.email, 
+                {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            return response.data;
+        } catch (error: any) {
+            if (axios.isAxiosError(error) && error.response) {
+                return rejectWithValue(error.response.data);
+            } else {
+                return rejectWithValue({ message: 'Bir hata oluştu.' });
+            }
+        }
+    }
+);
+
+interface IFetchResetPassword{
+    token: string;
+    newPassword: string;
+    rePassword: string;
+}
+
+
+export const fetchResetPassword = createAsyncThunk(
+    'auth/fetchResetPassword',
+    async (payload: IFetchResetPassword, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${RestApis.auth_service}/reset-password`,
+                payload, {
+                headers: {
+                    'Content-Type': 'application/json'
+                    
+                }
+                
+            });
+
+            console.log(response.data);
+            return response.data; 
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response) { 
+                return rejectWithValue(error.response.data);
+            } else {
+                return rejectWithValue({ message: 'An error occurred during the verification process.' });
+            }
+        }
+    }
+);
+
+
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: initialAuthState,
@@ -159,11 +216,29 @@ const authSlice = createSlice({
                 Swal.fire('Hata!',action.payload.message,'error');
             
         });
-        // build.addCase(fetchLogin.rejected, (state, action) => {
-        //     state.isLoadingLogin = false;
-        //     const errorMessage = action.error.message || 'Giriş işlemi sırasında bir hata oluştu.';
-        //     Swal.fire('Hata!', errorMessage, 'error');
-        // });
+        build.addCase(fetchForgotPassword.pending, (state) => {
+            state.isLoadingLogin = true; 
+        });
+        build.addCase(fetchForgotPassword.fulfilled, (state) => {
+            state.isLoadingLogin = false; 
+            Swal.fire('Başarılı!', 'Şifre sıfırlama e-postası gönderildi.', 'success');
+        });
+        build.addCase(fetchForgotPassword.rejected, (state, action: PayloadAction<any>) => {
+            state.isLoadingLogin = false;
+            Swal.fire('Hata!', action.payload?.message || 'Bir hata oluştu.', 'error');
+        });
+        build.addCase(fetchResetPassword.pending, (state) => {
+            state.isLoadingLogin = true; 
+        });
+        build.addCase(fetchResetPassword.fulfilled, (state) => {
+            state.isLoadingLogin = false;
+            Swal.fire('Başarılı!', 'Şifreniz başarıyla sıfırlandı.', 'success');
+        });
+        build.addCase(fetchResetPassword.rejected, (state, action: PayloadAction<any>) => {
+            state.isLoadingLogin = false;
+            Swal.fire('Hata!', action.payload?.message || 'Şifre sıfırlama sırasında bir hata oluştu.', 'error');
+        });
+        
        
        
         
