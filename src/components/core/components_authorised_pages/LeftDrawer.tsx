@@ -5,12 +5,13 @@ import {
     Notifications,
     FormatListNumbered,
     ConfirmationNumber,
-    ProductionQuantityLimits
+    ProductionQuantityLimits, Shop, Sell, SupportAgent, Warehouse, Category, Inventory, ShowChart
 } from '@mui/icons-material';
 import { styled, alpha } from "@mui/material/styles";
 import { useAppSelector } from '../../../store';
 import DrawerButton from '../../atoms/DrawerButton';
 import DrawerCollapseButton from '../../atoms/DrawerCollapseButton';
+import CustomerPage from "../../../pages/CustomerPage.tsx";
 
 const drawerWidth = 240;
 
@@ -49,20 +50,6 @@ export default function LeftDrawer({
     const language = useAppSelector(state => state.pageSettings.language);
     const formattedDate = today.toLocaleDateString(language, options);
 
-    // State for collapsible menu items
-    const [openTest1, setOpenTest1] = React.useState(false);
-    const [openTest2, setOpenTest2] = React.useState(false);
-
-    // Toggles the state of the first collapsible menu
-    const handleTest1Click = () => {
-        setOpenTest1(!openTest1);
-    };
-
-    // Toggles the state of the second collapsible menu
-    const handleTest2Click = () => {
-        setOpenTest2(!openTest2);
-    };
-
     return (
         <SwipeableDrawer
             onClose={() => setDrawerState(false)}
@@ -98,12 +85,17 @@ export default function LeftDrawer({
                     <DrawerButton name="dashboard" icon={<Dashboard />} />
                     <DrawerCollapseButton
                         name="stock"
-                        handleOpen={handleTest1Click}
                         TopLevelIcon={<FormatListNumbered />}
-                        open={openTest1}
                         menuItems={['products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements']}
-                        menuIcons={[<ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />, <ProductionQuantityLimits />]}
+                        menuIcons={[<ProductionQuantityLimits />, <Shop />, <Sell />, <SupportAgent />, <Warehouse />, <Category />, <Inventory />, <ShowChart />]}
                         menuNavigations={['products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories','products-by-min-stock-level', 'stock-movements']}
+                    />
+                    <DrawerCollapseButton
+                        name="customer"
+                        TopLevelIcon={<FormatListNumbered />}
+                        menuItems={['customer']}
+                        menuIcons={[<ProductionQuantityLimits />]}
+                        menuNavigations={['customer']}
                     />
                 </List>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
