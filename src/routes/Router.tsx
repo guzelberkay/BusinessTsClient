@@ -29,6 +29,7 @@ export const Login = lazy(() => import('../pages/Login'));
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
+export const ResetPassword=lazy(() => import('../pages/ResetPassword'));
 
 // For testing purposes (with delay) 
 const TestPage = lazy(() => delay(1000).then(() => import('../pages/TestPage')));
@@ -119,6 +120,17 @@ export default function Router() {
                 <PreAuthTemplate>
                     <Suspense fallback={<Loader />}>
                         <VerifyAccount />
+                    </Suspense>
+                </PreAuthTemplate>
+            ),
+        },
+
+        {
+            path: 'dev/v1/auth/reset-password',
+            element: (
+                <PreAuthTemplate>
+                    <Suspense fallback={<Loader />}>
+                        <ResetPassword />
                     </Suspense>
                 </PreAuthTemplate>
             ),

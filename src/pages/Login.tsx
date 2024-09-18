@@ -17,6 +17,7 @@ import { Root } from '../components/core/Root';
 import { fetchLogin } from '../store/feature/authSlice';
 import { fetchUserRoles } from '../store/feature/userSlice';
 import Swal from 'sweetalert2';
+import PasswordResetPopup from '../components/core/PasswordResetPopup';
 
 export function Login() {
     const navigate = useNavigate();
@@ -31,9 +32,14 @@ export function Login() {
         password: false,
     });
 
+    const [passwordResetOpen, setPasswordResetOpen] = useState(false);
+
     const handleSignUp = () => {
         navigate('/register');
     }
+
+    const handleOpenPasswordReset = () => setPasswordResetOpen(true);
+    const handleClosePasswordReset = () => setPasswordResetOpen(false);
 
     const validateForm = () => {
         const newError = {
@@ -42,7 +48,7 @@ export function Login() {
         };
         setError(newError);
 
-        // Eğer herhangi bir alan boşsa genel hata mesajını göster
+       
         if (newError.email || newError.password) {
             Swal.fire(t('authentication.error'), t('authentication.fillAllFields'), "error");
             return false;
@@ -84,7 +90,7 @@ export function Login() {
                 justifyContent="center"
                 alignItems="center"
                 sx={{ p: 2, backgroundColor: '#F0EBE3', width: '100%' }}>
-                <Card sx={{ width: 400, maxWidth: '90%', minHeight: 400, mx: 'auto', mt: 5, borderRadius: 3, backgroundColor: '#F5F7F8', boxShadow: '2px 0px 22px 0px rgba(0,0,0,0.46)' }}>
+                <Card sx={{ width: 400, maxWidth: '90%', minHeight: 400, mx: 'auto', mt: 10, borderRadius: 3, backgroundColor: '#F5F7F8', boxShadow: '2px 0px 22px 0px rgba(0,0,0,0.46)' }}>
                     <CardContent>
                         <Box gap={1.5} display="flex" flexDirection="column" alignItems="center" sx={{ mb: 5 }}>
                             <Typography variant="h5">{t('navigation.login')}</Typography>
@@ -113,7 +119,7 @@ export function Login() {
                                 }}
                             />
 
-                            <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
+                            <Link variant="body2" color="inherit" sx={{ mb: 1.5 }} onClick={handleOpenPasswordReset}>
                                 Forgot password?
                             </Link>
 
@@ -163,6 +169,7 @@ export function Login() {
                     </CardContent>
                 </Card>
             </Box>
+            <PasswordResetPopup open={passwordResetOpen} onClose={handleClosePasswordReset} />
         </Root>
     );
 }

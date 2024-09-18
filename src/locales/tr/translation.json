@@ -49,7 +49,10 @@
     "passwordMismatch": "Şifreler eşleşmemektedir.Lütfen sifrenizi tekrardan giriniz.",
     "requiredField" : "Zorunlu Alan",
     "invalidEmail": "Girdiğiniz e-posta adresi gecersizdir.",
-    "fillAllFields" : "Lütfen tüm alanları doldurun."
+    "fillAllFields" : "Lütfen tüm alanları doldurun.",
+    "resetPassword": "Sifreyi Sıfırla",
+    "newPassword" : "Yeni Sifreniz",
+    "reEnterNewPassword" : "Yeni Sifrenizi Tekrar Giriniz"
   },
   "errorPage": {
     "404": "Sayfa Bulunamadı",
@@ -82,7 +85,18 @@
     "productautoordermodechanged": "Ürünün otomatik sipariş modu değiştirildi!",
     "loginFailed": "Giriş Yapılamadı!",
     "errorOccurred": "Bir hata oluştu. Lütfen tekrar deneyin.",
-    "success": "Basarılı!"
+    "success": "Basarılı!",
+    "updatePassword": "Şifrenizi Güncelleyin",
+    "infoForPasswordReset": "Şifrenizi nasıl sıfırlayacağınıza dair talimatları içeren bir e-posta göndereceğiz.",
+    "sendEmail" : "E-posta Gönder",
+    "send" : "Gönder",
+    "passwordMismatch": "Şifreler eşleşmemektedir.",
+    "passwordSuccesfullyChanged" : "Şifreniz başarıyla değiştirildi.",
+    "failedChangePassword" : "Şifre değiştirilemedi.",
+    "infoSentEmailForPasswordReset" : "Şifre sıfırlama e-postası gönderildi."
+    
+    
+
   },
   "stockService": {
     "changeautoordermode": "Otomatik Sipariş Modunu Değiştir",
