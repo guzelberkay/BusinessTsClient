@@ -24,6 +24,7 @@ import {
 } from "../../../store/feature/languageSlice";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import DropdownNotification from "../../atoms/DropdownNotifications";
 
 const drawerWidth = 240;
 
@@ -148,15 +149,17 @@ interface AppbarProps {
  * @returns {React.ReactNode} - The rendered Appbar component.
  */
 function Appbar({
-  drawerState,
-  setDrawerState
-}: AppbarProps) {
+                  drawerState,
+                  setDrawerState
+                }: AppbarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
-  
+  const [notificationAnchorEl, setNotificationAnchorEl] = React.useState<null | HTMLElement>(null);
+
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  
+  const isNotificationOpen = Boolean(notificationAnchorEl);
+
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -204,86 +207,125 @@ function Appbar({
     navigate(`/${element}`);
   };
 
+  const handleNotificationMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setNotificationAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationMenuClose = () => {
+    setNotificationAnchorEl(null);
+  };
+
+  const renderNotificationMenu = (
+      <Menu
+          anchorEl={notificationAnchorEl}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isNotificationOpen}
+          onClose={handleNotificationMenuClose}
+          PaperProps={{
+            elevation: 3,
+            sx: {
+              overflow: "visible",
+              mt: 1.5,
+              "&:before": {
+                content: '""',
+                display: "block",
+                position: "absolute",
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: "background.paper",
+                transform: "translateY(-50%) rotate(45deg)",
+                zIndex: 0,
+              },
+            },
+          }}
+      >
+        <DropdownNotification />
+      </Menu>
+  );
+
   const menuId = "primary-search-account-menu";
 
   // Render the profile menu
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      transformOrigin={{ horizontal: "right", vertical: "top" }}
-      id={menuId}
-      keepMounted
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-      PaperProps={easyStyleMenu}
-    >
-      <MenuItem onClick={() => handlePageElementChangeRenderMenu("profile")}>
-        {t("navigation.profile")}
-      </MenuItem>
-      <MenuItem onClick={() => handlePageElementChangeRenderMenu("account")}>
-        {t("navigation.account")}
-      </MenuItem>
-      <Divider />
-      <MenuItem
-        sx={{ color: "primary.main" }}
-        onClick={handleLanguageChange}
+      <Menu
+          anchorEl={anchorEl}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          id={menuId}
+          keepMounted
+          open={isMenuOpen}
+          onClose={handleMenuClose}
+          PaperProps={easyStyleMenu}
       >
-        {t("localization.locale")}
-      </MenuItem>
-    </Menu>
+        <MenuItem onClick={() => handlePageElementChangeRenderMenu("profile")}>
+          {t("navigation.profile")}
+        </MenuItem>
+        <MenuItem onClick={() => handlePageElementChangeRenderMenu("account")}>
+          {t("navigation.account")}
+        </MenuItem>
+        <Divider />
+        <MenuItem
+            sx={{ color: "primary.main" }}
+            onClick={handleLanguageChange}
+        >
+          {t("localization.locale")}
+        </MenuItem>
+      </Menu>
   );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
-  
+
   // Render the mobile menu
   const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      transformOrigin={{ horizontal: "right", vertical: "top" }}
-      id={mobileMenuId}
-      keepMounted
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-      PaperProps={easyStyleMenu}
-    >
-      <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("messages")}>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>{t("navigation.messages")}</p>
-      </MenuItem>
-      <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("notifications")}>
-        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>{t("navigation.notifications")}</p>
-      </MenuItem>
-      <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("profile")}>
-        <IconButton size="large" color="inherit">
-          <PersonIcon />
-        </IconButton>
-        {t("navigation.profile")}
-      </MenuItem>
-      <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("account")}>
-        <IconButton size="large" color="inherit">
-          <ManageAccountsIcon />
-        </IconButton>
-        {t("navigation.account")}
-      </MenuItem>
-      <Divider />
-      <MenuItem sx={{ color: "primary.main" }} onClick={handleLanguageChange}>
-        <IconButton size="large" color="inherit">
-          <LanguageIcon />
-        </IconButton>
-        {t("localization.locale")}
-      </MenuItem>
-    </Menu>
+      <Menu
+          anchorEl={mobileMoreAnchorEl}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          id={mobileMenuId}
+          keepMounted
+          open={isMobileMenuOpen}
+          onClose={handleMobileMenuClose}
+          PaperProps={easyStyleMenu}
+      >
+        <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("messages")}>
+          <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <Badge badgeContent={4} color="error">
+              <MailIcon />
+            </Badge>
+          </IconButton>
+          <p>{t("navigation.messages")}</p>
+        </MenuItem>
+        <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("notifications")}>
+          <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
+            <Badge badgeContent={17} color="error">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <p>{t("navigation.notifications")}</p>
+        </MenuItem>
+        <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("profile")}>
+          <IconButton size="large" color="inherit">
+            <PersonIcon />
+          </IconButton>
+          {t("navigation.profile")}
+        </MenuItem>
+        <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("account")}>
+          <IconButton size="large" color="inherit">
+            <ManageAccountsIcon />
+          </IconButton>
+          {t("navigation.account")}
+        </MenuItem>
+        <Divider />
+        <MenuItem sx={{ color: "primary.main" }} onClick={handleLanguageChange}>
+          <IconButton size="large" color="inherit">
+            <LanguageIcon />
+          </IconButton>
+          {t("localization.locale")}
+        </MenuItem>
+      </Menu>
   );
 
   // Toggles the drawer open/close state
@@ -293,106 +335,107 @@ function Appbar({
 
   //#region UI
   return (
-    <>
-      <EasyStyleAppBar position="fixed" drawerState={drawerState}>
-        <Toolbar>
-          <IconButton
-            onClick={handleDrawerState}
-            color="inherit"
-            aria-label="toggle drawer"
-            edge="start"
-          >
-            {drawerState ? <ChevronLeft /> : <ChevronRight />}
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              ml: 2,
-              mr: 2,
-              display: { xs: "none", sm: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            BUSINESS
-          </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+      <>
+        <EasyStyleAppBar position="fixed" drawerState={drawerState}>
+          <Toolbar>
             <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-              onClick={() => handlePageElementChange("messages")}
+                onClick={handleDrawerState}
+                color="inherit"
+                aria-label="toggle drawer"
+                edge="start"
             >
-              <Badge badgeContent={4} color="error">
-                <MailIcon fontSize="large" />
-              </Badge>
+              {drawerState ? <ChevronLeft /> : <ChevronRight />}
             </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-              onClick={() => handlePageElementChange("notifications")}
+            <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                href="#app-bar-with-responsive-menu"
+                sx={{
+                  ml: 2,
+                  mr: 2,
+                  display: { xs: "none", sm: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
             >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon fontSize="large" />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <Badge color="secondary">
-                <Avatar
-                  src={demoUser.avatar}
-                  alt={demoUser.name}
-                  sx={{
-                    width: 40,
-                    height: 40,
-                    objectFit: "cover",
-                    objectPosition: "top",
-                  }}
-                />
-              </Badge>
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </EasyStyleAppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </>
+              BUSINESS
+            </Typography>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                  onClick={() => handlePageElementChange("messages")}
+              >
+                <Badge badgeContent={4} color="error">
+                  <MailIcon fontSize="large" />
+                </Badge>
+              </IconButton>
+              <IconButton
+                  size="large"
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                  onClick={handleNotificationMenuOpen}
+              >
+                <Badge badgeContent={""} color="error">  {/*Sayaç eklenecek */}
+                  <NotificationsIcon fontSize="large" />
+                </Badge>
+              </IconButton>
+              <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+              >
+                <Badge color="secondary">
+                  <Avatar
+                      src={demoUser.avatar}
+                      alt={demoUser.name}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        objectFit: "cover",
+                        objectPosition: "top",
+                      }}
+                  />
+                </Badge>
+              </IconButton>
+            </Box>
+            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                  size="large"
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </EasyStyleAppBar>
+        {renderMobileMenu}
+        {renderMenu}
+        {renderNotificationMenu}
+      </>
   );
   //#endregion UI
 }
