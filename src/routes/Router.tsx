@@ -4,26 +4,33 @@ import PostAuthTemplate from "../components/core/PostAuthTemplate";
 import { Outlet, useRoutes, Navigate } from "react-router-dom";
 import { delay } from "../util/delay";
 import Loader from "../components/atoms/loader/Loader";
+import SideBarNotifications from "../components/molecules/SideBarNotifications";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
-import VerifyAccount from "../pages/VerifyAccount";
-import ProductPage from "../pages/ProductPage.tsx";
-import AnalyticsDash from "../pages/AnalyticsDash.tsx";
-import CustomerPage from "../pages/CustomerPage.tsx";
-import ProductByMinStockLevelPage from "../pages/ProductByMinStockLevelPage.tsx";
 
-import HRMPage from "../pages/HRMPage.tsx";
-import BuyOrderPage from "../pages/BuyOrderPage.tsx";
-import SellOrderPage from "../pages/SellOrderPage.tsx";
-import SupplierPage from "../pages/SupplierPage.tsx";
-import WareHousePage from "../pages/WareHousePage.tsx";
-import ProductCategoryPage from "../pages/ProductCategoryPage.tsx";
-import StockMovementPage from "../pages/StockMovementPage.tsx";
-import DashBoard from "../pages/DashBoard.tsx";
-import Login from "../pages/Login.tsx";
-import ResetPassword from "../pages/ResetPassword.tsx";
+/**
+ * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
+ * when they are needed (e.g., when the user navigates to a specific route). This reduces the 
+ * initial bundle size, leading to faster load times and improved performance for the application.
+ */
+export const VerifyAccount = lazy(() => import('../pages/VerifyAccount'));
+export const ProductPage = lazy(() => import('../pages/ProductPage'));
+export const AnalyticsDash = lazy(() => import('../pages/AnalyticsDash'));
+export const CustomerPage = lazy(() => import('../pages/CustomerPage'));
+export const ProductByMinStockLevelPage = lazy(() => import('../pages/ProductByMinStockLevelPage'));
+export const HRMPage = lazy(() => import('../pages/HRMPage'));
+export const BuyOrderPage = lazy(() => import('../pages/BuyOrderPage'));
+export const SellOrderPage = lazy(() => import('../pages/SellOrderPage'));
+export const SupplierPage = lazy(() => import('../pages/SupplierPage'));
+export const WareHousePage = lazy(() => import('../pages/WareHousePage'));
+export const ProductCategoryPage = lazy(() => import('../pages/ProductCategoryPage'));
+export const StockMovementPage = lazy(() => import('../pages/StockMovementPage'));
+export const DashBoard = lazy(() => import('../pages/DashBoard'));
+export const Login = lazy(() => import('../pages/Login'));
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
+export const ResetPassword=lazy(() => import('../pages/ResetPassword'));
+
 // For testing purposes (with delay) 
 const TestPage = lazy(() => delay(1000).then(() => import('../pages/TestPage')));
 
@@ -67,6 +74,16 @@ export default function Router() {
                         <Login />
                     </Suspense>
                 </PreAuthTemplate>
+            ),
+        },
+        {
+            path: 'notifications',
+            element: (
+                <PostAuthTemplate>
+                    <Suspense fallback={<Loader />}>
+                        <SideBarNotifications/>
+                    </Suspense>
+                </PostAuthTemplate>
             ),
         },
         {
@@ -169,16 +186,17 @@ export default function Router() {
                     path: 'hrm-page',
                     element: <PrivateRoute element={<HRMPage />} roles={['ADMIN']} />,
                 },
-                // Other protected routes can be added here.
                 {
                     path: 'customer',
                     element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN']} />,
+                },
+                {
+                    path: 'test',
+                    element: <PrivateRoute element={<TestPage />} roles={['ADMIN']} />,
                 }
 
             ]
         }
-
-
     ]);
 
     return routes;

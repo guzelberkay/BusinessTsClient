@@ -12,13 +12,12 @@ import { useNavigate } from "react-router-dom";
 
 interface DrawerCollapseButtonProps {
   name: string;
-  handleOpen: () => void;
   TopLevelIcon: React.ReactNode;
-  open: boolean;
   menuItems: string[];
   menuIcons: React.ReactNode[];
   menuNavigations: string[];
 }
+
 /**
  * DrawerCollapseButton component that renders a collapsible navigation button in the drawer.
  *
@@ -28,9 +27,7 @@ interface DrawerCollapseButtonProps {
  *
  * @param {Object} param0 - The component props.
  * @param {string} param0.name - The name of the top-level button.
- * @param {function} param0.handleOpen - Function to toggle the open state of the collapse.
  * @param {React.ReactNode} param0.TopLevelIcon - The icon to display for the top-level button.
- * @param {boolean} param0.open - Indicates whether the collapse is open or closed.
  * @param {Array<string>} param0.menuItems - An array of names for the nested menu items.
  * @param {Array<React.ReactNode>} param0.menuIcons - An array of icons corresponding to the nested menu items.
  * @param {Array<string>} param0.menuNavigations - An array of routes corresponding to the nested menu items.
@@ -38,28 +35,39 @@ interface DrawerCollapseButtonProps {
  */
 const DrawerCollapseButton: React.FC<DrawerCollapseButtonProps> = ({
   name,
-  handleOpen,
   TopLevelIcon,
-  open,
   menuItems,
   menuIcons,
   menuNavigations,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  // Component-level state to manage open/collapse state
+  const [open, setOpen] = React.useState(false);
+
+  // Toggle function for collapsing/expanding the menu
+  const handleToggle = () => {
+    setOpen(!open);
+  };
+
   return (
     <>
-      <ListItemButton onClick={handleOpen}>
+      <ListItemButton onClick={handleToggle}>
         <ListItemIcon>{TopLevelIcon}</ListItemIcon>
-        <ListItemText primary={t("navigation."+name)} />
+        <ListItemText primary={t("navigation." + name)} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {menuItems.map((text, index) => (
-            <ListItemButton onClick={() => navigate(`/${menuNavigations[index]}`)} sx={{ pl: 4 }}>
+            <ListItemButton
+              key={text}
+              onClick={() => navigate(`/${menuNavigations[index]}`)}
+              sx={{ pl: 4 }}
+            >
               <ListItemIcon>{menuIcons[index]}</ListItemIcon>
-              <ListItemText primary={t("navigation."+text)} />
+              <ListItemText primary={t("navigation." + text)} />
             </ListItemButton>
           ))}
         </List>
