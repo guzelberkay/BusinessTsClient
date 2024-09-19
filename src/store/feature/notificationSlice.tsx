@@ -18,10 +18,43 @@ interface NotificationsState {
 }
 
 // Initial state
-const initialState: NotificationsState = {
-    notifications: [],
-    status: 'idle',
+const initialState = {
+    notifications: [] as Notification[],
+    unreadCount: 0, // Add this line to store the unread count
+    status: 'idle' as 'idle' | 'loading' | 'failed',
 };
+
+// Fetch all notifications
+// Fetch unread notification count
+export const fetchUnreadNotificationCount = createAsyncThunk(
+    'notifications/fetchUnreadNotificationCount',
+    async () => {
+        try {
+            const response = await fetch(`${RestApis.notification_service}/getunreadcount`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.text();
+                console.error('Error response from server:', errorData);
+                throw new Error(`Network response was not ok: ${errorData}`);
+            }
+
+            // Assuming the response is a number
+            const data = await response.json();
+            console.log('Fetched unread count:', data);
+            return data as number; // Ensure the return type is number
+        } catch (error) {
+            console.error('Failed to fetch unread notification count:', error);
+            throw error;
+        }
+    }
+);
+
+
 
 // Fetch all notifications
 export const fetchGetAllNotifications = createAsyncThunk(
@@ -148,6 +181,9 @@ const notificationSlice = createSlice({
             .addCase(fetchGetAllUnreadNotifications.fulfilled, (state, action: PayloadAction<Notification[]>) => {
                 state.status = 'idle';
                 state.notifications = action.payload;
+            })
+            .addCase(fetchUnreadNotificationCount.fulfilled, (state, action: PayloadAction<number>) => {
+                state.unreadCount = action.payload; // Update the unread count in the state
             })
             .addCase(markNotificationAsRead.fulfilled, (state, action: PayloadAction<number>) => {
                 const notification = state.notifications.find((n) => n.id === action.payload);
