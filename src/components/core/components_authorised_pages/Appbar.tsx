@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -22,9 +22,10 @@ import { AppDispatch } from "../../../store";
 import {
   toggleLanguage,
 } from "../../../store/feature/languageSlice";
-import { useTranslation } from "react-i18next";
+import {useSSR, useTranslation} from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import DropdownNotification from "../../atoms/DropdownNotifications";
+import {fetchUnreadNotificationCount} from "../../../store/feature/notificationSlice.tsx";
 
 const drawerWidth = 240;
 
@@ -32,6 +33,7 @@ const drawerWidth = 240;
 interface AppBarProps extends MuiAppBarProps {
   drawerState: boolean;
 }
+
 
 // Styled AppBar component that adjusts based on the drawer state
 const EasyStyleAppBar = styled(MuiAppBar, {
@@ -163,6 +165,27 @@ function Appbar({
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const[count, setcount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState<number | null>(null);
+
+
+
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const resultAction = await dispatch(fetchUnreadNotificationCount()).unwrap();
+        setUnreadCount(resultAction);
+        fetchUnreadCount();
+        const interval = setInterval(fetchUnreadCount, 1000);
+
+        return () => clearInterval(interval);
+      } catch (error) {
+        console.error('Failed to fetch unread notification count:', error);
+      }
+    };
+
+    fetchUnreadCount();
+  }, [dispatch]);
 
   // Opens the profile menu
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -391,7 +414,7 @@ function Appbar({
                   color="inherit"
                   onClick={handleNotificationMenuOpen}
               >
-                <Badge badgeContent={""} color="error">  {/*Sayaç eklenecek */}
+                <Badge badgeContent={unreadCount} color="error">  {/*Sayaç eklenecek */}
                   <NotificationsIcon fontSize="large" />
                 </Badge>
               </IconButton>
