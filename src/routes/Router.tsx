@@ -6,6 +6,7 @@ import { delay } from "../util/delay";
 import Loader from "../components/atoms/loader/Loader";
 import SideBarNotifications from "../components/molecules/SideBarNotifications";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
+import Profile from "../pages/Profile";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -193,6 +194,10 @@ export default function Router() {
                 {
                     path: 'test',
                     element: <PrivateRoute element={<TestPage />} roles={['ADMIN']} />,
+                },
+                {
+                    path: 'profile',
+                    element: <PrivateRoute element={<Profile />} roles={['ADMIN']} />,
                 }
 
             ]
