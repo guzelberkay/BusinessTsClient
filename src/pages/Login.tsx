@@ -72,7 +72,7 @@ export function Login() {
                         } else if (roles.includes('CUSTOMER')) {
                             navigate('/test');
                         } else if (roles.includes("UNASSIGNED")) {
-                            Swal.fire(t('authentication.error'), data.payload.message || t('authentication.loginFailed'), 'error');
+                           navigate('/profile');
                         }
                     });
                 } else {
