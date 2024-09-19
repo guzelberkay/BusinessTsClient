@@ -38,8 +38,11 @@ const apis = {
     //#endregion User Management
 
     //#endregion HRM
-    hrm_service_employee: base_url + host + Ports.hrm + profile + version + EndPoints.employee
-    
+    hrm_service_employee: base_url + host + Ports.hrm + profile + version + EndPoints.employee,
+
+  //#region Notification
+    notification_service: base_url + host + Ports.notification + profile + version + EndPoints.notifications,
+  //#endregion Notification
   
 };
 
