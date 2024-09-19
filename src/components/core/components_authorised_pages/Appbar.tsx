@@ -168,24 +168,19 @@ function Appbar({
   const[count, setcount] = useState(0);
   const [unreadCount, setUnreadCount] = useState<number | null>(null);
 
-
+  const fetchUnreadCount = async () => {
+    try {
+      const resultAction = await dispatch(fetchUnreadNotificationCount()).unwrap();
+      setUnreadCount(resultAction);
+    } catch (error) {
+      console.error('Failed to fetch unread notification count:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchUnreadCount = async () => {
-      try {
-        const resultAction = await dispatch(fetchUnreadNotificationCount()).unwrap();
-        setUnreadCount(resultAction);
-        fetchUnreadCount();
-        const interval = setInterval(fetchUnreadCount, 1000);
+    fetchUnreadCount()
 
-        return () => clearInterval(interval);
-      } catch (error) {
-        console.error('Failed to fetch unread notification count:', error);
-      }
-    };
-
-    fetchUnreadCount();
-  }, [dispatch]);
+  }, []);
 
   // Opens the profile menu
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
