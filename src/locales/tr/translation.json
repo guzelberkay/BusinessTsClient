@@ -160,24 +160,22 @@
    "sales": "Satışlar"
   },
 
-  "dashboard": {
-    "numberofemployees" : "Çalışan Sayısı",
-    "last": "Son",
-    "days": "gün",
-    "dailyincome": "Günlük Gelir",
-    "dailyexpense": "Günlük Gider",
-    "products": "Ürünler",
-    "product": "Ürün",
-    "name": "Adı",
-    "buy": "Alış",
-    "sell": "Satış",
-    "price":"Fiyat",
-    "latest": "Son",
-    "viewall": "Hepsini Gör",
-    "all": "Tüm",
-    "users": "Kullanıcılar",
-    "customers": "Müşteriler",
-    "employees": "Çalışanlar",
-    "sales": "Satışlar"
+  "notifications": {
+    "title": "Bildirimler",
+    "search": "Ara",
+    "sortBy": "Sırala",
+    "dateNewestFirst": "Tarih: En Yeniler Üstte",
+    "dateOldestFirst": "Tarih: En Eskiler Üstte",
+    "selectMode": "Seçim Modu",
+    "showAll": "Tüm Bildirimleri Göster",
+    "showUnread": "Sadece Okunmamışları Göster",
+    "deleteSelected": "Seçili Olanları Sil",
+    "noTitle": "Başlık Yok",
+    "noNotifications": "Bildirim bulunamadı",
+    "viewAllNotifications": "Tüm Bildirimleri Gör",
+    "close": "Kapat",
+    "delete": "Sil"
   }
 }
+
+
