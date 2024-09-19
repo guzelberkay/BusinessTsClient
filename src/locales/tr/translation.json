@@ -106,7 +106,7 @@
     "minstockcount": "Min. Stok Sayısı",
     "autoorder": "Otomatik Sipariş",
     "status": "Durum",
-    "searchbyname": "Ada Göre Ara",
+    "searchbyname": "Ad'a Göre Ara",
     "customername": "Müşteri Adı",
     "suppliername": "Tedarikçi Adı",
     "quantity": "Miktar",
@@ -135,7 +135,10 @@
     "deleteproduct": "Urunu silmek istediginizden emin misiniz?",
     "yesdeleteit": "Evet, Sil",
     "deleted": "Silindi!",
-    "productdeleted": "Urun Basariyla Silindi!"
+    "productdeleted": "Urun Basariyla Silindi!",
+    "update": "GUNCELLE",
+    "updated": "Guncellendi!",
+    "productsuccesfullyupdated": "Urun Basariyla Guncellendi!"
 
   },
 

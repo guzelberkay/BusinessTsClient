@@ -370,6 +370,8 @@ export const fetchDeleteProduct = createAsyncThunk(
 
 interface IfetchUpdateProduct{
     id:number;
+    supplierId:number;
+    wareHouseId:number;
     productCategoryId:number;
     name:string;
     description:string;
@@ -380,7 +382,7 @@ interface IfetchUpdateProduct{
 export const fetchUpdateProduct = createAsyncThunk(
     'stock/fetchUpdateProduct',
     async (payload:IfetchUpdateProduct) => {
-        const values = {   id: payload.id,productCategoryId: payload.productCategoryId,name: payload.name,description: payload.description,price: payload.price,stockCount: payload.stockCount,minimumStockLevel: payload.minimumStockLevel };
+        const values = {   id: payload.id, supplierId: payload.supplierId,wareHouseId: payload.wareHouseId, productCategoryId: payload.productCategoryId,name: payload.name,description: payload.description,price: payload.price,stockCount: payload.stockCount,minimumStockLevel: payload.minimumStockLevel };
 
         const result = await axios.put(
             RestApis.stock_service_product+"/update",

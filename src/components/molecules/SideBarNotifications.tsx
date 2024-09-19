@@ -170,6 +170,7 @@ const SideBarNotifications: React.FC = () => {
             <InputLabel>Sort By</InputLabel>
             <Select
               value={sortOrder}
+              // @ts-ignore
               onChange={handleSortChange}
               label="Sort By"
             >
