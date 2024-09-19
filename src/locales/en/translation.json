@@ -158,5 +158,22 @@
     "customers": "Customers",
    "employees": "Employees",
    "sales": "Sales"
+  },
+
+  "notifications": {
+    "title": "Notifications",
+    "search": "Search",
+    "sortBy": "Sort By",
+    "dateNewestFirst": "Date: Newest First",
+    "dateOldestFirst": "Date: Oldest First",
+    "selectMode": "Select Mode",
+    "showAll": "Show All Notifications",
+    "showUnread": "Show Unread Only",
+    "deleteSelected": "Delete Selected",
+    "noTitle": "No Title",
+    "noNotifications": "No notifications found",
+    "viewAllNotifications": "View All Notifications",
+    "close": "Close",
+    "delete": "Delete"
   }
 }

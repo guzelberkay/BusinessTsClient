@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { fetchGetAllNotifications, markNotificationAsRead, deleteNotification } from "../../store/feature/notificationSlice";
 import { RootState, AppDispatch } from "../../store";
+import { useTranslation } from "react-i18next";
 
 interface Notification {
   id: number;
@@ -23,6 +24,7 @@ interface Notification {
 }
 
 const DropdownNotification: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const notifications = useSelector((state: RootState) => state.notifications.notifications);
 
@@ -68,7 +70,7 @@ const DropdownNotification: React.FC = () => {
       <div>
         {sortedNotifications.length === 0 ? (
             <MenuItem>
-              <ListItemText primary="No notifications" />
+              <ListItemText primary={t("notifications.noNotifications")} />
             </MenuItem>
         ) : (
             sortedNotifications.map((notification) => (
@@ -83,7 +85,7 @@ const DropdownNotification: React.FC = () => {
         <Divider />
         <MenuItem component={Link} to="/notifications">
           <Typography variant="body2" color="text.secondary">
-            Tüm Bildirimleri Gör
+            {t("notifications.viewAllNotifications")}
           </Typography>
         </MenuItem>
 
@@ -101,13 +103,13 @@ const DropdownNotification: React.FC = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
-              Close
+              {t("notifications.close")}
             </Button>
             <Button
                 onClick={handleDeleteNotification}
                 color="error"
             >
-              Delete
+              {t("notifications.delete")}
             </Button>
           </DialogActions>
         </Dialog>

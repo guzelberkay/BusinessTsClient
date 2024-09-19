@@ -4,7 +4,8 @@ const ports = {
   stock: "9099",
   user_management: "9097",
   hrm:"9096",
-  crm: "9098"
+  crm: "9098",
+  notification: "9095",
 };
 
 export default ports;
