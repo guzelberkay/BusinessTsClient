@@ -16,7 +16,7 @@ import  {AppDispatch, useAppSelector} from "../store";
 import {
     fetchChangeAutoOrderModeOfProduct, fetchDeleteProduct,
     fetchFindAllProduct, fetchFindAllProductCategory,
-    fetchFindAllSupplier, fetchFindAllWareHouse, fetchSaveProduct
+    fetchFindAllSupplier, fetchFindAllWareHouse, fetchFindByIdProduct, fetchSaveProduct, fetchUpdateProduct
 } from "../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
@@ -40,6 +40,7 @@ const ProductPage = () => {
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
 
 
 
@@ -68,12 +69,11 @@ const ProductPage = () => {
                 searchText: searchText,
             })
         )
-    }, [dispatch, searchText, loading, isActivating]);
+    }, [dispatch, searchText, loading, isActivating,isUpdating, isDeleting]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     };
-
 
 
     const handleOpenAddProductModal = () => {
@@ -110,6 +110,55 @@ const ProductPage = () => {
         })
 
         setOpenAddProductModel(false)
+    }
+
+    const handleOpenUpdateModal = async () => {
+        setOpenAddProductModel(true);
+        setIsUpdating(true)
+        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 100})).then((res) => {
+            setWarehouses(res.payload.data);
+        })
+        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 100})).then((res) => {
+            setWareHouses(res.payload.data);
+        })
+        dispatch(fetchFindAllProductCategory({searchText:'',page: 0, size: 100})).then((res) => {
+            setProductCategories(res.payload.data);
+        })
+        dispatch(fetchFindByIdProduct(selectedRowIds[0])).then((data) => {
+            setName(data.payload.data.name);
+            setDescription(data.payload.data.description);
+            setPrice(data.payload.data.price);
+            setStockCount(data.payload.data.stockCount);
+            setMinimumStockLevel(data.payload.data.minimumStockLevel);
+            setSelectedProductCategory(data.payload.data.productCategoryId);
+            setSelectedSupplier(data.payload.data.supplierId);
+            setSelectedWareHouse(data.payload.data.wareHouseId);
+        })
+
+
+    }
+
+    const handleUpdate = () => {
+        dispatch(fetchUpdateProduct({id:selectedRowIds[0], productCategoryId:selectedProductCategory as any,supplierId:selectedSupplier as any,wareHouseId:selectedWarehouse as any,name,description,price,stockCount,minimumStockLevel})).then(() => {
+            setName('');
+            setDescription('');
+            setPrice(0);
+            setStockCount(0);
+            setMinimumStockLevel(0);
+            setSelectedProductCategory({} as IProductCategory);
+            setSelectedSupplier({} as ISupplier);
+            setSelectedWareHouse({} as IWareHouse);
+
+            setIsUpdating(false)
+            setOpenAddProductModel(false);
+            Swal.fire({
+                title: t("stockService.updated"),
+                text: t("stockService.productsuccesfullyupdated"),
+                icon: "success",
+            });
+        })
+
+
     }
 
     const handleDelete = async () => {
@@ -299,11 +348,22 @@ const ProductPage = () => {
                         onClick={handleOpenAddProductModal}
                         variant="contained"
                         color="success"
-                        disabled={openAddProductModal}
                         //startIcon={<ApproveIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
                         {t("stockService.addproduct")}
+                    </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
+                    <Button
+                        onClick={handleOpenUpdateModal}
+                        variant="contained"
+                        color="info"
+                        disabled={loading || selectedRowIds.length > 1}
+                        //startIcon={<DeclineIcon />}
+                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        {t("stockService.update")}
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
@@ -332,9 +392,8 @@ const ProductPage = () => {
                 </Grid>
 
 
-
                 <Dialog open={openAddProductModal} onClose={() => setOpenAddProductModel(false)} fullWidth maxWidth='sm'>
-                    <DialogTitle>{t("stockService.addproduct")}</DialogTitle>
+                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addproduct')}</DialogTitle>
                     <DialogContent>
                         <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
                             <InputLabel>{t('stockService.pleaseselectsupplier')}</InputLabel>
@@ -428,8 +487,14 @@ const ProductPage = () => {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => setOpenAddProductModel(false)} color="error" variant="contained">{t('stockService.cancel')}</Button>
-                        <Button onClick={() => handleSaveProduct()} color="success" variant="contained" disabled={selectedSupplier === null || selectedWarehouse === null || selectedProductCategory === null || name === '' || description === '' || price === 0 || stockCount === 0 || minimumStockLevel === 0}>{t('stockService.save')}</Button>
+                        <Button onClick={() => {
+                            setOpenAddProductModel(false), setIsUpdating(false)
+                        }} color="error" variant="contained">{t('stockService.cancel')}</Button>
+                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={selectedSupplier === null || selectedWarehouse === null || selectedProductCategory === null || name === '' || description === '' || price === 0 || stockCount === 0 || minimumStockLevel === 0}>{t('stockService.update')}</Button>
+                        :
+                            <Button onClick={() => handleSaveProduct()} color="success" variant="contained" disabled={selectedSupplier === null || selectedWarehouse === null || selectedProductCategory === null || name === '' || description === '' || price === 0 || stockCount === 0 || minimumStockLevel === 0}>{t('stockService.save')}</Button>
+                        }
+
                     </DialogActions>
                 </Dialog>
             </Grid>
