@@ -66,11 +66,11 @@ export function Login() {
                     dispatch(fetchUserRoles()).then((rolesData) => {
                         const roles = rolesData.payload.data;
                         if (roles.includes('SUPER_ADMIN')) {
-                            navigate('/super-admin-dashboard');
+                            navigate('/dashboard');
                         } else if (roles.includes('ADMIN')) {
-                            navigate('/admin-dashboard');
+                            navigate('/dashboard');
                         } else if (roles.includes('CUSTOMER')) {
-                            navigate('/test');
+                            navigate('/dashboard');
                         } else if (roles.includes("UNASSIGNED")) {
                            navigate('/profile');
                         }

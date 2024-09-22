@@ -52,62 +52,6 @@ function HomePage() {
             <Grid2 container justifyContent="center">
                 <Typography variant="h3">{t('greetings.test')} </Typography>
             </Grid2>
-            <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12}  sx={{textAlign: "center"}}>
-                    <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/test"} variant="contained">test
-                            post-Auth</Button>
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}  sx={{textAlign: "center"}}>
-                    <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/products"} variant="contained">StockService -
-                            Product Page</Button>
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}  sx={{textAlign: "center"}}>
-                    <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/products-by-min-stock-level"} variant="contained">StockService -
-                            Products By Min Stock Level Page</Button>
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}  sx={{textAlign: "center"}}>
-                    <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/buy-orders"} variant="contained">StockService -
-                           Buy Order Page</Button>
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}  sx={{textAlign: "center"}}>
-                    <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/sell-orders"} variant="contained">StockService -
-                            Sell Order Page</Button>
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}  sx={{textAlign: "center"}}>
-                    <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/suppliers"} variant="contained">StockService -
-                            Supplier Page</Button>
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}  sx={{textAlign: "center"}}>
-                    <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/ware-houses"} variant="contained">StockService -
-                            Ware House Page</Button>
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}  sx={{textAlign: "center"}}>
-                    <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/product-categories"} variant="contained">StockService -
-                            Product Categories Page</Button>
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}  sx={{textAlign: "center"}}>
-                    <Typography variant="h3">
-                        <Button onClick={() => window.location.href = "http://localhost:3000/stock-movements"} variant="contained">StockService -
-                            Stock Movement Page</Button>
-                    </Typography>
-                </Grid>
-            </Grid>
         </Container>
     )
 }

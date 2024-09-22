@@ -63,7 +63,7 @@ const SideBarNotifications: React.FC = () => {
         dispatch(fetchGetAllNotifications());
       }
     }
-  }, [dispatch, showUnreadOnly, status]);
+  }, [dispatch, showUnreadOnly]);
 
   const handleToggleSelect = (id: number) => {
     if (selectionMode) {
