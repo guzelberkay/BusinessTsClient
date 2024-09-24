@@ -316,6 +316,32 @@ export const fetchFindByIdOrder = createAsyncThunk(
     }
 );
 
+interface IfetchFindAllOrdersOfSupplier{
+
+    searchText:string;
+    page:number;
+    size:number;
+}
+export const fetchFindAllOrdersOfSupplier = createAsyncThunk(
+    'stock/fetchFindAllOrdersOfSupplier',
+    async (payload:IfetchFindAllOrdersOfSupplier) => {
+        const values = { searchText: payload.searchText,page: payload.page,size: payload.size };
+
+        const result = await axios.post(
+            RestApis.stock_service_order+"/find-orders-of-supplier",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
 //#endregion
 
 //#region Product
