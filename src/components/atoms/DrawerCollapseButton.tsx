@@ -10,7 +10,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-interface DrawerCollapseButtonProps {
+export interface DrawerCollapseButtonProps {
   name: string;
   TopLevelIcon: React.ReactNode;
   menuItems: string[];

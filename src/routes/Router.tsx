@@ -149,7 +149,7 @@ export default function Router() {
             children: [
                 {
                     path: 'dashboard',
-                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<DashBoard />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'products',

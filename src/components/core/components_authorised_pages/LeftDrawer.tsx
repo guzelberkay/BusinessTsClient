@@ -12,6 +12,7 @@ import { useAppSelector } from '../../../store';
 import DrawerButton from '../../atoms/DrawerButton';
 import DrawerCollapseButton from '../../atoms/DrawerCollapseButton';
 import CustomerPage from "../../../pages/CustomerPage.tsx";
+import DrawerButtonRenderer from './DrawerButtonRenderer';
 
 const drawerWidth = 240;
 
@@ -82,21 +83,7 @@ export default function LeftDrawer({
             </DrawerHeader>
             <Box sx={{ width: drawerWidth }} role="presentation">
                 <List>
-                    <DrawerButton name="dashboard" icon={<Dashboard />} />
-                    <DrawerCollapseButton
-                        name="stock"
-                        TopLevelIcon={<FormatListNumbered />}
-                        menuItems={['products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements']}
-                        menuIcons={[<ProductionQuantityLimits />, <Shop />, <Sell />, <SupportAgent />, <Warehouse />, <Category />, <Inventory />, <ShowChart />]}
-                        menuNavigations={['products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories','products-by-min-stock-level', 'stock-movements']}
-                    />
-                    <DrawerCollapseButton
-                        name="customer"
-                        TopLevelIcon={<FormatListNumbered />}
-                        menuItems={['customer']}
-                        menuIcons={[<ProductionQuantityLimits />]}
-                        menuNavigations={['customer']}
-                    />
+                    <DrawerButtonRenderer/>
                 </List>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Divider sx={{ width: drawerWidth - 32 }} />
