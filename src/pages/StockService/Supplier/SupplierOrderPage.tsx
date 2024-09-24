@@ -12,28 +12,28 @@ import {
 } from "@mui/material";
 
 import { useDispatch } from "react-redux";
-import  {AppDispatch, useAppSelector} from "../store";
+import  {AppDispatch, useAppSelector} from "../../../store";
 import {
     fetchChangeAutoOrderModeOfProduct, fetchFindAllBuyOrder,
     fetchFindAllByMinimumStockLevel,
-    fetchFindAllProduct, fetchFindAllSellOrder, fetchFindAllSupplier
-} from "../store/feature/stockSlice.tsx";
+    fetchFindAllProduct
+} from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProduct} from "../model/IProduct.tsx";
+import {IProduct} from "../../../model/IProduct.tsx";
 
 
 
 
 
-const SupplierPage = () => {
+const BuyOrderPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [suppliers,setSuppliers] = useState([]);
+    const [buyOrders,setBuyOrders] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -45,13 +45,13 @@ const SupplierPage = () => {
 
     useEffect(() => {
         dispatch(
-            fetchFindAllSupplier({
+            fetchFindAllBuyOrder({
                 page: 0,
                 size: 100,
                 searchText: searchText,
             })
         ).then(data => {
-            setSuppliers(data.payload.data);
+            setBuyOrders(data.payload.data);
         })
     }, [dispatch, searchText, loading, isActivating]);
 
@@ -66,11 +66,46 @@ const SupplierPage = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "contactInfo", headerName: t("stockService.contactinfo"), flex: 1.5, headerAlign: "center" },
-        { field: "address", headerName: t("stockService.address"), flex: 1, headerAlign: "center" },
-        { field: "notes", headerName: t("stockService.notes"), flex: 1, headerAlign: "center" },
+        { field: "supplierName", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center" },
+        { field: "productName", headerName: t("stockService.productName"), flex: 1.5, headerAlign: "center" },
+        {
+            field: "unitPrice", headerName: t("stockService.unitprice"), flex: 1, headerAlign: "center",
+            renderCell: (params) => {
+                // Check if the value is valid
+                const value = params.value;
+                if (typeof value === 'number' && !isNaN(value)) {
+                    // Format the number as currency
+                    return new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(value);
+                }
+                return '$0.00'; // Return default value if not a valid number
+            },
+        },
+        { field: "quantity", headerName: t("stockService.quantity"), flex: 1, headerAlign: "center" },
+        { field: "total", headerName: t("stockService.total"), flex: 1, headerAlign: "center",
+            renderCell: (params) => {
+                // Check if the value is valid
+                const value = params.value;
+                if (typeof value === 'number' && !isNaN(value)) {
+                    // Format the number as currency
+                    return new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(value);
+                }
+                return '$0.00'; // Return default value if not a valid number
+            }, },
+        { field: "orderType", headerName: t("stockService.ordertype"), headerAlign: "center", flex: 1.5 },
+        { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
         { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
+
+
     ];
 
 
@@ -78,7 +113,7 @@ const SupplierPage = () => {
         <div style={{ height: "auto"}}>
             {/*//TODO I WILL CHANGE THIS SEARCH METHOD LATER*/}
             <TextField
-                label={t("stockService.searchbyname")}
+                label={t("stockService.searchbyproductname")}
                 variant="outlined"
                 onChange={(event) => setSearchText(event.target.value)}
                 value={searchText}
@@ -91,7 +126,7 @@ const SupplierPage = () => {
                     toolbar: GridToolbar,
 
                 }}
-                rows={suppliers}
+                rows={buyOrders}
                 columns={columns}
                 initialState={{
                     pagination: {
@@ -172,4 +207,4 @@ const SupplierPage = () => {
 }
 
 
-export default SupplierPage
+export default BuyOrderPage

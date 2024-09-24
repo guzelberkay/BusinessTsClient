@@ -31,7 +31,8 @@
     "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
     "stockmovements": "Stok Hareketleri",
     "customer": "Musteri",
-    "success": "Basarili"
+    "success": "Basarili",
+    "supplier": "Tedarikci"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",

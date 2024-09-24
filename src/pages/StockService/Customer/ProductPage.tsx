@@ -12,18 +12,18 @@ import {
 } from "@mui/material";
 
 import { useDispatch } from "react-redux";
-import  {AppDispatch, useAppSelector} from "../store";
+import  {AppDispatch, useAppSelector} from "../../../store";
 import {
     fetchChangeAutoOrderModeOfProduct, fetchDeleteProduct,
     fetchFindAllProduct, fetchFindAllProductCategory,
     fetchFindAllSupplier, fetchFindAllWareHouse, fetchFindByIdProduct, fetchSaveProduct, fetchUpdateProduct
-} from "../store/feature/stockSlice.tsx";
+} from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
-import {ISupplier} from "../model/ISupplier.tsx";
-import {IWareHouse} from "../model/IWareHouse.tsx";
-import {IProductCategory} from "../model/IProductCategory.tsx";
+import {ISupplier} from "../../../model/ISupplier.tsx";
+import {IWareHouse} from "../../../model/IWareHouse.tsx";
+import {IProductCategory} from "../../../model/IProductCategory.tsx";
 
 
 
