@@ -12,28 +12,28 @@ import {
 } from "@mui/material";
 
 import { useDispatch } from "react-redux";
-import  {AppDispatch, useAppSelector} from "../store";
+import  {AppDispatch, useAppSelector} from "../../../store";
 import {
     fetchChangeAutoOrderModeOfProduct, fetchFindAllBuyOrder,
     fetchFindAllByMinimumStockLevel,
-    fetchFindAllProduct, fetchFindAllProductCategory, fetchFindAllSellOrder, fetchFindAllSupplier
-} from "../store/feature/stockSlice.tsx";
+    fetchFindAllProduct, fetchFindAllSellOrder, fetchFindAllStockMovement, fetchFindAllSupplier
+} from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProduct} from "../model/IProduct.tsx";
+import {IProduct} from "../../../model/IProduct.tsx";
 
 
 
 
 
-const ProductCategoryPage = () => {
+const StockMovementPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [productCategories,setProductCategories] = useState([]);
+    const [stockMovements,setStockMovements] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -45,13 +45,13 @@ const ProductCategoryPage = () => {
 
     useEffect(() => {
         dispatch(
-            fetchFindAllProductCategory({
+            fetchFindAllStockMovement({
                 page: 0,
                 size: 100,
                 searchText: searchText,
             })
         ).then(data => {
-            setProductCategories(data.payload.data);
+            setStockMovements(data.payload.data);
         })
     }, [dispatch, searchText, loading, isActivating]);
 
@@ -66,8 +66,12 @@ const ProductCategoryPage = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
+        { field: "productName", headerName: t("stockService.productname"), flex: 1.5, headerAlign: "center" },
+        { field: "wareHouseName", headerName: t("stockService.warehousename"), flex: 1.5, headerAlign: "center" },
+        { field: "quantity", headerName: t("stockService.quantity"), flex: 1, headerAlign: "center" },
+        { field: "stockMovementType", headerName: t("stockService.stockmovementtype"), flex: 1, headerAlign: "center" },
         { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
+        { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1 },
     ];
 
 
@@ -88,7 +92,7 @@ const ProductCategoryPage = () => {
                     toolbar: GridToolbar,
 
                 }}
-                rows={productCategories}
+                rows={stockMovements}
                 columns={columns}
                 initialState={{
                     pagination: {
@@ -169,4 +173,4 @@ const ProductCategoryPage = () => {
 }
 
 
-export default ProductCategoryPage
+export default StockMovementPage

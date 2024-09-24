@@ -10,8 +10,6 @@ import {
 import { styled, alpha } from "@mui/material/styles";
 import { useAppSelector } from '../../../store';
 import DrawerButton from '../../atoms/DrawerButton';
-import DrawerCollapseButton from '../../atoms/DrawerCollapseButton';
-import CustomerPage from "../../../pages/CustomerPage.tsx";
 import DrawerButtonRenderer from './DrawerButtonRenderer';
 
 const drawerWidth = 240;

@@ -71,7 +71,9 @@ export function Login() {
                             navigate('/dashboard');
                         } else if (roles.includes('CUSTOMER')) {
                             navigate('/dashboard');
-                        } else if (roles.includes("UNASSIGNED")) {
+                        }else if (roles.includes('SUPPLIER')) {
+                            navigate('/supplier-orders');
+                        }else if (roles.includes("UNASSIGNED")) {
                            navigate('/profile');
                         }
                     });

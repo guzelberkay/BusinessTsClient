@@ -12,28 +12,28 @@ import {
 } from "@mui/material";
 
 import { useDispatch } from "react-redux";
-import  {AppDispatch, useAppSelector} from "../store";
+import  {AppDispatch, useAppSelector} from "../../../store";
 import {
     fetchChangeAutoOrderModeOfProduct, fetchFindAllBuyOrder,
     fetchFindAllByMinimumStockLevel,
-    fetchFindAllProduct
-} from "../store/feature/stockSlice.tsx";
+    fetchFindAllProduct, fetchFindAllSellOrder
+} from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProduct} from "../model/IProduct.tsx";
+import {IProduct} from "../../../model/IProduct.tsx";
 
 
 
 
 
-const BuyOrderPage = () => {
+const SellOrderPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [buyOrders,setBuyOrders] = useState([]);
+    const [sellOrders,setSellOrders] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -45,13 +45,13 @@ const BuyOrderPage = () => {
 
     useEffect(() => {
         dispatch(
-            fetchFindAllBuyOrder({
+            fetchFindAllSellOrder({
                 page: 0,
                 size: 100,
                 searchText: searchText,
             })
         ).then(data => {
-            setBuyOrders(data.payload.data);
+            setSellOrders(data.payload.data);
         })
     }, [dispatch, searchText, loading, isActivating]);
 
@@ -66,7 +66,7 @@ const BuyOrderPage = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "supplierName", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center" },
+        { field: "customerName", headerName: t("stockService.customername"), flex: 1.5, headerAlign: "center" },
         { field: "productName", headerName: t("stockService.productName"), flex: 1.5, headerAlign: "center" },
         {
             field: "unitPrice", headerName: t("stockService.unitprice"), flex: 1, headerAlign: "center",
@@ -126,7 +126,7 @@ const BuyOrderPage = () => {
                     toolbar: GridToolbar,
 
                 }}
-                rows={buyOrders}
+                rows={sellOrders}
                 columns={columns}
                 initialState={{
                     pagination: {
@@ -207,4 +207,4 @@ const BuyOrderPage = () => {
 }
 
 
-export default BuyOrderPage
+export default SellOrderPage

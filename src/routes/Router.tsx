@@ -7,6 +7,7 @@ import Loader from "../components/atoms/loader/Loader";
 import SideBarNotifications from "../components/molecules/SideBarNotifications";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import Profile from "../pages/Profile";
+import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -14,17 +15,17 @@ import Profile from "../pages/Profile";
  * initial bundle size, leading to faster load times and improved performance for the application.
  */
 export const VerifyAccount = lazy(() => import('../pages/VerifyAccount'));
-export const ProductPage = lazy(() => import('../pages/ProductPage'));
+export const ProductPage = lazy(() => import('../pages/StockService/Customer/ProductPage.tsx'));
 export const AnalyticsDash = lazy(() => import('../pages/AnalyticsDash'));
-export const CustomerPage = lazy(() => import('../pages/CustomerPage'));
-export const ProductByMinStockLevelPage = lazy(() => import('../pages/ProductByMinStockLevelPage'));
+export const CustomerPage = lazy(() => import('../pages/StockService/Customer/CustomerPage.tsx'));
+export const ProductByMinStockLevelPage = lazy(() => import('../pages/StockService/Customer/ProductByMinStockLevelPage.tsx'));
 export const HRMPage = lazy(() => import('../pages/HRMPage'));
-export const BuyOrderPage = lazy(() => import('../pages/BuyOrderPage'));
-export const SellOrderPage = lazy(() => import('../pages/SellOrderPage'));
-export const SupplierPage = lazy(() => import('../pages/SupplierPage'));
-export const WareHousePage = lazy(() => import('../pages/WareHousePage'));
-export const ProductCategoryPage = lazy(() => import('../pages/ProductCategoryPage'));
-export const StockMovementPage = lazy(() => import('../pages/StockMovementPage'));
+export const BuyOrderPage = lazy(() => import('../pages/StockService/Customer/BuyOrderPage.tsx'));
+export const SellOrderPage = lazy(() => import('../pages/StockService/Customer/SellOrderPage.tsx'));
+export const SupplierPage = lazy(() => import('../pages/StockService/Customer/SupplierPage.tsx'));
+export const WareHousePage = lazy(() => import('../pages/StockService/Customer/WareHousePage.tsx'));
+export const ProductCategoryPage = lazy(() => import('../pages/StockService/Customer/ProductCategoryPage.tsx'));
+export const StockMovementPage = lazy(() => import('../pages/StockService/Customer/StockMovementPage.tsx'));
 export const DashBoard = lazy(() => import('../pages/DashBoard'));
 export const Login = lazy(() => import('../pages/Login'));
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
@@ -153,51 +154,55 @@ export default function Router() {
                 },
                 {
                     path: 'products',
-                    element: <PrivateRoute element={<ProductPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<ProductPage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'products-by-min-stock-level',
-                    element: <PrivateRoute element={<ProductByMinStockLevelPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<ProductByMinStockLevelPage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'buy-orders',
-                    element: <PrivateRoute element={<BuyOrderPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<BuyOrderPage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'sell-orders',
-                    element: <PrivateRoute element={<SellOrderPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<SellOrderPage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'suppliers',
-                    element: <PrivateRoute element={<SupplierPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<SupplierPage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'ware-houses',
-                    element: <PrivateRoute element={<WareHousePage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<WareHousePage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'product-categories',
-                    element: <PrivateRoute element={<ProductCategoryPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<ProductCategoryPage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'stock-movements',
-                    element: <PrivateRoute element={<StockMovementPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<StockMovementPage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'hrm-page',
-                    element: <PrivateRoute element={<HRMPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<HRMPage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'customer',
-                    element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<CustomerPage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'test',
-                    element: <PrivateRoute element={<TestPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<TestPage />} roles={['SUPER_ADMIN']} />,
                 },
                 {
                     path: 'profile',
-                    element: <PrivateRoute element={<Profile />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<Profile />} roles={['SUPER_ADMIN']} />,
+                },
+                {
+                    path: 'supplier-orders',
+                    element: <PrivateRoute element={<SupplierOrderPage />} roles={['ADMIN','SUPER_ADMIN']} />,
                 }
 
             ]

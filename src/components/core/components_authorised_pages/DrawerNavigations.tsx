@@ -10,26 +10,12 @@ export type Button =
 
 // Define role-based button configurations
 export const drawerNavigations: Record<string, Button[]> = {
-  CUSTOMER: [
+  SUPER_ADMIN: [
     {
-      type: 'collapse',
-      component: DrawerCollapseButton,
-      props: {
-        name: 'customer',
-        TopLevelIcon: <FormatListNumbered />,
-        menuItems: [
-          'customer'
-        ],
-        menuIcons: [
-          <ProductionQuantityLimits />
-        ],
-        menuNavigations: [
-          'customer'
-        ],
-      } as DrawerCollapseButtonProps,
-    }
-  ],
-  STOCK: [
+      type: 'button',
+      component: DrawerButton,
+      props: { name: 'dashboard', icon: <Dashboard />} as DrawerButtonProps,
+    },
     {
       type: 'collapse',
       component: DrawerCollapseButton,
@@ -61,6 +47,67 @@ export const drawerNavigations: Record<string, Button[]> = {
         ],
         menuNavigations: [
           'customer'
+        ],
+      } as DrawerCollapseButtonProps,
+    },
+    {
+      type: 'collapse',
+      component: DrawerCollapseButton,
+      props: {
+        name: 'supplier',
+        TopLevelIcon: <FormatListNumbered />,
+        menuItems: [
+          'buyorders'
+        ],
+        menuIcons: [
+          <ProductionQuantityLimits />
+        ],
+        menuNavigations: [
+          'supplier-orders'
+        ],
+      } as DrawerCollapseButtonProps,
+    }
+  ],
+  ADMIN: [
+    // Add ADMIN buttons here
+  ],
+  CUSTOMER:[
+    // Add CUSTOMER buttons here
+  ],
+  STOCK: [
+    {
+      type: 'collapse',
+      component: DrawerCollapseButton,
+      props: {
+        name: 'stock',
+        TopLevelIcon: <FormatListNumbered />,
+        menuItems: [
+          'products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements'
+        ],
+        menuIcons: [
+          <ProductionQuantityLimits />, <Shop />, <Sell />, <SupportAgent />, <Warehouse />, <Category />, <Inventory />, <ShowChart />
+        ],
+        menuNavigations: [
+          'products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories', 'products-by-min-stock-level', 'stock-movements'
+        ],
+      } as DrawerCollapseButtonProps,
+    }
+  ],
+  SUPPLIER: [
+    {
+      type: 'collapse',
+      component: DrawerCollapseButton,
+      props: {
+        name: 'supplier',
+        TopLevelIcon: <FormatListNumbered />,
+        menuItems: [
+          'buyorders'
+        ],
+        menuIcons: [
+          <ProductionQuantityLimits />
+        ],
+        menuNavigations: [
+          'supplier-orders'
         ],
       } as DrawerCollapseButtonProps,
     }

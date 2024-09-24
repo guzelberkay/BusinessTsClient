@@ -12,28 +12,28 @@ import {
 } from "@mui/material";
 
 import { useDispatch } from "react-redux";
-import  {AppDispatch, useAppSelector} from "../store";
+import  {AppDispatch, useAppSelector} from "../../../store";
 import {
     fetchChangeAutoOrderModeOfProduct, fetchFindAllBuyOrder,
     fetchFindAllByMinimumStockLevel,
-    fetchFindAllProduct, fetchFindAllSellOrder, fetchFindAllSupplier, fetchFindAllWareHouse
-} from "../store/feature/stockSlice.tsx";
+    fetchFindAllProduct, fetchFindAllProductCategory, fetchFindAllSellOrder, fetchFindAllSupplier
+} from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProduct} from "../model/IProduct.tsx";
+import {IProduct} from "../../../model/IProduct.tsx";
 
 
 
 
 
-const WareHousePage = () => {
+const ProductCategoryPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [wareHouses,setWareHouses] = useState([]);
+    const [productCategories,setProductCategories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -45,13 +45,13 @@ const WareHousePage = () => {
 
     useEffect(() => {
         dispatch(
-            fetchFindAllWareHouse({
+            fetchFindAllProductCategory({
                 page: 0,
                 size: 100,
                 searchText: searchText,
             })
         ).then(data => {
-            setWareHouses(data.payload.data);
+            setProductCategories(data.payload.data);
         })
     }, [dispatch, searchText, loading, isActivating]);
 
@@ -67,7 +67,6 @@ const WareHousePage = () => {
 
     const columns: GridColDef[] = [
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "location", headerName: t("stockService.location"), flex: 1.5, headerAlign: "center" },
         { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
     ];
 
@@ -89,7 +88,7 @@ const WareHousePage = () => {
                     toolbar: GridToolbar,
 
                 }}
-                rows={wareHouses}
+                rows={productCategories}
                 columns={columns}
                 initialState={{
                     pagination: {
@@ -170,4 +169,4 @@ const WareHousePage = () => {
 }
 
 
-export default WareHousePage
+export default ProductCategoryPage
