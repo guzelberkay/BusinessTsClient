@@ -11,7 +11,7 @@ import { styled, alpha } from "@mui/material/styles";
 import { useAppSelector } from '../../../store';
 import DrawerButton from '../../atoms/DrawerButton';
 import DrawerCollapseButton from '../../atoms/DrawerCollapseButton';
-import CustomerPage from "../../../pages/CustomerPage.tsx";
+import CustomerPage from "../../../pages/StockService/Customer/CustomerPage.tsx";
 
 const drawerWidth = 240;
 
@@ -96,6 +96,13 @@ export default function LeftDrawer({
                         menuItems={['customer']}
                         menuIcons={[<ProductionQuantityLimits />]}
                         menuNavigations={['customer']}
+                    />
+                    <DrawerCollapseButton
+                        name="supplier"
+                        TopLevelIcon={<FormatListNumbered />}
+                        menuItems={['buyorders']}
+                        menuIcons={[<ProductionQuantityLimits />]}
+                        menuNavigations={['supplier-orders']}
                     />
                 </List>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>

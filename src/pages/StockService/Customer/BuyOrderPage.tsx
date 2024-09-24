@@ -12,15 +12,15 @@ import {
 } from "@mui/material";
 
 import { useDispatch } from "react-redux";
-import  {AppDispatch, useAppSelector} from "../store";
+import  {AppDispatch, useAppSelector} from "../../../store";
 import {
     fetchChangeAutoOrderModeOfProduct, fetchFindAllBuyOrder,
     fetchFindAllByMinimumStockLevel,
     fetchFindAllProduct
-} from "../store/feature/stockSlice.tsx";
+} from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProduct} from "../model/IProduct.tsx";
+import {IProduct} from "../../../model/IProduct.tsx";
 
 
 
