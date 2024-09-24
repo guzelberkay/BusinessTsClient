@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../../../store";
 import {
     fetchChangeAutoOrderModeOfProduct, fetchFindAllBuyOrder,
-    fetchFindAllByMinimumStockLevel,
+    fetchFindAllByMinimumStockLevel, fetchFindAllOrdersOfSupplier,
     fetchFindAllProduct
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
@@ -45,7 +45,7 @@ const BuyOrderPage = () => {
 
     useEffect(() => {
         dispatch(
-            fetchFindAllBuyOrder({
+            fetchFindAllOrdersOfSupplier({
                 page: 0,
                 size: 100,
                 searchText: searchText,
@@ -66,7 +66,6 @@ const BuyOrderPage = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "supplierName", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center" },
         { field: "productName", headerName: t("stockService.productName"), flex: 1.5, headerAlign: "center" },
         {
             field: "unitPrice", headerName: t("stockService.unitprice"), flex: 1, headerAlign: "center",
@@ -101,7 +100,6 @@ const BuyOrderPage = () => {
                 }
                 return '$0.00'; // Return default value if not a valid number
             }, },
-        { field: "orderType", headerName: t("stockService.ordertype"), headerAlign: "center", flex: 1.5 },
         { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
         { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 
