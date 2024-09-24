@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
-interface DrawerButtonProps {
+export interface DrawerButtonProps {
     name: string
     icon: React.ReactNode
     navigation?: string

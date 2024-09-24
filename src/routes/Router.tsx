@@ -150,59 +150,59 @@ export default function Router() {
             children: [
                 {
                     path: 'dashboard',
-                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN','SUPER_ADMIN']} />,
                 },
                 {
                     path: 'products',
-                    element: <PrivateRoute element={<ProductPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<ProductPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
                 },
                 {
                     path: 'products-by-min-stock-level',
-                    element: <PrivateRoute element={<ProductByMinStockLevelPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<ProductByMinStockLevelPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
                 },
                 {
                     path: 'buy-orders',
-                    element: <PrivateRoute element={<BuyOrderPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<BuyOrderPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
                 },
                 {
                     path: 'sell-orders',
-                    element: <PrivateRoute element={<SellOrderPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<SellOrderPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
                 },
                 {
                     path: 'suppliers',
-                    element: <PrivateRoute element={<SupplierPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<SupplierPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
                 },
                 {
                     path: 'ware-houses',
-                    element: <PrivateRoute element={<WareHousePage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<WareHousePage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
                 },
                 {
                     path: 'product-categories',
-                    element: <PrivateRoute element={<ProductCategoryPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<ProductCategoryPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
                 },
                 {
                     path: 'stock-movements',
-                    element: <PrivateRoute element={<StockMovementPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<StockMovementPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
                 },
                 {
                     path: 'hrm-page',
-                    element: <PrivateRoute element={<HRMPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<HRMPage />} roles={['ADMIN','SUPER_ADMIN']} />,
                 },
                 {
                     path: 'customer',
-                    element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN','SUPER_ADMIN']} />,
                 },
                 {
                     path: 'test',
-                    element: <PrivateRoute element={<TestPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<TestPage />} roles={['ADMIN','SUPER_ADMIN']} />,
                 },
                 {
                     path: 'profile',
-                    element: <PrivateRoute element={<Profile />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<Profile />} roles={['ADMIN','SUPER_ADMIN']} />,
                 },
                 {
                     path: 'supplier-orders',
-                    element: <PrivateRoute element={<SupplierOrderPage />} roles={['ADMIN']} />,
+                    element: <PrivateRoute element={<SupplierOrderPage />} roles={['ADMIN','ADMIN','SUPER_ADMIN','SUPPLIER']} />,
                 }
 
             ]

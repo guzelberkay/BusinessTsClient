@@ -209,6 +209,7 @@ const userSlice = createSlice({
         builder.addCase(fetchUserRoles.fulfilled, (state, action: PayloadAction<IResponse>) => {
             if(action.payload.code){
                 state.userRoleList = action.payload.data;
+                localStorage.setItem('userRoleList', JSON.stringify(action.payload.data));
             }
         });
     }
