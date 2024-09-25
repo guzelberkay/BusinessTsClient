@@ -8,6 +8,7 @@ import SideBarNotifications from "../components/molecules/SideBarNotifications";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
+import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.tsx";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -17,7 +18,7 @@ import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.
 export const VerifyAccount = lazy(() => import('../pages/VerifyAccount'));
 export const ProductPage = lazy(() => import('../pages/StockService/Customer/ProductPage.tsx'));
 export const AnalyticsDash = lazy(() => import('../pages/AnalyticsDash'));
-export const CustomerPage = lazy(() => import('../pages/StockService/Customer/CustomerPage.tsx'));
+export const CustomerPage = lazy(() => import('../pages/page404/CustomerPage.tsx'));
 export const ProductByMinStockLevelPage = lazy(() => import('../pages/StockService/Customer/ProductByMinStockLevelPage.tsx'));
 export const HRMPage = lazy(() => import('../pages/HRMPage'));
 export const BuyOrderPage = lazy(() => import('../pages/StockService/Customer/BuyOrderPage.tsx'));
@@ -150,39 +151,43 @@ export default function Router() {
             children: [
                 {
                     path: 'dashboard',
-                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
                 },
                 {
                     path: 'products',
-                    element: <PrivateRoute element={<ProductPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
+                    element: <PrivateRoute element={<ProductPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
                 },
                 {
                     path: 'products-by-min-stock-level',
-                    element: <PrivateRoute element={<ProductByMinStockLevelPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
+                    element: <PrivateRoute element={<ProductByMinStockLevelPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
                 },
                 {
                     path: 'buy-orders',
-                    element: <PrivateRoute element={<BuyOrderPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
+                    element: <PrivateRoute element={<BuyOrderPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
                 },
                 {
                     path: 'sell-orders',
-                    element: <PrivateRoute element={<SellOrderPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
+                    element: <PrivateRoute element={<SellOrderPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
                 },
                 {
                     path: 'suppliers',
-                    element: <PrivateRoute element={<SupplierPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
+                    element: <PrivateRoute element={<SupplierPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
                 },
                 {
                     path: 'ware-houses',
-                    element: <PrivateRoute element={<WareHousePage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
+                    element: <PrivateRoute element={<WareHousePage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
                 },
                 {
                     path: 'product-categories',
-                    element: <PrivateRoute element={<ProductCategoryPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
+                    element: <PrivateRoute element={<ProductCategoryPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
                 },
                 {
                     path: 'stock-movements',
-                    element: <PrivateRoute element={<StockMovementPage />} roles={['ADMIN','SUPER_ADMIN','STOCK']} />,
+                    element: <PrivateRoute element={<StockMovementPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                },
+                {
+                    path: 'stock-customer',
+                    element: <PrivateRoute element={<CustomerPageStock />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
                 },
                 {
                     path: 'hrm-page',

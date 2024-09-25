@@ -8,6 +8,7 @@ import {IProduct} from "../../model/IProduct";
 import {IStockMovement} from "../../model/IStockMovement";
 import {ISupplier} from "../../model/ISupplier";
 import {IWareHouse} from "../../model/IWareHouse";
+import {ICustomer} from "../../model/ICustomer";
 
 
 
@@ -18,6 +19,7 @@ interface IStockState  {
     stockMovementList:IStockMovement[]
     supplierList:ISupplier[]
     wareHouseList:IWareHouse[]
+    customerList:ICustomer[]
 }
 
 const initialStockState:IStockState = {
@@ -26,7 +28,8 @@ const initialStockState:IStockState = {
     productList:[],
     stockMovementList:[],
     supplierList:[],
-    wareHouseList:[]
+    wareHouseList:[],
+    customerList:[],
 
 }
 
@@ -898,6 +901,122 @@ export const fetchFindByIdWareHouse = createAsyncThunk(
 );
 //#endregion
 
+//#region Customer
+interface IfetchSaveCustomer{
+    name:string;
+    surname:string;
+    email:string;
+}
+
+export const fetchSaveCustomer = createAsyncThunk(
+    'stock/fetchSaveWareHouse',
+    async (payload:IfetchSaveCustomer) => {
+        const values = { name: payload.name,surname: payload.surname,email: payload.email };
+
+        const result = await axios.post(
+            RestApis.stock_service_customer+"/save",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+export const fetchDeleteCustomer = createAsyncThunk(
+    'stock/fetchDeleteWareHouse',
+    async (id:number) => {
+
+        const result = await axios.delete(
+            RestApis.stock_service_customer+"/delete?id="+id,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+interface IfetchUpdateCustomer{
+    id:number;
+    name:string;
+    surname:string;
+    email:string;
+}
+export const fetchUpdateCustomer = createAsyncThunk(
+    'stock/fetchUpdateWareHouse',
+    async (payload:IfetchUpdateCustomer) => {
+        const values = {   id: payload.id,name: payload.name,surname: payload.surname,email: payload.email };
+
+        const result = await axios.put(
+            RestApis.stock_service_customer+"/update",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+interface IfetchFindAllCustomer{
+
+    searchText:string;
+    page:number;
+    size:number;
+}
+export const fetchFindAllCustomer = createAsyncThunk(
+    'stock/fetchFindAllCustomer',
+    async (payload:IfetchFindAllCustomer) => {
+        const values = { searchText: payload.searchText,page: payload.page,size: payload.size };
+
+        const result = await axios.post(
+            RestApis.stock_service_customer+"/find-all",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+export const fetchFindByIdCustomer = createAsyncThunk(
+    'stock/fetchFindByIdCustomer',
+    async (id:number) => {
+        const result = await axios.post(
+            RestApis.stock_service_customer+"/find-by-id?id="+id,
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+//#endregion
+
 const stockSlice = createSlice({
     name: 'stock',
     initialState: initialStockState,
@@ -919,6 +1038,9 @@ const stockSlice = createSlice({
         });
         build.addCase(fetchFindAllWareHouse.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.wareHouseList = action.payload.data;
+        });
+        build.addCase(fetchFindAllCustomer.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.customerList = action.payload.data;
         });
 
     }

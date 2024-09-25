@@ -7,6 +7,7 @@ const endpoints = {
   stock_movement: "/stock/stock-movement",
   supplier: "/stock/supplier",
   ware_house: "/stock/ware-house",
+  customerStock: "/stock/customer",
   // CRM Endpoints
   customer: "/customer",
   user: "/user",

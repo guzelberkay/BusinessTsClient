@@ -31,7 +31,9 @@
     "productsbyminstocklevel": "Products By Min. Stock Level",
     "stockmovements": "Stock Movements",
     "customer": "Customer",
-    "supplier": "Supplier"
+    "stock-customer": "Customers"
+
+
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -140,7 +142,10 @@
     "productdeleted": "Product Succesfully Deleted",
     "update": "UPDATE",
     "updated": "Updated!",
-    "productsuccesfullyupdated": "Product Succesfully Updated"
+    "productsuccesfullyupdated": "Product Succesfully Updated",
+    "supplier": "Supplier",
+    "surname": "Surname"
+
   },
 
   "dashboard": {
