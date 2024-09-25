@@ -48,7 +48,7 @@ export const fetchSaveProductCategory = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -66,7 +66,7 @@ export const fetchDeleteProductCategory = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -91,7 +91,7 @@ export const fetchUpdateProductCategory = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -117,7 +117,7 @@ export const fetchFindAllProductCategory = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -137,7 +137,7 @@ export const fetchFindByIdProductCategory = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -166,7 +166,7 @@ export const fetchSaveSellOrder = createAsyncThunk(
             {
                 headers: {
                     "Content-Type": "application/json",
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -192,7 +192,7 @@ export const fetchBuySellOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -210,7 +210,7 @@ export const fetchDeleteOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -235,7 +235,7 @@ export const fetchUpdateOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -261,7 +261,7 @@ export const fetchFindAllBuyOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -287,7 +287,7 @@ export const fetchFindAllSellOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -307,7 +307,7 @@ export const fetchFindByIdOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -367,7 +367,7 @@ export const fetchSaveProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -385,7 +385,7 @@ export const fetchDeleteProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -416,7 +416,7 @@ export const fetchUpdateProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -442,7 +442,7 @@ export const fetchFindAllProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -468,7 +468,7 @@ export const fetchFindAllByMinimumStockLevel = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -489,7 +489,7 @@ export const fetchFindByIdProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -509,7 +509,7 @@ export const fetchChangeAutoOrderModeOfProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -539,7 +539,7 @@ export const fetchSaveStockMovement = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -557,7 +557,7 @@ export const fetchDeleteStockMovement = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -584,7 +584,7 @@ export const fetchUpdateStockMovement = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -610,7 +610,7 @@ export const fetchFindAllStockMovement = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -630,7 +630,7 @@ export const fetchFindByIdStockMovement = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -662,7 +662,7 @@ export const fetchSaveSupplier = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -680,7 +680,7 @@ export const fetchDeleteSupplier = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -707,7 +707,7 @@ export const fetchUpdateSupplier = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -733,7 +733,7 @@ export const fetchFindAllSupplier = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -753,7 +753,7 @@ export const fetchFindByIdSupplier = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -772,7 +772,7 @@ export const fetchApproveOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -799,7 +799,7 @@ export const fetchSaveWareHouse = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -817,7 +817,7 @@ export const fetchDeleteWareHouse = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -842,7 +842,7 @@ export const fetchUpdateWareHouse = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -868,7 +868,7 @@ export const fetchFindAllWareHouse = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -888,7 +888,7 @@ export const fetchFindByIdWareHouse = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
