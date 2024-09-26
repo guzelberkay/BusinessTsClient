@@ -34,7 +34,8 @@
     "success": "Basarili",
     "supplier": "Tedarikci",
     "surname": "Soyad",
-    "stock-customer": "Musteriler"
+    "stock-customer": "Musteriler",
+    "stockmodule": "Stok Modulu"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",

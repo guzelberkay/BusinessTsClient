@@ -49,23 +49,6 @@ export const drawerNavigations: Record<string, Button[]> = {
       type: 'collapse',
       component: DrawerCollapseButton,
       props: {
-        name: 'customer',
-        TopLevelIcon: <FormatListNumbered />,
-        menuItems: [
-          'customer'
-        ],
-        menuIcons: [
-          <ProductionQuantityLimits />
-        ],
-        menuNavigations: [
-          'customer'
-        ],
-      } as DrawerCollapseButtonProps,
-    },
-    {
-      type: 'collapse',
-      component: DrawerCollapseButton,
-      props: {
         name: 'supplier',
         TopLevelIcon: <FormatListNumbered />,
         menuItems: [
@@ -83,15 +66,31 @@ export const drawerNavigations: Record<string, Button[]> = {
   ADMIN: [
     // Add ADMIN buttons here
   ],
-  CUSTOMER:[
-    // Add CUSTOMER buttons here
+  CRM:[
+    {
+      type: 'collapse',
+      component: DrawerCollapseButton,
+      props: {
+        name: 'customer',
+        TopLevelIcon: <FormatListNumbered />,
+        menuItems: [
+          'customer'
+        ],
+        menuIcons: [
+          <ProductionQuantityLimits />
+        ],
+        menuNavigations: [
+          'customer'
+        ],
+      } as DrawerCollapseButtonProps,
+    },
   ],
   IMM: [
     {
       type: 'collapse',
       component: DrawerCollapseButton,
       props: {
-        name: 'stock',
+        name: 'stockmodule',
         TopLevelIcon: <FormatListNumbered />,
         menuItems: [
           'products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements','stock-customer'
