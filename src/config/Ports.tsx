@@ -6,6 +6,7 @@ const ports = {
   hrm:"9096",
   crm: "9098",
   notification: "9095",
+    finance: "9089"
 };
 
 export default ports;

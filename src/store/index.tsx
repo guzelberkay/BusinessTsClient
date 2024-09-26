@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {authSlice, languageSlice,stockSlice, crmSlice, userSlice, hrmSlice} from "./feature";
+import {authSlice, languageSlice, stockSlice, crmSlice, userSlice, hrmSlice, financeSlice} from "./feature";
 
 import {useSelector} from "react-redux";
 import notificationSlice from "./feature/notificationSlice";
@@ -14,7 +14,8 @@ const store = configureStore({
         stockSlice: stockSlice,
         crmSlice:crmSlice,
         hrmSlice: hrmSlice,
-        userSlice: userSlice
+        userSlice: userSlice,
+        financeSlice: financeSlice,
     },
 });
 

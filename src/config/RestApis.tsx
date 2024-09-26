@@ -15,9 +15,9 @@ const profile = profile_development; // Change to profile_test for testing or pr
 const version = "/v1"; // API version (update as needed)
 
 const apis = {
-  // Construct the URL for the authentication service
-  auth_service:
-    base_url + host + Ports.auth + profile + version + EndPoints.auth, // Example: http://localhost:9090/dev/v1/auth
+    // Construct the URL for the authentication service
+    auth_service:
+        base_url + host + Ports.auth + profile + version + EndPoints.auth, // Example: http://localhost:9090/dev/v1/auth
     //#region Stock
     stock_service_product_category: base_url + host + Ports.stock + profile + version + EndPoints.product_category,
     stock_service_order: base_url + host + Ports.stock + profile + version + EndPoints.order,
@@ -28,9 +28,9 @@ const apis = {
     stock_service_customer: base_url + host + Ports.stock + profile + version + EndPoints.customerStock,
 
     //#endregion Stock
-    
+
     //#region CRM
-        crm_service_customer: base_url + host + Ports.crm + profile + version + EndPoints.customer,
+    crm_service_customer: base_url + host + Ports.crm + profile + version + EndPoints.customer,
     //#endregion CRM
 
     //#region User Management
@@ -41,10 +41,19 @@ const apis = {
     //#endregion HRM
     hrm_service_employee: base_url + host + Ports.hrm + profile + version + EndPoints.employee,
 
-  //#region Notification
+    //#region Notification
     notification_service: base_url + host + Ports.notification + profile + version + EndPoints.notifications,
-  //#endregion Notification
-  
+    //#endregion Notification
+
+    //#region Finance
+    finance_service_budget: base_url + host + Ports.finance + profile + version + EndPoints.budget,
+    finance_service_declaration: base_url + host + Ports.finance + profile + version + EndPoints.declaration,
+    finance_service_expense: base_url + host + Ports.finance + profile + version + EndPoints.expense,
+    finance_service_financial_report: base_url + host + Ports.finance + profile + version + EndPoints.financial_report,
+    finance_service_income: base_url + host + Ports.finance + profile + version + EndPoints.income,
+    finance_service_invoice: base_url + host + Ports.finance + profile + version + EndPoints.invoice,
+    finance_service_tax: base_url + host + Ports.finance + profile + version + EndPoints.tax,
+    //#endregion Finance
 };
 
 export default apis;
