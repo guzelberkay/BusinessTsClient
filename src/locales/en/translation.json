@@ -151,7 +151,8 @@
     "buyordersuccesfullyadded": "Buy Order Succesfully Added",
     "successfullyupdated": "Successfully Updated",
     "deleteorder": "Are you sure you want to delete this order?",
-    "orderdeleted": "Order Succesfully Deleted"
+    "orderdeleted": "Order Succesfully Deleted",
+    "pleaseselectcustomer": "Please Select Customer"
 
   },
 
