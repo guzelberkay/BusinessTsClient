@@ -1,29 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     DataGrid,
     GridColDef,
     GridRowSelectionModel, GridToolbar,
 } from "@mui/x-data-grid";
 import {
-    Button,
-    Grid,
+    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
+    Grid, InputLabel, Select,
     TextField
 
 } from "@mui/material";
 
-import { useDispatch } from "react-redux";
-import  {AppDispatch, useAppSelector} from "../../../store";
+import {useDispatch} from "react-redux";
+import {AppDispatch, useAppSelector} from "../../../store";
 import {
-    fetchChangeAutoOrderModeOfProduct, fetchFindAllBuyOrder,
+    fetchChangeAutoOrderModeOfProduct,
+    fetchFindAllBuyOrder,
     fetchFindAllByMinimumStockLevel,
-    fetchFindAllProduct, fetchFindAllSellOrder, fetchFindAllSupplier
+    fetchFindAllCustomer,
+    fetchFindAllProduct,
+    fetchFindAllSellOrder,
+    fetchFindAllSupplier,
+    fetchFindByIdOrder, fetchFindByIdSupplier,
+    fetchSaveSellOrder,
+    fetchSaveSupplier
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import {IProduct} from "../../../model/IProduct.tsx";
-
-
-
+import MenuItem from "@mui/material/MenuItem";
+import {ICustomer} from "../../../model/ICustomer.tsx";
 
 
 const SupplierPage = () => {
@@ -33,15 +39,27 @@ const SupplierPage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [suppliers,setSuppliers] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [isActivating, setIsActivating] = useState(false);
+    const [suppliers, setSuppliers] = useState([]);
+
 
     const [price, setPrice] = useState(0);
     const [description, setDescription] = useState('');
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation()
-
+    //MODAL
+    const [openAddSupplierModal, setOpenAddSupplierModal] = useState(false);
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [contactInfo, setContactInfo] = useState('');
+    const [address, setAddress] = useState('');
+    const [notes, setNotes] = useState('');
+    const [selectedCustomer, setSelectedCustomer] = useState(0);
+    const [selectedProduct, setSelectedProduct] = useState(0);
+    const [quantity, setQuantity] = useState(0);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
 
     useEffect(() => {
         dispatch(
@@ -53,38 +71,96 @@ const SupplierPage = () => {
         ).then(data => {
             setSuppliers(data.payload.data);
         })
-    }, [dispatch, searchText, loading, isActivating]);
+    }, [dispatch, searchText,  isSaving,isUpdating, isDeleting]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     };
 
-
+    const handleOpenAddSupplierModal = () => {
+        setOpenAddSupplierModal(true);
+    };
 
     const handleSomething = () => {
         console.log(selectedRowIds);
     };
 
+    const handleOpenUpdateModal = async () => {
+        setOpenAddSupplierModal(true);
+        setIsUpdating(true)
+
+        dispatch(fetchFindByIdSupplier(selectedRowIds[0])).then((data) => {
+            setName(data.payload.data.name)
+            setSurname(data.payload.data.surname)
+            setEmail(data.payload.data.email)
+            setContactInfo(data.payload.data.contactInfo)
+            setAddress(data.payload.data.address)
+            setNotes(data.payload.data.notes)
+        })
+    }
+
+    const handleSaveSupplier = async () => {
+        setIsSaving(true)
+        dispatch(fetchSaveSupplier({
+            name: name,
+            surname: surname,
+            email: email,
+            contactInfo: contactInfo,
+            address: address,
+            notes: notes,
+        }))
+            .then((data) => {
+                if (data.payload.message === "Success") {
+                    setName('')
+                    setSurname('')
+                    setEmail('')
+                    setContactInfo('')
+                    setAddress('')
+                    setNotes('')
+                    setOpenAddSupplierModal(false);
+                    Swal.fire({
+                        title: t("swal.success"),
+                        text: t("stockService.successfullyadded"),
+                        icon: "success",
+                    });
+                    setIsSaving(false)
+                } else {
+
+                    setSelectedCustomer(0);
+                    setSelectedProduct(0);
+                    setQuantity(0);
+                    setOpenAddSupplierModal(false);
+                    Swal.fire({
+                        title: t("swal.error"),
+                        text: data.payload.message,
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+
+                }
+            })
+    };
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "contactInfo", headerName: t("stockService.contactinfo"), flex: 1.5, headerAlign: "center" },
-        { field: "address", headerName: t("stockService.address"), flex: 1, headerAlign: "center" },
-        { field: "notes", headerName: t("stockService.notes"), flex: 1, headerAlign: "center" },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
+        {field: "name", headerName: t("authentication.name"), flex: 1, headerAlign: "center"},
+        {field: "surname", headerName: t("authentication.surname"), flex: 1, headerAlign: "center"},
+        {field: "email", headerName: "Email", flex: 1.5, headerAlign: "center"},
+        {field: "contactInfo", headerName: t("stockService.contactinfo"), flex: 1.5, headerAlign: "center"},
+        {field: "address", headerName: t("stockService.address"), flex: 2, headerAlign: "center"},
+        {field: "notes", headerName: t("stockService.notes"), flex: 2, headerAlign: "center"},
     ];
 
 
     return (
-        <div style={{ height: "auto"}}>
+        <div style={{height: "auto"}}>
             {/*//TODO I WILL CHANGE THIS SEARCH METHOD LATER*/}
             <TextField
                 label={t("stockService.searchbyname")}
                 variant="outlined"
                 onChange={(event) => setSearchText(event.target.value)}
                 value={searchText}
-                style={{ marginBottom: "1%", marginTop: "1%" }}
+                style={{marginBottom: "1%", marginTop: "1%"}}
                 fullWidth
-                inputProps={{ maxLength: 50 }}
+                inputProps={{maxLength: 50}}
             />
             <DataGrid
                 slots={{
@@ -95,7 +171,7 @@ const SupplierPage = () => {
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: { page: 1, pageSize: 5 },
+                        paginationModel: {page: 1, pageSize: 5},
                     },
                 }}
                 // getRowClassName={(params) =>
@@ -129,31 +205,42 @@ const SupplierPage = () => {
                 rowSelectionModel={selectedRowIds}
             />
 
-            <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+            <Grid container spacing={2} sx={{
+                flexGrow: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'stretch',
+                marginTop: '2%',
+                marginBottom: '2%'
+            }}>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleSomething}
+                        onClick={handleOpenAddSupplierModal}
                         variant="contained"
                         color="success"
-                        disabled={isActivating || selectedRowIds.length === 0}
                         //startIcon={<ApproveIcon />}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
-                        Approve
+                        {t("stockService.add")}
                     </Button>
-                </Grid>*/}
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleChangeAutoOrderMode}
+                        onClick={handleOpenUpdateModal}
                         variant="contained"
-                        color="info"
-                        disabled={loading || selectedRowIds.length === 0}
+                        color="primary"
                         //startIcon={<DeclineIcon />}
+                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        {t("stockService.changeautoordermode")}
+                        {t("stockService.update")}
                     </Button>
-                </Grid>*/}
+                </Grid>
                 {/*<Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleSomething}
@@ -166,6 +253,80 @@ const SupplierPage = () => {
                         Cancel
                     </Button>
                 </Grid>*/}
+
+                <Dialog open={openAddSupplierModal} onClose={() => setOpenAddSupplierModal(false)} fullWidth
+                        maxWidth='sm'>
+                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addsupplier')}</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('authentication.name')}
+                            name="name"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('authentication.surname')}
+                            name="surname"
+                            value={surname}
+                            onChange={e => setSurname(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label="Email"
+                            name="email"
+                            disabled={isUpdating}
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('stockService.contactinfo')}
+                            name="contactInfo"
+                            value={contactInfo}
+                            onChange={e => setContactInfo(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('stockService.address')}
+                            name="address"
+                            value={address}
+                            onChange={e => setAddress(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('stockService.notes')}
+                            name="notes"
+                            value={notes}
+                            onChange={e => setNotes(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setOpenAddSupplierModal(false), setIsUpdating(false)
+                        }} color="error" variant="contained">{t('stockService.cancel')}</Button>
+                        {isUpdating ? <Button onClick={() => handleSomething()} color="success" variant="contained"
+                                              disabled={selectedCustomer === 0 || selectedProduct === 0 || quantity === 0}>{t('stockService.update')}</Button>
+                            :
+                            <Button onClick={() => handleSaveSupplier()} color="success" variant="contained"
+                                    disabled={name === ''|| surname === '' || email === '' || contactInfo === '' || address === '' || notes === '' || isSaving}>{t('stockService.save')}</Button>
+                        }
+
+                    </DialogActions>
+                </Dialog>
             </Grid>
         </div>
     );

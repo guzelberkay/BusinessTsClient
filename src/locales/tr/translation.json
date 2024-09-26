@@ -152,7 +152,9 @@
     "successfullyupdated": "Basariyla Guncellendi!",
     "deleteorder": "Siparişi silmek istediginizden emin misiniz?",
     "orderdeleted": "Sipariş Silindi!",
-    "pleaseselectcustomer": "Lütfen Müşteri Seciniz"
+    "pleaseselectcustomer": "Lütfen Müşteri Seciniz",
+    "addsupplier": "Tedarikci Ekle",
+    "successfullyadded": "Basariyla Eklendi!"
 
   },
 

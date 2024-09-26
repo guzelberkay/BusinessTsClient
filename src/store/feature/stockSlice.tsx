@@ -677,7 +677,9 @@ export const fetchFindByIdStockMovement = createAsyncThunk(
 
 interface IfetchSaveSupplier{
     name:string;
-    contanctInfo:string;
+    surname:string;
+    email:string;
+    contactInfo:string;
     address:string;
     notes:string;
 }
@@ -685,7 +687,7 @@ interface IfetchSaveSupplier{
 export const fetchSaveSupplier = createAsyncThunk(
     'stock/fetchSaveSupplier',
     async (payload:IfetchSaveSupplier) => {
-        const values = { name: payload.name,contanctInfo: payload.contanctInfo,address: payload.address,notes: payload.notes };
+        const values = {   name: payload.name,surname: payload.surname,email: payload.email,contactInfo: payload.contactInfo,address: payload.address,notes: payload.notes };
 
         const result = await axios.post(
             RestApis.stock_service_supplier+"/save",
