@@ -152,7 +152,21 @@ const SellOrderPage = () => {
     }
 
     const handleUpdate = async () => {
-        dispatch(fetchUpdateSellOrder({id:selectedRowIds[0], productId: selectedProduct as any, quantity: quantity, customerId: selectedCustomer as any})).then(() => {
+        dispatch(fetchUpdateSellOrder({id:selectedRowIds[0], productId: selectedProduct as any, quantity: quantity, customerId: selectedCustomer as any})).then((data) => {
+
+            if (data.payload.message !== "Success") {
+                setSelectedCustomer({} as ISupplier);
+                setSelectedProduct({} as IProduct);
+                setQuantity(0);
+                setOpenAddBuyOrderModal(false);
+                Swal.fire({
+                    title: t("swal.error"),
+                    text: data.payload.message,
+                    icon: "error",
+                    confirmButtonText: t("swal.ok"),
+                });
+                return
+            }
             setSelectedCustomer({} as ICustomer);
             setSelectedProduct({} as IProduct);
             setQuantity(0)
