@@ -306,7 +306,12 @@ const BuyOrderPage = () => {
                         onClick={handleOpenUpdateModal}
                         variant="contained"
                         color="primary"
-                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
+                        disabled={
+                            selectedRowIds.length > 1 ||
+                            selectedRowIds.length === 0 ||
+                            buyOrders.find(order => order.id === selectedRowIds[0])?.status === "APPROVED"
+                        }
+
                         //startIcon={<CancelIcon/>}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -318,7 +323,7 @@ const BuyOrderPage = () => {
                         onClick={handleDelete}
                         variant="contained"
                         color="error"
-                        disabled={isDeleting || selectedRowIds.length === 0}
+                        disabled={isDeleting || selectedRowIds.length === 0 || buyOrders.find(order => order.id === selectedRowIds[0])?.status === "APPROVED"}
                         //startIcon={<DeclineIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
