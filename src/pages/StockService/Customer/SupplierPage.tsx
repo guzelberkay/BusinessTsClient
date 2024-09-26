@@ -136,7 +136,7 @@ const SupplierPage = () => {
                         icon: "error",
                         confirmButtonText: t("swal.ok"),
                     });
-
+                    setIsSaving(false)
                 }
             })
     };
@@ -322,7 +322,7 @@ const SupplierPage = () => {
                                               disabled={selectedCustomer === 0 || selectedProduct === 0 || quantity === 0}>{t('stockService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveSupplier()} color="success" variant="contained"
-                                    disabled={name === ''|| surname === '' || email === '' || contactInfo === '' || address === '' || notes === '' || isSaving}>{t('stockService.save')}</Button>
+                                    disabled={name === ''|| surname === '' || email === '' || contactInfo === '' || address === '' || notes === ''}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>
