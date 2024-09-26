@@ -178,15 +178,15 @@ export const fetchSaveSellOrder = createAsyncThunk(
     }
 );
 
-interface IfetchBuySellOrder{
+interface IfetchSaveBuyOrder{
     supplierId:number;
     productId:number;
     quantity:number;
 }
 
-export const fetchBuySellOrder = createAsyncThunk(
-    'stock/fetchBuySellOrder',
-    async (payload:IfetchBuySellOrder) => {
+export const fetchSaveBuyOrder = createAsyncThunk(
+    'stock/fetchSaveBuyOrder',
+    async (payload:IfetchSaveBuyOrder) => {
         const values = {supplierId: payload.supplierId,productId: payload.productId,quantity: payload.quantity };
 
         const result = await axios.post(

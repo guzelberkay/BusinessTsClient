@@ -68,6 +68,7 @@ const SellOrderPage = () => {
     const columns: GridColDef[] = [
         { field: "customerName", headerName: t("stockService.customername"), flex: 1.5, headerAlign: "center" },
         { field: "productName", headerName: t("stockService.productName"), flex: 1.5, headerAlign: "center" },
+        { field: "email", headerName: "Email", flex: 1.75, headerAlign: "center" },
         {
             field: "unitPrice", headerName: t("stockService.unitprice"), flex: 1, headerAlign: "center",
             renderCell: (params) => {
@@ -101,7 +102,6 @@ const SellOrderPage = () => {
                 }
                 return '$0.00'; // Return default value if not a valid number
             }, },
-        { field: "orderType", headerName: t("stockService.ordertype"), headerAlign: "center", flex: 1.5 },
         { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
         { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 

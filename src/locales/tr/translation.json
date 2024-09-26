@@ -143,7 +143,11 @@
     "updated": "Guncellendi!",
     "productsuccesfullyupdated": "Urun Basariyla Guncellendi!",
     "surname": "Soyad",
-    "supplier": "Supplier"
+    "supplier": "Supplier",
+    "add": "EKLE",
+    "pleaseselectproduct": "Lütfen Urun Seciniz",
+    "addbuyorder": "ALIS SIPARISI EKLE",
+    "buyordersuccessfullyadded": "Alis Siparişi Basariyla Eklendi!"
 
   },
 

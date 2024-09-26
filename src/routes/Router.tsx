@@ -18,7 +18,7 @@ import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.
 export const VerifyAccount = lazy(() => import('../pages/VerifyAccount'));
 export const ProductPage = lazy(() => import('../pages/StockService/Customer/ProductPage.tsx'));
 export const AnalyticsDash = lazy(() => import('../pages/AnalyticsDash'));
-export const CustomerPage = lazy(() => import('../pages/page404/CustomerPage.tsx'));
+export const CustomerPage = lazy(() => import('../pages/CustomerPage.tsx'));
 export const ProductByMinStockLevelPage = lazy(() => import('../pages/StockService/Customer/ProductByMinStockLevelPage.tsx'));
 export const HRMPage = lazy(() => import('../pages/HRMPage'));
 export const BuyOrderPage = lazy(() => import('../pages/StockService/Customer/BuyOrderPage.tsx'));

@@ -12,9 +12,9 @@ import {
 } from "@mui/material";
 
 import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "../../store";
+import { AppDispatch, useAppSelector } from "../store";
 
-import {fetchFindAllCustomer, fetchfindByNameCustomer} from "../../store/feature/crmSlice.tsx";
+import {fetchFindAllCustomer, fetchfindByNameCustomer} from "../store/feature/crmSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 

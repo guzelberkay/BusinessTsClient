@@ -144,7 +144,11 @@
     "updated": "Updated!",
     "productsuccesfullyupdated": "Product Succesfully Updated",
     "supplier": "Supplier",
-    "surname": "Surname"
+    "surname": "Surname",
+    "add": "ADD",
+    "pleaseselectproduct": "Please Select Product",
+    "addbuyorder": "ADD BUY ORDER",
+    "buyordersuccesfullyadded": "Buy Order Succesfully Added"
 
   },
 
