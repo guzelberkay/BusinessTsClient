@@ -187,7 +187,7 @@ const SellOrderPage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteOrder(selectedBuyOrder.id));
 
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.code !=="Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,

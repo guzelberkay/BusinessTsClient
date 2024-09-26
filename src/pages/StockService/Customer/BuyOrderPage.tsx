@@ -306,7 +306,7 @@ const BuyOrderPage = () => {
                         onClick={handleOpenUpdateModal}
                         variant="contained"
                         color="primary"
-                        disabled={selectedRowIds.length > 1}
+                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
                         //startIcon={<CancelIcon/>}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
