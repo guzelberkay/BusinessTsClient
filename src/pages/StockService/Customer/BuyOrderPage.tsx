@@ -14,12 +14,14 @@ import {
 import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../../../store";
 import {
+    fetchDeleteOrder,
+    fetchDeleteProduct,
     fetchFindAllBuyOrder,
     fetchFindAllProduct,
     fetchFindAllProductCategory,
     fetchFindAllSupplier,
-    fetchFindAllWareHouse, fetchSaveBuyOrder,
-    fetchSaveProduct, fetchSaveSellOrder,
+    fetchFindAllWareHouse, fetchFindByIdOrder, fetchFindByIdProduct, fetchSaveBuyOrder,
+    fetchSaveProduct, fetchSaveSellOrder, fetchUpdateOrder, fetchUpdateProduct,
 
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
@@ -29,6 +31,7 @@ import {ISupplier} from "../../../model/ISupplier.tsx";
 import MenuItem from "@mui/material/MenuItem";
 import {IWareHouse} from "../../../model/IWareHouse.tsx";
 import {IProductCategory} from "../../../model/IProductCategory.tsx";
+import {IOrder} from "../../../model/IOrder.tsx";
 
 
 
@@ -41,10 +44,9 @@ const BuyOrderPage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [buyOrders,setBuyOrders] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [isActivating, setIsActivating] = useState(false);
+    const [buyOrders,setBuyOrders] = useState<IOrder[]>({} as IOrder[]);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isActivating, setIsActivating] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
@@ -70,7 +72,7 @@ const BuyOrderPage = () => {
         ).then(data => {
             setBuyOrders(data.payload.data);
         })
-    }, [dispatch, searchText, loading, isActivating]);
+    }, [dispatch, searchText, isDeleting, isActivating, isUpdating]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
@@ -94,12 +96,12 @@ const BuyOrderPage = () => {
     };
 
     const handleSaveBuyOrder = async () => {
-        setLoading(true);
+        setIsDeleting(true);
         dispatch(fetchSaveBuyOrder({ productId: selectedProduct as any, quantity: quantity, supplierId: selectedSupplier as any})).then(() => {
 
             setSelectedSupplier({} as ISupplier);
             setSelectedProduct({} as IProduct);
-            setLoading(false);
+            setIsDeleting(false);
             setOpenAddBuyOrderModal(false);
             Swal.fire({
                 title: t("swal.success"),
@@ -109,6 +111,83 @@ const BuyOrderPage = () => {
         })
 
         setOpenAddBuyOrderModal(false)
+    }
+
+    const handleOpenUpdateModal = async () => {
+        setOpenAddBuyOrderModal(true);
+        setIsUpdating(true)
+        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 1000})).then((res) => {
+            setSuppliers(res.payload.data);
+        })
+        dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
+            setProducts(res.payload.data);
+        })
+        dispatch(fetchFindByIdOrder(selectedRowIds[0])).then((data) => {
+            setQuantity(data.payload.data.quantity);
+            setSelectedSupplier(data.payload.data.supplierId);
+            setSelectedProduct(data.payload.data.productId);
+        })
+
+
+    }
+
+    const handleUpdate = async () => {
+        dispatch(fetchUpdateOrder({id:selectedRowIds[0], productId: selectedProduct as any, quantity: quantity, supplierId: selectedSupplier as any})).then(() => {
+            setSelectedSupplier({} as ISupplier);
+            setSelectedProduct({} as IProduct);
+            setIsUpdating(false)
+            setOpenAddBuyOrderModal(false);
+            Swal.fire({
+                title: t("stockService.updated"),
+                text: t("stockService.successfullyupdated"),
+                icon: "success",
+            });
+        })
+    }
+
+    const handleDelete = async () => {
+        for (let id of selectedRowIds) {
+            const selectedBuyOrder = buyOrders.find(
+                (selectedBuyOrder) => selectedBuyOrder.id === id
+            );
+            if (!selectedBuyOrder) continue;
+
+            setIsDeleting(true);
+            try {
+                const result = await Swal.fire({
+                    title: t("swal.areyousure"),
+                    text: t("stockService.deleteorder"),
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: t("stockService.yesdeleteit"),
+                    cancelButtonText: t("stockService.cancel"),
+                });
+
+                if (result.isConfirmed) {
+                    const data = await dispatch(fetchDeleteOrder(selectedBuyOrder.id));
+
+                    if (data.payload.message !=="Success") {
+                        await Swal.fire({
+                            title: t("swal.error"),
+                            text: data.payload.message,
+                            icon: "error",
+                            confirmButtonText: t("swal.ok"),
+                        });
+                        return;
+                    } else {
+                        await Swal.fire({
+                            title: t("stockService.deleted"),
+                            text: t("stockService.orderdeleted"),
+                            icon: "success",
+                        });
+                    }
+                }
+            } catch (error) {
+                localStorage.removeItem("token");
+            }
+        }
+        setSelectedRowIds([]);
+        setIsDeleting(false);
     }
 
     const columns: GridColDef[] = [
@@ -222,30 +301,31 @@ const BuyOrderPage = () => {
                         {t("stockService.add")}
                     </Button>
                 </Grid>
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleChangeAutoOrderMode}
+                        onClick={handleOpenUpdateModal}
                         variant="contained"
-                        color="info"
-                        disabled={loading || selectedRowIds.length === 0}
-                        //startIcon={<DeclineIcon />}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    >
-                        {t("stockService.changeautoordermode")}
-                    </Button>
-                </Grid>*/}
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
-                    <Button
-                        onClick={handleSomething}
-                        variant="contained"
-                        color="warning"
-                        disabled={isActivating || selectedRowIds.length === 0}
+                        color="primary"
+                        disabled={selectedRowIds.length > 1}
                         //startIcon={<CancelIcon/>}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        Cancel
+                        {t("stockService.update")}
                     </Button>
-                </Grid>*/}
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
+                    <Button
+                        onClick={handleDelete}
+                        variant="contained"
+                        color="error"
+                        disabled={isDeleting || selectedRowIds.length === 0}
+                        //startIcon={<DeclineIcon />}
+                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        {t("stockService.delete")}
+                    </Button>
+                </Grid>
+
                 <Dialog open={openAddBuyOrderModal} onClose={() => setOpenAddBuyOrderModal(false)} fullWidth maxWidth='sm'>
                     <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addbuyorder')}</DialogTitle>
                     <DialogContent>
@@ -293,7 +373,7 @@ const BuyOrderPage = () => {
                         <Button onClick={() => {
                             setOpenAddBuyOrderModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
-                        {isUpdating ? <Button onClick={() => handleSaveBuyOrder()} color="success" variant="contained" disabled={selectedSupplier === null || selectedProduct === null || quantity === 0 }>{t('stockService.update')}</Button>
+                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={selectedSupplier === null || selectedProduct === null || quantity === 0 }>{t('stockService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveBuyOrder()} color="success" variant="contained" disabled={selectedSupplier === null || selectedProduct === null || quantity === 0}>{t('stockService.save')}</Button>
                         }

@@ -225,12 +225,14 @@ export const fetchDeleteOrder = createAsyncThunk(
 
 interface IfetchUpdateOrder{
     id:number;
+    supplierId:number;
+    productId:number;
     quantity:number;
 }
 export const fetchUpdateOrder = createAsyncThunk(
     'stock/fetchUpdateOrder',
     async (payload:IfetchUpdateOrder) => {
-        const values = { id: payload.id,quantity: payload.quantity };
+        const values = {   id: payload.id,supplierId: payload.supplierId,productId: payload.productId,quantity: payload.quantity };
 
         const result = await axios.put(
             RestApis.stock_service_order+"/update",

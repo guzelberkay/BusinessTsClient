@@ -147,7 +147,10 @@
     "add": "EKLE",
     "pleaseselectproduct": "Lütfen Urun Seciniz",
     "addbuyorder": "ALIS SIPARISI EKLE",
-    "buyordersuccessfullyadded": "Alis Siparişi Basariyla Eklendi!"
+    "buyordersuccessfullyadded": "Alis Siparişi Basariyla Eklendi!",
+    "successfullyupdated": "Basariyla Guncellendi!",
+    "deleteorder": "Siparişi silmek istediginizden emin misiniz?",
+    "orderdeleted": "Sipariş Silindi!"
 
   },
 
