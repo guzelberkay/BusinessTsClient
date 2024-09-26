@@ -9,7 +9,8 @@ const endpoints = {
   ware_house: "/stock/ware-house",
   customerStock: "/stock/customer",
   // CRM Endpoints
-  customer: "/customer",
+  customer: "/crm/customer",
+  marketing_campaign: "/crm/marketing-campaign",
   user: "/user",
   role:"/role",
   employee:"/employee",
@@ -22,7 +23,8 @@ const endpoints = {
     supplier: "/stock/supplier",
     ware_house: "/stock/ware-house",
     // CRM Endpoints
-    customer: "/customer",
+    customer: "/crm/customer",
+    marketing_campaign: "/crm/marketing-campaign",
     user: "/user",
     role: "/role",
     employee: "/employee",

@@ -30,7 +30,9 @@
     "productcategories": "Product Categories",
     "productsbyminstocklevel": "Products By Min. Stock Level",
     "stockmovements": "Stock Movements",
-    "customer": "Customer",
+    "customermodule": "Customer Module",
+    "crm-customers" : "Costumer List",
+    "crm-marketing-campaign" : "Marketing Campaigns",
     "stock-customer": "Customers",
     "stockmodule": "Stock Module"
 
@@ -193,5 +195,25 @@
     "viewAllNotifications": "View All Notifications",
     "close": "Close",
     "delete": "Delete"
+  },
+
+  "crmService":{
+    "customer": "Customer",
+    "firstName": "Name",
+    "lastName": "Lastname",
+    "searchbyname":"Search by Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Adress",
+    "status" : "Status",
+    "name": "Name",
+    "description": "Description",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "budget": "Budget"
+
+
+   
+
   }
 }

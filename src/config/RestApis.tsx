@@ -31,6 +31,9 @@ const apis = {
 
     //#region CRM
     crm_service_customer: base_url + host + Ports.crm + profile + version + EndPoints.customer,
+    crm_service_marketing_campaign: base_url + host + Ports.crm + profile + version + EndPoints.marketing_campaign,
+
+
     //#endregion CRM
 
     //#region User Management
