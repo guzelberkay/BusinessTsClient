@@ -155,7 +155,7 @@ export default function Router() {
                 },
                 {
                     path: 'member-dashboard',
-                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN','SUPER_ADMIN','MEMBER']} />,
                 },
                 {
                     path: 'subscription',

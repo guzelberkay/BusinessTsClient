@@ -14,8 +14,8 @@ export default function DrawerButtonRenderer() {
     });
   }, [dispatch]);
 
-  // Check if BASIC role exists in userRoles
-  const basicRoleButtons = userRoles.includes("BASIC") ? drawerNavigations["BASIC"] || [] : [];
+  // Check if member have modules
+  const basicRoleButtons = userRoles.length > 1 ? drawerNavigations["BASIC"] || [] : [];
   
   // Get other role buttons excluding BASIC and MEMBER
   const otherRoleButtons = userRoles
