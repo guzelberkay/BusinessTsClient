@@ -31,7 +31,9 @@
     "productsbyminstocklevel": "Products By Min. Stock Level",
     "stockmovements": "Stock Movements",
     "customer": "Customer",
-    "supplier": "Supplier"
+    "stock-customer": "Customers"
+
+
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -140,7 +142,17 @@
     "productdeleted": "Product Succesfully Deleted",
     "update": "UPDATE",
     "updated": "Updated!",
-    "productsuccesfullyupdated": "Product Succesfully Updated"
+    "productsuccesfullyupdated": "Product Succesfully Updated",
+    "supplier": "Supplier",
+    "surname": "Surname",
+    "add": "ADD",
+    "pleaseselectproduct": "Please Select Product",
+    "addbuyorder": "ADD BUY ORDER",
+    "buyordersuccesfullyadded": "Buy Order Succesfully Added",
+    "successfullyupdated": "Successfully Updated",
+    "deleteorder": "Are you sure you want to delete this order?",
+    "orderdeleted": "Order Succesfully Deleted"
+
   },
 
   "dashboard": {

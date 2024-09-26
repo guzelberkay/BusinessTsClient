@@ -32,7 +32,9 @@
     "stockmovements": "Stok Hareketleri",
     "customer": "Musteri",
     "success": "Basarili",
-    "supplier": "Tedarikci"
+    "supplier": "Tedarikci",
+    "surname": "Soyad",
+    "stock-customer": "Musteriler"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -139,7 +141,16 @@
     "productdeleted": "Urun Basariyla Silindi!",
     "update": "GUNCELLE",
     "updated": "Guncellendi!",
-    "productsuccesfullyupdated": "Urun Basariyla Guncellendi!"
+    "productsuccesfullyupdated": "Urun Basariyla Guncellendi!",
+    "surname": "Soyad",
+    "supplier": "Supplier",
+    "add": "EKLE",
+    "pleaseselectproduct": "Lütfen Urun Seciniz",
+    "addbuyorder": "ALIS SIPARISI EKLE",
+    "buyordersuccessfullyadded": "Alis Siparişi Basariyla Eklendi!",
+    "successfullyupdated": "Basariyla Guncellendi!",
+    "deleteorder": "Siparişi silmek istediginizden emin misiniz?",
+    "orderdeleted": "Sipariş Silindi!"
 
   },
 
