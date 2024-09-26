@@ -1,6 +1,18 @@
 import React from 'react';
 import DrawerButton, { DrawerButtonProps } from '../../atoms/DrawerButton';
-import { Dashboard, FormatListNumbered, ProductionQuantityLimits, Shop, Sell, SupportAgent, Warehouse, Category, Inventory, ShowChart, Person, Loyalty} from '@mui/icons-material';
+import {
+  Dashboard,
+  FormatListNumbered,
+  ProductionQuantityLimits,
+  Shop,
+  Sell,
+  SupportAgent,
+  Warehouse,
+  Category,
+  Inventory,
+  ShowChart,
+  FaceRetouchingNatural, Person, Loyalty
+} from '@mui/icons-material';
 import DrawerCollapseButton, { DrawerCollapseButtonProps } from '../../atoms/DrawerCollapseButton';
 
 // Define types for button configurations
@@ -38,7 +50,6 @@ export const drawerNavigations: Record<string, Button[]> = {
       props: { name: 'profile', icon: <Person />} as DrawerButtonProps,
     }
   ],
-
   BASIC:[
     {
       type: 'button',
@@ -46,7 +57,6 @@ export const drawerNavigations: Record<string, Button[]> = {
       props: { name: 'dashboard',  icon: <Dashboard />, navigation: 'member-dashboard'} as DrawerButtonProps,
     }
   ],
-
   IMM: [
     {
       type: 'collapse',
@@ -55,13 +65,13 @@ export const drawerNavigations: Record<string, Button[]> = {
         name: 'stock',
         TopLevelIcon: <FormatListNumbered />,
         menuItems: [
-          'products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements'
+          'products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements','stock-customer'
         ],
         menuIcons: [
-          <ProductionQuantityLimits />, <Shop />, <Sell />, <SupportAgent />, <Warehouse />, <Category />, <Inventory />, <ShowChart />
+          <ProductionQuantityLimits />, <Shop />, <Sell />, <SupportAgent />, <Warehouse />, <Category />, <Inventory />, <ShowChart /> , <FaceRetouchingNatural />
         ],
         menuNavigations: [
-          'products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories', 'products-by-min-stock-level', 'stock-movements'
+          'products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories', 'products-by-min-stock-level', 'stock-movements','stock-customer'
         ],
       } as DrawerCollapseButtonProps,
     }

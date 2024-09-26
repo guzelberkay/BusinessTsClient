@@ -1,6 +1,6 @@
 export interface IStockMovement {
     id: number;
-    productCategoryId:number;
+    memberId:number
     productId:number;
     warehouseId:number;
     quantity:number;
