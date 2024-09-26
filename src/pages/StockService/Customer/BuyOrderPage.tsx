@@ -21,7 +21,7 @@ import {
     fetchFindAllProductCategory,
     fetchFindAllSupplier,
     fetchFindAllWareHouse, fetchFindByIdOrder, fetchFindByIdProduct, fetchSaveBuyOrder,
-    fetchSaveProduct, fetchSaveSellOrder, fetchUpdateOrder, fetchUpdateProduct,
+    fetchSaveProduct, fetchSaveSellOrder, fetchUpdateBuyOrder, fetchUpdateProduct,
 
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
@@ -132,7 +132,7 @@ const BuyOrderPage = () => {
     }
 
     const handleUpdate = async () => {
-        dispatch(fetchUpdateOrder({id:selectedRowIds[0], productId: selectedProduct as any, quantity: quantity, supplierId: selectedSupplier as any})).then(() => {
+        dispatch(fetchUpdateBuyOrder({id:selectedRowIds[0], productId: selectedProduct as any, quantity: quantity, supplierId: selectedSupplier as any})).then(() => {
             setSelectedSupplier({} as ISupplier);
             setSelectedProduct({} as IProduct);
             setIsUpdating(false)
@@ -373,9 +373,9 @@ const BuyOrderPage = () => {
                         <Button onClick={() => {
                             setOpenAddBuyOrderModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
-                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={selectedSupplier === null || selectedProduct === null || quantity === 0 }>{t('stockService.update')}</Button>
+                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={JSON.stringify(selectedSupplier) === '{}' || JSON.stringify(selectedProduct) === '{}' || quantity === 0}>{t('stockService.update')}</Button>
                             :
-                            <Button onClick={() => handleSaveBuyOrder()} color="success" variant="contained" disabled={selectedSupplier === null || selectedProduct === null || quantity === 0}>{t('stockService.save')}</Button>
+                            <Button onClick={() => handleSaveBuyOrder()} color="success" variant="contained" disabled={JSON.stringify(selectedSupplier) === '{}' || JSON.stringify(selectedProduct) === '{}' || quantity === 0}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>

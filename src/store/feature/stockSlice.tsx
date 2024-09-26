@@ -229,13 +229,39 @@ interface IfetchUpdateOrder{
     productId:number;
     quantity:number;
 }
-export const fetchUpdateOrder = createAsyncThunk(
+export const fetchUpdateBuyOrder = createAsyncThunk(
     'stock/fetchUpdateOrder',
     async (payload:IfetchUpdateOrder) => {
         const values = {   id: payload.id,supplierId: payload.supplierId,productId: payload.productId,quantity: payload.quantity };
 
         const result = await axios.put(
-            RestApis.stock_service_order+"/update",
+            RestApis.stock_service_order+"/update-buy-order",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+interface IfetchUpdateSellOrder{
+    id:number;
+    customerId:number;
+    productId:number;
+    quantity:number;
+}
+export const fetchUpdateSellOrder = createAsyncThunk(
+    'stock/fetchUpdateOrder',
+    async (payload:IfetchUpdateSellOrder) => {
+        const values = {   id: payload.id,customerId: payload.customerId,productId: payload.productId,quantity: payload.quantity };
+
+        const result = await axios.put(
+            RestApis.stock_service_order+"/update-sell-order",
             values,
             {
                 headers: {

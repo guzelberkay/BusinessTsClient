@@ -150,7 +150,8 @@
     "buyordersuccessfullyadded": "Alis Siparişi Basariyla Eklendi!",
     "successfullyupdated": "Basariyla Guncellendi!",
     "deleteorder": "Siparişi silmek istediginizden emin misiniz?",
-    "orderdeleted": "Sipariş Silindi!"
+    "orderdeleted": "Sipariş Silindi!",
+    "pleaseselectcustomer": "Lütfen Müşteri Seciniz"
 
   },
 
