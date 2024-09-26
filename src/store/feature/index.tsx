@@ -4,6 +4,7 @@ import languageSlice from "./languageSlice";
 import stockSlice from "./stockSlice.tsx";
 import userSlice from "./userSlice.tsx";
 import hrmSlice from "./hrmSlice.tsx";
+import financeSlice from "./financeSlice.tsx";
 
 
 export {
@@ -12,6 +13,7 @@ export {
     stockSlice,
     userSlice,
     hrmSlice,
-    crmSlice
+    crmSlice,
+    financeSlice,
 
 };
