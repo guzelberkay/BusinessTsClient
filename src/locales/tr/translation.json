@@ -32,7 +32,8 @@
     "stockmovements": "Stok Hareketleri",
     "customer": "Musteri",
     "success": "Basarili",
-    "supplier": "Tedarikci"
+    "supplier": "Tedarikci",
+    "subscription": "Abonelik"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",

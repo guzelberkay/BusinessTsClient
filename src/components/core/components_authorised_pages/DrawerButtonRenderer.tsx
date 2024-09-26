@@ -12,9 +12,21 @@ export default function DrawerButtonRenderer() {
     dispatch(fetchUserRoles()).then((data) => {
       setUserRoles(data.payload.data);
     });
-  }, []);
+  }, [dispatch]);
 
-  const roleButtons = userRoles.flatMap((role: string) => drawerNavigations[role] || []);
+  // Check if BASIC role exists in userRoles
+  const basicRoleButtons = userRoles.includes("BASIC") ? drawerNavigations["BASIC"] || [] : [];
+  
+  // Get other role buttons excluding BASIC and MEMBER
+  const otherRoleButtons = userRoles
+    .filter((role: string) => role !== "BASIC" && role !== "MEMBER") // Exclude BASIC and MEMBER roles
+    .flatMap((role: string) => drawerNavigations[role] || []);
+
+  // Check if MEMBER role exists in userRoles
+  const memberRoleButtons = userRoles.includes("MEMBER") ? drawerNavigations["MEMBER"] || [] : [];
+
+  // Combine all buttons: BASIC first, other roles in between, MEMBER last
+  const roleButtons = [...basicRoleButtons, ...otherRoleButtons, ...memberRoleButtons];
 
   return (
     <div>

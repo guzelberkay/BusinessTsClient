@@ -65,16 +65,16 @@ export function Login() {
                     
                     dispatch(fetchUserRoles()).then((rolesData) => {
                         const roles = rolesData.payload.data;
-                        if (roles.includes('SUPER_ADMIN')) {
-                            navigate('/dashboard');
-                        } else if (roles.includes('ADMIN')) {
-                            navigate('/dashboard');
-                        } else if (roles.includes('CUSTOMER')) {
-                            navigate('/dashboard');
-                        }else if (roles.includes('SUPPLIER')) {
+                    
+                        // Check if the only role is 'MEMBER'
+                        if (roles.length === 1 && roles[0] === 'MEMBER') {
+                            navigate('/subscription');
+                        } else if (roles.includes('SUPER_ADMIN')) {
+                            navigate('/admin-dashboard');
+                        } else if (roles.includes('MEMBER')) {
+                            navigate('/member-dashboard');
+                        } else if (roles.includes('SUPPLIER')) {
                             navigate('/supplier-orders');
-                        }else if (roles.includes("UNASSIGNED")) {
-                           navigate('/profile');
                         }
                     });
                 } else {

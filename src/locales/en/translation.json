@@ -31,7 +31,8 @@
     "productsbyminstocklevel": "Products By Min. Stock Level",
     "stockmovements": "Stock Movements",
     "customer": "Customer",
-    "supplier": "Supplier"
+    "supplier": "Supplier",
+    "subscription": "Subscription"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
