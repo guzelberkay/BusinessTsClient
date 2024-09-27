@@ -29,6 +29,7 @@ const endpoints = {
     role: "/role",
     employee: "/employee",
     notifications: "/notifications",
+    // FAM Endpoints
     budget: "/finance/budget",
     declaration: "/finance/declaration",
     expense: "/finance/expense",

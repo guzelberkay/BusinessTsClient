@@ -155,7 +155,11 @@
     "successfullyupdated": "Successfully Updated",
     "deleteorder": "Are you sure you want to delete this order?",
     "orderdeleted": "Order Succesfully Deleted",
-    "pleaseselectcustomer": "Please Select Customer"
+    "pleaseselectcustomer": "Please Select Customer",
+    "addsupplier": "Add Supplier",
+    "successfullyadded": "Successfully Added!",
+    "deleting": "Once deleted, you will not be able to recover data!",
+    "successfullydeleted": "Successfully Deleted!"
 
   },
 
@@ -194,6 +198,8 @@
     "noNotifications": "No notifications found",
     "viewAllNotifications": "View All Notifications",
     "close": "Close",
+    "delete": "Delete",
+    "addwarehouse": "Add Warehouse",
     "delete": "Delete"
   },
 

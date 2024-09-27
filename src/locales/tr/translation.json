@@ -81,7 +81,7 @@
     "services": "Hizmetler"
   },
   "swal": {
-    "areyousure": "Emin misin?",
+    "areyousure": "Emin misiniz?",
     "changeorderstatus": "Otomatik sipariş durumunu değiştirmek üzeresiniz. (Bu işlem bu ürün için sipariş oluşturulmasına neden olabilir.)",
     "warning": "Uyarı",
     "yeschangeit": "Evet, değiştir",
@@ -154,7 +154,12 @@
     "successfullyupdated": "Basariyla Guncellendi!",
     "deleteorder": "Siparişi silmek istediginizden emin misiniz?",
     "orderdeleted": "Sipariş Silindi!",
-    "pleaseselectcustomer": "Lütfen Müşteri Seciniz"
+    "pleaseselectcustomer": "Lütfen Müşteri Seciniz",
+    "addsupplier": "Tedarikci Ekle",
+    "successfullyadded": "Basariyla Eklendi!",
+    "deleting": "Silindikten sonra veriyi geri alamazsiniz.",
+    "successfullydeleted": "Basariyla Silindi!",
+    "addwarehouse": "Depo Ekle"
 
   },
 
