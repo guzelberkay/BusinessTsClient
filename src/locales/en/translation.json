@@ -31,9 +31,13 @@
     "productsbyminstocklevel": "Products By Min. Stock Level",
     "stockmovements": "Stock Movements",
     "customer": "Customer",
-    "stock-customer": "Customers"
-
-
+    "supplier": "Supplier",
+    "subscription": "Subscription",
+    "customermodule": "Customer Module",
+    "crm-customers" : "Costumer List",
+    "crm-marketing-campaign" : "Marketing Campaigns",
+    "stock-customer": "Customers",
+    "stockmodule": "Stock Module"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -198,8 +202,34 @@
     "noNotifications": "No notifications found",
     "viewAllNotifications": "View All Notifications",
     "close": "Close",
-    "delete": "Delete",
     "addwarehouse": "Add Warehouse",
     "delete": "Delete"
+  },
+
+  "plans":{
+    "name":{
+      "pmm" : "Project Management Module",
+      "crmm" : "Customer Relationship Management Module",
+      "imm" : "Inventory Management Module",
+      "hrmm" : "Human Resources Management Module",
+      "fam" : "Finance and Accounting Module",
+      "oam" : "Operation Analysis Module"
+    }
+  },
+
+  "crmService":{
+    "customer": "Customer",
+    "firstName": "Name",
+    "lastName": "Lastname",
+    "searchbyname":"Search by Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Adress",
+    "status" : "Status",
+    "name": "Name",
+    "description": "Description",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "budget": "Budget"
   }
 }

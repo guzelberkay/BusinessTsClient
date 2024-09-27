@@ -97,7 +97,7 @@ export const drawerNavigations: Record<string, Button[]> = {
     }
   ],
 
-  CRM:[
+  CRMM:[
     {
       type: 'collapse',
       component: DrawerCollapseButton,
