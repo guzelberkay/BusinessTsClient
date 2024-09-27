@@ -157,7 +157,10 @@
     "successfullyadded": "Basariyla Eklendi!",
     "deleting": "Silindikten sonra veriyi geri alamazsiniz.",
     "successfullydeleted": "Basariyla Silindi!",
-    "addwarehouse": "Depo Ekle"
+    "addwarehouse": "Depo Ekle",
+    "addproductcategory": "Urun Kategorisi Ekle",
+    "pleaseselectstockmovementtype": "Lütfen Stok Hareket Tipini Seciniz",
+    "addstockmovement": "Stok Hareketi Ekle"
 
   },
 
