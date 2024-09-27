@@ -196,6 +196,7 @@
     "noNotifications": "No notifications found",
     "viewAllNotifications": "View All Notifications",
     "close": "Close",
-    "delete": "Delete"
+    "delete": "Delete",
+    "addwarehouse": "Add Warehouse"
   }
 }

@@ -52,8 +52,6 @@ const SupplierPage = () => {
     const [contactInfo, setContactInfo] = useState('');
     const [address, setAddress] = useState('');
     const [notes, setNotes] = useState('');
-    const [selectedCustomer, setSelectedCustomer] = useState(0);
-    const [selectedProduct, setSelectedProduct] = useState(0);
     const [quantity, setQuantity] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -186,9 +184,12 @@ const SupplierPage = () => {
                     setIsSaving(false)
                 } else {
 
-                    setSelectedCustomer(0);
-                    setSelectedProduct(0);
-                    setQuantity(0);
+                    setName('')
+                    setSurname('')
+                    setEmail('')
+                    setContactInfo('')
+                    setAddress('')
+                    setNotes('')
                     setOpenAddSupplierModal(false);
                     Swal.fire({
                         title: t("swal.error"),
