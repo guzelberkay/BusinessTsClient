@@ -219,7 +219,6 @@ const StockMovementPage = () => {
         {field: "wareHouseName", headerName: t("stockService.warehousename"), flex: 1.5, headerAlign: "center"},
         {field: "quantity", headerName: t("stockService.quantity"), flex: 1, headerAlign: "center"},
         {field: "stockMovementType", headerName: t("stockService.stockmovementtype"), flex: 1, headerAlign: "center"},
-        {field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1},
         {field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1},
     ];
 

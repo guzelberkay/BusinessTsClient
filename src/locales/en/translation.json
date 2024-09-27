@@ -164,7 +164,12 @@
     "pleaseselectstockmovementtype": "Please Select Stock Movement Type",
     "addstockmovement": "Add Stock Movement",
     "warehouse": "Warehouse",
-    "productcategory": "Product Category"
+    "productcategory": "Product Category",
+    "approve": "APPROVE",
+    "approving": "Approving...",
+    "approveit": "Approve it!",
+    "approved": "Approved!",
+    "successfullyapproved": "Successfully Approved!"
 
 
   },

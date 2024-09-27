@@ -801,6 +801,7 @@ export const fetchApproveOrder = createAsyncThunk(
 
         const result = await axios.post(
             RestApis.stock_service_supplier+"/approve-order?id="+id,
+            '',
             {
                 headers: {
                     'Content-Type': 'application/json',
