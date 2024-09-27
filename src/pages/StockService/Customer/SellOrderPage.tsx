@@ -55,10 +55,10 @@ const SellOrderPage = () => {
 
     //MODAL
     const [openAddBuyOrderModal, setOpenAddBuyOrderModal] = useState(false);
-    const [products, setProducts] = useState<IProduct[]>({} as IProduct[]);
-    const [customers, setCustomers] = useState<ICustomer[]>({} as ICustomer[]);
-    const [selectedCustomer,setSelectedCustomer] = useState<ICustomer>({} as ICustomer);
-    const [selectedProduct,setSelectedProduct] = useState<IProduct>({} as IProduct);
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [customers, setCustomers] = useState<ICustomer[]>([]);
+    const [selectedCustomer,setSelectedCustomer] = useState(0);
+    const [selectedProduct,setSelectedProduct] = useState(0);
     const [quantity, setQuantity] = useState(0);
 
 
@@ -103,8 +103,8 @@ const SellOrderPage = () => {
         }))
             .then((data) => {
                 if (data.payload.message === "Success") {
-                    setSelectedCustomer({} as ISupplier);
-                    setSelectedProduct({} as IProduct);
+                    setSelectedCustomer(0);
+                    setSelectedProduct(0);
                     setQuantity(0);
                     setOpenAddBuyOrderModal(false);
                     Swal.fire({
@@ -114,8 +114,8 @@ const SellOrderPage = () => {
                     });
                 } else {
 
-                    setSelectedCustomer({} as ISupplier);
-                    setSelectedProduct({} as IProduct);
+                    setSelectedCustomer(0);
+                    setSelectedProduct(0);
                     setQuantity(0);
                     setOpenAddBuyOrderModal(false);
                     Swal.fire({
@@ -152,9 +152,23 @@ const SellOrderPage = () => {
     }
 
     const handleUpdate = async () => {
-        dispatch(fetchUpdateSellOrder({id:selectedRowIds[0], productId: selectedProduct as any, quantity: quantity, customerId: selectedCustomer as any})).then(() => {
-            setSelectedCustomer({} as ICustomer);
-            setSelectedProduct({} as IProduct);
+        dispatch(fetchUpdateSellOrder({id:selectedRowIds[0], productId: selectedProduct as any, quantity: quantity, customerId: selectedCustomer as any})).then((data) => {
+
+            if (data.payload.message !== "Success") {
+                setSelectedCustomer(0);
+                setSelectedProduct(0);
+                setQuantity(0);
+                setOpenAddBuyOrderModal(false);
+                Swal.fire({
+                    title: t("swal.error"),
+                    text: data.payload.message,
+                    icon: "error",
+                    confirmButtonText: t("swal.ok"),
+                });
+                return
+            }
+            setSelectedCustomer(0);
+            setSelectedProduct(0);
             setQuantity(0)
             setIsUpdating(false)
             setOpenAddBuyOrderModal(false);
@@ -187,7 +201,7 @@ const SellOrderPage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteOrder(selectedBuyOrder.id));
 
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.code !=="Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -210,7 +224,8 @@ const SellOrderPage = () => {
         setSelectedRowIds([]);
         setIsDeleting(false);
     }
-
+    console.log(selectedProduct)
+    console.log(selectedCustomer)
     const columns: GridColDef[] = [
         { field: "customerName", headerName: t("stockService.customername"), flex: 1.5, headerAlign: "center" },
         { field: "email", headerName: "Email", flex: 1.75, headerAlign: "center" },
@@ -354,7 +369,7 @@ const SellOrderPage = () => {
                             <InputLabel>{t('stockService.pleaseselectcustomer')}</InputLabel>
                             <Select
                                 value={selectedCustomer}
-                                onChange={event => setSelectedCustomer(event.target.value as ICustomer)}
+                                onChange={event => setSelectedCustomer((Number)(event.target.value))}
                                 label="Suppliers"
                             >
                                 {Object.values(customers).map(customer => (
@@ -369,17 +384,17 @@ const SellOrderPage = () => {
                             <InputLabel>{t('stockService.pleaseselectproduct')}</InputLabel>
                             <Select
                                 value={selectedProduct}
-                                onChange={event => setSelectedProduct(event.target.value as IProduct)}
+                                onChange={event => setSelectedProduct((Number)(event.target.value))}
                                 label="Products"
                             >
-                                {Object.values(products).map(product => (
+                                {products.map(product => (
                                     <MenuItem key={product.id} value={product.id}>
                                         {product.name}
                                     </MenuItem>
                                 ))}
-
                             </Select>
                         </FormControl>
+
                         <TextField
                             sx={{marginTop:'15px'}}
                             label={t('stockService.quantity')}
@@ -394,9 +409,9 @@ const SellOrderPage = () => {
                         <Button onClick={() => {
                             setOpenAddBuyOrderModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
-                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={JSON.stringify(selectedCustomer) === '{}' || JSON.stringify(selectedProduct) === '{}' || quantity === 0}>{t('stockService.update')}</Button>
+                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={selectedCustomer === 0 || selectedProduct === 0  || quantity === 0}>{t('stockService.update')}</Button>
                             :
-                            <Button onClick={() => handleSaveSellOrder()} color="success" variant="contained" disabled={JSON.stringify(selectedCustomer) === '{}' || JSON.stringify(selectedProduct) === '{}' || quantity === 0}>{t('stockService.save')}</Button>
+                            <Button onClick={() => handleSaveSellOrder()} color="success" variant="contained" disabled={selectedCustomer === 0 || selectedProduct === 0 || quantity === 0}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>

@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export interface DrawerCollapseButtonProps {
   name: string;
@@ -34,14 +34,15 @@ export interface DrawerCollapseButtonProps {
  * @returns {React.ReactNode} - The rendered DrawerCollapseButton component with nested items.
  */
 const DrawerCollapseButton: React.FC<DrawerCollapseButtonProps> = ({
-  name,
-  TopLevelIcon,
-  menuItems,
-  menuIcons,
-  menuNavigations,
-}) => {
+                                                                     name,
+                                                                     TopLevelIcon,
+                                                                     menuItems,
+                                                                     menuIcons,
+                                                                     menuNavigations,
+                                                                   }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation(); // Get the current location
 
   // Component-level state to manage open/collapse state
   const [open, setOpen] = React.useState(false);
@@ -52,27 +53,37 @@ const DrawerCollapseButton: React.FC<DrawerCollapseButtonProps> = ({
   };
 
   return (
-    <>
-      <ListItemButton onClick={handleToggle}>
-        <ListItemIcon>{TopLevelIcon}</ListItemIcon>
-        <ListItemText primary={t("navigation." + name)} />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {menuItems.map((text, index) => (
-            <ListItemButton
-              key={text}
-              onClick={() => navigate(`/${menuNavigations[index]}`)}
-              sx={{ pl: 4 }}
-            >
-              <ListItemIcon>{menuIcons[index]}</ListItemIcon>
-              <ListItemText primary={t("navigation." + text)} />
-            </ListItemButton>
-          ))}
-        </List>
-      </Collapse>
-    </>
+      <>
+        <ListItemButton onClick={handleToggle}>
+          <ListItemIcon>{TopLevelIcon}</ListItemIcon>
+          <ListItemText primary={t("navigation." + name)} />
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {menuItems.map((text, index) => {
+              const isSelected = location.pathname === `/${menuNavigations[index]}`; // Check if the route is selected
+
+              return (
+                  <ListItemButton
+                      key={text}
+                      onClick={() => navigate(`/${menuNavigations[index]}`)}
+                      sx={{
+                        pl: 4,
+                        bgcolor: isSelected ? 'lightblue' : 'inherit', // Highlight selected item
+                        "&:hover": {
+                          bgcolor: "rgba(0, 123, 255, 0.1)", // Hover effect
+                        },
+                      }}
+                  >
+                    <ListItemIcon>{menuIcons[index]}</ListItemIcon>
+                    <ListItemText primary={t("navigation." + text)} />
+                  </ListItemButton>
+              );
+            })}
+          </List>
+        </Collapse>
+      </>
   );
 };
 

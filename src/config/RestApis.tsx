@@ -31,6 +31,7 @@ const apis = {
 
   //#region CRM
   crm_service_customer: base_url + host + Ports.crm + profile + version + EndPoints.customer,
+  crm_service_marketing_campaign: base_url + host + Ports.crm + profile + version + EndPoints.marketing_campaign,
   //#endregion CRM
 
   //#region User Management
@@ -38,8 +39,9 @@ const apis = {
   user_management_service_role: base_url + host + Ports.user_management + profile + version + EndPoints.role,
   //#endregion User Management
 
-  //#endregion HRM
+  //#region HRM
   hrm_service_employee: base_url + host + Ports.hrm + profile + version + EndPoints.employee,
+  //#endregion HRM
 
   //#region Notification
   notification_service: base_url + host + Ports.notification + profile + version + EndPoints.notifications,
@@ -49,6 +51,16 @@ const apis = {
   subscription_service_plan: base_url + host + Ports.subscription + profile + version + EndPoints.subscription + EndPoints.plan,
   subscription_service_subscription: base_url + host + Ports.subscription + profile + version + EndPoints.subscription + EndPoints.subscription,
   //#endregion Subscription
+
+  //#region Finance
+  finance_service_budget: base_url + host + Ports.finance + profile + version + EndPoints.budget,
+  finance_service_declaration: base_url + host + Ports.finance + profile + version + EndPoints.declaration,
+  finance_service_expense: base_url + host + Ports.finance + profile + version + EndPoints.expense,
+  finance_service_financial_report: base_url + host + Ports.finance + profile + version + EndPoints.financial_report,
+  finance_service_income: base_url + host + Ports.finance + profile + version + EndPoints.income,
+  finance_service_invoice: base_url + host + Ports.finance + profile + version + EndPoints.invoice,
+  finance_service_tax: base_url + host + Ports.finance + profile + version + EndPoints.tax,
+  //#endregion Finance
 };
 
 export default apis;

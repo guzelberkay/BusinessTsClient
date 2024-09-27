@@ -10,6 +10,7 @@ import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
 import Subscription from "../pages/SubscriptionService/Subscription.tsx";
 import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.tsx";
+
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
  * when they are needed (e.g., when the user navigates to a specific route). This reduces the 
@@ -18,7 +19,8 @@ import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.
 export const VerifyAccount = lazy(() => import('../pages/VerifyAccount'));
 export const ProductPage = lazy(() => import('../pages/StockService/Customer/ProductPage.tsx'));
 export const AnalyticsDash = lazy(() => import('../pages/AnalyticsDash'));
-export const CustomerPage = lazy(() => import('../pages/CustomerPage.tsx'));
+export const CustomerPage = lazy(() => import('../pages/CRMService/CustomerPage.tsx'));
+export const MarketingCampaignPage = lazy(() => import('../pages/CRMService/MarketingCampaignPage.tsx'));
 export const ProductByMinStockLevelPage = lazy(() => import('../pages/StockService/Customer/ProductByMinStockLevelPage.tsx'));
 export const HRMPage = lazy(() => import('../pages/HRMPage'));
 export const BuyOrderPage = lazy(() => import('../pages/StockService/Customer/BuyOrderPage.tsx'));
@@ -163,39 +165,43 @@ export default function Router() {
                 },
                 {
                     path: 'products',
-                    element: <PrivateRoute element={<ProductPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                    element: <PrivateRoute element={<ProductPage />} roles={['IMM']} />,
                 },
                 {
                     path: 'products-by-min-stock-level',
-                    element: <PrivateRoute element={<ProductByMinStockLevelPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                    element: <PrivateRoute element={<ProductByMinStockLevelPage />} roles={['IMM']} />,
                 },
                 {
                     path: 'buy-orders',
-                    element: <PrivateRoute element={<BuyOrderPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                    element: <PrivateRoute element={<BuyOrderPage />} roles={['IMM']} />,
                 },
                 {
                     path: 'sell-orders',
-                    element: <PrivateRoute element={<SellOrderPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                    element: <PrivateRoute element={<SellOrderPage />} roles={['IMM']} />,
                 },
                 {
                     path: 'suppliers',
-                    element: <PrivateRoute element={<SupplierPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                    element: <PrivateRoute element={<SupplierPage />} roles={['IMM']} />,
                 },
                 {
                     path: 'ware-houses',
-                    element: <PrivateRoute element={<WareHousePage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                    element: <PrivateRoute element={<WareHousePage />} roles={['IMM']} />,
                 },
                 {
                     path: 'product-categories',
-                    element: <PrivateRoute element={<ProductCategoryPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                    element: <PrivateRoute element={<ProductCategoryPage />} roles={['IMM']} />,
                 },
                 {
                     path: 'stock-movements',
-                    element: <PrivateRoute element={<StockMovementPage />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                    element: <PrivateRoute element={<StockMovementPage />} roles={['IMM']} />,
                 },
                 {
                     path: 'stock-customer',
-                    element: <PrivateRoute element={<CustomerPageStock />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                    element: <PrivateRoute element={<CustomerPageStock />} roles={['IMM']} />,
+                },
+                {
+                    path: 'supplier-orders',
+                    element: <PrivateRoute element={<SupplierOrderPage />} roles={['SUPPLIER']} />,
                 },
                 {
                     path: 'hrm-page',
@@ -203,7 +209,11 @@ export default function Router() {
                 },
                 {
                     path: 'customer',
-                    element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN','SUPER_ADMIN','CRM']} />,
+                },
+                {
+                    path: 'marketing-campaign',
+                    element: <PrivateRoute element={<MarketingCampaignPage />} roles={['ADMIN','SUPER_ADMIN','CRM']} />,
                 },
                 {
                     path: 'test',

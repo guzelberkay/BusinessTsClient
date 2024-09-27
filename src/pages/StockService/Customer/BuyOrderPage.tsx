@@ -54,11 +54,11 @@ const BuyOrderPage = () => {
 
     //MODAL
     const [openAddBuyOrderModal, setOpenAddBuyOrderModal] = useState(false);
-    const [products, setProducts] = useState<IProduct[]>({} as IProduct[]);
-    const [suppliers, setSuppliers] = useState<ISupplier[]>({} as ISupplier[]);
-    const [selectedSupplier,setSelectedSupplier] = useState<ISupplier>({} as ISupplier);
-    const [wareHouses, setWareHouses] = useState<IWareHouse[]>({} as IWareHouse[]);
-    const [selectedProduct,setSelectedProduct] = useState<IProduct>({} as IProduct);
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
+    const [selectedSupplier,setSelectedSupplier] = useState(0);
+    const [wareHouses, setWareHouses] = useState(0);
+    const [selectedProduct,setSelectedProduct] = useState(0);
     const [quantity, setQuantity] = useState(0);
 
 
@@ -99,8 +99,8 @@ const BuyOrderPage = () => {
         setIsDeleting(true);
         dispatch(fetchSaveBuyOrder({ productId: selectedProduct as any, quantity: quantity, supplierId: selectedSupplier as any})).then(() => {
 
-            setSelectedSupplier({} as ISupplier);
-            setSelectedProduct({} as IProduct);
+            setSelectedSupplier(0);
+            setSelectedProduct(0);
             setIsDeleting(false);
             setOpenAddBuyOrderModal(false);
             Swal.fire({
@@ -133,8 +133,9 @@ const BuyOrderPage = () => {
 
     const handleUpdate = async () => {
         dispatch(fetchUpdateBuyOrder({id:selectedRowIds[0], productId: selectedProduct as any, quantity: quantity, supplierId: selectedSupplier as any})).then(() => {
-            setSelectedSupplier({} as ISupplier);
-            setSelectedProduct({} as IProduct);
+            setSelectedSupplier(0);
+            setSelectedProduct(0);
+            setQuantity(0);
             setIsUpdating(false)
             setOpenAddBuyOrderModal(false);
             Swal.fire({
@@ -306,7 +307,12 @@ const BuyOrderPage = () => {
                         onClick={handleOpenUpdateModal}
                         variant="contained"
                         color="primary"
-                        disabled={selectedRowIds.length > 1}
+                        disabled={
+                            selectedRowIds.length > 1 ||
+                            selectedRowIds.length === 0 ||
+                            buyOrders.find(order => order.id === selectedRowIds[0])?.status === "APPROVED"
+                        }
+
                         //startIcon={<CancelIcon/>}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -318,7 +324,7 @@ const BuyOrderPage = () => {
                         onClick={handleDelete}
                         variant="contained"
                         color="error"
-                        disabled={isDeleting || selectedRowIds.length === 0}
+                        disabled={isDeleting || selectedRowIds.length === 0 || buyOrders.find(order => order.id === selectedRowIds[0])?.status === "APPROVED"}
                         //startIcon={<DeclineIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -333,7 +339,7 @@ const BuyOrderPage = () => {
                             <InputLabel>{t('stockService.pleaseselectsupplier')}</InputLabel>
                             <Select
                                 value={selectedSupplier}
-                                onChange={event => setSelectedSupplier(event.target.value as ISupplier)}
+                                onChange={event => setSelectedSupplier((Number)(event.target.value))}
                                 label="Suppliers"
                             >
                                 {Object.values(suppliers).map(supplier => (
@@ -348,7 +354,7 @@ const BuyOrderPage = () => {
                             <InputLabel>{t('stockService.pleaseselectproduct')}</InputLabel>
                             <Select
                                 value={selectedProduct}
-                                onChange={event => setSelectedProduct(event.target.value as IProduct)}
+                                onChange={event => setSelectedProduct((Number)(event.target.value))}
                                 label="Products"
                             >
                                 {Object.values(products).map(product => (
@@ -373,9 +379,9 @@ const BuyOrderPage = () => {
                         <Button onClick={() => {
                             setOpenAddBuyOrderModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
-                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={JSON.stringify(selectedSupplier) === '{}' || JSON.stringify(selectedProduct) === '{}' || quantity === 0}>{t('stockService.update')}</Button>
+                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={selectedProduct === 0 || selectedSupplier === 0  || quantity === 0}>{t('stockService.update')}</Button>
                             :
-                            <Button onClick={() => handleSaveBuyOrder()} color="success" variant="contained" disabled={JSON.stringify(selectedSupplier) === '{}' || JSON.stringify(selectedProduct) === '{}' || quantity === 0}>{t('stockService.save')}</Button>
+                            <Button onClick={() => handleSaveBuyOrder()} color="success" variant="contained" disabled={selectedProduct === 0 || selectedSupplier === 0 || quantity === 0}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>

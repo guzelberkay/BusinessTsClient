@@ -49,12 +49,12 @@ const ProductPage = () => {
 
     //MODAL
     const [openAddProductModal, setOpenAddProductModel] = useState(false);
-    const [warehouses, setWarehouses] = useState<ISupplier[]>({} as ISupplier[]);
-    const [selectedSupplier,setSelectedSupplier] = useState<ISupplier>({} as ISupplier);
-    const [wareHouses, setWareHouses] = useState<IWareHouse[]>({} as IWareHouse[]);
-    const [selectedWarehouse,setSelectedWareHouse] = useState<IWareHouse>({} as IWareHouse);
-    const [productCategories, setProductCategories] = useState<IProductCategory[]>({} as IProductCategory[]);
-    const [selectedProductCategory,setSelectedProductCategory] = useState<IProductCategory>({} as IProductCategory);
+    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
+    const [selectedSupplier,setSelectedSupplier] = useState(0);
+    const [wareHouses, setWareHouses] = useState<IWareHouse[]>([]);
+    const [selectedWarehouse,setSelectedWareHouse] = useState(0);
+    const [productCategories, setProductCategories] = useState<IProductCategory[]>([]);
+    const [selectedProductCategory,setSelectedProductCategory] = useState(0);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
@@ -78,13 +78,13 @@ const ProductPage = () => {
 
     const handleOpenAddProductModal = () => {
         setOpenAddProductModel(true);
-        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 100})).then((res) => {
-            setWarehouses(res.payload.data);
+        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 1000})).then((res) => {
+            setSuppliers(res.payload.data);
         })
-        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 100})).then((res) => {
+        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 1000})).then((res) => {
             setWareHouses(res.payload.data);
         })
-        dispatch(fetchFindAllProductCategory({searchText:'',page: 0, size: 100})).then((res) => {
+        dispatch(fetchFindAllProductCategory({searchText:'',page: 0, size: 1000})).then((res) => {
             setProductCategories(res.payload.data);
         })
     };
@@ -97,9 +97,9 @@ const ProductPage = () => {
             setPrice(0);
             setStockCount(0);
             setMinimumStockLevel(0);
-            setSelectedProductCategory({} as IProductCategory);
-            setSelectedSupplier({} as ISupplier);
-            setSelectedWareHouse({} as IWareHouse);
+            setSelectedProductCategory(0);
+            setSelectedSupplier(0);
+            setSelectedWareHouse(0);
             setLoading(false);
             setOpenAddProductModel(false);
             Swal.fire({
@@ -116,7 +116,7 @@ const ProductPage = () => {
         setOpenAddProductModel(true);
         setIsUpdating(true)
         dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 100})).then((res) => {
-            setWarehouses(res.payload.data);
+            setSuppliers(res.payload.data);
         })
         dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 100})).then((res) => {
             setWareHouses(res.payload.data);
@@ -145,9 +145,9 @@ const ProductPage = () => {
             setPrice(0);
             setStockCount(0);
             setMinimumStockLevel(0);
-            setSelectedProductCategory({} as IProductCategory);
-            setSelectedSupplier({} as ISupplier);
-            setSelectedWareHouse({} as IWareHouse);
+            setSelectedProductCategory(0);
+            setSelectedSupplier(0);
+            setSelectedWareHouse(0);
 
             setIsUpdating(false)
             setOpenAddProductModel(false);
@@ -213,6 +213,9 @@ const ProductPage = () => {
 
     const columns: GridColDef[] = [
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
+        { field: "supplier", headerName: t("stockService.supplier"), flex: 1.5, headerAlign: "center" },
+        { field: "wareHouse", headerName: t("stockService.warehouse"), flex: 1.5, headerAlign: "center" },
+        { field: "productCategory", headerName: t("stockService.productcategory"), flex: 1, headerAlign: "center" },
         { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
         {
             field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
@@ -232,10 +235,9 @@ const ProductPage = () => {
             },
         },
 
-        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center" },
-        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5 },
+        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 0.75, headerAlign: "center" },
+        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 0.75 },
         { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 
 
     ];
@@ -359,7 +361,7 @@ const ProductPage = () => {
                         onClick={handleOpenUpdateModal}
                         variant="contained"
                         color="info"
-                        disabled={loading || selectedRowIds.length > 1}
+                        disabled={loading || selectedRowIds.length > 1 || selectedRowIds.length === 0}
                         //startIcon={<DeclineIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
@@ -399,10 +401,10 @@ const ProductPage = () => {
                             <InputLabel>{t('stockService.pleaseselectsupplier')}</InputLabel>
                             <Select
                                 value={selectedSupplier}
-                                onChange={event => setSelectedSupplier(event.target.value as ISupplier)}
+                                onChange={event => setSelectedSupplier((Number)(event.target.value))}
                                 label="Suppliers"
                             >
-                                {Object.values(warehouses).map(supplier => (
+                                {Object.values(suppliers).map(supplier => (
                                     <MenuItem key={supplier.id} value={supplier.id}>
                                         {supplier.name}
                                     </MenuItem>
@@ -414,7 +416,7 @@ const ProductPage = () => {
                             <InputLabel>{t('stockService.pleaseselectwarehouse')}</InputLabel>
                             <Select
                                 value={selectedWarehouse}
-                                onChange={event => setSelectedWareHouse(event.target.value as IWareHouse)}
+                                onChange={event => setSelectedWareHouse((Number)(event.target.value))}
                                 label="Ware Houses"
                             >
                                 {Object.values(wareHouses).map(warehouse => (
@@ -429,7 +431,7 @@ const ProductPage = () => {
                             <InputLabel>{t('stockService.pleaseselectcategory')}</InputLabel>
                             <Select
                                 value={selectedProductCategory}
-                                onChange={event => setSelectedProductCategory(event.target.value as IProductCategory)}
+                                onChange={event => setSelectedProductCategory((Number)(event.target.value))}
                                 label="Product Categories"
                             >
                                 {Object.values(productCategories).map(productCategory => (
