@@ -213,9 +213,9 @@ const ProductPage = () => {
 
     const columns: GridColDef[] = [
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "supplier", headerName: t("stockService.supplier"), flex: 1.5, headerAlign: "center" },
-        { field: "wareHouse", headerName: t("stockService.warehouse"), flex: 1.5, headerAlign: "center" },
-        { field: "productCategory", headerName: t("stockService.productcategory"), flex: 1, headerAlign: "center" },
+        { field: "supplierName", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center" },
+        { field: "wareHouseName", headerName: t("stockService.warehouse"), flex: 1.5, headerAlign: "center" },
+        { field: "productCategoryName", headerName: t("stockService.productcategory"), flex: 1, headerAlign: "center" },
         { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
         {
             field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
@@ -384,7 +384,7 @@ const ProductPage = () => {
                     <Button
                         onClick={handleChangeAutoOrderMode}
                         variant="contained"
-                        color="info"
+                        color="warning"
                         disabled={loading || selectedRowIds.length === 0}
                         //startIcon={<DeclineIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}

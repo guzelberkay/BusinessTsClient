@@ -79,7 +79,7 @@ const StockMovementPage = () => {
         setSelectedRowIds(newSelectionModel as number[]);
     };
 
-    const handleOpenAddProductCategoryModal = () => {
+    const handleOpenAddStockMovementModal = () => {
         setOpenAddStockMovementModal(true);
         setIsUpdating(false)
         dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
@@ -132,6 +132,12 @@ const StockMovementPage = () => {
         setOpenAddStockMovementModal(true);
         setIsUpdating(true)
 
+        dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
+            setProducts(res.payload.data);
+        })
+        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 1000})).then((res) => {
+            setWareHouses(res.payload.data);
+        })
         dispatch(fetchFindByIdStockMovement(selectedRowIds[0])).then((data) => {
             setSelectedWareHouse(data.payload.data.warehouseId)
             setSelectedProduct(data.payload.data.productId)
@@ -140,17 +146,27 @@ const StockMovementPage = () => {
         })
     }
     const handleUpdate = async () => {
-        dispatch(fetchUpdateStockMovement({ id: selectedRowIds[0], productId: selectedProduct, warehouseId: selectedWarehouse, quantity: quantity, stockMovementType: selectedStockMovementType})).then(() => {
+        dispatch(fetchUpdateStockMovement({ id: selectedRowIds[0], productId: selectedProduct, warehouseId: selectedWarehouse, quantity: quantity, stockMovementType: selectedStockMovementType})).then((data) => {
             setSelectedWareHouse(0)
             setSelectedProduct(0)
             setQuantity(0)
             setSelectedStockMovementType('')
             setOpenAddStockMovementModal(false);
-            Swal.fire({
-                title: t("stockService.updated"),
-                text: t("stockService.successfullyupdated"),
-                icon: "success",
-            });
+            if (data.payload.message !=="Success") {
+                Swal.fire({
+                    title: t("swal.error"),
+                    text: data.payload.message,
+                    icon: "error",
+                    confirmButtonText: t("swal.ok"),
+                });
+                return;
+            } else {
+                Swal.fire({
+                    title: t("stockService.deleted"),
+                    text: t("stockService.successfullydeleted"),
+                    icon: "success",
+                });
+            }
             setIsUpdating(false)
         })
     }
@@ -243,11 +259,11 @@ const StockMovementPage = () => {
                         paginationModel: {page: 1, pageSize: 5},
                     },
                 }}
-                // getRowClassName={(params) =>
-                //     params.row.isExpenditureApproved
-                //         ? "approved-row" // Eğer onaylandıysa, yeşil arka plan
-                //         : "unapproved-row" // Onaylanmadıysa, kırmızı arka plan
-                // }
+                getRowClassName={(params) =>
+                    params.row.stockMovementType === "IN"
+                        ? "approved-row" // Eğer onaylandıysa, yeşil arka plan
+                        : "unapproved-row" // Onaylanmadıysa, kırmızı arka plan
+                }
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
@@ -262,13 +278,13 @@ const StockMovementPage = () => {
                     },
                     "& .MuiDataGrid-cell": {
                         textAlign: "center",
-                    }/*,
+                    },
                     "& .approved-row": {
                         backgroundColor: "#e0f2e9", // Onaylananlar için yeşil arka plan
                     },
                     "& .unapproved-row": {
                         backgroundColor: "#ffe0e0", // Onaylanmayanlar için kırmızı arka plan
-                    },*/
+                    },
 
                 }}
                 rowSelectionModel={selectedRowIds}
@@ -283,7 +299,7 @@ const StockMovementPage = () => {
             }}>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleOpenAddProductCategoryModal}
+                        onClick={handleOpenAddStockMovementModal}
                         variant="contained"
                         color="success"
                         //startIcon={<ApproveIcon />}
