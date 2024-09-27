@@ -554,7 +554,6 @@ export const fetchChangeAutoOrderModeOfProduct = createAsyncThunk(
 
 interface IfetchSaveStockMovement{
     productId:number;
-    warehouseId:number;
     quantity:number;
     stockMovementType:string;
 }
@@ -562,7 +561,7 @@ interface IfetchSaveStockMovement{
 export const fetchSaveStockMovement = createAsyncThunk(
     'stock/fetchSaveStockMovement',
     async (payload:IfetchSaveStockMovement) => {
-        const values = { productId: payload.productId,warehouseId: payload.warehouseId,quantity: payload.quantity,stockMovementType: payload.stockMovementType };
+        const values = { productId: payload.productId,quantity: payload.quantity,stockMovementType: payload.stockMovementType };
 
         const result = await axios.post(
             RestApis.stock_service_stock_movement+"/save",
@@ -600,14 +599,13 @@ export const fetchDeleteStockMovement = createAsyncThunk(
 interface IfetchUpdateStockMovement{
     id:number;
     productId:number;
-    warehouseId:number;
     quantity:number;
     stockMovementType:string;
 }
 export const fetchUpdateStockMovement = createAsyncThunk(
     'stock/fetchUpdateStockMovement',
     async (payload:IfetchUpdateStockMovement) => {
-        const values = {   id: payload.id,productId: payload.productId,warehouseId: payload.warehouseId,quantity: payload.quantity,stockMovementType: payload.stockMovementType };
+        const values = {   id: payload.id,productId: payload.productId,quantity: payload.quantity,stockMovementType: payload.stockMovementType };
 
         const result = await axios.put(
             RestApis.stock_service_stock_movement+"/update",
