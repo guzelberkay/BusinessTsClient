@@ -11,6 +11,9 @@ const endpoints = {
   // CRM Endpoints
   customer: "/crm/customer",
   marketing_campaign: "/crm/marketing-campaign",
+  opportunity: "/crm/opportunity",
+  sales_activity:"/crm/sales-activity",
+  ticket:"/crm/ticket",
   user: "/user",
   role:"/role",
   employee:"/employee",
@@ -25,6 +28,9 @@ const endpoints = {
     // CRM Endpoints
     customer: "/crm/customer",
     marketing_campaign: "/crm/marketing-campaign",
+    opportunity: "/crm/opportunity",
+    sales_activity:"/crm/sales-activity",
+    ticket:"/crm/ticket",
     user: "/user",
     role: "/role",
     employee: "/employee",

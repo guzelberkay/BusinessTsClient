@@ -245,6 +245,317 @@ export const fetchFindAllMarketingCampaign = createAsyncThunk(
     }
 );
 
+//# endregion Marketing Campaign Operations
+//# region Opportunity Operations
+
+interface IFetchSaveOpportunity {
+    id: number;
+    memberId: number;
+    customerId: number;
+    name: string;
+    description: string;
+    value: number;
+    stage: string;
+    probability: number;
+    status: string
+}
+
+export const fetchSaveOpportunity = createAsyncThunk(
+    'crm/fetchSaveOpportunity',
+    async (payload: IFetchSaveOpportunity) => {
+        const values = {
+            name: payload.name,
+            description: payload.description,
+            value: payload.value,
+            stage: payload.stage,
+            probability: payload.probability,
+            status: payload.status,
+            customerId: payload.customerId,
+
+        };
+
+        const result = await axios.post(
+            RestApis.crm_service_opportunity + "/save",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+export const fetchDeleteOpportunity = createAsyncThunk(
+    'crm/fetchDeleteOpportunity',
+    async (id: number) => {
+        const result = await axios.delete(
+            RestApis.crm_service_opportunity + "/delete?id=" + id,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+export const fetchUpdateOpportunity = createAsyncThunk(
+    'crm/fetchUpdateOpportunity',
+    async (payload: IFetchSaveOpportunity) => {
+        const values = {
+            id: payload.id,
+            name: payload.name,
+            description: payload.description,
+            value: payload.value,
+            stage: payload.stage,
+            probability: payload.probability,
+            status: payload.status,
+            customerId: payload.customerId,
+
+        };
+
+        const result = await axios.put(
+            RestApis.crm_service_opportunity + "/update",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+interface IFetchFindAllOpportunity {
+    page: number;
+    size: number;
+    searchText: string
+}
+
+export const fetchFindAllOpportunity = createAsyncThunk(
+    'crm/fetchOpportunityList',
+    async (payload: IFetchFindAllOpportunity) => {
+        const values = {page: payload.page, size: payload.size, searchText: payload.searchText};
+
+        const result = await axios.post(
+            RestApis.crm_service_opportunity + "/find-all",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+)
+//# endregion Opportunity Operations
+//# SalesActivity Operations
+interface IFetchSaveSalesActivity {
+    opportunityId: number;
+    type: string;
+    date: Date;
+    notes: string;
+    status: string;
+}
+
+export const fetchSaveSalesActivity = createAsyncThunk(
+    'crm/fetchSalesActivityList',
+    async (payload: IFetchSaveSalesActivity) => {
+        const values = {
+            opportunityId: payload.opportunityId,
+            type: payload.type,
+            date: payload.date,
+            notes: payload.notes,
+            status: payload.status
+        };
+
+        const result = await axios.post(
+            RestApis.crm_service_sales_activity + "/save",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+interface IFetchUpdateSalesActivity {
+    id: number;
+}
+
+export const fetchUpdateSalesActivity = createAsyncThunk(
+    'crm/fetchUpdateSalesActivity',
+    async (payload: IFetchUpdateSalesActivity) => {
+        const values = {id: payload.id};
+
+        const result = await axios.put(
+            RestApis.crm_service_sales_activity + "/update",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+export const fetchDeleteSalesActivity = createAsyncThunk(
+    'crm/fetchDeleteSalesActivity',
+    async (id: number) => {
+        const result = await axios.delete(
+            RestApis.crm_service_sales_activity + "/delete?id=" + id,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+interface IFetchFindAllSalesActivity {
+    page: number;
+    size: number;
+    searchText: string
+}
+export const fetchFindAllSalesActivity = createAsyncThunk(
+    'crm/fetchSalesActivityList',
+    async (payload: IFetchFindAllSalesActivity) => {
+        const values = {page: payload.page, size: payload.size, searchText: payload.searchText};
+
+        const result = await axios.post(
+            RestApis.crm_service_sales_activity + "/find-all",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+//# endregion SalesActivity Operations
+//# Ticket Operations
+interface IFetchSaveTicket {
+    customerId: number;
+    subject: string;
+    description: string;
+    ticketStatus: string;
+    priority: string;
+    createdDate: Date;
+    closedDate: Date;
+    status: string;
+}
+
+export const fetchSaveTicket = createAsyncThunk(
+    'crm/fetchTicketList',
+    async (payload: IFetchSaveTicket) => {
+        const values = {
+            customerId: payload.customerId,
+            subject: payload.subject,
+            description: payload.description,
+            ticketStatus: payload.ticketStatus,
+            priority: payload.priority,
+            createdDate: payload.createdDate,
+            closedDate: payload.closedDate,
+            status: payload.status
+        };
+        const result = await axios.post(
+            RestApis.crm_service_ticket + "/save",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+interface IFetchUpdateTicket {
+    id: number;
+}
+
+export const fetchUpdateTicket = createAsyncThunk(
+    'crm/fetchUpdateTicket',
+    async (payload: IFetchUpdateTicket) => {
+        const values = {id: payload.id};
+
+        const result = await axios.put(
+            RestApis.crm_service_ticket + "/update",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+export const fetchDeleteTicket = createAsyncThunk(
+    'crm/fetchDeleteTicket',
+    async (id: number) => {
+        const result = await axios.delete(
+            RestApis.crm_service_ticket + "/delete?id=" + id,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+interface IFetchFindAllTicket {
+    page: number;
+    size: number;
+    searchText: string
+}
+export const fetchFindAllTicket = createAsyncThunk(
+    'crm/fetchTicketList',
+    async (payload: IFetchFindAllTicket) => {
+        const values = {page: payload.page, size: payload.size, searchText: payload.searchText};
+
+        const result = await axios.post(
+            RestApis.crm_service_ticket + "/find-all",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+//# endregion Ticket Operations
+
 
 const crmSlice = createSlice({
     name: 'crm',
@@ -256,11 +567,20 @@ const crmSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchFindAllCustomer.fulfilled, (state, action: PayloadAction<IResponse>) => {
-                state.customerList = action.payload.data;
-            })
+            state.customerList = action.payload.data;
+        })
         builder.addCase(fetchFindAllMarketingCampaign.fulfilled, (state, action: PayloadAction<IResponse>) => {
-                state.marketingCampaignList = action.payload.data;
-            })
+            state.marketingCampaignList = action.payload.data;
+        })
+        builder.addCase(fetchFindAllOpportunity.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.opportunityList = action.payload.data;
+        })
+        builder.addCase(fetchFindAllSalesActivity.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.salesActivityList = action.payload.data;
+        })
+        builder.addCase(fetchFindAllTicket.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.ticketList = action.payload.data;
+        })
     }
 });
 

@@ -9,6 +9,9 @@ import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
 import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.tsx";
+import OpportunityPage from "../pages/CRMService/OpportunityPage.tsx";
+import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
+import TicketPage from "../pages/CRMService/TicketPage.tsx";
 
 
 /**
@@ -201,11 +204,23 @@ export default function Router() {
                 },
                 {
                     path: 'customer',
-                    element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN','SUPER_ADMIN','CRM']} />,
+                    element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
                 },
                 {
                     path: 'marketing-campaign',
-                    element: <PrivateRoute element={<MarketingCampaignPage />} roles={['ADMIN','SUPER_ADMIN','CRM']} />,
+                    element: <PrivateRoute element={<MarketingCampaignPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                },
+                {
+                    path: 'opportunity',
+                    element: <PrivateRoute element={<OpportunityPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                },
+                {
+                    path: 'sales-activity',
+                    element: <PrivateRoute element={<SalesActivityPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                },
+                {
+                    path: 'tickets',
+                    element: <PrivateRoute element={<TicketPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
                 },
                 {
                     path: 'test',
