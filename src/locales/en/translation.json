@@ -107,7 +107,7 @@
 
   },
   "stockService": {
-    "changeautoordermode": "Change Auto Order Mode",
+    "changeautoordermode": "Change Auto Order",
     "description": "Description",
     "price": "Price $",
     "stockcount": "Stock Count",
@@ -162,7 +162,9 @@
     "successfullydeleted": "Successfully Deleted!",
     "addproductcategory": "Add Product Category",
     "pleaseselectstockmovementtype": "Please Select Stock Movement Type",
-    "addstockmovement": "Add Stock Movement"
+    "addstockmovement": "Add Stock Movement",
+    "warehouse": "Warehouse",
+    "productcategory": "Product Category"
 
   },
 

@@ -313,11 +313,11 @@ const ProductPage = () => {
                         paginationModel: { page: 1, pageSize: 5 },
                     },
                 }}
-                // getRowClassName={(params) =>
-                //     params.row.isExpenditureApproved
-                //         ? "approved-row" // Eğer onaylandıysa, yeşil arka plan
-                //         : "unapproved-row" // Onaylanmadıysa, kırmızı arka plan
-                // }
+                getRowClassName={(params) =>
+                    params.row.minimumStockLevel < params.row.stockCount
+                        ? "approved-row"
+                        : "unapproved-row"
+                }
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
@@ -332,13 +332,13 @@ const ProductPage = () => {
                     },
                     "& .MuiDataGrid-cell": {
                         textAlign: "center",
-                    }/*,
+                    },
                     "& .approved-row": {
-                        backgroundColor: "#e0f2e9", // Onaylananlar için yeşil arka plan
+                        backgroundColor: "#e0f2e9",
                     },
                     "& .unapproved-row": {
-                        backgroundColor: "#ffe0e0", // Onaylanmayanlar için kırmızı arka plan
-                    },*/
+                        backgroundColor: "#ffe0e0",
+                    },
 
                 }}
                 rowSelectionModel={selectedRowIds}
