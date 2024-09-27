@@ -30,7 +30,9 @@
     "productcategories": "Urun Kategorileri",
     "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
     "stockmovements": "Stok Hareketleri",
-    "customer": "Musteri",
+    "customermodule": "Musteri Modulu",
+    "crm-customers": "Musteriler",
+    "crm-marketing-campaign" : "Pazarlama Kampanyaları",
     "success": "Basarili",
     "supplier": "Tedarikci",
     "surname": "Soyad",
@@ -200,6 +202,24 @@
     "viewAllNotifications": "Tüm Bildirimleri Gör",
     "close": "Kapat",
     "delete": "Sil"
+  },
+
+  "crmService":{
+    "customer": "Müşteri",
+    "firstName": "Müşteri Adı",
+    "searchbyname":"Ad'a Göre Ara",
+    "lastName": "Müşteri Soyadı",
+    "email": "E-posta",
+    "phone": "Telefon",
+    "address": "Adres",
+    "status" : "Durum",
+    "name": "Ad",
+    "description": "Açıklama",
+    "startDate": "Başlama Tarihi",
+    "endDate": "Bitiş Tarihi",
+    "budget": "Bütçe"
+   
+
   }
 }
 

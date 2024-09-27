@@ -11,8 +11,10 @@ import {
   Category,
   Inventory,
   ShowChart,
-  FaceRetouchingNatural
+  FaceRetouchingNatural,
+  People
 } from '@mui/icons-material';
+
 import DrawerCollapseButton, { DrawerCollapseButtonProps } from '../../atoms/DrawerCollapseButton';
 
 // Define types for button configurations
@@ -71,16 +73,16 @@ export const drawerNavigations: Record<string, Button[]> = {
       type: 'collapse',
       component: DrawerCollapseButton,
       props: {
-        name: 'customer',
+        name: 'customermodule',
         TopLevelIcon: <FormatListNumbered />,
         menuItems: [
-          'customer'
+          'crm-customers','crm-marketing-campaign'
         ],
         menuIcons: [
-          <ProductionQuantityLimits />
+          <People />,<Shop />
         ],
         menuNavigations: [
-          'customer'
+          'customer', 'marketing-campaign'
         ],
       } as DrawerCollapseButtonProps,
     },

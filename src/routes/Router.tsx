@@ -10,6 +10,7 @@ import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
 import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.tsx";
 
+
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
  * when they are needed (e.g., when the user navigates to a specific route). This reduces the 
@@ -18,7 +19,8 @@ import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.
 export const VerifyAccount = lazy(() => import('../pages/VerifyAccount'));
 export const ProductPage = lazy(() => import('../pages/StockService/Customer/ProductPage.tsx'));
 export const AnalyticsDash = lazy(() => import('../pages/AnalyticsDash'));
-export const CustomerPage = lazy(() => import('../pages/CustomerPage.tsx'));
+export const CustomerPage = lazy(() => import('../pages/CRMService/CustomerPage.tsx'));
+export const MarketingCampaignPage = lazy(() => import('../pages/CRMService/MarketingCampaignPage.tsx'));
 export const ProductByMinStockLevelPage = lazy(() => import('../pages/StockService/Customer/ProductByMinStockLevelPage.tsx'));
 export const HRMPage = lazy(() => import('../pages/HRMPage'));
 export const BuyOrderPage = lazy(() => import('../pages/StockService/Customer/BuyOrderPage.tsx'));
@@ -200,6 +202,10 @@ export default function Router() {
                 {
                     path: 'customer',
                     element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN','SUPER_ADMIN','CRM']} />,
+                },
+                {
+                    path: 'marketing-campaign',
+                    element: <PrivateRoute element={<MarketingCampaignPage />} roles={['ADMIN','SUPER_ADMIN','CRM']} />,
                 },
                 {
                     path: 'test',

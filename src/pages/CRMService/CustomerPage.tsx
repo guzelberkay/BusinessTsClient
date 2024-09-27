@@ -12,9 +12,9 @@ import {
 } from "@mui/material";
 
 import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "../store";
+import { AppDispatch, useAppSelector } from "../../store";
 
-import {fetchFindAllCustomer, fetchfindByNameCustomer} from "../store/feature/crmSlice.tsx";
+import {fetchFindAllCustomer} from "../../store/feature/crmSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 
@@ -23,10 +23,6 @@ import {useTranslation} from "react-i18next";
 
 
 const CustomerPage = () => {
-
-   
-
-
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
@@ -35,14 +31,12 @@ const CustomerPage = () => {
     const customers = useAppSelector((state) => state.crmSlice.customerList);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
-    const [status, setStatus] = useState('');
 
+
+    const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation()
 
     useEffect(() => {
@@ -51,33 +45,22 @@ const CustomerPage = () => {
             size: 100,
             searchText: searchText,
         }));
-    }, [dispatch, searchText, loading, isActivating]);
+    }, [dispatch, searchText, loading, isActivating,isUpdating,isDeleting]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     }
 
-    const handleSearchByName = async () => {
-        const result = await dispatch(fetchfindByNameCustomer({
-            firstName
-        }));
-        console.log(result);
-        // dispatch(fetchfindByNameCustomer({
-        //     firstName: firstName
-        // }));
-    }
 
-    const handleSomething = () => {
-        console.log(selectedRowIds);
-    };
+
 
     const columns: GridColDef[] = [
-        { field: "firstName", headerName: "Ad", flex: 1.5, headerAlign: "center" },
-        { field: "lastName", headerName: "Soyad", flex: 1.5, headerAlign: "center" },
-        { field: "email", headerName: "Email", flex: 1.5, headerAlign: "center" },
-        { field: "phone", headerName: "Telefon", flex: 1.5, headerAlign: "center" },
-        { field: "address", headerName: "Adres", flex: 1.5, headerAlign: "center" },
-        { field: "status", headerName: "Durum", headerAlign: "center", flex: 1 },
+        { field: "firstName", headerName: t("crmService.firstName"), flex: 1.5, headerAlign: "center" },
+        { field: "lastName", headerName: t("crmService.lastName"), flex: 1.5, headerAlign: "center" },
+        { field: "email", headerName: t("crmService.email"), flex: 1.5, headerAlign: "center" },
+        { field: "phone", headerName: t("crmService.phone"), flex: 1.5, headerAlign: "center" },
+        { field: "address", headerName: t("crmService.address"), flex: 1.5, headerAlign: "center" },
+        { field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1 },
     ]
 
 
@@ -85,9 +68,9 @@ const CustomerPage = () => {
         <div style={{ height: "auto"}}>
 
             <TextField
-                label="Ad"
+                label={t("crmService.searchbyname")}
                 variant="outlined"
-                onChange={(event) =>{setSearchText(event.target.value); handleSearchByName()} }
+                onChange={(event) =>{setSearchText(event.target.value);} }
                 value={searchText}
                 style={{ marginBottom: "1%", marginTop: "1%" }}
                 fullWidth
@@ -119,6 +102,7 @@ const CustomerPage = () => {
                         backgroundColor: "rgba(224, 224, 224, 1)",
                     },
                     "& .MuiDataGrid-columnHeaderTitle": {
+                        textAlign: "center",
                         fontWeight: "bold",
                     },
                     "& .MuiDataGrid-cell": {
