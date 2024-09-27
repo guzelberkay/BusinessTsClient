@@ -155,7 +155,9 @@
     "orderdeleted": "Order Succesfully Deleted",
     "pleaseselectcustomer": "Please Select Customer",
     "addsupplier": "Add Supplier",
-    "successfullyadded": "Successfully Added!"
+    "successfullyadded": "Successfully Added!",
+    "deleting": "Once deleted, you will not be able to recover data!",
+    "successfullydeleted": "Successfully Deleted!"
 
   },
 

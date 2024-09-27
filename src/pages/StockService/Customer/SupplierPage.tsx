@@ -14,7 +14,7 @@ import {
 import {useDispatch} from "react-redux";
 import {AppDispatch, useAppSelector} from "../../../store";
 import {
-    fetchChangeAutoOrderModeOfProduct,
+    fetchChangeAutoOrderModeOfProduct, fetchDeleteOrder, fetchDeleteSupplier,
     fetchFindAllBuyOrder,
     fetchFindAllByMinimumStockLevel,
     fetchFindAllCustomer,
@@ -23,13 +23,14 @@ import {
     fetchFindAllSupplier,
     fetchFindByIdOrder, fetchFindByIdSupplier,
     fetchSaveSellOrder,
-    fetchSaveSupplier
+    fetchSaveSupplier, fetchUpdateBuyOrder, fetchUpdateSupplier
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import {IProduct} from "../../../model/IProduct.tsx";
 import MenuItem from "@mui/material/MenuItem";
 import {ICustomer} from "../../../model/ICustomer.tsx";
+import {ISupplier} from "../../../model/ISupplier.tsx";
 
 
 const SupplierPage = () => {
@@ -39,11 +40,8 @@ const SupplierPage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [suppliers, setSuppliers] = useState([]);
+    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
 
-
-    const [price, setPrice] = useState(0);
-    const [description, setDescription] = useState('');
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation()
     //MODAL
@@ -96,6 +94,68 @@ const SupplierPage = () => {
             setContactInfo(data.payload.data.contactInfo)
             setAddress(data.payload.data.address)
             setNotes(data.payload.data.notes)
+        })
+    }
+    const handleDelete = async () => {
+        for (let id of selectedRowIds) {
+            const selectedSupplier = suppliers.find(
+                (selectedSupplier) => selectedSupplier.id === id
+            );
+            if (!selectedSupplier) continue;
+
+            setIsDeleting(true);
+            try {
+                const result = await Swal.fire({
+                    title: t("swal.areyousure"),
+                    text: t("stockService.deleting"),
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: t("stockService.yesdeleteit"),
+                    cancelButtonText: t("stockService.cancel"),
+                });
+
+                if (result.isConfirmed) {
+                    const data = await dispatch(fetchDeleteSupplier(selectedSupplier.id));
+
+                    if (data.payload.message !=="Success") {
+                        await Swal.fire({
+                            title: t("swal.error"),
+                            text: data.payload.message,
+                            icon: "error",
+                            confirmButtonText: t("swal.ok"),
+                        });
+                        return;
+                    } else {
+                        await Swal.fire({
+                            title: t("stockService.deleted"),
+                            text: t("stockService.successfullydeleted"),
+                            icon: "success",
+                        });
+                    }
+                }
+            } catch (error) {
+                localStorage.removeItem("token");
+            }
+        }
+        setSelectedRowIds([]);
+        setIsDeleting(false);
+    }
+
+    const handleUpdate = async () => {
+        dispatch(fetchUpdateSupplier({ id: selectedRowIds[0], name: name, surname: surname, contactInfo: contactInfo, address: address, notes: notes})).then(() => {
+            setName('')
+            setSurname('')
+            setEmail('')
+            setContactInfo('')
+            setAddress('')
+            setNotes('')
+            setIsUpdating(false)
+            setOpenAddSupplierModal(false);
+            Swal.fire({
+                title: t("stockService.updated"),
+                text: t("stockService.successfullyupdated"),
+                icon: "success",
+            });
         })
     }
 
@@ -241,18 +301,18 @@ const SupplierPage = () => {
                         {t("stockService.update")}
                     </Button>
                 </Grid>
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleSomething}
+                        onClick={handleDelete}
                         variant="contained"
-                        color="warning"
-                        disabled={isActivating || selectedRowIds.length === 0}
+                        color="error"
+                        disabled={isDeleting || selectedRowIds.length === 0}
                         //startIcon={<CancelIcon/>}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        Cancel
+                        {t("stockService.delete")}
                     </Button>
-                </Grid>*/}
+                </Grid>
 
                 <Dialog open={openAddSupplierModal} onClose={() => setOpenAddSupplierModal(false)} fullWidth
                         maxWidth='sm'>
@@ -318,8 +378,8 @@ const SupplierPage = () => {
                         <Button onClick={() => {
                             setOpenAddSupplierModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
-                        {isUpdating ? <Button onClick={() => handleSomething()} color="success" variant="contained"
-                                              disabled={selectedCustomer === 0 || selectedProduct === 0 || quantity === 0}>{t('stockService.update')}</Button>
+                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
+                                              disabled={name === ''|| surname === '' || contactInfo === '' || address === '' || notes === ''}>{t('stockService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveSupplier()} color="success" variant="contained"
                                     disabled={name === ''|| surname === '' || email === '' || contactInfo === '' || address === '' || notes === ''}>{t('stockService.save')}</Button>
