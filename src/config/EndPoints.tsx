@@ -9,8 +9,8 @@ const endpoints = {
   ware_house: "/stock/ware-house",
   // CRM Endpoints
   customer: "/customer",
-  user: "/user",
-  role:"/role",
+  user: "/usermanagement/user",
+  role:"/usermanagement/role",
   employee:"/employee",
   notifications: "/notifications",
 

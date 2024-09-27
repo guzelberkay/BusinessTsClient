@@ -8,6 +8,7 @@ import SideBarNotifications from "../components/molecules/SideBarNotifications";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
+import ProfileManagement from "../pages/ProfileManagement.tsx";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -203,6 +204,10 @@ export default function Router() {
                 {
                     path: 'supplier-orders',
                     element: <PrivateRoute element={<SupplierOrderPage />} roles={['ADMIN','ADMIN','SUPER_ADMIN','SUPPLIER']} />,
+                },
+                {
+                    path: 'profile-management',
+                    element: <PrivateRoute element={<ProfileManagement />}  />,
                 }
 
             ]
