@@ -5,7 +5,7 @@ import {
     GridRowSelectionModel, GridToolbar,
 } from "@mui/x-data-grid";
 import {
-    Button,
+    Button, Dialog, DialogActions, DialogContent, DialogTitle,
     Grid,
     TextField
 
@@ -16,7 +16,15 @@ import  {AppDispatch} from "../../../store";
 
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {fetchFindAllCustomer} from "../../../store/feature/stockSlice.tsx";
+import {
+    fetchDeleteCustomer,
+    fetchDeleteWareHouse,
+    fetchFindAllCustomer, fetchFindByIdCustomer,
+    fetchFindByIdWareHouse, fetchSaveWareHouse, fetchUpdateCustomer,
+    fetchUpdateWareHouse
+} from "../../../store/feature/stockSlice.tsx";
+import {ICustomer} from "../../../model/ICustomer.tsx";
+import {fetchSaveCustomer} from "../../../store/feature/stockSlice.tsx";
 
 
 
@@ -27,7 +35,7 @@ const CustomerPageStock = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [wareHouses,setWareHouses] = useState([]);
+    const [customers,setCustomers] = useState<ICustomer[]>([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -35,6 +43,21 @@ const CustomerPageStock = () => {
     const [description, setDescription] = useState('');
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation()
+
+    //MODAL
+    const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [email, setEmail] = useState('');
+    const [contactInfo, setContactInfo] = useState('');
+    const [address, setAddress] = useState('');
+    const [notes, setNotes] = useState('');
+    const [selectedCustomer, setSelectedCustomer] = useState(0);
+    const [selectedProduct, setSelectedProduct] = useState(0);
+    const [quantity, setQuantity] = useState(0);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
 
 
     useEffect(() => {
@@ -45,15 +68,124 @@ const CustomerPageStock = () => {
                 searchText: searchText,
             })
         ).then(data => {
-            setWareHouses(data.payload.data);
+            setCustomers(data.payload.data);
         })
-    }, [dispatch, searchText, loading, isActivating]);
+    }, [dispatch, searchText, loading, isActivating, isUpdating, isSaving, isDeleting]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     };
 
+    const handleOpenCustomerModal = () => {
+        setOpenAddCustomerModal(true);
+    };
 
+    const handleOpenUpdateModal = async () => {
+        setOpenAddCustomerModal(true);
+        setIsUpdating(true)
+
+        dispatch(fetchFindByIdCustomer(selectedRowIds[0])).then((data) => {
+            setName(data.payload.data.name)
+            setSurname(data.payload.data.surname)
+            setEmail(data.payload.data.email)
+        })
+    }
+    const handleUpdate = async () => {
+        dispatch(fetchUpdateCustomer({ id: selectedRowIds[0], name: name, surname: surname, email: email })).then(() => {
+            setName('')
+            setSurname('')
+            setEmail('')
+            setOpenAddCustomerModal(false);
+            Swal.fire({
+                title: t("stockService.updated"),
+                text: t("stockService.successfullyupdated"),
+                icon: "success",
+            });
+            setIsUpdating(false)
+        })
+    }
+
+    const handleSaveCustomer = async () => {
+        setIsSaving(true)
+        dispatch(fetchSaveCustomer({
+            name: name,
+            surname: surname,
+            email: email
+        }))
+            .then((data) => {
+                if (data.payload.message === "Success") {
+                    setName('')
+                    setSurname('')
+                    setEmail('')
+                    setOpenAddCustomerModal(false);
+                    Swal.fire({
+                        title: t("swal.success"),
+                        text: t("stockService.successfullyadded"),
+                        icon: "success",
+                    });
+                    setIsSaving(false)
+                } else {
+
+                    setName('')
+                    setSurname('')
+                    setEmail('')
+                    setOpenAddCustomerModal(false);
+                    Swal.fire({
+                        title: t("swal.error"),
+                        text: data.payload.message,
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+                    setIsSaving(false)
+                }
+            })
+    };
+
+    const handleDelete = async () => {
+        for (let id of selectedRowIds) {
+            const selectedCustomer = customers.find(
+                (selectedCustomer) => selectedCustomer.id === id
+            );
+            if (!selectedCustomer) continue;
+
+            setIsDeleting(true);
+            try {
+                const result = await Swal.fire({
+                    title: t("swal.areyousure"),
+                    text: t("stockService.deleting"),
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: t("stockService.yesdeleteit"),
+                    cancelButtonText: t("stockService.cancel"),
+                });
+
+                if (result.isConfirmed) {
+                    const data = await dispatch(fetchDeleteCustomer(selectedCustomer.id));
+
+                    if (data.payload.message !=="Success") {
+                        await Swal.fire({
+                            title: t("swal.error"),
+                            text: data.payload.message,
+                            icon: "error",
+                            confirmButtonText: t("swal.ok"),
+                        });
+                        setIsDeleting(false);
+                        return;
+                    } else {
+                        await Swal.fire({
+                            title: t("stockService.deleted"),
+                            text: t("stockService.successfullydeleted"),
+                            icon: "success",
+                        });
+                    }
+                }
+            } catch (error) {
+                localStorage.removeItem("token");
+            }
+        }
+        setSelectedRowIds([]);
+        setIsDeleting(false);
+    }
 
     const handleSomething = () => {
         console.log(selectedRowIds);
@@ -83,7 +215,7 @@ const CustomerPageStock = () => {
                     toolbar: GridToolbar,
 
                 }}
-                rows={wareHouses}
+                rows={customers}
                 columns={columns}
                 initialState={{
                     pagination: {
@@ -122,42 +254,92 @@ const CustomerPageStock = () => {
             />
 
             <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleSomething}
+                        onClick={handleOpenCustomerModal}
                         variant="contained"
                         color="success"
-                        disabled={isActivating || selectedRowIds.length === 0}
                         //startIcon={<ApproveIcon />}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
-                        Approve
+                        {t("stockService.add")}
                     </Button>
-                </Grid>*/}
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleChangeAutoOrderMode}
+                        onClick={handleOpenUpdateModal}
                         variant="contained"
-                        color="info"
-                        disabled={loading || selectedRowIds.length === 0}
+                        color="primary"
                         //startIcon={<DeclineIcon />}
+                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        {t("stockService.changeautoordermode")}
+                        {t("stockService.update")}
                     </Button>
-                </Grid>*/}
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleSomething}
+                        onClick={handleDelete}
                         variant="contained"
-                        color="warning"
-                        disabled={isActivating || selectedRowIds.length === 0}
+                        color="error"
+                        disabled={isDeleting || selectedRowIds.length === 0}
                         //startIcon={<CancelIcon/>}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        Cancel
+                        {t("stockService.delete")}
                     </Button>
-                </Grid>*/}
+                </Grid>
+                <Dialog open={openAddCustomerModal} onClose={() => setOpenAddCustomerModal(false)} fullWidth
+                        maxWidth='sm'>
+                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addproductcategory')}</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('authentication.name')}
+                            name="name"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('authentication.surname')}
+                            name="surname"
+                            value={surname}
+                            onChange={e => setSurname(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label="Email"
+                            name="email"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setOpenAddCustomerModal(false), setIsUpdating(false)
+                        }} color="error" variant="contained">{t('stockService.cancel')}</Button>
+                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
+                                              disabled={name === '' || surname === '' || email === ''}>{t('stockService.update')}</Button>
+                            :
+                            <Button onClick={() => handleSaveCustomer()} color="success" variant="contained"
+                                    disabled={name === '' || surname === '' || email === ''}>{t('stockService.save')}</Button>
+                        }
+
+                    </DialogActions>
+                </Dialog>
             </Grid>
         </div>
     );
