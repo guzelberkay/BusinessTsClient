@@ -213,6 +213,9 @@ const ProductPage = () => {
 
     const columns: GridColDef[] = [
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
+        { field: "supplier", headerName: t("stockService.supplier"), flex: 1.5, headerAlign: "center" },
+        { field: "wareHouse", headerName: t("stockService.warehouse"), flex: 1.5, headerAlign: "center" },
+        { field: "productCategory", headerName: t("stockService.productcategory"), flex: 1, headerAlign: "center" },
         { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
         {
             field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
@@ -232,10 +235,9 @@ const ProductPage = () => {
             },
         },
 
-        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center" },
-        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5 },
+        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 0.75, headerAlign: "center" },
+        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 0.75 },
         { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 
 
     ];
@@ -359,7 +361,7 @@ const ProductPage = () => {
                         onClick={handleOpenUpdateModal}
                         variant="contained"
                         color="info"
-                        disabled={loading || selectedRowIds.length > 1}
+                        disabled={loading || selectedRowIds.length > 1 || selectedRowIds.length === 0}
                         //startIcon={<DeclineIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
