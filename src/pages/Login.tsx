@@ -60,6 +60,7 @@ export function Login() {
     const handleLogin = () => {
         if (validateForm()) {
             dispatch(fetchLogin({ email, password })).then((data) => {
+                // TODO: Add subscription check
                 if (data.payload.code === 200) {
                     localStorage.setItem('token', data.payload.data);
                     

@@ -192,6 +192,17 @@
     "viewAllNotifications": "Tüm Bildirimleri Gör",
     "close": "Kapat",
     "delete": "Sil"
+  },
+
+  "plans":{
+    "name" : {
+      "pmm" : "Proje Yönetimi Modülü",
+      "crmm" : "Müşteri İlişkileri Yönetimi Modülü",
+      "imm" : "Envanter Yönetimi Modülü",
+      "hrmm" : "İnsan Kaynakları Yönetim Modülü",
+      "fam" : "Finans ve Muhasebe Modülü",
+      "oam" : "Operasyon Analiz Modülü"
+    }
   }
 }
 

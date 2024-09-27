@@ -192,5 +192,16 @@
     "viewAllNotifications": "View All Notifications",
     "close": "Close",
     "delete": "Delete"
+  },
+
+  "plans":{
+    "name":{
+      "pmm" : "Project Management Module",
+      "crmm" : "Customer Relationship Management Module",
+      "imm" : "Inventory Management Module",
+      "hrmm" : "Human Resources Management Module",
+      "fam" : "Finance and Accounting Module",
+      "oam" : "Operation Analysis Module"
+    }
   }
 }

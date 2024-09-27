@@ -1,17 +1,15 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Button, drawerNavigations } from "./DrawerNavigations";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../store";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../../store";
 import { fetchUserRoles } from "../../../store/feature/userSlice";
 
 export default function DrawerButtonRenderer() {
-  const [userRoles, setUserRoles] = useState<string[]>([]);
   const dispatch = useDispatch<AppDispatch>();
+  const userRoles = useSelector((state: RootState) => state.userSlice.userRoleList);
 
   useEffect(() => {
-    dispatch(fetchUserRoles()).then((data) => {
-      setUserRoles(data.payload.data);
-    });
+    dispatch(fetchUserRoles());
   }, [dispatch]);
 
   // Check if member have modules
@@ -19,7 +17,7 @@ export default function DrawerButtonRenderer() {
   
   // Get other role buttons excluding BASIC and MEMBER
   const otherRoleButtons = userRoles
-    .filter((role: string) => role !== "BASIC" && role !== "MEMBER") // Exclude BASIC and MEMBER roles
+    .filter((role: string) => role !== "BASIC" && role !== "MEMBER")
     .flatMap((role: string) => drawerNavigations[role] || []);
 
   // Check if MEMBER role exists in userRoles
