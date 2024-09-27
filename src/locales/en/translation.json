@@ -158,7 +158,9 @@
     "successfullyadded": "Successfully Added!",
     "deleting": "Once deleted, you will not be able to recover data!",
     "successfullydeleted": "Successfully Deleted!",
-    "addproductcategory": "Add Product Category"
+    "addproductcategory": "Add Product Category",
+    "pleaseselectstockmovementtype": "Please Select Stock Movement Type",
+    "addstockmovement": "Add Stock Movement"
 
   },
 

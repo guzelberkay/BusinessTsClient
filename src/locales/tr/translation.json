@@ -158,7 +158,9 @@
     "deleting": "Silindikten sonra veriyi geri alamazsiniz.",
     "successfullydeleted": "Basariyla Silindi!",
     "addwarehouse": "Depo Ekle",
-    "addproductcategory": "Urun Kategorisi Ekle"
+    "addproductcategory": "Urun Kategorisi Ekle",
+    "pleaseselectstockmovementtype": "Lütfen Stok Hareket Tipini Seciniz",
+    "addstockmovement": "Stok Hareketi Ekle"
 
   },
 

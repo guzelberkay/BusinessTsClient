@@ -78,13 +78,13 @@ const ProductPage = () => {
 
     const handleOpenAddProductModal = () => {
         setOpenAddProductModel(true);
-        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 100})).then((res) => {
+        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 1000})).then((res) => {
             setSuppliers(res.payload.data);
         })
-        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 100})).then((res) => {
+        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 1000})).then((res) => {
             setWareHouses(res.payload.data);
         })
-        dispatch(fetchFindAllProductCategory({searchText:'',page: 0, size: 100})).then((res) => {
+        dispatch(fetchFindAllProductCategory({searchText:'',page: 0, size: 1000})).then((res) => {
             setProductCategories(res.payload.data);
         })
     };

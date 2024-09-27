@@ -75,6 +75,7 @@ const SupplierPage = () => {
 
     const handleOpenAddSupplierModal = () => {
         setOpenAddSupplierModal(true);
+        setIsUpdating(false)
     };
 
     const handleSomething = () => {
