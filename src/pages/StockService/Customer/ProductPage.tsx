@@ -49,12 +49,12 @@ const ProductPage = () => {
 
     //MODAL
     const [openAddProductModal, setOpenAddProductModel] = useState(false);
-    const [warehouses, setWarehouses] = useState<ISupplier[]>({} as ISupplier[]);
-    const [selectedSupplier,setSelectedSupplier] = useState<ISupplier>({} as ISupplier);
-    const [wareHouses, setWareHouses] = useState<IWareHouse[]>({} as IWareHouse[]);
-    const [selectedWarehouse,setSelectedWareHouse] = useState<IWareHouse>({} as IWareHouse);
-    const [productCategories, setProductCategories] = useState<IProductCategory[]>({} as IProductCategory[]);
-    const [selectedProductCategory,setSelectedProductCategory] = useState<IProductCategory>({} as IProductCategory);
+    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
+    const [selectedSupplier,setSelectedSupplier] = useState(0);
+    const [wareHouses, setWareHouses] = useState<IWareHouse[]>([]);
+    const [selectedWarehouse,setSelectedWareHouse] = useState(0);
+    const [productCategories, setProductCategories] = useState<IProductCategory[]>([]);
+    const [selectedProductCategory,setSelectedProductCategory] = useState(0);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
@@ -79,7 +79,7 @@ const ProductPage = () => {
     const handleOpenAddProductModal = () => {
         setOpenAddProductModel(true);
         dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 100})).then((res) => {
-            setWarehouses(res.payload.data);
+            setSuppliers(res.payload.data);
         })
         dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 100})).then((res) => {
             setWareHouses(res.payload.data);
@@ -97,9 +97,9 @@ const ProductPage = () => {
             setPrice(0);
             setStockCount(0);
             setMinimumStockLevel(0);
-            setSelectedProductCategory({} as IProductCategory);
-            setSelectedSupplier({} as ISupplier);
-            setSelectedWareHouse({} as IWareHouse);
+            setSelectedProductCategory(0);
+            setSelectedSupplier(0);
+            setSelectedWareHouse(0);
             setLoading(false);
             setOpenAddProductModel(false);
             Swal.fire({
@@ -116,7 +116,7 @@ const ProductPage = () => {
         setOpenAddProductModel(true);
         setIsUpdating(true)
         dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 100})).then((res) => {
-            setWarehouses(res.payload.data);
+            setSuppliers(res.payload.data);
         })
         dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 100})).then((res) => {
             setWareHouses(res.payload.data);
@@ -145,9 +145,9 @@ const ProductPage = () => {
             setPrice(0);
             setStockCount(0);
             setMinimumStockLevel(0);
-            setSelectedProductCategory({} as IProductCategory);
-            setSelectedSupplier({} as ISupplier);
-            setSelectedWareHouse({} as IWareHouse);
+            setSelectedProductCategory(0);
+            setSelectedSupplier(0);
+            setSelectedWareHouse(0);
 
             setIsUpdating(false)
             setOpenAddProductModel(false);
@@ -399,10 +399,10 @@ const ProductPage = () => {
                             <InputLabel>{t('stockService.pleaseselectsupplier')}</InputLabel>
                             <Select
                                 value={selectedSupplier}
-                                onChange={event => setSelectedSupplier(event.target.value as ISupplier)}
+                                onChange={event => setSelectedSupplier((Number)(event.target.value))}
                                 label="Suppliers"
                             >
-                                {Object.values(warehouses).map(supplier => (
+                                {Object.values(suppliers).map(supplier => (
                                     <MenuItem key={supplier.id} value={supplier.id}>
                                         {supplier.name}
                                     </MenuItem>
@@ -414,7 +414,7 @@ const ProductPage = () => {
                             <InputLabel>{t('stockService.pleaseselectwarehouse')}</InputLabel>
                             <Select
                                 value={selectedWarehouse}
-                                onChange={event => setSelectedWareHouse(event.target.value as IWareHouse)}
+                                onChange={event => setSelectedWareHouse((Number)(event.target.value))}
                                 label="Ware Houses"
                             >
                                 {Object.values(wareHouses).map(warehouse => (
@@ -429,7 +429,7 @@ const ProductPage = () => {
                             <InputLabel>{t('stockService.pleaseselectcategory')}</InputLabel>
                             <Select
                                 value={selectedProductCategory}
-                                onChange={event => setSelectedProductCategory(event.target.value as IProductCategory)}
+                                onChange={event => setSelectedProductCategory((Number)(event.target.value))}
                                 label="Product Categories"
                             >
                                 {Object.values(productCategories).map(productCategory => (
