@@ -195,7 +195,6 @@ const CustomerPageStock = () => {
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
         { field: "surname", headerName: t("stockService.surname"), flex: 1.5, headerAlign: "center" },
         { field: "email", headerName: "Email", flex: 1.5, headerAlign: "center" },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
     ];
 
 

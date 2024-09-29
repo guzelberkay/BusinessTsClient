@@ -53,7 +53,6 @@ const StockMovementPage = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [selectedProduct,setSelectedProduct] = useState(0);
     const [wareHouses, setWareHouses] = useState<IWareHouse[]>([]);
-    const [selectedWarehouse,setSelectedWareHouse] = useState(0);
     const [selectedStockMovementType,setSelectedStockMovementType] = useState('');
 
     const [openAddStockMovementModal, setOpenAddStockMovementModal] = useState(false);
@@ -79,7 +78,7 @@ const StockMovementPage = () => {
         setSelectedRowIds(newSelectionModel as number[]);
     };
 
-    const handleOpenAddProductCategoryModal = () => {
+    const handleOpenAddStockMovementModal = () => {
         setOpenAddStockMovementModal(true);
         setIsUpdating(false)
         dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
@@ -95,12 +94,10 @@ const StockMovementPage = () => {
         dispatch(fetchSaveStockMovement({
             productId: selectedProduct,
             quantity: quantity,
-            warehouseId: selectedWarehouse,
             stockMovementType: selectedStockMovementType
         }))
             .then((data) => {
                 if (data.payload.message === "Success") {
-                    setSelectedWareHouse(0)
                     setSelectedProduct(0)
                     setQuantity(0)
                     setSelectedStockMovementType('')
@@ -112,7 +109,6 @@ const StockMovementPage = () => {
                     });
                     setIsSaving(false)
                 } else {
-                    setSelectedWareHouse(0)
                     setSelectedProduct(0)
                     setQuantity(0)
                     setSelectedStockMovementType('')
@@ -132,25 +128,39 @@ const StockMovementPage = () => {
         setOpenAddStockMovementModal(true);
         setIsUpdating(true)
 
+        dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
+            setProducts(res.payload.data);
+        })
+        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 1000})).then((res) => {
+            setWareHouses(res.payload.data);
+        })
         dispatch(fetchFindByIdStockMovement(selectedRowIds[0])).then((data) => {
-            setSelectedWareHouse(data.payload.data.warehouseId)
             setSelectedProduct(data.payload.data.productId)
             setQuantity(data.payload.data.quantity)
             setSelectedStockMovementType(data.payload.data.stockMovementType)
         })
     }
     const handleUpdate = async () => {
-        dispatch(fetchUpdateStockMovement({ id: selectedRowIds[0], productId: selectedProduct, warehouseId: selectedWarehouse, quantity: quantity, stockMovementType: selectedStockMovementType})).then(() => {
-            setSelectedWareHouse(0)
+        dispatch(fetchUpdateStockMovement({ id: selectedRowIds[0], productId: selectedProduct, quantity: quantity, stockMovementType: selectedStockMovementType})).then((data) => {
             setSelectedProduct(0)
             setQuantity(0)
             setSelectedStockMovementType('')
             setOpenAddStockMovementModal(false);
-            Swal.fire({
-                title: t("stockService.updated"),
-                text: t("stockService.successfullyupdated"),
-                icon: "success",
-            });
+            if (data.payload.message !=="Success") {
+                Swal.fire({
+                    title: t("swal.error"),
+                    text: data.payload.message,
+                    icon: "error",
+                    confirmButtonText: t("swal.ok"),
+                });
+                return;
+            } else {
+                Swal.fire({
+                    title: t("stockService.deleted"),
+                    text: t("stockService.successfullydeleted"),
+                    icon: "success",
+                });
+            }
             setIsUpdating(false)
         })
     }
@@ -209,7 +219,6 @@ const StockMovementPage = () => {
         {field: "wareHouseName", headerName: t("stockService.warehousename"), flex: 1.5, headerAlign: "center"},
         {field: "quantity", headerName: t("stockService.quantity"), flex: 1, headerAlign: "center"},
         {field: "stockMovementType", headerName: t("stockService.stockmovementtype"), flex: 1, headerAlign: "center"},
-        {field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1},
         {field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1},
     ];
 
@@ -243,11 +252,11 @@ const StockMovementPage = () => {
                         paginationModel: {page: 1, pageSize: 5},
                     },
                 }}
-                // getRowClassName={(params) =>
-                //     params.row.isExpenditureApproved
-                //         ? "approved-row" // Eğer onaylandıysa, yeşil arka plan
-                //         : "unapproved-row" // Onaylanmadıysa, kırmızı arka plan
-                // }
+                getRowClassName={(params) =>
+                    params.row.stockMovementType === "IN"
+                        ? "approved-row" // Eğer onaylandıysa, yeşil arka plan
+                        : "unapproved-row" // Onaylanmadıysa, kırmızı arka plan
+                }
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
@@ -262,13 +271,13 @@ const StockMovementPage = () => {
                     },
                     "& .MuiDataGrid-cell": {
                         textAlign: "center",
-                    }/*,
+                    },
                     "& .approved-row": {
                         backgroundColor: "#e0f2e9", // Onaylananlar için yeşil arka plan
                     },
                     "& .unapproved-row": {
                         backgroundColor: "#ffe0e0", // Onaylanmayanlar için kırmızı arka plan
-                    },*/
+                    },
 
                 }}
                 rowSelectionModel={selectedRowIds}
@@ -283,7 +292,7 @@ const StockMovementPage = () => {
             }}>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleOpenAddProductCategoryModal}
+                        onClick={handleOpenAddStockMovementModal}
                         variant="contained"
                         color="success"
                         //startIcon={<ApproveIcon />}
@@ -354,21 +363,6 @@ const StockMovementPage = () => {
 
                             </Select>
                         </FormControl>
-                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
-                            <InputLabel>{t('stockService.pleaseselectwarehouse')}</InputLabel>
-                            <Select
-                                value={selectedWarehouse}
-                                onChange={event => setSelectedWareHouse((Number)(event.target.value))}
-                                label="Ware Houses"
-                            >
-                                {Object.values(wareHouses).map(warehouse => (
-                                    <MenuItem key={warehouse.id} value={warehouse.id}>
-                                        {warehouse.name}
-                                    </MenuItem>
-                                ))}
-
-                            </Select>
-                        </FormControl>
                         <TextField
                             sx={{marginTop: '15px'}}
                             label={t('stockService.quantity')}
@@ -400,10 +394,10 @@ const StockMovementPage = () => {
                             setOpenAddStockMovementModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
                         {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
-                                              disabled={selectedProduct === 0 || selectedWarehouse === 0 || quantity === 0 || selectedStockMovementType === ''}>{t('stockService.update')}</Button>
+                                              disabled={selectedProduct === 0 || quantity === 0 || selectedStockMovementType === ''}>{t('stockService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveStockMovement()} color="success" variant="contained"
-                                    disabled={selectedProduct === 0 || selectedWarehouse === 0 || quantity === 0 || selectedStockMovementType === ''}>{t('stockService.save')}</Button>
+                                    disabled={selectedProduct === 0  || quantity === 0 || selectedStockMovementType === ''}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>

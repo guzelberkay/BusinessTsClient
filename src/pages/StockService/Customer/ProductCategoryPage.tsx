@@ -182,7 +182,6 @@ const ProductCategoryPage = () => {
 
     const columns: GridColDef[] = [
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
     ];
 
 

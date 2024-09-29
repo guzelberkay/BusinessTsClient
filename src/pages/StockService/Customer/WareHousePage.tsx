@@ -91,7 +91,6 @@ const WareHousePage = () => {
     const columns: GridColDef[] = [
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
         { field: "location", headerName: t("stockService.location"), flex: 1.5, headerAlign: "center" },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
     ];
 
     const handleOpenUpdateModal = async () => {

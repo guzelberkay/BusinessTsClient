@@ -14,13 +14,15 @@ import {
 import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../../../store";
 import {
-    fetchChangeAutoOrderModeOfProduct, fetchFindAllBuyOrder,
+    fetchApproveOrder,
+    fetchChangeAutoOrderModeOfProduct, fetchDeleteOrder, fetchFindAllBuyOrder,
     fetchFindAllByMinimumStockLevel, fetchFindAllOrdersOfSupplier,
     fetchFindAllProduct
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import {IProduct} from "../../../model/IProduct.tsx";
+import {IOrder} from "../../../model/IOrder.tsx";
 
 
 
@@ -33,7 +35,7 @@ const BuyOrderPage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [buyOrders,setBuyOrders] = useState([]);
+    const [buyOrders,setBuyOrders] = useState<IOrder[]>([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -42,6 +44,7 @@ const BuyOrderPage = () => {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation()
 
+    const [isApproving, setIsApproving] = useState(false);
 
     useEffect(() => {
         dispatch(
@@ -53,12 +56,59 @@ const BuyOrderPage = () => {
         ).then(data => {
             setBuyOrders(data.payload.data);
         })
-    }, [dispatch, searchText, loading, isActivating]);
+    }, [dispatch, searchText, loading, isActivating,isApproving]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     };
 
+    const handleApprove = async () => {
+        for (let id of selectedRowIds) {
+            const selectedBuyOrder = buyOrders.find(
+                (selectedBuyOrder) => selectedBuyOrder.id === id
+            );
+            if (!selectedBuyOrder) continue;
+
+            setIsApproving(true);
+            try {
+                const result = await Swal.fire({
+                    title: t("swal.areyousure"),
+                    text: t("stockService.approving"),
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: t("stockService.approveit"),
+                    cancelButtonText: t("stockService.cancel"),
+                });
+
+                if (result.isConfirmed) {
+                    const data = await dispatch(fetchApproveOrder(selectedBuyOrder.id));
+
+                    if (data.payload.code !=="Success") {
+                        await Swal.fire({
+                            title: t("swal.success"),
+                            text: data.payload.message,
+                            icon: "success",
+                            confirmButtonText: t("swal.ok"),
+                        });
+
+                    } else {
+                        await Swal.fire({
+                            title: t("stockService.approved"),
+                            text: t("stockService.successfullyapproved"),
+                            icon: "success",
+                        });
+                        setIsApproving(false)
+                        return
+
+                    }
+                }
+            } catch (error) {
+                localStorage.removeItem("token");
+            }
+        }
+        setSelectedRowIds([]);
+        setIsApproving(false);
+    }
 
 
     const handleSomething = () => {
@@ -163,18 +213,18 @@ const BuyOrderPage = () => {
             />
 
             <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleSomething}
+                        onClick={handleApprove}
                         variant="contained"
                         color="success"
-                        disabled={isActivating || selectedRowIds.length === 0}
+                        disabled={isApproving || selectedRowIds.length === 0}
                         //startIcon={<ApproveIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        Approve
+                        {t("stockService.approve")}
                     </Button>
-                </Grid>*/}
+                </Grid>
                 {/*<Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleChangeAutoOrderMode}

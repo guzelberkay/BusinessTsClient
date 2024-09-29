@@ -106,7 +106,7 @@
 
   },
   "stockService": {
-    "changeautoordermode": "Otomatik Sipariş Modunu Değiştir",
+    "changeautoordermode": "Oto. Sipariş Modunu Değiştir",
     "description": "Açıklama",
     "price": "Fiyat $",
     "stockcount": "Stok Sayısı",
@@ -163,8 +163,14 @@
     "addwarehouse": "Depo Ekle",
     "addproductcategory": "Urun Kategorisi Ekle",
     "pleaseselectstockmovementtype": "Lütfen Stok Hareket Tipini Seciniz",
-    "addstockmovement": "Stok Hareketi Ekle"
-
+    "addstockmovement": "Stok Hareketi Ekle",
+    "warehouse": "Depo",
+    "productcategory": "Urun Kategorisi",
+    "approve": "ONAYLA",
+    "approved": "Onaylandı!",
+    "successfullyapproved": "Basariyla Onaylandi!",
+    "approving": "Onaylandıktan sonra veriyi geri alamazsiniz.",
+    "approveit": "Onayla"
   },
 
   "dashboard": {
