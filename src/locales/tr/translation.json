@@ -100,8 +100,8 @@
     "passwordMismatch": "Şifreler eşleşmemektedir.",
     "passwordSuccesfullyChanged" : "Şifreniz başarıyla değiştirildi.",
     "failedChangePassword" : "Şifre değiştirilemedi.",
-    "infoSentEmailForPasswordReset" : "Şifre sıfırlama e-postası gönderildi."
-    
+    "infoSentEmailForPasswordReset" : "Şifre sıfırlama e-postası gönderildi.",
+    "unsubscribe" : "İlgili hizmetleri abonelik süresinin sonuna kadar kullanabilirsiniz."
     
 
   },

@@ -1,16 +1,10 @@
-import { useEffect } from "react";
 import { Button, drawerNavigations } from "./DrawerNavigations";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../store";
-import { fetchUserRoles } from "../../../store/feature/userSlice";
 
 export default function DrawerButtonRenderer() {
   const dispatch = useDispatch<AppDispatch>();
   const userRoles = useSelector((state: RootState) => state.userSlice.userRoleList);
-
-  useEffect(() => {
-    dispatch(fetchUserRoles());
-  }, [dispatch]);
 
   // Check if member have modules
   const basicRoleButtons = userRoles.length > 1 ? drawerNavigations["BASIC"] || [] : [];

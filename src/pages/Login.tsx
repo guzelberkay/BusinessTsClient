@@ -18,6 +18,7 @@ import { fetchLogin } from '../store/feature/authSlice';
 import { fetchUserRoles } from '../store/feature/userSlice';
 import Swal from 'sweetalert2';
 import PasswordResetPopup from '../components/core/PasswordResetPopup';
+import { fetchCheckSubscription } from '../store/feature/subscriptionSlice';
 
 export function Login() {
     const navigate = useNavigate();
@@ -63,21 +64,22 @@ export function Login() {
                 // TODO: Add subscription check
                 if (data.payload.code === 200) {
                     localStorage.setItem('token', data.payload.data);
-                    
-                    dispatch(fetchUserRoles()).then((rolesData) => {
-                        const roles = rolesData.payload.data;
-                    
-                        // Check if the only role is 'MEMBER'
-                        if (roles.length === 1 && roles[0] === 'MEMBER') {
-                            navigate('/subscription');
-                        } else if (roles.includes('SUPER_ADMIN')) {
-                            navigate('/admin-dashboard');
-                        } else if (roles.includes('MEMBER')) {
-                            navigate('/member-dashboard');
-                        } else if (roles.includes('SUPPLIER')) {
-                            navigate('/supplier-orders');
-                        }
-                    });
+                    dispatch(fetchCheckSubscription()).then(() => {
+                        dispatch(fetchUserRoles()).then((rolesData) => {
+                            const roles = rolesData.payload.data;
+                        
+                            // Check if the only role is 'MEMBER'
+                            if (roles.length === 1 && roles[0] === 'MEMBER') {
+                                navigate('/subscription');
+                            } else if (roles.includes('SUPER_ADMIN')) {
+                                navigate('/admin-dashboard');
+                            } else if (roles.includes('MEMBER')) {
+                                navigate('/member-dashboard');
+                            } else if (roles.includes('SUPPLIER')) {
+                                navigate('/supplier-orders');
+                            }
+                        });
+                    })    
                 } else {
                     Swal.fire(t('authentication.error'), data.payload.message || t('authentication.loginFailed'), 'error');
                 }

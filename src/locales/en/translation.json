@@ -101,8 +101,8 @@
     "passwordMismatch":"Passwords do not match.",
     "passwordSuccesfullyChanged" : "Password Succesfully Changed",
     "failedChangePassword" : "Failed to Change Password",
-    "infoSentEmailForPasswordReset" : "Password reset email has been sent."
-  
+    "infoSentEmailForPasswordReset" : "Password reset email has been sent.",
+    "unsubscribe" : "You can use the relevant services until the end of the subscription period."
     
     
 
