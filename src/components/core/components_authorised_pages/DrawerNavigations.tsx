@@ -1,28 +1,30 @@
 import React from 'react';
 import DrawerButton, { DrawerButtonProps } from '../../atoms/DrawerButton';
 import {
-  Dashboard,
-  FormatListNumbered,
-  ProductionQuantityLimits,
-  Shop,
-  Sell,
-  SupportAgent,
-  Warehouse,
-  Category,
-  Inventory,
-  ShowChart,
-  FaceRetouchingNatural, 
-  Person, 
-  Loyalty,
-  People
+    Dashboard,
+    FormatListNumbered,
+    ProductionQuantityLimits,
+    Shop,
+    Sell,
+    SupportAgent,
+    Warehouse,
+    Category,
+    Inventory,
+    ShowChart,
+    FaceRetouchingNatural,
+    Person,
+    Loyalty,
+    People,
+    TipsAndUpdates,
+    AirplaneTicket
 } from '@mui/icons-material';
 
-import DrawerCollapseButton, { DrawerCollapseButtonProps } from '../../atoms/DrawerCollapseButton';
+import DrawerCollapseButton, {DrawerCollapseButtonProps} from '../../atoms/DrawerCollapseButton';
 
 // Define types for button configurations
-export type Button = 
-  | { type: 'button', component: typeof DrawerButton, props: DrawerButtonProps }
-  | { type: 'collapse', component: typeof DrawerCollapseButton, props: DrawerCollapseButtonProps };
+export type Button =
+    | { type: 'button', component: typeof DrawerButton, props: DrawerButtonProps }
+    | { type: 'collapse', component: typeof DrawerCollapseButton, props: DrawerCollapseButtonProps };
 
 // Define role-based button configurations
 export const drawerNavigations: Record<string, Button[]> = {

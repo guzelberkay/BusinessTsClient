@@ -10,6 +10,9 @@ import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
 import Subscription from "../pages/SubscriptionService/Subscription.tsx";
 import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.tsx";
+import OpportunityPage from "../pages/CRMService/OpportunityPage.tsx";
+import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
+import TicketPage from "../pages/CRMService/TicketPage.tsx";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -161,7 +164,7 @@ export default function Router() {
                 },
                 {
                     path: 'subscription',
-                    element: <PrivateRoute element={<Subscription />} roles={['MEMBER','SUPER_ADMIN']} />,       
+                    element: <PrivateRoute element={<Subscription />} roles={['MEMBER','SUPER_ADMIN']} />,
                 },
                 {
                     path: 'products',
@@ -214,6 +217,18 @@ export default function Router() {
                 {
                     path: 'marketing-campaign',
                     element: <PrivateRoute element={<MarketingCampaignPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                },
+                {
+                    path: 'opportunity',
+                    element: <PrivateRoute element={<OpportunityPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                },
+                {
+                    path: 'sales-activity',
+                    element: <PrivateRoute element={<SalesActivityPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                },
+                {
+                    path: 'tickets',
+                    element: <PrivateRoute element={<TicketPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
                 },
                 {
                     path: 'test',

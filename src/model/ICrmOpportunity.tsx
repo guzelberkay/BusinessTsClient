@@ -1,10 +1,11 @@
 export interface ICrmOpportunity {
     id: number;
     memberId: number;
+    customerId: number;
     name: string;
     description: string;
-    startDate: Date;
-    endDate: Date;
-    budget: number;
-    status: string;
+    value: number;
+    stage: string;
+    probability: number;
+    status:string
 }

@@ -36,6 +36,9 @@
     "customermodule": "Customer Module",
     "crm-customers" : "Costumer List",
     "crm-marketing-campaign" : "Marketing Campaigns",
+    "crm-opportunity" : "Opportunities",
+    "crm-sales-activity" : "Sales Activities",
+    "crm-ticket" : "Tickets",
     "stock-customer": "Customers",
     "stockmodule": "Stock Module"
   },
@@ -238,6 +241,26 @@
     "description": "Description",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "budget": "Budget"
+    "budget": "Budget",
+    "value": "Value",
+    "stage": "Stage",
+    "probability": "Probability",
+    "search-by-type": "Search by Type",
+    "type": "Type",
+    "date": "Date",
+    "notes": "Notes",
+    "search-by-subject": "Search by Subject",
+    "subject": "Subject",
+    "priority": "Priority",
+    "ticket_status": "Ticket Status",
+    "created_date": "Created Date",
+    "closed_date": "Closed Date"
+
+
+
+
+
+   
+
   }
 }
