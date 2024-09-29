@@ -213,9 +213,9 @@ const ProductPage = () => {
 
     const columns: GridColDef[] = [
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "supplier", headerName: t("stockService.supplier"), flex: 1.5, headerAlign: "center" },
-        { field: "wareHouse", headerName: t("stockService.warehouse"), flex: 1.5, headerAlign: "center" },
-        { field: "productCategory", headerName: t("stockService.productcategory"), flex: 1, headerAlign: "center" },
+        { field: "supplierName", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center" },
+        { field: "wareHouseName", headerName: t("stockService.warehouse"), flex: 1.5, headerAlign: "center" },
+        { field: "productCategoryName", headerName: t("stockService.productcategory"), flex: 1, headerAlign: "center" },
         { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
         {
             field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
@@ -313,11 +313,11 @@ const ProductPage = () => {
                         paginationModel: { page: 1, pageSize: 5 },
                     },
                 }}
-                // getRowClassName={(params) =>
-                //     params.row.isExpenditureApproved
-                //         ? "approved-row" // Eğer onaylandıysa, yeşil arka plan
-                //         : "unapproved-row" // Onaylanmadıysa, kırmızı arka plan
-                // }
+                getRowClassName={(params) =>
+                    params.row.minimumStockLevel < params.row.stockCount
+                        ? "approved-row"
+                        : "unapproved-row"
+                }
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
@@ -332,13 +332,13 @@ const ProductPage = () => {
                     },
                     "& .MuiDataGrid-cell": {
                         textAlign: "center",
-                    }/*,
+                    },
                     "& .approved-row": {
-                        backgroundColor: "#e0f2e9", // Onaylananlar için yeşil arka plan
+                        backgroundColor: "#e0f2e9",
                     },
                     "& .unapproved-row": {
-                        backgroundColor: "#ffe0e0", // Onaylanmayanlar için kırmızı arka plan
-                    },*/
+                        backgroundColor: "#ffe0e0",
+                    },
 
                 }}
                 rowSelectionModel={selectedRowIds}
@@ -384,7 +384,7 @@ const ProductPage = () => {
                     <Button
                         onClick={handleChangeAutoOrderMode}
                         variant="contained"
-                        color="info"
+                        color="warning"
                         disabled={loading || selectedRowIds.length === 0}
                         //startIcon={<DeclineIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
