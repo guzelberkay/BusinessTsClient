@@ -30,13 +30,14 @@
     "productcategories": "Product Categories",
     "productsbyminstocklevel": "Products By Min. Stock Level",
     "stockmovements": "Stock Movements",
+    "customer": "Customer",
+    "supplier": "Supplier",
+    "subscription": "Subscription",
     "customermodule": "Customer Module",
     "crm-customers" : "Costumer List",
     "crm-marketing-campaign" : "Marketing Campaigns",
     "stock-customer": "Customers",
     "stockmodule": "Stock Module"
-
-
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -100,8 +101,8 @@
     "passwordMismatch":"Passwords do not match.",
     "passwordSuccesfullyChanged" : "Password Succesfully Changed",
     "failedChangePassword" : "Failed to Change Password",
-    "infoSentEmailForPasswordReset" : "Password reset email has been sent."
-  
+    "infoSentEmailForPasswordReset" : "Password reset email has been sent.",
+    "unsubscribe" : "You can use the relevant services until the end of the subscription period."
     
     
 
@@ -201,9 +202,19 @@
     "noNotifications": "No notifications found",
     "viewAllNotifications": "View All Notifications",
     "close": "Close",
-    "delete": "Delete",
     "addwarehouse": "Add Warehouse",
     "delete": "Delete"
+  },
+
+  "plans":{
+    "name":{
+      "pmm" : "Project Management Module",
+      "crmm" : "Customer Relationship Management Module",
+      "imm" : "Inventory Management Module",
+      "hrmm" : "Human Resources Management Module",
+      "fam" : "Finance and Accounting Module",
+      "oam" : "Operation Analysis Module"
+    }
   },
 
   "crmService":{
@@ -220,9 +231,5 @@
     "startDate": "Start Date",
     "endDate": "End Date",
     "budget": "Budget"
-
-
-   
-
   }
 }

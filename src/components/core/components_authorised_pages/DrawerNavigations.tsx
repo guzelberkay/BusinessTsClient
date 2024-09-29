@@ -11,7 +11,9 @@ import {
   Category,
   Inventory,
   ShowChart,
-  FaceRetouchingNatural,
+  FaceRetouchingNatural, 
+  Person, 
+  Loyalty,
   People
 } from '@mui/icons-material';
 
@@ -28,7 +30,7 @@ export const drawerNavigations: Record<string, Button[]> = {
     {
       type: 'button',
       component: DrawerButton,
-      props: { name: 'dashboard', icon: <Dashboard />} as DrawerButtonProps,
+      props: { name: 'dashboard', icon: <Dashboard />, navigation: 'admin-dashboard'} as DrawerButtonProps,
     },
     {
       type: 'collapse',
@@ -65,10 +67,37 @@ export const drawerNavigations: Record<string, Button[]> = {
       } as DrawerCollapseButtonProps,
     }
   ],
+
   ADMIN: [
-    // Add ADMIN buttons here
+    {
+      type: 'button',
+      component: DrawerButton,
+      props: { name: 'dashboard', icon: <Dashboard />, navigation: 'admin-dashboard'} as DrawerButtonProps,
+    }
   ],
-  CRM:[
+
+  MEMBER:[
+    {
+      type: 'button',
+      component: DrawerButton,
+      props: { name: 'subscription', icon: <Loyalty />} as DrawerButtonProps,
+    },
+    {
+      type: 'button',
+      component: DrawerButton,
+      props: { name: 'profile', icon: <Person />} as DrawerButtonProps,
+    }
+  ],
+
+  BASIC:[
+    {
+      type: 'button',
+      component: DrawerButton,
+      props: { name: 'dashboard',  icon: <Dashboard />, navigation: 'member-dashboard'} as DrawerButtonProps,
+    }
+  ],
+
+  CRMM:[
     {
       type: 'collapse',
       component: DrawerCollapseButton,
@@ -87,6 +116,7 @@ export const drawerNavigations: Record<string, Button[]> = {
       } as DrawerCollapseButtonProps,
     },
   ],
+
   IMM: [
     {
       type: 'collapse',
@@ -106,6 +136,7 @@ export const drawerNavigations: Record<string, Button[]> = {
       } as DrawerCollapseButtonProps,
     }
   ],
+
   SUPPLIER: [
     {
       type: 'collapse',

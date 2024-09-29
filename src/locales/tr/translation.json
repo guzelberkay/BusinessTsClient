@@ -35,6 +35,7 @@
     "crm-marketing-campaign" : "Pazarlama Kampanyaları",
     "success": "Basarili",
     "supplier": "Tedarikci",
+    "subscription": "Abonelik",
     "surname": "Soyad",
     "stock-customer": "Musteriler",
     "stockmodule": "Stok Modulu"
@@ -99,8 +100,8 @@
     "passwordMismatch": "Şifreler eşleşmemektedir.",
     "passwordSuccesfullyChanged" : "Şifreniz başarıyla değiştirildi.",
     "failedChangePassword" : "Şifre değiştirilemedi.",
-    "infoSentEmailForPasswordReset" : "Şifre sıfırlama e-postası gönderildi."
-    
+    "infoSentEmailForPasswordReset" : "Şifre sıfırlama e-postası gönderildi.",
+    "unsubscribe" : "İlgili hizmetleri abonelik süresinin sonuna kadar kullanabilirsiniz."
     
 
   },
@@ -204,6 +205,17 @@
     "delete": "Sil"
   },
 
+  "plans":{
+    "name" : {
+      "pmm" : "Proje Yönetimi Modülü",
+      "crmm" : "Müşteri İlişkileri Yönetimi Modülü",
+      "imm" : "Envanter Yönetimi Modülü",
+      "hrmm" : "İnsan Kaynakları Yönetim Modülü",
+      "fam" : "Finans ve Muhasebe Modülü",
+      "oam" : "Operasyon Analiz Modülü"
+    }
+  },
+
   "crmService":{
     "customer": "Müşteri",
     "firstName": "Müşteri Adı",
@@ -218,8 +230,6 @@
     "startDate": "Başlama Tarihi",
     "endDate": "Bitiş Tarihi",
     "budget": "Bütçe"
-   
-
   }
 }
 
