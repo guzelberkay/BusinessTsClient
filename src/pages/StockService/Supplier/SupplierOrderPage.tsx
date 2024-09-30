@@ -149,7 +149,20 @@ const BuyOrderPage = () => {
                 }
                 return '$0.00'; // Return default value if not a valid number
             }, },
-        { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
+        {
+            field: "createdAt",
+            headerName: t("stockService.createdat"),
+            headerAlign: "center",
+            flex: 1.5,
+            renderCell: (params) => {
+                const value = params.value;
+                if (value) {
+                    const date = new Date(value);
+                    return `${date.toLocaleDateString()} / ${date.toLocaleTimeString()}`;
+                }
+                return '-'; // Return default value if date is not available
+            },
+        },
         { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 
 
