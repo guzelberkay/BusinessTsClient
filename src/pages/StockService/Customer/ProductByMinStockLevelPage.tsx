@@ -92,21 +92,20 @@ const ProductByMinStockLevelPage = () => {
     ];
 
     const handleChangeAutoOrderMode = async () => {
+        setLoading(true);
+        const result = await Swal.fire({
+            title: t("swal.areyousure"),
+            text: t("swal.changeorderstatus"),
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: t("swal.yeschangeit"),
+        });
         for (let id of selectedRowIds) {
             const selectedProduct = products.find(
                 (selectedProduct) => selectedProduct.id === id
             );
             if (!selectedProduct) continue;
-
-            setLoading(true);
             try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("swal.changeorderstatus"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("swal.yeschangeit"),
-                });
 
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchChangeAutoOrderModeOfProduct(selectedProduct.id));
@@ -118,25 +117,21 @@ const ProductByMinStockLevelPage = () => {
                             icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
+                        setSelectedRowIds([]);
+                        setLoading(false);
                         return;
-                    } else {
-                        await Swal.fire({
-                            title: t("swal.changed"),
-                            text: t("swal.productautoordermodechanged"),
-                            icon: "success",
-                        });
-                        await dispatch(
-                            fetchFindAllByMinimumStockLevel({
-                                page: 0,
-                                size: 100,
-                                searchText: searchText,
-                            })
-                        ).then((res) => setProducts(res.payload.data))
                     }
                 }
             } catch (error) {
                 localStorage.removeItem("token");
             }
+        }
+        if (result.isConfirmed) {
+            await Swal.fire({
+                title: t("swal.changed"),
+                text: t("swal.productautoordermodechanged"),
+                icon: "success",
+            });
         }
         setSelectedRowIds([]);
         setLoading(false);
