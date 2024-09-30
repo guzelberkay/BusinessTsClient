@@ -172,8 +172,14 @@
     "approve": "APPROVE",
     "approving": "Approving...",
     "approveit": "Approve it!",
-    "approved": "Approved!",
-    "successfullyapproved": "Successfully Approved!"
+    "approved": "Approved",
+    "successfullyapproved": "Successfully Approved!",
+    "open": "ENABLED",
+    "close": "CLOSED",
+    "active": "Active",
+    "in": "In",
+    "out": "Out"
+
 
 
   },

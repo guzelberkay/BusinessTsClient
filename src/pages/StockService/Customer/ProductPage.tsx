@@ -234,9 +234,14 @@ const ProductPage = () => {
 
         { field: "stockCount", headerName: t("stockService.stockcount"), flex: 0.75, headerAlign: "center" },
         { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 0.75 },
-        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 },
-
-
+        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 ,renderCell: (params) => {
+                const value = params.value;
+                if (value === true) {
+                    return t("stockService.open");
+                } else {
+                    return t("stockService.close");
+                }
+            }}
     ];
 
     const handleChangeAutoOrderMode = async () => {
@@ -350,7 +355,7 @@ const ProductPage = () => {
                         //startIcon={<ApproveIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        {t("stockService.addproduct")}
+                        {t("stockService.add")}
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>

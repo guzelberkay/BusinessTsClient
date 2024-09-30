@@ -223,8 +223,29 @@ const StockMovementPage = () => {
         {field: "productName", headerName: t("stockService.productname"), flex: 1.5, headerAlign: "center"},
         {field: "wareHouseName", headerName: t("stockService.warehousename"), flex: 1.5, headerAlign: "center"},
         {field: "quantity", headerName: t("stockService.quantity"), flex: 1, headerAlign: "center"},
-        {field: "stockMovementType", headerName: t("stockService.stockmovementtype"), flex: 1, headerAlign: "center"},
-        {field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1},
+        {field: "stockMovementType", headerName: t("stockService.stockmovementtype"), flex: 1, headerAlign: "center",renderCell: (params) => {
+                const value = params.value;
+                if (value === 'IN') {
+                    return t("stockService.in");
+                }
+                if (value === 'OUT') {
+                    return t("stockService.out");
+                }
+            }},
+        {
+            field: "createdAt",
+            headerName: t("stockService.createdat"),
+            headerAlign: "center",
+            flex: 1.5,
+            renderCell: (params) => {
+                const value = params.value;
+                if (value) {
+                    const date = new Date(value);
+                    return `${date.toLocaleDateString()} / ${date.toLocaleTimeString()}`;
+                }
+                return '-'; // Return default value if date is not available
+            },
+        },
     ];
 
     const stockMovementTypes = {

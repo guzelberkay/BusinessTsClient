@@ -171,7 +171,13 @@
     "approved": "Onaylandı!",
     "successfullyapproved": "Basariyla Onaylandi!",
     "approving": "Onaylandıktan sonra veriyi geri alamazsiniz.",
-    "approveit": "Onayla"
+    "approveit": "Onayla",
+    "open": "ACIK",
+    "close": "KAPALI",
+    "active": "Aktif",
+    "approved": "Onaylandı",
+    "in": "Giriş",
+    "out": "Çıkış"
   },
 
   "dashboard": {
