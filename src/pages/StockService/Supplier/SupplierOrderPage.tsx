@@ -63,48 +63,47 @@ const BuyOrderPage = () => {
     };
 
     const handleApprove = async () => {
+        setIsApproving(true);
+        const result = await Swal.fire({
+            title: t("swal.areyousure"),
+            text: t("stockService.approving"),
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: t("stockService.approveit"),
+            cancelButtonText: t("stockService.cancel"),
+        });
         for (let id of selectedRowIds) {
             const selectedBuyOrder = buyOrders.find(
                 (selectedBuyOrder) => selectedBuyOrder.id === id
             );
             if (!selectedBuyOrder) continue;
-
-            setIsApproving(true);
             try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("stockService.approving"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("stockService.approveit"),
-                    cancelButtonText: t("stockService.cancel"),
-                });
 
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchApproveOrder(selectedBuyOrder.id));
 
                     if (data.payload.code !=="Success") {
                         await Swal.fire({
-                            title: t("swal.success"),
+                            title: t("swal.error"),
                             text: data.payload.message,
-                            icon: "success",
+                            icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
-
-                    } else {
-                        await Swal.fire({
-                            title: t("stockService.approved"),
-                            text: t("stockService.successfullyapproved"),
-                            icon: "success",
-                        });
-                        setIsApproving(false)
-                        return
-
+                        setSelectedRowIds([]);
+                        setIsApproving(false);
+                        return;
                     }
                 }
             } catch (error) {
                 localStorage.removeItem("token");
             }
+        }
+        if (result.isConfirmed) {
+            await Swal.fire({
+                title: t("stockService.approved"),
+                text: t("stockService.successfullyapproved"),
+                icon: "success",
+            });
         }
         setSelectedRowIds([]);
         setIsApproving(false);

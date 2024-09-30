@@ -150,23 +150,23 @@ const WareHousePage = () => {
     };
 
     const handleDelete = async () => {
+        setIsDeleting(true);
+        const result = await Swal.fire({
+            title: t("swal.areyousure"),
+            text: t("stockService.deleting"),
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: t("stockService.yesdeleteit"),
+            cancelButtonText: t("stockService.cancel"),
+        });
         for (let id of selectedRowIds) {
             const selectedWarehouse = wareHouses.find(
                 (selectedWarehouse) => selectedWarehouse.id === id
             );
             if (!selectedWarehouse) continue;
 
-            setIsDeleting(true);
-            try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("stockService.deleting"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("stockService.yesdeleteit"),
-                    cancelButtonText: t("stockService.cancel"),
-                });
 
+            try {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteWareHouse(selectedWarehouse.id));
 
@@ -177,18 +177,21 @@ const WareHousePage = () => {
                             icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
+                        setSelectedRowIds([]);
+                        setIsDeleting(false);
                         return;
-                    } else {
-                        await Swal.fire({
-                            title: t("stockService.deleted"),
-                            text: t("stockService.successfullydeleted"),
-                            icon: "success",
-                        });
                     }
                 }
             } catch (error) {
                 localStorage.removeItem("token");
             }
+        }
+        if (result.isConfirmed ) {
+            await Swal.fire({
+                title: t("stockService.deleted"),
+                text: t("stockService.successfullydeleted"),
+                icon: "success",
+            });
         }
         setSelectedRowIds([]);
         setIsDeleting(false);
