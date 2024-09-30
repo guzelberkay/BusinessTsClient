@@ -162,23 +162,22 @@ const ProductPage = () => {
     }
 
     const handleDelete = async () => {
+        setIsDeleting(true);
+        const result = await Swal.fire({
+            title: t("swal.areyousure"),
+            text: t("stockService.deleteproduct"),
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: t("stockService.yesdeleteit"),
+            cancelButtonText: t("stockService.cancel"),
+        });
         for (let id of selectedRowIds) {
             const selectedProduct = products.find(
                 (selectedProduct) => selectedProduct.id === id
             );
             if (!selectedProduct) continue;
 
-            setIsDeleting(true);
             try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("stockService.deleteproduct"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("stockService.yesdeleteit"),
-                    cancelButtonText: t("stockService.cancel"),
-                });
-
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteProduct(selectedProduct.id));
 
@@ -189,23 +188,21 @@ const ProductPage = () => {
                             icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
+                        setSelectedRowIds([]);
+                        setIsDeleting(false);
                         return;
-                    } else {
-                        await Swal.fire({
-                            title: t("stockService.deleted"),
-                            text: t("stockService.productdeleted"),
-                            icon: "success",
-                        });
-                        await dispatch(fetchFindAllProduct({
-                            page: 0,
-                            size: 100,
-                            searchText: searchText,
-                        }));
                     }
                 }
             } catch (error) {
                 localStorage.removeItem("token");
             }
+        }
+        if (result.isConfirmed) {
+            await Swal.fire({
+                title: t("stockService.deleted"),
+                text: t("stockService.productdeleted"),
+                icon: "success",
+            });
         }
         setSelectedRowIds([]);
         setIsDeleting(false);
