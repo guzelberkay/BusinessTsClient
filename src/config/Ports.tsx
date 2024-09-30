@@ -1,3 +1,5 @@
+import { subscriptionSlice } from "../store/feature";
+
 // To hold the port numbers for different services. Remove when not needed (gateway integration)
 const ports = {
   auth: "9090", // Example: Port for the authentication service
@@ -6,6 +8,8 @@ const ports = {
   hrm:"9096",
   crm: "9098",
   notification: "9095",
+  subscription: "9091",
+  finance: "9089"
 };
 
 export default ports;

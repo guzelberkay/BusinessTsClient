@@ -1,5 +1,6 @@
 export interface ICrmCustomer {
     id: number;
+    memberId:number
     firstName: string;
     lastName: string;
     email: string;

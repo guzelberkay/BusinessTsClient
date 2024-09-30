@@ -87,7 +87,6 @@ const ProductByMinStockLevelPage = () => {
         { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center" },
         { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5 },
         { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 
 
     ];

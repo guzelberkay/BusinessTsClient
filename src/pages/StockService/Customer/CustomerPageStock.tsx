@@ -1,106 +1,152 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     DataGrid,
     GridColDef,
     GridRowSelectionModel, GridToolbar,
 } from "@mui/x-data-grid";
 import {
-    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
-    Grid, InputLabel, Select,
+    Button, Dialog, DialogActions, DialogContent, DialogTitle,
+    Grid,
     TextField
 
 } from "@mui/material";
 
-import {useDispatch} from "react-redux";
-import {AppDispatch, useAppSelector} from "../../../store";
-import {
-    fetchChangeAutoOrderModeOfProduct, fetchDeleteOrder, fetchDeleteSupplier,
-    fetchFindAllBuyOrder,
-    fetchFindAllByMinimumStockLevel,
-    fetchFindAllCustomer,
-    fetchFindAllProduct,
-    fetchFindAllSellOrder,
-    fetchFindAllSupplier,
-    fetchFindByIdOrder, fetchFindByIdSupplier,
-    fetchSaveSellOrder,
-    fetchSaveSupplier, fetchUpdateBuyOrder, fetchUpdateSupplier
-} from "../../../store/feature/stockSlice.tsx";
+import { useDispatch } from "react-redux";
+import  {AppDispatch} from "../../../store";
+
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProduct} from "../../../model/IProduct.tsx";
-import MenuItem from "@mui/material/MenuItem";
+import {
+    fetchDeleteCustomer,
+    fetchDeleteWareHouse,
+    fetchFindAllCustomer, fetchFindByIdCustomer,
+    fetchFindByIdWareHouse, fetchSaveWareHouse, fetchUpdateCustomer,
+    fetchUpdateWareHouse
+} from "../../../store/feature/stockSlice.tsx";
 import {ICustomer} from "../../../model/ICustomer.tsx";
-import {ISupplier} from "../../../model/ISupplier.tsx";
+import {fetchSaveCustomer} from "../../../store/feature/stockSlice.tsx";
 
 
-const SupplierPage = () => {
+
+const CustomerPageStock = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
+    const [customers,setCustomers] = useState<ICustomer[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [isActivating, setIsActivating] = useState(false);
 
+    const [price, setPrice] = useState(0);
+    const [description, setDescription] = useState('');
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation()
+
     //MODAL
-    const [openAddSupplierModal, setOpenAddSupplierModal] = useState(false);
+    const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
     const [contactInfo, setContactInfo] = useState('');
     const [address, setAddress] = useState('');
     const [notes, setNotes] = useState('');
+    const [selectedCustomer, setSelectedCustomer] = useState(0);
+    const [selectedProduct, setSelectedProduct] = useState(0);
     const [quantity, setQuantity] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
 
+
     useEffect(() => {
         dispatch(
-            fetchFindAllSupplier({
+            fetchFindAllCustomer({
                 page: 0,
                 size: 100,
                 searchText: searchText,
             })
         ).then(data => {
-            setSuppliers(data.payload.data);
+            setCustomers(data.payload.data);
         })
-    }, [dispatch, searchText,  isSaving,isUpdating, isDeleting]);
+    }, [dispatch, searchText, loading, isActivating, isUpdating, isSaving, isDeleting]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     };
 
-    const handleOpenAddSupplierModal = () => {
-        setOpenAddSupplierModal(true);
-        setIsUpdating(false)
-    };
-
-    const handleSomething = () => {
-        console.log(selectedRowIds);
+    const handleOpenCustomerModal = () => {
+        setOpenAddCustomerModal(true);
     };
 
     const handleOpenUpdateModal = async () => {
-        setOpenAddSupplierModal(true);
+        setOpenAddCustomerModal(true);
         setIsUpdating(true)
 
-        dispatch(fetchFindByIdSupplier(selectedRowIds[0])).then((data) => {
+        dispatch(fetchFindByIdCustomer(selectedRowIds[0])).then((data) => {
             setName(data.payload.data.name)
             setSurname(data.payload.data.surname)
             setEmail(data.payload.data.email)
-            setContactInfo(data.payload.data.contactInfo)
-            setAddress(data.payload.data.address)
-            setNotes(data.payload.data.notes)
         })
     }
+    const handleUpdate = async () => {
+        dispatch(fetchUpdateCustomer({ id: selectedRowIds[0], name: name, surname: surname, email: email })).then(() => {
+            setName('')
+            setSurname('')
+            setEmail('')
+            setOpenAddCustomerModal(false);
+            Swal.fire({
+                title: t("stockService.updated"),
+                text: t("stockService.successfullyupdated"),
+                icon: "success",
+            });
+            setIsUpdating(false)
+        })
+    }
+
+    const handleSaveCustomer = async () => {
+        setIsSaving(true)
+        dispatch(fetchSaveCustomer({
+            name: name,
+            surname: surname,
+            email: email
+        }))
+            .then((data) => {
+                if (data.payload.message === "Success") {
+                    setName('')
+                    setSurname('')
+                    setEmail('')
+                    setOpenAddCustomerModal(false);
+                    Swal.fire({
+                        title: t("swal.success"),
+                        text: t("stockService.successfullyadded"),
+                        icon: "success",
+                    });
+                    setIsSaving(false)
+                } else {
+
+                    setName('')
+                    setSurname('')
+                    setEmail('')
+                    setOpenAddCustomerModal(false);
+                    Swal.fire({
+                        title: t("swal.error"),
+                        text: data.payload.message,
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+                    setIsSaving(false)
+                }
+            })
+    };
+
     const handleDelete = async () => {
         for (let id of selectedRowIds) {
-            const selectedSupplier = suppliers.find(
-                (selectedSupplier) => selectedSupplier.id === id
+            const selectedCustomer = customers.find(
+                (selectedCustomer) => selectedCustomer.id === id
             );
-            if (!selectedSupplier) continue;
+            if (!selectedCustomer) continue;
 
             setIsDeleting(true);
             try {
@@ -114,7 +160,7 @@ const SupplierPage = () => {
                 });
 
                 if (result.isConfirmed) {
-                    const data = await dispatch(fetchDeleteSupplier(selectedSupplier.id));
+                    const data = await dispatch(fetchDeleteCustomer(selectedCustomer.id));
 
                     if (data.payload.message !=="Success") {
                         await Swal.fire({
@@ -123,6 +169,7 @@ const SupplierPage = () => {
                             icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
+                        setIsDeleting(false);
                         return;
                     } else {
                         await Swal.fire({
@@ -140,100 +187,38 @@ const SupplierPage = () => {
         setIsDeleting(false);
     }
 
-    const handleUpdate = async () => {
-        dispatch(fetchUpdateSupplier({ id: selectedRowIds[0], name: name, surname: surname, contactInfo: contactInfo, address: address, notes: notes})).then(() => {
-            setName('')
-            setSurname('')
-            setEmail('')
-            setContactInfo('')
-            setAddress('')
-            setNotes('')
-            setIsUpdating(false)
-            setOpenAddSupplierModal(false);
-            Swal.fire({
-                title: t("stockService.updated"),
-                text: t("stockService.successfullyupdated"),
-                icon: "success",
-            });
-        })
-    }
-
-    const handleSaveSupplier = async () => {
-        setIsSaving(true)
-        dispatch(fetchSaveSupplier({
-            name: name,
-            surname: surname,
-            email: email,
-            contactInfo: contactInfo,
-            address: address,
-            notes: notes,
-        }))
-            .then((data) => {
-                if (data.payload.message === "Success") {
-                    setName('')
-                    setSurname('')
-                    setEmail('')
-                    setContactInfo('')
-                    setAddress('')
-                    setNotes('')
-                    setOpenAddSupplierModal(false);
-                    Swal.fire({
-                        title: t("swal.success"),
-                        text: t("stockService.successfullyadded"),
-                        icon: "success",
-                    });
-                    setIsSaving(false)
-                } else {
-
-                    setName('')
-                    setSurname('')
-                    setEmail('')
-                    setContactInfo('')
-                    setAddress('')
-                    setNotes('')
-                    setOpenAddSupplierModal(false);
-                    Swal.fire({
-                        title: t("swal.error"),
-                        text: data.payload.message,
-                        icon: "error",
-                        confirmButtonText: t("swal.ok"),
-                    });
-                    setIsSaving(false)
-                }
-            })
+    const handleSomething = () => {
+        console.log(selectedRowIds);
     };
+
     const columns: GridColDef[] = [
-        {field: "name", headerName: t("authentication.name"), flex: 1, headerAlign: "center"},
-        {field: "surname", headerName: t("authentication.surname"), flex: 1, headerAlign: "center"},
-        {field: "email", headerName: "Email", flex: 1.5, headerAlign: "center"},
-        {field: "contactInfo", headerName: t("stockService.contactinfo"), flex: 1.5, headerAlign: "center"},
-        {field: "address", headerName: t("stockService.address"), flex: 2, headerAlign: "center"},
-        {field: "notes", headerName: t("stockService.notes"), flex: 2, headerAlign: "center"},
+        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
+        { field: "surname", headerName: t("stockService.surname"), flex: 1.5, headerAlign: "center" },
+        { field: "email", headerName: "Email", flex: 1.5, headerAlign: "center" },
     ];
 
 
     return (
-        <div style={{height: "auto"}}>
-            {/*//TODO I WILL CHANGE THIS SEARCH METHOD LATER*/}
+        <div style={{ height: "auto"}}>
             <TextField
                 label={t("stockService.searchbyname")}
                 variant="outlined"
                 onChange={(event) => setSearchText(event.target.value)}
                 value={searchText}
-                style={{marginBottom: "1%", marginTop: "1%"}}
+                style={{ marginBottom: "1%", marginTop: "1%" }}
                 fullWidth
-                inputProps={{maxLength: 50}}
+                inputProps={{ maxLength: 50 }}
             />
             <DataGrid
                 slots={{
                     toolbar: GridToolbar,
 
                 }}
-                rows={suppliers}
+                rows={customers}
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: {page: 1, pageSize: 5},
+                        paginationModel: { page: 1, pageSize: 5 },
                     },
                 }}
                 // getRowClassName={(params) =>
@@ -267,16 +252,10 @@ const SupplierPage = () => {
                 rowSelectionModel={selectedRowIds}
             />
 
-            <Grid container spacing={2} sx={{
-                flexGrow: 1,
-                justifyContent: 'flex-start',
-                alignItems: 'stretch',
-                marginTop: '2%',
-                marginBottom: '2%'
-            }}>
+            <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleOpenAddSupplierModal}
+                        onClick={handleOpenCustomerModal}
                         variant="contained"
                         color="success"
                         //startIcon={<ApproveIcon />}
@@ -315,10 +294,9 @@ const SupplierPage = () => {
                         {t("stockService.delete")}
                     </Button>
                 </Grid>
-
-                <Dialog open={openAddSupplierModal} onClose={() => setOpenAddSupplierModal(false)} fullWidth
+                <Dialog open={openAddCustomerModal} onClose={() => setOpenAddCustomerModal(false)} fullWidth
                         maxWidth='sm'>
-                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addsupplier')}</DialogTitle>
+                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addproductcategory')}</DialogTitle>
                     <DialogContent>
                         <TextField
                             sx={{marginTop: '15px'}}
@@ -342,49 +320,21 @@ const SupplierPage = () => {
                             sx={{marginTop: '15px'}}
                             label="Email"
                             name="email"
-                            disabled={isUpdating}
                             value={email}
                             onChange={e => setEmail(e.target.value)}
-                            required
-                            fullWidth
-                        />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('stockService.contactinfo')}
-                            name="contactInfo"
-                            value={contactInfo}
-                            onChange={e => setContactInfo(e.target.value)}
-                            required
-                            fullWidth
-                        />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('stockService.address')}
-                            name="address"
-                            value={address}
-                            onChange={e => setAddress(e.target.value)}
-                            required
-                            fullWidth
-                        />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('stockService.notes')}
-                            name="notes"
-                            value={notes}
-                            onChange={e => setNotes(e.target.value)}
                             required
                             fullWidth
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            setOpenAddSupplierModal(false), setIsUpdating(false)
+                            setOpenAddCustomerModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
                         {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
-                                              disabled={name === ''|| surname === '' || contactInfo === '' || address === '' || notes === ''}>{t('stockService.update')}</Button>
+                                              disabled={name === '' || surname === '' || email === ''}>{t('stockService.update')}</Button>
                             :
-                            <Button onClick={() => handleSaveSupplier()} color="success" variant="contained"
-                                    disabled={name === ''|| surname === '' || email === '' || contactInfo === '' || address === '' || notes === ''}>{t('stockService.save')}</Button>
+                            <Button onClick={() => handleSaveCustomer()} color="success" variant="contained"
+                                    disabled={name === '' || surname === '' || email === ''}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>
@@ -395,4 +345,4 @@ const SupplierPage = () => {
 }
 
 
-export default SupplierPage
+export default CustomerPageStock

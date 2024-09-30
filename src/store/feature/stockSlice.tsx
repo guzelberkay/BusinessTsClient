@@ -8,6 +8,7 @@ import {IProduct} from "../../model/IProduct";
 import {IStockMovement} from "../../model/IStockMovement";
 import {ISupplier} from "../../model/ISupplier";
 import {IWareHouse} from "../../model/IWareHouse";
+import {ICustomer} from "../../model/ICustomer";
 
 
 
@@ -18,6 +19,7 @@ interface IStockState  {
     stockMovementList:IStockMovement[]
     supplierList:ISupplier[]
     wareHouseList:IWareHouse[]
+    customerList:ICustomer[]
 }
 
 const initialStockState:IStockState = {
@@ -26,7 +28,8 @@ const initialStockState:IStockState = {
     productList:[],
     stockMovementList:[],
     supplierList:[],
-    wareHouseList:[]
+    wareHouseList:[],
+    customerList:[],
 
 }
 
@@ -48,7 +51,7 @@ export const fetchSaveProductCategory = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -66,7 +69,7 @@ export const fetchDeleteProductCategory = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -91,7 +94,7 @@ export const fetchUpdateProductCategory = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -117,7 +120,7 @@ export const fetchFindAllProductCategory = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -137,7 +140,7 @@ export const fetchFindByIdProductCategory = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -166,7 +169,7 @@ export const fetchSaveSellOrder = createAsyncThunk(
             {
                 headers: {
                     "Content-Type": "application/json",
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -175,15 +178,15 @@ export const fetchSaveSellOrder = createAsyncThunk(
     }
 );
 
-interface IfetchBuySellOrder{
+interface IfetchSaveBuyOrder{
     supplierId:number;
     productId:number;
     quantity:number;
 }
 
-export const fetchBuySellOrder = createAsyncThunk(
-    'stock/fetchBuySellOrder',
-    async (payload:IfetchBuySellOrder) => {
+export const fetchSaveBuyOrder = createAsyncThunk(
+    'stock/fetchSaveBuyOrder',
+    async (payload:IfetchSaveBuyOrder) => {
         const values = {supplierId: payload.supplierId,productId: payload.productId,quantity: payload.quantity };
 
         const result = await axios.post(
@@ -192,7 +195,7 @@ export const fetchBuySellOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -210,7 +213,7 @@ export const fetchDeleteOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -222,20 +225,48 @@ export const fetchDeleteOrder = createAsyncThunk(
 
 interface IfetchUpdateOrder{
     id:number;
+    supplierId:number;
+    productId:number;
     quantity:number;
 }
-export const fetchUpdateOrder = createAsyncThunk(
+export const fetchUpdateBuyOrder = createAsyncThunk(
     'stock/fetchUpdateOrder',
     async (payload:IfetchUpdateOrder) => {
-        const values = { id: payload.id,quantity: payload.quantity };
+        const values = {   id: payload.id,supplierId: payload.supplierId,productId: payload.productId,quantity: payload.quantity };
 
         const result = await axios.put(
-            RestApis.stock_service_order+"/update",
+            RestApis.stock_service_order+"/update-buy-order",
             values,
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+interface IfetchUpdateSellOrder{
+    id:number;
+    customerId:number;
+    productId:number;
+    quantity:number;
+}
+export const fetchUpdateSellOrder = createAsyncThunk(
+    'stock/fetchUpdateOrder',
+    async (payload:IfetchUpdateSellOrder) => {
+        const values = {   id: payload.id,customerId: payload.customerId,productId: payload.productId,quantity: payload.quantity };
+
+        const result = await axios.put(
+            RestApis.stock_service_order+"/update-sell-order",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -261,7 +292,7 @@ export const fetchFindAllBuyOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -287,7 +318,7 @@ export const fetchFindAllSellOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -307,7 +338,7 @@ export const fetchFindByIdOrder = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -367,7 +398,7 @@ export const fetchSaveProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -385,7 +416,7 @@ export const fetchDeleteProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -416,7 +447,7 @@ export const fetchUpdateProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -442,7 +473,7 @@ export const fetchFindAllProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -468,7 +499,7 @@ export const fetchFindAllByMinimumStockLevel = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -489,7 +520,7 @@ export const fetchFindByIdProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -509,7 +540,7 @@ export const fetchChangeAutoOrderModeOfProduct = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -523,7 +554,6 @@ export const fetchChangeAutoOrderModeOfProduct = createAsyncThunk(
 
 interface IfetchSaveStockMovement{
     productId:number;
-    warehouseId:number;
     quantity:number;
     stockMovementType:string;
 }
@@ -531,7 +561,7 @@ interface IfetchSaveStockMovement{
 export const fetchSaveStockMovement = createAsyncThunk(
     'stock/fetchSaveStockMovement',
     async (payload:IfetchSaveStockMovement) => {
-        const values = { productId: payload.productId,warehouseId: payload.warehouseId,quantity: payload.quantity,stockMovementType: payload.stockMovementType };
+        const values = { productId: payload.productId,quantity: payload.quantity,stockMovementType: payload.stockMovementType };
 
         const result = await axios.post(
             RestApis.stock_service_stock_movement+"/save",
@@ -539,7 +569,7 @@ export const fetchSaveStockMovement = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -557,7 +587,7 @@ export const fetchDeleteStockMovement = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -569,14 +599,13 @@ export const fetchDeleteStockMovement = createAsyncThunk(
 interface IfetchUpdateStockMovement{
     id:number;
     productId:number;
-    warehouseId:number;
     quantity:number;
     stockMovementType:string;
 }
 export const fetchUpdateStockMovement = createAsyncThunk(
     'stock/fetchUpdateStockMovement',
     async (payload:IfetchUpdateStockMovement) => {
-        const values = {   id: payload.id,productId: payload.productId,warehouseId: payload.warehouseId,quantity: payload.quantity,stockMovementType: payload.stockMovementType };
+        const values = {   id: payload.id,productId: payload.productId,quantity: payload.quantity,stockMovementType: payload.stockMovementType };
 
         const result = await axios.put(
             RestApis.stock_service_stock_movement+"/update",
@@ -584,7 +613,7 @@ export const fetchUpdateStockMovement = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -610,7 +639,7 @@ export const fetchFindAllStockMovement = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -630,7 +659,7 @@ export const fetchFindByIdStockMovement = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -646,7 +675,9 @@ export const fetchFindByIdStockMovement = createAsyncThunk(
 
 interface IfetchSaveSupplier{
     name:string;
-    contanctInfo:string;
+    surname:string;
+    email:string;
+    contactInfo:string;
     address:string;
     notes:string;
 }
@@ -654,7 +685,7 @@ interface IfetchSaveSupplier{
 export const fetchSaveSupplier = createAsyncThunk(
     'stock/fetchSaveSupplier',
     async (payload:IfetchSaveSupplier) => {
-        const values = { name: payload.name,contanctInfo: payload.contanctInfo,address: payload.address,notes: payload.notes };
+        const values = {   name: payload.name,surname: payload.surname,email: payload.email,contactInfo: payload.contactInfo,address: payload.address,notes: payload.notes };
 
         const result = await axios.post(
             RestApis.stock_service_supplier+"/save",
@@ -662,7 +693,7 @@ export const fetchSaveSupplier = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -680,7 +711,7 @@ export const fetchDeleteSupplier = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -692,14 +723,15 @@ export const fetchDeleteSupplier = createAsyncThunk(
 interface IfetchUpdateSupplier{
     id:number;
     name:string;
-    contanctInfo:string;
+    surname:string;
+    contactInfo:string;
     address:string;
     notes:string;
 }
 export const fetchUpdateSupplier = createAsyncThunk(
     'stock/fetchUpdateSupplier',
     async (payload:IfetchUpdateSupplier) => {
-        const values = {   id: payload.id,name: payload.name,contanctInfo: payload.contanctInfo,address: payload.address,notes: payload.notes };
+        const values = {   id: payload.id,name: payload.name,surname: payload.surname,contactInfo: payload.contactInfo,address: payload.address,notes: payload.notes };
 
         const result = await axios.put(
             RestApis.stock_service_supplier+"/update",
@@ -707,7 +739,7 @@ export const fetchUpdateSupplier = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -733,7 +765,7 @@ export const fetchFindAllSupplier = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -753,7 +785,7 @@ export const fetchFindByIdSupplier = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -769,10 +801,11 @@ export const fetchApproveOrder = createAsyncThunk(
 
         const result = await axios.post(
             RestApis.stock_service_supplier+"/approve-order?id="+id,
+            '',
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -799,7 +832,7 @@ export const fetchSaveWareHouse = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -817,7 +850,7 @@ export const fetchDeleteWareHouse = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -842,7 +875,7 @@ export const fetchUpdateWareHouse = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -868,7 +901,7 @@ export const fetchFindAllWareHouse = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -888,7 +921,123 @@ export const fetchFindByIdWareHouse = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+//#endregion
+
+//#region Customer
+interface IfetchSaveCustomer{
+    name:string;
+    surname:string;
+    email:string;
+}
+
+export const fetchSaveCustomer = createAsyncThunk(
+    'stock/fetchSaveWareHouse',
+    async (payload:IfetchSaveCustomer) => {
+        const values = { name: payload.name,surname: payload.surname,email: payload.email };
+
+        const result = await axios.post(
+            RestApis.stock_service_customer+"/save",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+export const fetchDeleteCustomer = createAsyncThunk(
+    'stock/fetchDeleteWareHouse',
+    async (id:number) => {
+
+        const result = await axios.delete(
+            RestApis.stock_service_customer+"/delete?id="+id,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+interface IfetchUpdateCustomer{
+    id:number;
+    name:string;
+    surname:string;
+    email:string;
+}
+export const fetchUpdateCustomer = createAsyncThunk(
+    'stock/fetchUpdateWareHouse',
+    async (payload:IfetchUpdateCustomer) => {
+        const values = {   id: payload.id,name: payload.name,surname: payload.surname,email: payload.email };
+
+        const result = await axios.put(
+            RestApis.stock_service_customer+"/update",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+interface IfetchFindAllCustomer{
+
+    searchText:string;
+    page:number;
+    size:number;
+}
+export const fetchFindAllCustomer = createAsyncThunk(
+    'stock/fetchFindAllCustomer',
+    async (payload:IfetchFindAllCustomer) => {
+        const values = { searchText: payload.searchText,page: payload.page,size: payload.size };
+
+        const result = await axios.post(
+            RestApis.stock_service_customer+"/find-all",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+export const fetchFindByIdCustomer = createAsyncThunk(
+    'stock/fetchFindByIdCustomer',
+    async (id:number) => {
+        const result = await axios.post(
+            RestApis.stock_service_customer+"/find-by-id?id="+id,
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
                 }
             }
         );
@@ -919,6 +1068,9 @@ const stockSlice = createSlice({
         });
         build.addCase(fetchFindAllWareHouse.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.wareHouseList = action.payload.data;
+        });
+        build.addCase(fetchFindAllCustomer.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.customerList = action.payload.data;
         });
 
     }

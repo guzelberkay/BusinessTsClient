@@ -1,12 +1,30 @@
 import React from 'react';
 import DrawerButton, { DrawerButtonProps } from '../../atoms/DrawerButton';
-import { Dashboard, FormatListNumbered, ProductionQuantityLimits, Shop, Sell, SupportAgent, Warehouse, Category, Inventory, ShowChart } from '@mui/icons-material';
-import DrawerCollapseButton, { DrawerCollapseButtonProps } from '../../atoms/DrawerCollapseButton';
+import {
+    Dashboard,
+    FormatListNumbered,
+    ProductionQuantityLimits,
+    Shop,
+    Sell,
+    SupportAgent,
+    Warehouse,
+    Category,
+    Inventory,
+    ShowChart,
+    FaceRetouchingNatural,
+    Person,
+    Loyalty,
+    People,
+    TipsAndUpdates,
+    AirplaneTicket
+} from '@mui/icons-material';
+
+import DrawerCollapseButton, {DrawerCollapseButtonProps} from '../../atoms/DrawerCollapseButton';
 
 // Define types for button configurations
-export type Button = 
-  | { type: 'button', component: typeof DrawerButton, props: DrawerButtonProps }
-  | { type: 'collapse', component: typeof DrawerCollapseButton, props: DrawerCollapseButtonProps };
+export type Button =
+    | { type: 'button', component: typeof DrawerButton, props: DrawerButtonProps }
+    | { type: 'collapse', component: typeof DrawerCollapseButton, props: DrawerCollapseButtonProps };
 
 // Define role-based button configurations
 export const drawerNavigations: Record<string, Button[]> = {
@@ -14,7 +32,7 @@ export const drawerNavigations: Record<string, Button[]> = {
     {
       type: 'button',
       component: DrawerButton,
-      props: { name: 'dashboard', icon: <Dashboard />} as DrawerButtonProps,
+      props: { name: 'dashboard', icon: <Dashboard />, navigation: 'admin-dashboard'} as DrawerButtonProps,
     },
     {
       type: 'collapse',
@@ -30,23 +48,6 @@ export const drawerNavigations: Record<string, Button[]> = {
         ],
         menuNavigations: [
           'products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories', 'products-by-min-stock-level', 'stock-movements'
-        ],
-      } as DrawerCollapseButtonProps,
-    },
-    {
-      type: 'collapse',
-      component: DrawerCollapseButton,
-      props: {
-        name: 'customer',
-        TopLevelIcon: <FormatListNumbered />,
-        menuItems: [
-          'customer'
-        ],
-        menuIcons: [
-          <ProductionQuantityLimits />
-        ],
-        menuNavigations: [
-          'customer'
         ],
       } as DrawerCollapseButtonProps,
     },
@@ -68,31 +69,76 @@ export const drawerNavigations: Record<string, Button[]> = {
       } as DrawerCollapseButtonProps,
     }
   ],
+
   ADMIN: [
-    // Add ADMIN buttons here
+    {
+      type: 'button',
+      component: DrawerButton,
+      props: { name: 'dashboard', icon: <Dashboard />, navigation: 'admin-dashboard'} as DrawerButtonProps,
+    }
   ],
-  CUSTOMER:[
-    // Add CUSTOMER buttons here
+
+  MEMBER:[
+    {
+      type: 'button',
+      component: DrawerButton,
+      props: { name: 'subscription', icon: <Loyalty />} as DrawerButtonProps,
+    },
+    {
+      type: 'button',
+      component: DrawerButton,
+      props: { name: 'profile', icon: <Person />} as DrawerButtonProps,
+    }
   ],
-  STOCK: [
+
+  BASIC:[
+    {
+      type: 'button',
+      component: DrawerButton,
+      props: { name: 'dashboard',  icon: <Dashboard />, navigation: 'member-dashboard'} as DrawerButtonProps,
+    }
+  ],
+
+  CRMM:[
     {
       type: 'collapse',
       component: DrawerCollapseButton,
       props: {
-        name: 'stock',
+        name: 'customermodule',
         TopLevelIcon: <FormatListNumbered />,
         menuItems: [
-          'products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements'
+          'crm-customers','crm-marketing-campaign'
         ],
         menuIcons: [
-          <ProductionQuantityLimits />, <Shop />, <Sell />, <SupportAgent />, <Warehouse />, <Category />, <Inventory />, <ShowChart />
+          <People />,<Shop />
         ],
         menuNavigations: [
-          'products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories', 'products-by-min-stock-level', 'stock-movements'
+          'customer', 'marketing-campaign'
+        ],
+      } as DrawerCollapseButtonProps,
+    },
+  ],
+
+  IMM: [
+    {
+      type: 'collapse',
+      component: DrawerCollapseButton,
+      props: {
+        name: 'stockmodule',
+        TopLevelIcon: <FormatListNumbered />,
+        menuItems: [
+          'products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements','stock-customer'
+        ],
+        menuIcons: [
+          <ProductionQuantityLimits />, <Shop />, <Sell />, <SupportAgent />, <Warehouse />, <Category />, <Inventory />, <ShowChart /> , <FaceRetouchingNatural />
+        ],
+        menuNavigations: [
+          'products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories', 'products-by-min-stock-level', 'stock-movements','stock-customer'
         ],
       } as DrawerCollapseButtonProps,
     }
   ],
+
   SUPPLIER: [
     {
       type: 'collapse',

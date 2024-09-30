@@ -5,8 +5,8 @@ import {
     GridRowSelectionModel, GridToolbar,
 } from "@mui/x-data-grid";
 import {
-    Button,
-    Grid,
+    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
+    Grid, InputLabel, Select,
     TextField
 
 } from "@mui/material";
@@ -14,13 +14,25 @@ import {
 import { useDispatch } from "react-redux";
 import  {AppDispatch, useAppSelector} from "../../../store";
 import {
-    fetchChangeAutoOrderModeOfProduct, fetchFindAllBuyOrder,
-    fetchFindAllByMinimumStockLevel,
-    fetchFindAllProduct, fetchFindAllSellOrder
+    fetchDeleteOrder,
+    fetchDeleteProduct,
+    fetchFindAllBuyOrder, fetchFindAllCustomer,
+    fetchFindAllProduct,
+    fetchFindAllProductCategory, fetchFindAllSellOrder,
+    fetchFindAllSupplier,
+    fetchFindAllWareHouse, fetchFindByIdOrder, fetchFindByIdProduct, fetchSaveBuyOrder,
+    fetchSaveProduct, fetchSaveSellOrder, fetchUpdateBuyOrder, fetchUpdateProduct, fetchUpdateSellOrder,
+
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import {IProduct} from "../../../model/IProduct.tsx";
+import {ISupplier} from "../../../model/ISupplier.tsx";
+import MenuItem from "@mui/material/MenuItem";
+import {IWareHouse} from "../../../model/IWareHouse.tsx";
+import {IProductCategory} from "../../../model/IProductCategory.tsx";
+import {IOrder} from "../../../model/IOrder.tsx";
+import {ICustomer} from "../../../model/ICustomer.tsx";
 
 
 
@@ -33,14 +45,21 @@ const SellOrderPage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [sellOrders,setSellOrders] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [sellOrders,setSellOrders] = useState<IOrder[]>({} as IOrder[]);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
 
-    const [price, setPrice] = useState(0);
-    const [description, setDescription] = useState('');
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation()
+
+    //MODAL
+    const [openAddBuyOrderModal, setOpenAddBuyOrderModal] = useState(false);
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [customers, setCustomers] = useState<ICustomer[]>([]);
+    const [selectedCustomer,setSelectedCustomer] = useState(0);
+    const [selectedProduct,setSelectedProduct] = useState(0);
+    const [quantity, setQuantity] = useState(0);
 
 
     useEffect(() => {
@@ -53,7 +72,7 @@ const SellOrderPage = () => {
         ).then(data => {
             setSellOrders(data.payload.data);
         })
-    }, [dispatch, searchText, loading, isActivating]);
+    }, [dispatch, searchText, isDeleting, isActivating, isUpdating]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
@@ -61,12 +80,154 @@ const SellOrderPage = () => {
 
 
 
+
     const handleSomething = () => {
         console.log(selectedRowIds);
     };
 
+    const handleOpenAddProductModal = () => {
+        setOpenAddBuyOrderModal(true);
+        dispatch(fetchFindAllCustomer({searchText:'',page: 0, size: 1000})).then((res) => {
+            setCustomers(res.payload.data);
+        })
+        dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
+            setProducts(res.payload.data);
+        })
+    };
+
+    const handleSaveSellOrder = async () => {
+        dispatch(fetchSaveSellOrder({
+            productId: selectedProduct as any,
+            quantity: quantity,
+            customerId: selectedCustomer as any
+        }))
+            .then((data) => {
+                if (data.payload.message === "Success") {
+                    setSelectedCustomer(0);
+                    setSelectedProduct(0);
+                    setQuantity(0);
+                    setOpenAddBuyOrderModal(false);
+                    Swal.fire({
+                        title: t("swal.success"),
+                        text: t("stockService.buyordersuccessfullyadded"),
+                        icon: "success",
+                    });
+                } else {
+
+                    setSelectedCustomer(0);
+                    setSelectedProduct(0);
+                    setQuantity(0);
+                    setOpenAddBuyOrderModal(false);
+                    Swal.fire({
+                        title: t("swal.error"),
+                        text: data.payload.message,
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+
+                }
+            })
+    };
+
+
+
+
+
+    const handleOpenUpdateModal = async () => {
+        setOpenAddBuyOrderModal(true);
+        setIsUpdating(true)
+        dispatch(fetchFindAllCustomer({searchText:'',page: 0, size: 1000})).then((res) => {
+            setCustomers(res.payload.data);
+        })
+        dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
+            setProducts(res.payload.data);
+        })
+        dispatch(fetchFindByIdOrder(selectedRowIds[0])).then((data) => {
+            setQuantity(data.payload.data.quantity);
+            setSelectedCustomer(data.payload.data.customerId);
+            setSelectedProduct(data.payload.data.productId);
+        })
+
+
+    }
+
+    const handleUpdate = async () => {
+        dispatch(fetchUpdateSellOrder({id:selectedRowIds[0], productId: selectedProduct as any, quantity: quantity, customerId: selectedCustomer as any})).then((data) => {
+
+            if (data.payload.message !== "Success") {
+                setSelectedCustomer(0);
+                setSelectedProduct(0);
+                setQuantity(0);
+                setOpenAddBuyOrderModal(false);
+                Swal.fire({
+                    title: t("swal.error"),
+                    text: data.payload.message,
+                    icon: "error",
+                    confirmButtonText: t("swal.ok"),
+                });
+                return
+            }
+            setSelectedCustomer(0);
+            setSelectedProduct(0);
+            setQuantity(0)
+            setIsUpdating(false)
+            setOpenAddBuyOrderModal(false);
+            Swal.fire({
+                title: t("stockService.updated"),
+                text: t("stockService.successfullyupdated"),
+                icon: "success",
+            });
+        })
+    }
+
+    const handleDelete = async () => {
+        for (let id of selectedRowIds) {
+            const selectedBuyOrder = sellOrders.find(
+                (selectedBuyOrder) => selectedBuyOrder.id === id
+            );
+            if (!selectedBuyOrder) continue;
+
+            setIsDeleting(true);
+            try {
+                const result = await Swal.fire({
+                    title: t("swal.areyousure"),
+                    text: t("stockService.deleteorder"),
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: t("stockService.yesdeleteit"),
+                    cancelButtonText: t("stockService.cancel"),
+                });
+
+                if (result.isConfirmed) {
+                    const data = await dispatch(fetchDeleteOrder(selectedBuyOrder.id));
+
+                    if (data.payload.code !=="Success") {
+                        await Swal.fire({
+                            title: t("swal.error"),
+                            text: data.payload.message,
+                            icon: "error",
+                            confirmButtonText: t("swal.ok"),
+                        });
+                        return;
+                    } else {
+                        await Swal.fire({
+                            title: t("stockService.deleted"),
+                            text: t("stockService.orderdeleted"),
+                            icon: "success",
+                        });
+                    }
+                }
+            } catch (error) {
+                localStorage.removeItem("token");
+            }
+        }
+        setSelectedRowIds([]);
+        setIsDeleting(false);
+    }
+
     const columns: GridColDef[] = [
         { field: "customerName", headerName: t("stockService.customername"), flex: 1.5, headerAlign: "center" },
+        { field: "email", headerName: "Email", flex: 1.75, headerAlign: "center" },
         { field: "productName", headerName: t("stockService.productName"), flex: 1.5, headerAlign: "center" },
         {
             field: "unitPrice", headerName: t("stockService.unitprice"), flex: 1, headerAlign: "center",
@@ -101,11 +262,7 @@ const SellOrderPage = () => {
                 }
                 return '$0.00'; // Return default value if not a valid number
             }, },
-        { field: "orderType", headerName: t("stockService.ordertype"), headerAlign: "center", flex: 1.5 },
         { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
-
-
     ];
 
 
@@ -165,42 +322,96 @@ const SellOrderPage = () => {
             />
 
             <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleSomething}
+                        onClick={handleOpenAddProductModal}
                         variant="contained"
                         color="success"
-                        disabled={isActivating || selectedRowIds.length === 0}
                         //startIcon={<ApproveIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        Approve
+                        {t("stockService.add")}
                     </Button>
-                </Grid>*/}
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleChangeAutoOrderMode}
+                        onClick={handleOpenUpdateModal}
                         variant="contained"
-                        color="info"
-                        disabled={loading || selectedRowIds.length === 0}
-                        //startIcon={<DeclineIcon />}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    >
-                        {t("stockService.changeautoordermode")}
-                    </Button>
-                </Grid>*/}
-                {/*<Grid item xs={12} sm={6} md={3} lg={2}>
-                    <Button
-                        onClick={handleSomething}
-                        variant="contained"
-                        color="warning"
-                        disabled={isActivating || selectedRowIds.length === 0}
+                        color="primary"
+                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
                         //startIcon={<CancelIcon/>}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        Cancel
+                        {t("stockService.update")}
                     </Button>
-                </Grid>*/}
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
+                    <Button
+                        onClick={handleDelete}
+                        variant="contained"
+                        color="error"
+                        disabled={isDeleting || selectedRowIds.length === 0}
+                        //startIcon={<DeclineIcon />}
+                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        {t("stockService.delete")}
+                    </Button>
+                </Grid>
+
+                <Dialog open={openAddBuyOrderModal} onClose={() => setOpenAddBuyOrderModal(false)} fullWidth maxWidth='sm'>
+                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addbuyorder')}</DialogTitle>
+                    <DialogContent>
+                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                            <InputLabel>{t('stockService.pleaseselectcustomer')}</InputLabel>
+                            <Select
+                                value={selectedCustomer}
+                                onChange={event => setSelectedCustomer((Number)(event.target.value))}
+                                label="Suppliers"
+                            >
+                                {Object.values(customers).map(customer => (
+                                    <MenuItem key={customer.id} value={customer.id}>
+                                        {customer.name + ' ' + customer.surname + ' - ' + customer.email}
+                                    </MenuItem>
+                                ))}
+
+                            </Select>
+                        </FormControl>
+                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                            <InputLabel>{t('stockService.pleaseselectproduct')}</InputLabel>
+                            <Select
+                                value={selectedProduct}
+                                onChange={event => setSelectedProduct((Number)(event.target.value))}
+                                label="Products"
+                            >
+                                {products.map(product => (
+                                    <MenuItem key={product.id} value={product.id}>
+                                        {product.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <TextField
+                            sx={{marginTop:'15px'}}
+                            label={t('stockService.quantity')}
+                            name="quantity"
+                            value={quantity}
+                            onChange={e => setQuantity((Number)(e.target.value))}
+                            required
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setOpenAddBuyOrderModal(false), setIsUpdating(false)
+                        }} color="error" variant="contained">{t('stockService.cancel')}</Button>
+                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={selectedCustomer === 0 || selectedProduct === 0  || quantity === 0}>{t('stockService.update')}</Button>
+                            :
+                            <Button onClick={() => handleSaveSellOrder()} color="success" variant="contained" disabled={selectedCustomer === 0 || selectedProduct === 0 || quantity === 0}>{t('stockService.save')}</Button>
+                        }
+
+                    </DialogActions>
+                </Dialog>
             </Grid>
         </div>
     );
