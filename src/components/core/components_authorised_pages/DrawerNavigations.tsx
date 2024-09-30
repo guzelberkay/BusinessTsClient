@@ -87,7 +87,7 @@ export const drawerNavigations: Record<string, Button[]> = {
     {
       type: 'button',
       component: DrawerButton,
-      props: { name: 'profile', icon: <Person />} as DrawerButtonProps,
+      props: { name: 'profile', icon: <Person />, navigation: 'profile-management'} as DrawerButtonProps,
     }
   ],
 

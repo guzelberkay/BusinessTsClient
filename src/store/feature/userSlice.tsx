@@ -203,7 +203,7 @@ export const fetchUserRoles = createAsyncThunk(
 export const fetchUserInformation = createAsyncThunk(
     'user/fetchUserInformation',
     async () => {
-        const result = await axios.get(RestApis.user_management_service_user+"/get-user-information",
+        const result = await axios.get(RestApis.user_management_service_user+"/get-users-profile-information",
             {
                 headers: {
                     'Content-Type': 'application/json',
