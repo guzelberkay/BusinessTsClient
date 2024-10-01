@@ -15,6 +15,7 @@ import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
 import TicketPage from "../pages/CRMService/TicketPage.tsx";
 import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
+import IncomePage from "../pages/FinanceService/IncomePage.tsx";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -247,6 +248,10 @@ export default function Router() {
                 {
                     path: 'budgets',
                     element: <PrivateRoute element={<BudgetPage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                },
+                {
+                    path: 'incomes',
+                    element: <PrivateRoute element={<IncomePage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
                 },{
                     path: 'profile-management',
                     element: <PrivateRoute element={<ProfileManagement />}  />,

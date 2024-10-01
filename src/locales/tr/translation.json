@@ -303,7 +303,14 @@
     "budgetdeleted": "Bütçe Başarıyla Silindi",
     "budgetsuccesfullyupdated": "Bütçe Başarıyla Güncellendi",
     "updated": "Güncellendi!",
-    "update": "GÜNCELLE"
+    "update": "GÜNCELLE",
+    "searchbysource": "Kaynağa Göre Ara",
+    "incomesuccesfullyupdated": "Gelir Başarıyla Güncellendi",
+    "incomedate": "Tarih",
+    "source": "Kaynak",
+    "incomesuccesfullyadded": "Gelir Başarıyla Eklendi",
+    "startdate": "Başlangıç Tarihi",
+    "enddate": "Bitiş Tarihi"
   }
 }
 

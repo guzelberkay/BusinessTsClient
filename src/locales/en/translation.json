@@ -299,6 +299,13 @@
     "budgetdeleted": "Budget Deleted Succesfully",
     "budgetsuccesfullyupdated": "Budget Succesfully Updated",
     "updated": "Updated!",
-    "update": "UPDATE"
+    "update": "UPDATE",
+    "searchbysource": "Search by Source",
+    "incomesuccesfullyupdated": "Income Succesfully Updated",
+    "incomedate": "Date",
+    "source": "Source",
+    "incomesuccesfullyadded": "Income Succesfully Added",
+    "startdate": "Start Date",
+    "enddate": "End Date"
   }
 }
