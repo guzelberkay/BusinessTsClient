@@ -140,7 +140,7 @@ export const fetchFindCustomerById = createAsyncThunk(
     'crm/fetchCustomerById',
     async (id: number) => {
         const result = await axios.post(
-            RestApis.crm_service_customer + "/find-by-id?id=" + id,null,
+            RestApis.crm_service_customer + "/find-by-id?id=" + id,
             {
                 headers: {
                     'Content-Type': 'application/json',
