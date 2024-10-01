@@ -194,6 +194,22 @@ export const fetchLoginProfileManagement = createAsyncThunk(
     }
 )
 
+export const fetchChangeMyPassword = createAsyncThunk(
+    'auth/fetchChangeMyPassword',
+    async (passwordPayload: {authId: number, newPassword: string, newConfirmPassword: string})=>{
+        const result = await axios.put(RestApis.auth_service + "/change-my-password",
+            passwordPayload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
 
 
 const authSlice = createSlice({

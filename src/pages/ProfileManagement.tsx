@@ -2,8 +2,8 @@ import { Box, Button, Container, Grid, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { AppDispatch, useAppSelector } from '../store';
-import { fetchUserInformation } from '../store/feature/userSlice';
-import { fetchLoginProfileManagement } from '../store/feature/authSlice';
+import { fetchUpdateUser, fetchUserInformation } from '../store/feature/userSlice';
+import { fetchChangeMyPassword, fetchLoginProfileManagement } from '../store/feature/authSlice';
 
 function ProfileManagement() {
   const dispatch = useDispatch<AppDispatch>();
@@ -29,10 +29,31 @@ function ProfileManagement() {
         setEmail(user.email || '');
     }
   }, [user]); 
-    const handleSubmit = (e: React.FormEvent) => {
-        
+  const handleSubmit = (e: React.FormEvent) => {
+      dispatch(fetchUpdateUser({authId: user.authId,firstName, lastName, email})).then((data) => {
+          if(data.payload.code==200 ){
+              alert('Bilgileriniz Güncellendi')
+          } else {
+            alert(data.payload.message)
+          }
+      });
   };
 
+  const handleNewPasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if(newPassword!=newConfirmPassword){
+      alert('Şifreler uyuşmuyor')
+    }
+    dispatch(fetchChangeMyPassword({authId: user.authId,newPassword, newConfirmPassword})).then((data) => {
+      if(data.payload.code==200 && data.payload.data){
+        alert('Şifreniz Başarıyla Değiştirildi')
+        setNewPassword('')
+        setNewConfirmPassword('')
+      } else {
+        alert(data.payload.message)
+      }
+    });
+  }
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(fetchLoginProfileManagement({password})).then((data) => {
@@ -125,7 +146,7 @@ function ProfileManagement() {
 
 
             <Box mt={4}>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleNewPasswordSubmit}>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <TextField
@@ -167,4 +188,4 @@ function ProfileManagement() {
   
 }
 
-export default ProfileManagement
+export default ProfileManagement;
