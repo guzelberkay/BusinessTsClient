@@ -8,11 +8,11 @@ import SideBarNotifications from "../components/molecules/SideBarNotifications";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
+import Subscription from "../pages/SubscriptionService/Subscription.tsx";
 import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.tsx";
 import OpportunityPage from "../pages/CRMService/OpportunityPage.tsx";
 import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
 import TicketPage from "../pages/CRMService/TicketPage.tsx";
-
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -155,8 +155,16 @@ export default function Router() {
             ),
             children: [
                 {
-                    path: 'dashboard',
-                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN','SUPER_ADMIN','IMM']} />,
+                    path: 'admin-dashboard',
+                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN','SUPER_ADMIN']} />,
+                },
+                {
+                    path: 'member-dashboard',
+                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN','SUPER_ADMIN','MEMBER']} />,
+                },
+                {
+                    path: 'subscription',
+                    element: <PrivateRoute element={<Subscription />} roles={['MEMBER','SUPER_ADMIN']} />,
                 },
                 {
                     path: 'products',
@@ -228,9 +236,12 @@ export default function Router() {
                 },
                 {
                     path: 'profile',
-                    element: <PrivateRoute element={<Profile />} roles={['ADMIN','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<Profile />} roles={['ADMIN','MEMBER','SUPER_ADMIN']} />,
+                },
+                {
+                    path: 'supplier-orders',
+                    element: <PrivateRoute element={<SupplierOrderPage />} roles={['ADMIN','SUPER_ADMIN','SUPPLIER']} />,
                 }
-
             ]
         }
     ]);

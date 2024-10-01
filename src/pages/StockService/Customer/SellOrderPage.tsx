@@ -224,8 +224,7 @@ const SellOrderPage = () => {
         setSelectedRowIds([]);
         setIsDeleting(false);
     }
-    console.log(selectedProduct)
-    console.log(selectedCustomer)
+
     const columns: GridColDef[] = [
         { field: "customerName", headerName: t("stockService.customername"), flex: 1.5, headerAlign: "center" },
         { field: "email", headerName: "Email", flex: 1.75, headerAlign: "center" },
@@ -264,9 +263,6 @@ const SellOrderPage = () => {
                 return '$0.00'; // Return default value if not a valid number
             }, },
         { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
-
-
     ];
 
 

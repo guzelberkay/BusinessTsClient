@@ -1,3 +1,5 @@
+import { subscriptionSlice } from "../store/feature";
+
 // To hold the API endpoints for different services
 const endpoints = {
   auth: "/auth", // Example: Endpoint for the authentication service
@@ -44,6 +46,8 @@ const endpoints = {
     invoice: "/finance/invoice",
     tax: "/finance/tax",
 
+  subscription: "/subscription",
+  plan: "/plan",
 };
 
 export default endpoints;
