@@ -668,6 +668,24 @@ export const fetchFindByIdStockMovement = createAsyncThunk(
     }
 );
 
+export const fetchSaveStockMovementFromOrderId = createAsyncThunk(
+    'stock/fetchSaveStockMovementFromOrderId',
+    async (id:number) => {
+        const result = await axios.post(
+            RestApis.stock_service_stock_movement+"/save-from-order-id?id="+id,
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer `+localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
 
 //#endregion
 
