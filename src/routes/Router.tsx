@@ -13,6 +13,7 @@ import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.
 import OpportunityPage from "../pages/CRMService/OpportunityPage.tsx";
 import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
 import TicketPage from "../pages/CRMService/TicketPage.tsx";
+import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
 
 /**
@@ -241,11 +242,14 @@ export default function Router() {
                 },
                 {
                     path: 'supplier-orders',
-                    element: <PrivateRoute element={<SupplierOrderPage />} roles={['ADMIN','SUPER_ADMIN','SUPPLIER']} />,
+                    element: <PrivateRoute element={<SupplierOrderPage />} roles={['ADMIN','ADMIN','SUPER_ADMIN','SUPPLIER']} />,
                 },
                 {
                     path: 'budgets',
                     element: <PrivateRoute element={<BudgetPage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                },{
+                    path: 'profile-management',
+                    element: <PrivateRoute element={<ProfileManagement />}  />,
                 }
             ]
         }

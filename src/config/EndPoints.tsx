@@ -16,8 +16,8 @@ const endpoints = {
     opportunity: "/crm/opportunity",
     sales_activity: "/crm/sales-activity",
     ticket: "/crm/ticket",
-    user: "/user",
-    role: "/role",
+    user: "/usermanagement/user",
+    role:"/usermanagement/role",
     employee: "/employee",
     notifications: "/notifications",
     // FAM Endpoints
