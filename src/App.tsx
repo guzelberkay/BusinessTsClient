@@ -4,14 +4,15 @@ import Router from "./routes/Router";
 import './util/i18n';
 import { useScrollToTop } from "./hooks/use-scroll-to-top";
 import Loader from "./components/atoms/loader/Loader";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AppDispatch } from './store';
 import { fetchCheckSubscription } from './store/feature/subscriptionSlice';
 import { fetchUserRoles } from './store/feature/userSlice';
-
+import { setupInterceptors } from './api/interceptors';
 const App = () => {
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   /**
    * Fetches the user's subscription status and all the user's roles.
    * This is called whenever the location changes (i.e. when the user navigates to a different page),
@@ -25,6 +26,11 @@ const App = () => {
   useEffect(() => {
     fetchData();
   }, [location]);
+
+  useEffect(() => {
+    // Set up Axios interceptors at the start of the app
+    setupInterceptors(dispatch, navigate);
+  }, [dispatch, navigate]);
 
   useScrollToTop();
   return (

@@ -166,22 +166,24 @@ const StockMovementPage = () => {
     }
 
     const handleDelete = async () => {
+        setIsDeleting(true);
+        const result = await Swal.fire({
+            title: t("swal.areyousure"),
+            text: t("stockService.deleting"),
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: t("stockService.yesdeleteit"),
+            cancelButtonText: t("stockService.cancel"),
+        });
         for (let id of selectedRowIds) {
             const selectedStockMovement = stockMovements.find(
                 (selectedStockMovement) => selectedStockMovement.id === id
             );
             if (!selectedStockMovement) continue;
 
-            setIsDeleting(true);
+
             try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("stockService.deleting"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("stockService.yesdeleteit"),
-                    cancelButtonText: t("stockService.cancel"),
-                });
+
 
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteStockMovement(selectedStockMovement.id));
@@ -193,18 +195,21 @@ const StockMovementPage = () => {
                             icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
+                        setSelectedRowIds([]);
+                        setIsDeleting(false);
                         return;
-                    } else {
-                        await Swal.fire({
-                            title: t("stockService.deleted"),
-                            text: t("stockService.successfullydeleted"),
-                            icon: "success",
-                        });
                     }
                 }
             } catch (error) {
                 localStorage.removeItem("token");
             }
+        }
+        if (result.isConfirmed) {
+            await Swal.fire({
+                title: t("stockService.deleted"),
+                text: t("stockService.successfullydeleted"),
+                icon: "success",
+            });
         }
         setSelectedRowIds([]);
         setIsDeleting(false);
@@ -218,8 +223,29 @@ const StockMovementPage = () => {
         {field: "productName", headerName: t("stockService.productname"), flex: 1.5, headerAlign: "center"},
         {field: "wareHouseName", headerName: t("stockService.warehousename"), flex: 1.5, headerAlign: "center"},
         {field: "quantity", headerName: t("stockService.quantity"), flex: 1, headerAlign: "center"},
-        {field: "stockMovementType", headerName: t("stockService.stockmovementtype"), flex: 1, headerAlign: "center"},
-        {field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1},
+        {field: "stockMovementType", headerName: t("stockService.stockmovementtype"), flex: 1, headerAlign: "center",renderCell: (params) => {
+                const value = params.value;
+                if (value === 'IN') {
+                    return t("stockService.in");
+                }
+                if (value === 'OUT') {
+                    return t("stockService.out");
+                }
+            }},
+        {
+            field: "createdAt",
+            headerName: t("stockService.createdat"),
+            headerAlign: "center",
+            flex: 1.5,
+            renderCell: (params) => {
+                const value = params.value;
+                if (value) {
+                    const date = new Date(value);
+                    return `${date.toLocaleDateString()} / ${date.toLocaleTimeString()}`;
+                }
+                return '-'; // Return default value if date is not available
+            },
+        },
     ];
 
     const stockMovementTypes = {
