@@ -1,4 +1,4 @@
-import {IBudget} from "../../model/IBudget.tsx";
+ import {IBudget} from "../../model/IBudget.tsx";
 import {IDeclaration} from "../../model/IDeclaration.tsx";
 import {IExpense} from "../../model/IExpense.tsx";
 import {IFinancialReport} from "../../model/IFinancialReport.tsx";
@@ -27,7 +27,7 @@ const initialFinanceState: IFinanceState = {
     financialReportList: [],
     incomeList: [],
     invoiceList: [],
-    taxList: []
+    taxList: [],
 };
 
 
@@ -905,9 +905,7 @@ const financeSlice = createSlice({
     name: 'finance',
     initialState: initialFinanceState,
     reducers: {
-        closeModal: () => {
-
-        },
+        closeModal: () => {},
     },
     extraReducers: (builder) => {
         builder
