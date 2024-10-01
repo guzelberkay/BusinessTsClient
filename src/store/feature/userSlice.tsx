@@ -17,6 +17,7 @@ const initialUserState: IUserState = {
         authId: 0,
         firstName: "",
         lastName: "",
+        email: "",
         role: []
     },
     userRoleList: [],
@@ -52,7 +53,7 @@ export const fetchSaveUser = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
                 }
             }
         );
@@ -193,6 +194,27 @@ export const fetchUserRoles = createAsyncThunk(
     }
 )
 
+//----------------------------------------------------
+
+/**
+ * Kullanıcı bilgilerini güncellemek istediğinde var olan bilgilerini getirmek amacıyla kullanılır.
+ */
+
+export const fetchUserInformation = createAsyncThunk(
+    'user/fetchUserInformation',
+    async () => {
+        const result = await axios.get(RestApis.user_management_service_user+"/get-users-profile-information",
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
 const userSlice = createSlice({
     name: 'user',
     initialState: initialUserState,
@@ -210,6 +232,12 @@ const userSlice = createSlice({
             if(action.payload.code){
                 state.userRoleList = action.payload.data;
                 localStorage.setItem('userRoleList', JSON.stringify(action.payload.data));
+            }
+        });
+
+        builder.addCase(fetchUserInformation.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            if(action.payload.code == 200){
+                state.user = action.payload.data;
             }
         });
     }

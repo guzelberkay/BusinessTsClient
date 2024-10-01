@@ -36,18 +36,9 @@
     "crm-opportunity" : "Fırsatlar",
     "success": "Basarili",
     "supplier": "Tedarikci",
-    "subscription": "Abonelik",
     "surname": "Soyad",
     "stock-customer": "Musteriler",
-    "stockmodule": "Stok Modulu",
-    "financemodule": "Finans Modulu",
-    "budgets": "Butceleme",
-    "declarations": "Beyanlar",
-    "expenses": "Giderler",
-    "incomes": "Gelirler",
-    "invoices": "Faturalar",
-    "financial-reports": "Finansal Raporlar",
-    "taxes": "Vergiler"
+    "stockmodule": "Stok Modulu"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -109,13 +100,13 @@
     "passwordMismatch": "Şifreler eşleşmemektedir.",
     "passwordSuccesfullyChanged" : "Şifreniz başarıyla değiştirildi.",
     "failedChangePassword" : "Şifre değiştirilemedi.",
-    "infoSentEmailForPasswordReset" : "Şifre sıfırlama e-postası gönderildi.",
-    "unsubscribe" : "İlgili hizmetleri abonelik süresinin sonuna kadar kullanabilirsiniz."
+    "infoSentEmailForPasswordReset" : "Şifre sıfırlama e-postası gönderildi."
+    
     
 
   },
   "stockService": {
-    "changeautoordermode": "Oto. Sipariş Modunu Değiştir",
+    "changeautoordermode": "Otomatik Sipariş Modunu Değiştir",
     "description": "Açıklama",
     "price": "Fiyat $",
     "stockcount": "Stok Sayısı",
@@ -172,22 +163,7 @@
     "addwarehouse": "Depo Ekle",
     "addproductcategory": "Urun Kategorisi Ekle",
     "pleaseselectstockmovementtype": "Lütfen Stok Hareket Tipini Seciniz",
-    "addstockmovement": "Stok Hareketi Ekle",
-    "warehouse": "Depo",
-    "productcategory": "Urun Kategorisi",
-    "approve": "ONAYLA",
-    "approved": "Onaylandı",
-    "successfullyapproved": "Basariyla Onaylandi!",
-    "approving": "Onaylandıktan sonra veriyi geri alamazsiniz.",
-    "approveit": "Onayla",
-    "open": "ACIK",
-    "close": "KAPALI",
-    "active": "Aktif",
-    "in": "Giriş",
-    "out": "Çıkış",
-    "arrived": "Teslim Alindi",
-    "addfromorderid": "Siparis No'dan Ekle",
-    "orderid": "Siparis Id"
+    "addstockmovement": "Stok Hareketi Ekle"
 
   },
 
@@ -227,17 +203,6 @@
     "viewAllNotifications": "Tüm Bildirimleri Gör",
     "close": "Kapat",
     "delete": "Sil"
-  },
-
-  "plans":{
-    "name" : {
-      "pmm" : "Proje Yönetimi Modülü",
-      "crmm" : "Müşteri İlişkileri Yönetimi Modülü",
-      "imm" : "Envanter Yönetimi Modülü",
-      "hrmm" : "İnsan Kaynakları Yönetim Modülü",
-      "fam" : "Finans ve Muhasebe Modülü",
-      "oam" : "Operasyon Analiz Modülü"
-    }
   },
 
   "crmService":{
@@ -280,30 +245,9 @@
     "successfullydeleted" : "Başarıyla Silindi!",
     "add" : "EKLE",
     "add_customer" : "Müşteri Ekle",
-    "save" : "KAYDET",
-    "added" : "Müşteri Başarıyla Eklendi!"
+    "save" : "KAYDET"
    
 
-  },
-
-  "financeService": {
-    "searchbydepartment": "Departmana Göre Ara",
-    "budgetsuccesfullyadded": "Bütçe Başarıyla Eklendi",
-    "add": "EKLE",
-    "department": "Departman",
-    "description": "Açıklama",
-    "year": "Yıl",
-    "amount": "Miktar",
-    "save": "KAYDET",
-    "deleteproduct": "Bütçeyi silmek istediğinizden emin misiniz?",
-    "delete": "SİL",
-    "yesdeleteit": "Evet sil!",
-    "cancel": "İptal",
-    "deleted": "Silindi!",
-    "budgetdeleted": "Bütçe Başarıyla Silindi",
-    "budgetsuccesfullyupdated": "Bütçe Başarıyla Güncellendi",
-    "updated": "Güncellendi!",
-    "update": "GÜNCELLE"
   }
 }
 

@@ -63,48 +63,47 @@ const BuyOrderPage = () => {
     };
 
     const handleApprove = async () => {
+        setIsApproving(true);
+        const result = await Swal.fire({
+            title: t("swal.areyousure"),
+            text: t("stockService.approving"),
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: t("stockService.approveit"),
+            cancelButtonText: t("stockService.cancel"),
+        });
         for (let id of selectedRowIds) {
             const selectedBuyOrder = buyOrders.find(
                 (selectedBuyOrder) => selectedBuyOrder.id === id
             );
             if (!selectedBuyOrder) continue;
-
-            setIsApproving(true);
             try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("stockService.approving"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("stockService.approveit"),
-                    cancelButtonText: t("stockService.cancel"),
-                });
 
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchApproveOrder(selectedBuyOrder.id));
 
                     if (data.payload.code !=="Success") {
                         await Swal.fire({
-                            title: t("swal.success"),
+                            title: t("swal.error"),
                             text: data.payload.message,
-                            icon: "success",
+                            icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
-
-                    } else {
-                        await Swal.fire({
-                            title: t("stockService.approved"),
-                            text: t("stockService.successfullyapproved"),
-                            icon: "success",
-                        });
-                        setIsApproving(false)
-                        return
-
+                        setSelectedRowIds([]);
+                        setIsApproving(false);
+                        return;
                     }
                 }
             } catch (error) {
                 localStorage.removeItem("token");
             }
+        }
+        if (result.isConfirmed) {
+            await Swal.fire({
+                title: t("stockService.approved"),
+                text: t("stockService.successfullyapproved"),
+                icon: "success",
+            });
         }
         setSelectedRowIds([]);
         setIsApproving(false);
@@ -150,7 +149,20 @@ const BuyOrderPage = () => {
                 }
                 return '$0.00'; // Return default value if not a valid number
             }, },
-        { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
+        {
+            field: "createdAt",
+            headerName: t("stockService.createdat"),
+            headerAlign: "center",
+            flex: 1.5,
+            renderCell: (params) => {
+                const value = params.value;
+                if (value) {
+                    const date = new Date(value);
+                    return `${date.toLocaleDateString()} / ${date.toLocaleTimeString()}`;
+                }
+                return '-'; // Return default value if date is not available
+            },
+        },
         { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 },
 
 
