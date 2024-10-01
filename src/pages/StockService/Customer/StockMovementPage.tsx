@@ -408,7 +408,7 @@ const StockMovementPage = () => {
                             >
                                 {Object.values(stockMovementTypes).map(stockMovement => (
                                     <MenuItem key={stockMovement.name} value={stockMovement.name}>
-                                        {stockMovement.name}
+                                        {stockMovement.name  === 'IN' ? t('stockService.in') : t('stockService.out')}
                                     </MenuItem>
                                 ))}
 
