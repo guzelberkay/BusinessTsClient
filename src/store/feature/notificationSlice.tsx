@@ -11,17 +11,21 @@ interface Notification {
     isDeleted: boolean;
 }
 
+// State type
 interface NotificationsState {
     notifications: Notification[];
     status: 'idle' | 'loading' | 'failed';
 }
 
+// Initial state
 const initialState = {
     notifications: [] as Notification[],
-    unreadCount: 0,
+    unreadCount: 0, // Add this line to store the unread count
     status: 'idle' as 'idle' | 'loading' | 'failed',
 };
 
+// Fetch all notifications
+// Fetch unread notification count
 export const fetchUnreadNotificationCount = createAsyncThunk(
     'notifications/fetchUnreadNotificationCount',
     async () => {
@@ -35,18 +39,24 @@ export const fetchUnreadNotificationCount = createAsyncThunk(
 
             if (!response.ok) {
                 const errorData = await response.text();
+                console.error('Error response from server:', errorData);
                 throw new Error(`Network response was not ok: ${errorData}`);
             }
 
+            // Assuming the response is a number
             const data = await response.json();
-            return data as number;
+            console.log('Fetched unread count:', data);
+            return data as number; // Ensure the return type is number
         } catch (error) {
+            console.error('Failed to fetch unread notification count:', error);
             throw error;
         }
     }
 );
 
 
+
+// Fetch all notifications
 export const fetchGetAllNotifications = createAsyncThunk(
     'notifications/fetchGetAllNotifications',
     async () => {
@@ -65,6 +75,7 @@ export const fetchGetAllNotifications = createAsyncThunk(
             }
 
             const data = await response.json();
+            console.log('Fetched notifications:', data);
             return data as Notification[];
         } catch (error) {
             console.error('Failed to fetch notifications:', error);
@@ -73,6 +84,7 @@ export const fetchGetAllNotifications = createAsyncThunk(
     }
 );
 
+// Fetch unread notifications
 export const fetchGetAllUnreadNotifications = createAsyncThunk(
     'notifications/fetchGetAllUnreadNotifications',
     async () => {
@@ -99,6 +111,7 @@ export const fetchGetAllUnreadNotifications = createAsyncThunk(
     }
 );
 
+// Mark notification as read
 export const markNotificationAsRead = createAsyncThunk(
     'notifications/markNotificationAsRead',
     async (id: number) => {
@@ -121,6 +134,8 @@ export const markNotificationAsRead = createAsyncThunk(
         }
     }
 );
+
+// Delete notification
 
 export const deleteNotification = createAsyncThunk(
     'notifications/deleteNotifications',
@@ -146,6 +161,7 @@ export const deleteNotification = createAsyncThunk(
     }
 );
 
+// Slice - Reducers
 const notificationSlice = createSlice({
     name: 'notifications',
     initialState,
@@ -173,6 +189,7 @@ const notificationSlice = createSlice({
                 const notification = state.notifications.find((n) => n.id === action.payload);
                 if (notification) {
                     notification.isRead = true;
+                    console.log("Updated notification to read:", notification);
                 }
             })
             .addCase(deleteNotification.fulfilled, (state, action: PayloadAction<number[]>) => {

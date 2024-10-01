@@ -18,20 +18,15 @@ import LanguageIcon from "@mui/icons-material/Language";
 import PersonIcon from "@mui/icons-material/Person";
 import { Menu, Avatar, Divider } from "@mui/material";
 import { useDispatch } from "react-redux";
-import {AppDispatch, RootState, useAppSelector} from "../../../store";
+import { AppDispatch } from "../../../store";
 import {
   toggleLanguage,
 } from "../../../store/feature/languageSlice";
 import {useSSR, useTranslation} from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import DropdownNotification from "../../atoms/DropdownNotifications";
-import SideBarNotifications from "../../molecules/SideBarNotifications.tsx";
-import {
-  fetchGetAllNotifications,
-  fetchGetAllUnreadNotifications,
-  fetchUnreadNotificationCount
-} from "../../../store/feature/notificationSlice.tsx";
-import { Client } from "@stomp/stompjs";
+import {fetchUnreadNotificationCount} from "../../../store/feature/notificationSlice.tsx";
+
 const drawerWidth = 240;
 
 // Interface defining the props for the AppBar component
@@ -142,8 +137,6 @@ const demoUser = {
 interface AppbarProps {
   drawerState: boolean;
   setDrawerState: (state: boolean) => void; // Function to set the drawer state
-  fetchUnreadCount: () => Promise<void>; // fetchUnreadCount prop
-  unreadCount: number;
 }
 
 /**
@@ -157,14 +150,10 @@ interface AppbarProps {
  * @param {function} param0.setDrawerState - Function to set the drawer state.
  * @returns {React.ReactNode} - The rendered Appbar component.
  */
-
-
 function Appbar({
                   drawerState,
-                  setDrawerState,
+                  setDrawerState
                 }: AppbarProps) {
-
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -176,79 +165,22 @@ function Appbar({
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-  const [unreadCount, setUnreadCount] = useState<number>(0);
-  const [client, setClient] = useState<Client | null>(null);
-
-  // Önceki okunmamış bildirim sayısını tutmak için
-  const [prevCount, setPrevCount] = useState<number>(0);
-
-  // Okunmamış bildirim sayısını fetch eden fonksiyon
+  const[count, setcount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState<number | null>(null);
 
   const fetchUnreadCount = async () => {
     try {
-      const notifications = await dispatch(fetchGetAllUnreadNotifications()).unwrap();
-      setUnreadCount(notifications.length);
-      setPrevCount(notifications.length);
-
+      const resultAction = await dispatch(fetchUnreadNotificationCount()).unwrap();
+      setUnreadCount(resultAction);
     } catch (error) {
       console.error('Failed to fetch unread notification count:', error);
     }
   };
 
   useEffect(() => {
-    fetchUnreadCount(); // İlk yüklemede okunmamış bildirim sayısını al
+    fetchUnreadCount()
 
-    const stompClient = new Client({
-      brokerURL: "ws://localhost:9095/ws",
-      debug: (str) => console.log(str),
-      onConnect: () => {
-        console.log("Connected to WebSocket");
-
-        // Unread count'u almak için ilk abone olma
-        stompClient.subscribe("/topic/unreadNotifications", (message) => {
-          const newCount = JSON.parse(message.body);
-          setUnreadCount(newCount); // Sunucudan alınan yeni unread count
-        });
-
-        // Yeni bildirim geldiğinde çağırılacak
-        stompClient.subscribe("/topic/create-notifications", (message) => {
-          setUnreadCount((prevCount) => prevCount + 1); // Unread count'u artır
-        });
-
-        // Bir bildirim okunduğunda
-        stompClient.subscribe("/topic/markasread-notifications", () => {
-          setUnreadCount((prevCount) => prevCount - 1); // Unread count'u azalt
-        });
-
-        // Bir bildirim silindiğinde
-        stompClient.subscribe("/topic/delete-notifications", () => {
-          setUnreadCount((prevCount) => prevCount - 1); // Unread count'u azalt
-        });
-      },
-      onDisconnect: () => {
-        console.log("Disconnected from WebSocket");
-      },
-      onStompError: (frame) => {
-        console.error("STOMP Error", frame);
-      },
-      onWebSocketError: (error) => {
-        console.error("WebSocket Error", error);
-      },
-    });
-
-    stompClient.activate();
-    setClient(stompClient);
-
-    return () => {
-      if (stompClient) {
-        stompClient.deactivate();
-      }
-    };
-  }, [dispatch]);
-
-
-
+  }, []);
 
   // Opens the profile menu
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -449,9 +381,7 @@ function Appbar({
                 }}
             >
               BUSINESS
-
             </Typography>
-
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -479,8 +409,7 @@ function Appbar({
                   color="inherit"
                   onClick={handleNotificationMenuOpen}
               >
-
-                <Badge badgeContent={unreadCount} color="error">
+                <Badge badgeContent={unreadCount} color="error">  {/*Sayaç eklenecek */}
                   <NotificationsIcon fontSize="large" />
                 </Badge>
               </IconButton>
@@ -521,7 +450,6 @@ function Appbar({
             </Box>
           </Toolbar>
         </EasyStyleAppBar>
-
         {renderMobileMenu}
         {renderMenu}
         {renderNotificationMenu}
