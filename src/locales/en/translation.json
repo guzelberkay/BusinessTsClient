@@ -175,13 +175,16 @@
     "approve": "APPROVE",
     "approving": "Approving...",
     "approveit": "Approve it!",
-    "approved": "Approved!",
+    "approved": "Approved",
     "successfullyapproved": "Successfully Approved!",
     "open": "ENABLED",
     "close": "CLOSED",
     "active": "Active",
     "in": "In",
-    "out": "Out"
+    "out": "Out",
+    "arrived": "Arrived",
+    "addfromorderid": "Add From Order ID",
+    "orderid": "Order ID"
 
 
 
@@ -206,6 +209,7 @@
     "employees": "Employees",
     "sales": "Sales"
   },
+
   "notifications": {
     "title": "Notifications",
     "search": "Search",

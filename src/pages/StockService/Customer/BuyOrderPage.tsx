@@ -194,6 +194,7 @@ const BuyOrderPage = () => {
     }
 
     const columns: GridColDef[] = [
+        { field: "id", headerName: "Id", flex: 0.5, headerAlign: "center" },
         { field: "supplierName", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center" },
         { field: "email", headerName: "Email", flex: 1.75, headerAlign: "center" },
         { field: "productName", headerName: t("stockService.productName"), flex: 1.5, headerAlign: "center" },
@@ -251,6 +252,9 @@ const BuyOrderPage = () => {
                 }
                 if (value === 'APPROVED') {
                     return t("stockService.approved");
+                }
+                if (value === 'ARRIVED') {
+                    return t("stockService.arrived");
                 }
             }},
     ];
@@ -331,7 +335,7 @@ const BuyOrderPage = () => {
                         disabled={
                             selectedRowIds.length > 1 ||
                             selectedRowIds.length === 0 ||
-                            buyOrders.find(order => order.id === selectedRowIds[0])?.status === "APPROVED"
+                            buyOrders.find(order => order.id === selectedRowIds[0])?.status !== "ACTIVE"
                         }
 
                         //startIcon={<CancelIcon/>}
@@ -345,7 +349,7 @@ const BuyOrderPage = () => {
                         onClick={handleDelete}
                         variant="contained"
                         color="error"
-                        disabled={isDeleting || selectedRowIds.length === 0 || buyOrders.find(order => order.id === selectedRowIds[0])?.status === "APPROVED"}
+                        disabled={isDeleting || selectedRowIds.length === 0 || buyOrders.find(order => order.id === selectedRowIds[0])?.status !== "ACTIVE"}
                         //startIcon={<DeclineIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >

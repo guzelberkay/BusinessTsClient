@@ -14,14 +14,24 @@ import {
 import {useDispatch} from "react-redux";
 import {AppDispatch, useAppSelector} from "../../../store";
 import {
-    fetchChangeAutoOrderModeOfProduct, fetchDeleteProductCategory, fetchDeleteStockMovement,
+    fetchChangeAutoOrderModeOfProduct,
+    fetchDeleteProductCategory,
+    fetchDeleteStockMovement,
     fetchFindAllBuyOrder,
     fetchFindAllByMinimumStockLevel,
-    fetchFindAllProduct, fetchFindAllProductCategory,
+    fetchFindAllProduct,
+    fetchFindAllProductCategory,
     fetchFindAllSellOrder,
     fetchFindAllStockMovement,
-    fetchFindAllSupplier, fetchFindAllWareHouse, fetchFindByIdProductCategory, fetchFindByIdStockMovement,
-    fetchSaveProductCategory, fetchSaveStockMovement, fetchUpdateProductCategory, fetchUpdateStockMovement
+    fetchFindAllSupplier,
+    fetchFindAllWareHouse,
+    fetchFindByIdProductCategory,
+    fetchFindByIdStockMovement,
+    fetchSaveProductCategory,
+    fetchSaveStockMovement,
+    fetchSaveStockMovementFromOrderId,
+    fetchUpdateProductCategory,
+    fetchUpdateStockMovement
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
@@ -51,9 +61,9 @@ const StockMovementPage = () => {
     //MODAL
 
     const [products, setProducts] = useState<IProduct[]>([]);
-    const [selectedProduct,setSelectedProduct] = useState(0);
+    const [selectedProduct, setSelectedProduct] = useState(0);
     const [wareHouses, setWareHouses] = useState<IWareHouse[]>([]);
-    const [selectedStockMovementType,setSelectedStockMovementType] = useState('');
+    const [selectedStockMovementType, setSelectedStockMovementType] = useState('');
 
     const [openAddStockMovementModal, setOpenAddStockMovementModal] = useState(false);
     const [name, setName] = useState('');
@@ -61,6 +71,12 @@ const StockMovementPage = () => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
+
+    //MODAL2
+
+    const [openAddStockFromOrderIdModal, setOpenAddStockFromOrderIdModal] = useState(false);
+    const [orderId, setOrderId] = useState(0);
+
 
     useEffect(() => {
         dispatch(
@@ -81,12 +97,45 @@ const StockMovementPage = () => {
     const handleOpenAddStockMovementModal = () => {
         setOpenAddStockMovementModal(true);
         setIsUpdating(false)
-        dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllProduct({searchText: '', page: 0, size: 1000})).then((res) => {
             setProducts(res.payload.data);
         })
-        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllWareHouse({searchText: '', page: 0, size: 1000})).then((res) => {
             setWareHouses(res.payload.data);
         })
+    };
+
+    const handleOpenSaveStockFromOrderIdModal = () => {
+        setOpenAddStockFromOrderIdModal(true);
+        setIsUpdating(false)
+    };
+
+    const handleSaveStockFromOrderId = () => {
+        setIsSaving(true)
+        dispatch(fetchSaveStockMovementFromOrderId(orderId))
+            .then((data) => {
+                if (data.payload.message === "Success") {
+                    setOrderId(0)
+                    setOpenAddStockFromOrderIdModal(false);
+                    Swal.fire({
+                        title: t("swal.success"),
+                        text: t("stockService.successfullyadded"),
+                        icon: "success",
+                    });
+                    setIsSaving(false)
+                } else {
+                    setOrderId(0)
+                    setSelectedStockMovementType('')
+                    setOpenAddStockFromOrderIdModal(false);
+                    Swal.fire({
+                        title: t("swal.error"),
+                        text: data.payload.message,
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+                    setIsSaving(false)
+                }
+            })
     };
 
     const handleSaveStockMovement = async () => {
@@ -128,10 +177,10 @@ const StockMovementPage = () => {
         setOpenAddStockMovementModal(true);
         setIsUpdating(true)
 
-        dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllProduct({searchText: '', page: 0, size: 1000})).then((res) => {
             setProducts(res.payload.data);
         })
-        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllWareHouse({searchText: '', page: 0, size: 1000})).then((res) => {
             setWareHouses(res.payload.data);
         })
         dispatch(fetchFindByIdStockMovement(selectedRowIds[0])).then((data) => {
@@ -141,12 +190,17 @@ const StockMovementPage = () => {
         })
     }
     const handleUpdate = async () => {
-        dispatch(fetchUpdateStockMovement({ id: selectedRowIds[0], productId: selectedProduct, quantity: quantity, stockMovementType: selectedStockMovementType})).then((data) => {
+        dispatch(fetchUpdateStockMovement({
+            id: selectedRowIds[0],
+            productId: selectedProduct,
+            quantity: quantity,
+            stockMovementType: selectedStockMovementType
+        })).then((data) => {
             setSelectedProduct(0)
             setQuantity(0)
             setSelectedStockMovementType('')
             setOpenAddStockMovementModal(false);
-            if (data.payload.message !=="Success") {
+            if (data.payload.message !== "Success") {
                 Swal.fire({
                     title: t("swal.error"),
                     text: data.payload.message,
@@ -188,7 +242,7 @@ const StockMovementPage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteStockMovement(selectedStockMovement.id));
 
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -223,7 +277,12 @@ const StockMovementPage = () => {
         {field: "productName", headerName: t("stockService.productname"), flex: 1.5, headerAlign: "center"},
         {field: "wareHouseName", headerName: t("stockService.warehousename"), flex: 1.5, headerAlign: "center"},
         {field: "quantity", headerName: t("stockService.quantity"), flex: 1, headerAlign: "center"},
-        {field: "stockMovementType", headerName: t("stockService.stockmovementtype"), flex: 1, headerAlign: "center",renderCell: (params) => {
+        {
+            field: "stockMovementType",
+            headerName: t("stockService.stockmovementtype"),
+            flex: 1,
+            headerAlign: "center",
+            renderCell: (params) => {
                 const value = params.value;
                 if (value === 'IN') {
                     return t("stockService.in");
@@ -231,7 +290,8 @@ const StockMovementPage = () => {
                 if (value === 'OUT') {
                     return t("stockService.out");
                 }
-            }},
+            }
+        },
         {
             field: "createdAt",
             headerName: t("stockService.createdat"),
@@ -249,8 +309,8 @@ const StockMovementPage = () => {
     ];
 
     const stockMovementTypes = {
-        IN: { name: 'IN' },
-        OUT: { name: 'OUT' }
+        IN: {name: 'IN'},
+        OUT: {name: 'OUT'}
     };
 
 
@@ -335,6 +395,23 @@ const StockMovementPage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
+                        onClick={handleOpenSaveStockFromOrderIdModal}
+                        variant="contained"
+                        color="success"
+                        //startIcon={<ApproveIcon />}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        {t("stockService.addfromorderid")}
+                    </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
+                    <Button
                         onClick={handleOpenUpdateModal}
                         variant="contained"
                         color="primary"
@@ -374,7 +451,7 @@ const StockMovementPage = () => {
                         maxWidth='sm'>
                     <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addstockmovement')}</DialogTitle>
                     <DialogContent>
-                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                        <FormControl variant="outlined" sx={{width: '100%', marginTop: '15px'}}>
                             <InputLabel>{t('stockService.pleaseselectproduct')}</InputLabel>
                             <Select
                                 value={selectedProduct}
@@ -398,7 +475,7 @@ const StockMovementPage = () => {
                             required
                             fullWidth
                         />
-                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                        <FormControl variant="outlined" sx={{width: '100%', marginTop: '15px'}}>
                             <InputLabel>{t('stockService.pleaseselectstockmovementtype')}</InputLabel>
                             <Select
                                 value={selectedStockMovementType}
@@ -408,7 +485,7 @@ const StockMovementPage = () => {
                             >
                                 {Object.values(stockMovementTypes).map(stockMovement => (
                                     <MenuItem key={stockMovement.name} value={stockMovement.name}>
-                                        {stockMovement.name}
+                                        {stockMovement.name === 'IN' ? t('stockService.in') : t('stockService.out')}
                                     </MenuItem>
                                 ))}
 
@@ -423,8 +500,36 @@ const StockMovementPage = () => {
                                               disabled={selectedProduct === 0 || quantity === 0 || selectedStockMovementType === ''}>{t('stockService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveStockMovement()} color="success" variant="contained"
-                                    disabled={selectedProduct === 0  || quantity === 0 || selectedStockMovementType === ''}>{t('stockService.save')}</Button>
+                                    disabled={selectedProduct === 0 || quantity === 0 || selectedStockMovementType === ''}>{t('stockService.save')}</Button>
                         }
+
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={openAddStockFromOrderIdModal} onClose={() => setOpenAddStockFromOrderIdModal(false)}
+                        fullWidth
+                        maxWidth='sm'>
+                    <DialogTitle> {t('stockService.addstockmovement')}</DialogTitle>
+                    <DialogContent>
+
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('stockService.orderid')}
+                            name="orderId"
+                            value={orderId}
+                            onChange={e => setOrderId((Number)(e.target.value))}
+                            required
+                            fullWidth
+                        />
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setOpenAddStockFromOrderIdModal(false), setIsUpdating(false)
+                        }} color="error" variant="contained">{t('stockService.cancel')}</Button>
+
+                        <Button onClick={() => handleSaveStockFromOrderId()} color="success" variant="contained"
+                                disabled={orderId === 0}>{t('stockService.save')}</Button>
+
 
                     </DialogActions>
                 </Dialog>
