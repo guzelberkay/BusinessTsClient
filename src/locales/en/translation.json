@@ -235,7 +235,27 @@
     "priority": "Priority",
     "ticket_status": "Ticket Status",
     "created_date": "Created Date",
-    "closed_date": "Closed Date"
+    "closed_date": "Closed Date",
+    "non-added" : "Non Added",
+    "error-occurred" : "Error Occurred",
+    "updated" : "Updated",
+    "update" : "UPDATE",
+    "deleting" : "Do you want to delete it, this action is irreversible!",
+    "delete" : "DELETE",
+    "cancel" : "Cancel",
+    "confirmDelete" : "Yes I'm sure",
+    "checkboxRequired" : "Confirm the box if you want to delete!",
+    "successfullydeleted" : "Successfully Deleted!",
+    "add" : "ADD",
+    "add_customer" : "Add customer",
+    "cancel" : "CANCEL",
+    "save" : "SAVE",
+    "deleted": "Deleted!",
+    "added" : "Customer Saved Successfully!"
+
+
+
+
 
 
 

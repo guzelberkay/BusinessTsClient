@@ -207,9 +207,9 @@
 
   "crmService":{
     "customer": "Müşteri",
-    "firstName": "Müşteri Adı",
+    "firstName": "Ad",
     "searchbyname":"Ad'a Göre Ara",
-    "lastName": "Müşteri Soyadı",
+    "lastName": "Soyad",
     "email": "E-posta",
     "phone": "Telefon",
     "address": "Adres",
@@ -231,7 +231,22 @@
     "priority": "Öncelik",
     "ticket_status": "Bilet Durumu",
     "created_date": "Oluşturulma Tarihi",
-    "closed_date": "Kapanma Tarihi"
+    "closed_date": "Kapanma Tarihi",
+    "non-added" : "Eklenemedi",
+    "error-occurred" : "Hata meydana geldi!",
+    "updated" : "Güncellendi!",
+    "update" : "GÜNCELLE",
+    "deleting" : "Silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!",
+    "delete" : "SİL",
+    "deleted" : "Silindi!",
+    "cancel" : "İPTAL",
+    "confirmDelete" : "Evet, eminim",
+    "checkboxRequired" : "Silmek için önce kutucuğu işaretleyin!",
+    "successfullydeleted" : "Başarıyla Silindi!",
+    "add" : "EKLE",
+    "add_customer" : "Müşteri Ekle",
+    "save" : "KAYDET",
+    "added" : "Müşteri Başarıyla Eklendi!"
    
 
   }

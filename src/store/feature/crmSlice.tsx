@@ -26,7 +26,7 @@ const initialCrmState: ICrmState = {
 }
 
 interface IfetchSaveCustomer {
-    memberId: number;
+
     firstName: string;
     lastName: string;
     email: string;
@@ -52,7 +52,7 @@ export const fetchSaveCustomer = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
                 }
             }
         );
@@ -68,7 +68,7 @@ export const fetchDeleteCustomer = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
                 }
             }
         );
@@ -103,7 +103,7 @@ export const fetchUpdateCustomer = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
                 }
             }
         );
@@ -125,6 +125,22 @@ export const fetchFindAllCustomer = createAsyncThunk(
         const result = await axios.post(
             RestApis.crm_service_customer + "/find-all",
             values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+export const fetchFindCustomerById = createAsyncThunk(
+    'crm/fetchCustomerById',
+    async (id: number) => {
+        const result = await axios.post(
+            RestApis.crm_service_customer + "/find-by-id?id=" + id,null,
             {
                 headers: {
                     'Content-Type': 'application/json',
