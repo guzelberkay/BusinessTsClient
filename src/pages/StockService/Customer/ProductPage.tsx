@@ -162,23 +162,22 @@ const ProductPage = () => {
     }
 
     const handleDelete = async () => {
+        setIsDeleting(true);
+        const result = await Swal.fire({
+            title: t("swal.areyousure"),
+            text: t("stockService.deleteproduct"),
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: t("stockService.yesdeleteit"),
+            cancelButtonText: t("stockService.cancel"),
+        });
         for (let id of selectedRowIds) {
             const selectedProduct = products.find(
                 (selectedProduct) => selectedProduct.id === id
             );
             if (!selectedProduct) continue;
 
-            setIsDeleting(true);
             try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("stockService.deleteproduct"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("stockService.yesdeleteit"),
-                    cancelButtonText: t("stockService.cancel"),
-                });
-
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteProduct(selectedProduct.id));
 
@@ -189,23 +188,21 @@ const ProductPage = () => {
                             icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
+                        setSelectedRowIds([]);
+                        setIsDeleting(false);
                         return;
-                    } else {
-                        await Swal.fire({
-                            title: t("stockService.deleted"),
-                            text: t("stockService.productdeleted"),
-                            icon: "success",
-                        });
-                        await dispatch(fetchFindAllProduct({
-                            page: 0,
-                            size: 100,
-                            searchText: searchText,
-                        }));
                     }
                 }
             } catch (error) {
                 localStorage.removeItem("token");
             }
+        }
+        if (result.isConfirmed) {
+            await Swal.fire({
+                title: t("stockService.deleted"),
+                text: t("stockService.productdeleted"),
+                icon: "success",
+            });
         }
         setSelectedRowIds([]);
         setIsDeleting(false);
@@ -237,9 +234,14 @@ const ProductPage = () => {
 
         { field: "stockCount", headerName: t("stockService.stockcount"), flex: 0.75, headerAlign: "center" },
         { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 0.75 },
-        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 },
-
-
+        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 ,renderCell: (params) => {
+                const value = params.value;
+                if (value === true) {
+                    return t("stockService.open");
+                } else {
+                    return t("stockService.close");
+                }
+            }}
     ];
 
     const handleChangeAutoOrderMode = async () => {
@@ -353,7 +355,7 @@ const ProductPage = () => {
                         //startIcon={<ApproveIcon />}
                         sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                     >
-                        {t("stockService.addproduct")}
+                        {t("stockService.add")}
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>

@@ -181,27 +181,28 @@ const SellOrderPage = () => {
     }
 
     const handleDelete = async () => {
+        setIsDeleting(true);
+        const result = await Swal.fire({
+            title: t("swal.areyousure"),
+            text: t("stockService.deleteorder"),
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: t("stockService.yesdeleteit"),
+            cancelButtonText: t("stockService.cancel"),
+        });
+
         for (let id of selectedRowIds) {
             const selectedBuyOrder = sellOrders.find(
                 (selectedBuyOrder) => selectedBuyOrder.id === id
             );
             if (!selectedBuyOrder) continue;
 
-            setIsDeleting(true);
-            try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("stockService.deleteorder"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("stockService.yesdeleteit"),
-                    cancelButtonText: t("stockService.cancel"),
-                });
 
+            try {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteOrder(selectedBuyOrder.id));
 
-                    if (data.payload.code !=="Success") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -209,17 +210,19 @@ const SellOrderPage = () => {
                             confirmButtonText: t("swal.ok"),
                         });
                         return;
-                    } else {
-                        await Swal.fire({
-                            title: t("stockService.deleted"),
-                            text: t("stockService.orderdeleted"),
-                            icon: "success",
-                        });
                     }
                 }
             } catch (error) {
                 localStorage.removeItem("token");
             }
+        }
+
+        if (result.isConfirmed) {
+            await Swal.fire({
+                title: t("stockService.deleted"),
+                text: t("stockService.orderdeleted"),
+                icon: "success",
+            });
         }
         setSelectedRowIds([]);
         setIsDeleting(false);
@@ -262,7 +265,20 @@ const SellOrderPage = () => {
                 }
                 return '$0.00'; // Return default value if not a valid number
             }, },
-        { field: "createdAt", headerName: t("stockService.createdat"), headerAlign: "center", flex: 1.5 },
+        {
+            field: "createdAt",
+            headerName: t("stockService.createdat"),
+            headerAlign: "center",
+            flex: 1.5,
+            renderCell: (params) => {
+                const value = params.value;
+                if (value) {
+                    const date = new Date(value);
+                    return `${date.toLocaleDateString()} / ${date.toLocaleTimeString()}`;
+                }
+                return '-'; // Return default value if date is not available
+            },
+        },
     ];
 
 

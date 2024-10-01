@@ -40,7 +40,15 @@
     "crm-sales-activity" : "Sales Activities",
     "crm-ticket" : "Tickets",
     "stock-customer": "Customers",
-    "stockmodule": "Stock Module"
+    "stockmodule": "Stock Module",
+    "financemodule": "Finance Module",
+    "budgets": "Budgets",
+    "declarations": "Declarations",
+    "expenses": "Expenses",
+    "incomes": "Incomes",
+    "invoices": "Invoices",
+    "financial-reports": "Financial Reports",
+    "taxes": "Taxes"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -56,20 +64,18 @@
     "accountHasBeenActivated": "Your account has been successfully activated!",
     "accountGreeting": " Congratulations! You can now actively use your account. You can enjoy all the features our platform has to offer and start making your personal settings.",
     "passwordMismatch": "Passwords do not match. Please enter again.",
-    "requiredField" : "Required Field",
+    "requiredField": "Required Field",
     "invalidEmail": "The entered email address is invalid.",
-    "fillAllFields" : "Please fill in all fields.",
+    "fillAllFields": "Please fill in all fields.",
     "resetPassword": "Reset Password",
-    "newPassword" : "New Password",
-    "reEnterNewPassword" : "Re-enter New Password"
+    "newPassword": "New Password",
+    "reEnterNewPassword": "Re-enter New Password"
   },
-
   "errorPage": {
     "404": "Page Not Found",
     "goBack": "Go Back",
     "goHome": "Go to Home Page"
   },
-
   "footer": {
     "copyright": "Copyright © 2024 BilgeAdam Technologies. All rights reserved.",
     "privacyPolicy": "Privacy Policy",
@@ -99,16 +105,13 @@
     "success": "Success!",
     "updatePassword": "Update Password",
     "infoForPasswordReset": "We will send you an email with instructions on how to reset your password.",
-    "sendEmail" : "Send Email",
-    "send" : "Send",
-    "passwordMismatch":"Passwords do not match.",
-    "passwordSuccesfullyChanged" : "Password Succesfully Changed",
-    "failedChangePassword" : "Failed to Change Password",
-    "infoSentEmailForPasswordReset" : "Password reset email has been sent.",
-    "unsubscribe" : "You can use the relevant services until the end of the subscription period."
-    
-    
-
+    "sendEmail": "Send Email",
+    "send": "Send",
+    "passwordMismatch": "Passwords do not match.",
+    "passwordSuccesfullyChanged": "Password Succesfully Changed",
+    "failedChangePassword": "Failed to Change Password",
+    "infoSentEmailForPasswordReset": "Password reset email has been sent.",
+    "unsubscribe": "You can use the relevant services until the end of the subscription period."
   },
   "stockService": {
     "changeautoordermode": "Change Auto Order",
@@ -128,9 +131,9 @@
     "createdat": "Created At",
     "productName": "Product Name",
     "searchbyproductname": "Search by Product Name",
-    "address" : "Address",
-    "notes" : "Notes",
-    "location" : "Location",
+    "address": "Address",
+    "notes": "Notes",
+    "location": "Location",
     "productname": "Product Name",
     "warehousename": "Ware House Name",
     "stockmovementtype": "Stock Movement Type",
@@ -172,14 +175,22 @@
     "approve": "APPROVE",
     "approving": "Approving...",
     "approveit": "Approve it!",
-    "approved": "Approved!",
-    "successfullyapproved": "Successfully Approved!"
+    "approved": "Approved",
+    "successfullyapproved": "Successfully Approved!",
+    "open": "ENABLED",
+    "close": "CLOSED",
+    "active": "Active",
+    "in": "In",
+    "out": "Out",
+    "arrived": "Arrived",
+    "addfromorderid": "Add From Order ID",
+    "orderid": "Order ID"
+
 
 
   },
-
   "dashboard": {
-    "numberofemployees" : "Number of Employees ",
+    "numberofemployees": "Number of Employees ",
     "last": "Last",
     "days": "days",
     "dailyincome": "Daily Income",
@@ -189,14 +200,14 @@
     "name": "Name",
     "buy": "Buy",
     "sell": "Sell",
-    "price":"Price",
+    "price": "Price",
     "latest": "Latest",
     "viewall": "View All",
     "all": "All",
     "users": "Users",
     "customers": "Customers",
-   "employees": "Employees",
-   "sales": "Sales"
+    "employees": "Employees",
+    "sales": "Sales"
   },
 
   "notifications": {
@@ -216,27 +227,25 @@
     "addwarehouse": "Add Warehouse",
     "delete": "Delete"
   },
-
-  "plans":{
-    "name":{
-      "pmm" : "Project Management Module",
-      "crmm" : "Customer Relationship Management Module",
-      "imm" : "Inventory Management Module",
-      "hrmm" : "Human Resources Management Module",
-      "fam" : "Finance and Accounting Module",
-      "oam" : "Operation Analysis Module"
+  "plans": {
+    "name": {
+      "pmm": "Project Management Module",
+      "crmm": "Customer Relationship Management Module",
+      "imm": "Inventory Management Module",
+      "hrmm": "Human Resources Management Module",
+      "fam": "Finance and Accounting Module",
+      "oam": "Operation Analysis Module"
     }
   },
-
-  "crmService":{
+  "crmService": {
     "customer": "Customer",
     "firstName": "Name",
     "lastName": "Lastname",
-    "searchbyname":"Search by Name",
+    "searchbyname": "Search by Name",
     "email": "Email",
     "phone": "Phone",
     "address": "Adress",
-    "status" : "Status",
+    "status": "Status",
     "name": "Name",
     "description": "Description",
     "startDate": "Start Date",
@@ -270,17 +279,26 @@
     "cancel" : "CANCEL",
     "save" : "SAVE",
     "deleted": "Deleted!",
-    "added" : "Customer Saved Successfully!"
-
-
-
-
-
-
-
-
-
-   
-
+    "added" : "Customer Saved Successfully!",
+    "closed_date": "Closed Date"
+  },
+  "financeService": {
+    "searchbydepartment": "Search by Department",
+    "budgetsuccesfullyadded": "Budget Succesfully Added",
+    "add": "ADD",
+    "department": "Department",
+    "description": "Description",
+    "year": "Year",
+    "amount": "Amount",
+    "save": "SAVE",
+    "deleteproduct": "Are you sure you want to delete the budget?",
+    "delete": "DELETE",
+    "yesdeleteit": "Yes, delete it!",
+    "cancel": "CANCEL",
+    "deleted": "Deleted!",
+    "budgetdeleted": "Budget Deleted Succesfully",
+    "budgetsuccesfullyupdated": "Budget Succesfully Updated",
+    "updated": "Updated!",
+    "update": "UPDATE"
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import DrawerButton, {DrawerButtonProps} from '../../atoms/DrawerButton';
+import DrawerButton, { DrawerButtonProps } from '../../atoms/DrawerButton';
 import {
     Dashboard,
     FormatListNumbered,
@@ -17,7 +17,14 @@ import {
     People,
     TipsAndUpdates,
     AirplaneTicket,
-    Campaign
+    Campaign,
+    AttachMoney,
+    AccountBalance,
+    Description,
+    Receipt,
+    Assessment,
+    MonetizationOn,
+    RequestQuote, KeyboardArrowUp, ArrowUpward, ArrowDownward
 } from '@mui/icons-material';
 
 import DrawerCollapseButton, {DrawerCollapseButtonProps} from '../../atoms/DrawerCollapseButton';
@@ -33,7 +40,7 @@ export const drawerNavigations: Record<string, Button[]> = {
         {
             type: 'button',
             component: DrawerButton,
-            props: {name: 'dashboard', icon: <Dashboard/>} as DrawerButtonProps,
+            props: {name: 'dashboard', icon: <Dashboard/>, navigation: 'admin-dashboard'} as DrawerButtonProps,
         },
         {
             type: 'collapse',
@@ -71,9 +78,36 @@ export const drawerNavigations: Record<string, Button[]> = {
             } as DrawerCollapseButtonProps,
         }
     ],
+
     ADMIN: [
-        // Add ADMIN buttons here
+        {
+            type: 'button',
+            component: DrawerButton,
+            props: {name: 'dashboard', icon: <Dashboard/>, navigation: 'admin-dashboard'} as DrawerButtonProps,
+        }
     ],
+
+    MEMBER: [
+        {
+            type: 'button',
+            component: DrawerButton,
+            props: {name: 'subscription', icon: <Loyalty/>} as DrawerButtonProps,
+        },
+        {
+            type: 'button',
+            component: DrawerButton,
+            props: {name: 'profile', icon: <Person/>, navigation: 'profile-management'} as DrawerButtonProps,
+        }
+    ],
+
+    BASIC: [
+        {
+            type: 'button',
+            component: DrawerButton,
+            props: {name: 'dashboard', icon: <Dashboard/>, navigation: 'member-dashboard'} as DrawerButtonProps,
+        }
+    ],
+
     CRMM: [
         {
             type: 'collapse',
@@ -93,6 +127,7 @@ export const drawerNavigations: Record<string, Button[]> = {
             } as DrawerCollapseButtonProps,
         },
     ],
+
     IMM: [
         {
             type: 'collapse',
@@ -113,6 +148,7 @@ export const drawerNavigations: Record<string, Button[]> = {
             } as DrawerCollapseButtonProps,
         }
     ],
+
     SUPPLIER: [
         {
             type: 'collapse',
@@ -128,6 +164,27 @@ export const drawerNavigations: Record<string, Button[]> = {
                 ],
                 menuNavigations: [
                     'supplier-orders'
+                ],
+            } as DrawerCollapseButtonProps,
+        }
+    ],
+
+    FAM: [
+        {
+            type: 'collapse',
+            component: DrawerCollapseButton,
+            props: {
+                name: 'financemodule',
+                TopLevelIcon: <FormatListNumbered/>,
+                menuItems: [
+                    'budgets', 'incomes', 'expenses', 'invoices', 'taxes', 'declarations', 'financial-reports'
+                ],
+                menuIcons: [
+                    <AttachMoney/>, <ArrowDownward/>, <ArrowUpward/>, <RequestQuote/>, <AccountBalance/>, <Description/>,
+                    <Assessment/>,
+                ],
+                menuNavigations: [
+                    'budgets', 'incomes', 'expenses', 'invoices', 'taxes', 'declarations', 'financial-reports'
                 ],
             } as DrawerCollapseButtonProps,
         }

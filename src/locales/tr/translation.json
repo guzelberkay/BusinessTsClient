@@ -39,7 +39,15 @@
     "subscription": "Abonelik",
     "surname": "Soyad",
     "stock-customer": "Musteriler",
-    "stockmodule": "Stok Modulu"
+    "stockmodule": "Stok Modulu",
+    "financemodule": "Finans Modulu",
+    "budgets": "Butceleme",
+    "declarations": "Beyanlar",
+    "expenses": "Giderler",
+    "incomes": "Gelirler",
+    "invoices": "Faturalar",
+    "financial-reports": "Finansal Raporlar",
+    "taxes": "Vergiler"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -168,10 +176,19 @@
     "warehouse": "Depo",
     "productcategory": "Urun Kategorisi",
     "approve": "ONAYLA",
-    "approved": "Onaylandı!",
+    "approved": "Onaylandı",
     "successfullyapproved": "Basariyla Onaylandi!",
     "approving": "Onaylandıktan sonra veriyi geri alamazsiniz.",
-    "approveit": "Onayla"
+    "approveit": "Onayla",
+    "open": "ACIK",
+    "close": "KAPALI",
+    "active": "Aktif",
+    "in": "Giriş",
+    "out": "Çıkış",
+    "arrived": "Teslim Alindi",
+    "addfromorderid": "Siparis No'dan Ekle",
+    "orderid": "Siparis Id"
+
   },
 
   "dashboard": {
@@ -267,6 +284,26 @@
     "added" : "Müşteri Başarıyla Eklendi!"
    
 
+  },
+
+  "financeService": {
+    "searchbydepartment": "Departmana Göre Ara",
+    "budgetsuccesfullyadded": "Bütçe Başarıyla Eklendi",
+    "add": "EKLE",
+    "department": "Departman",
+    "description": "Açıklama",
+    "year": "Yıl",
+    "amount": "Miktar",
+    "save": "KAYDET",
+    "deleteproduct": "Bütçeyi silmek istediğinizden emin misiniz?",
+    "delete": "SİL",
+    "yesdeleteit": "Evet sil!",
+    "cancel": "İptal",
+    "deleted": "Silindi!",
+    "budgetdeleted": "Bütçe Başarıyla Silindi",
+    "budgetsuccesfullyupdated": "Bütçe Başarıyla Güncellendi",
+    "updated": "Güncellendi!",
+    "update": "GÜNCELLE"
   }
 }
 

@@ -174,6 +174,43 @@ export const fetchResetPassword = createAsyncThunk(
 );
 
 
+/**
+ * Login Profile Management işlemi profil düzenleme sayfasını görüntülemek için tekrar şifre istenmesi işleminde doğrulama amacıyla kullanılır.
+ */
+
+export const fetchLoginProfileManagement = createAsyncThunk(
+    'auth/fetchLoginProfileManagement',
+    async (passwordPayload: {password: string})=>{
+        const result = await axios.post(RestApis.auth_service + "/login-profile-management",
+            passwordPayload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
+export const fetchChangeMyPassword = createAsyncThunk(
+    'auth/fetchChangeMyPassword',
+    async (passwordPayload: {authId: number, newPassword: string, newConfirmPassword: string})=>{
+        const result = await axios.put(RestApis.auth_service + "/change-my-password",
+            passwordPayload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
+
 
 const authSlice = createSlice({
     name: 'auth',
