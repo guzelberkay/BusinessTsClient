@@ -25,7 +25,7 @@ import {
 import {useSSR, useTranslation} from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import DropdownNotification from "../../atoms/DropdownNotifications";
-
+import SideBarNotifications from "../../molecules/SideBarNotifications.tsx";
 import {
   fetchGetAllNotifications,
   fetchGetAllUnreadNotifications,
