@@ -250,7 +250,7 @@
     "description": "Description",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "budget": "Budget",
+    "budget": "Budget $",
     "value": "Value",
     "stage": "Stage",
     "probability": "Probability",
@@ -276,11 +276,16 @@
     "successfullydeleted" : "Successfully Deleted!",
     "add" : "ADD",
     "add_customer" : "Add customer",
-    "cancel" : "CANCEL",
     "save" : "SAVE",
     "deleted": "Deleted!",
     "added" : "Customer Saved Successfully!",
-    "closed_date": "Closed Date"
+    "successfullyupdated" : "Successfully Updated!",
+    "add_marketing_campaign" : "Add Marketing Campaign"
+
+
+
+
+
   },
   "financeService": {
     "searchbydepartment": "Search by Department",

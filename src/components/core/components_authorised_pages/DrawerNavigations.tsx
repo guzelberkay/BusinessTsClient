@@ -119,7 +119,7 @@ export const drawerNavigations: Record<string, Button[]> = {
                     'crm-customers', 'crm-marketing-campaign', 'crm-opportunity', 'crm-sales-activity', 'crm-ticket'
                 ],
                 menuIcons: [
-                    <People/>, <Shop/>, <TipsAndUpdates/>, <Shop/>, <AirplaneTicket/>
+                    <People/>, <Campaign/>, <TipsAndUpdates/>, <Shop/>, <AirplaneTicket/>
                 ],
                 menuNavigations: [
                     'customer', 'marketing-campaign', 'opportunity', 'sales-activity', 'tickets'

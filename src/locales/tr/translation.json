@@ -34,6 +34,8 @@
     "crm-customers": "Musteriler",
     "crm-marketing-campaign" : "Pazarlama Kampanyaları",
     "crm-opportunity" : "Fırsatlar",
+    "crm-sales-activity" : "Satış Aktiviteleri",
+    "crm-ticket" : "Biletler",
     "success": "Basarili",
     "supplier": "Tedarikci",
     "subscription": "Abonelik",
@@ -253,7 +255,7 @@
     "description": "Açıklama",
     "startDate": "Başlama Tarihi",
     "endDate": "Bitiş Tarihi",
-    "budget": "Bütçe",
+    "budget": "Bütçe $",
     "value": "Değer",
     "stage": "Aşama",
     "probability": "Olasılık",
@@ -281,7 +283,9 @@
     "add" : "EKLE",
     "add_customer" : "Müşteri Ekle",
     "save" : "KAYDET",
-    "added" : "Müşteri Başarıyla Eklendi!"
+    "added" : "Müşteri Başarıyla Eklendi!",
+    "successfullyupdated" : "Başarıyla Güncellendi!",
+    "add_marketing_campaign" : "Pazarlama Kampanyası Ekle"
    
 
   },
