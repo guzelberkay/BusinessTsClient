@@ -31,6 +31,8 @@ const endpoints = {
   // SUB Endpoints
   subscription: "/subscription",
   plan: "/plan",
+  // FILE Endpoints
+  file: "/file",
 };
 
 export default endpoints;
