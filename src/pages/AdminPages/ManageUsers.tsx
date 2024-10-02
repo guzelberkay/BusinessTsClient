@@ -20,7 +20,7 @@ function ManageUsers() {
   const [searchTerm, setSearchTerm] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
-  const [openEditDialog, setOpenEditDialog] = useState(false); // E-posta düzenleme ve Şifre Değiştirme için yeni durum
+  const [openEditDialog, setOpenEditDialog] = useState(false); 
   const [selectedUserId, setSelectedUserId] = useState<number>(0);
   const [selectedRoleId, setSelectedRoleId] = useState<number | null>(null);
   const [openNewUserDialog, setOpenNewUserDialog] = useState(false);
@@ -87,11 +87,10 @@ function ManageUsers() {
     handleCloseConfirmationDialog();
   };
 
-  // E-posta düzenleme işlemleri için işlevler
   const handleOpenEditDialog = (user: IUser) => {
     setSelectedUserId(user.id);
-    setNewEmail(user.email); // Kullanıcının mevcut e-postasını al
-    setOpenEditDialog(true); // E-posta düzenleme pop-up'ını aç
+    setNewEmail(user.email); 
+    setOpenEditDialog(true); 
   };
 
   const handleCloseEditDialog = () => {
@@ -213,7 +212,7 @@ function ManageUsers() {
                     variant="contained" 
                     color="secondary" 
                     style={{ marginRight: 8 }} 
-                    onClick={() => handleOpenEditDialog(user)} // E-posta düzenleme pop-up'ını aç
+                    onClick={() => handleOpenEditDialog(user)} 
                   >
                     Düzenle
                   </Button>
@@ -229,11 +228,11 @@ function ManageUsers() {
         </Table>
       </TableContainer>
 
-      {/* Rol Ekleme Pop-up Dialog */}
+      {/* Rol Ekleme Pop-up  */}
       <Dialog open={openDialog} 
         onClose={handleCloseDialog}
-        maxWidth="sm" // Genişliği artırmak için maxWidth kullanılıyor
-        fullWidth // Genişliği tam olarak doldurmasını sağlar
+        maxWidth="sm" 
+        fullWidth 
       >
         <DialogTitle>Rol Ekle</DialogTitle>
         <DialogContent>
@@ -273,8 +272,8 @@ function ManageUsers() {
         <Dialog 
           open={openEditDialog} 
           onClose={handleCloseEditDialog} 
-          maxWidth="sm" // Genişliği artırmak için maxWidth kullanılıyor
-          fullWidth // Genişliği tam olarak doldurmasını sağlar
+          maxWidth="sm" 
+          fullWidth 
         >
           <DialogTitle >E-posta Düzenle</DialogTitle>
             <DialogContent >
@@ -304,7 +303,7 @@ function ManageUsers() {
          
          
          
-         {/* Yeni Kullanıcı Ekleme Dialog */}
+         {/* Yeni Kullanıcı Ekleme  */}
       <Dialog open={openNewUserDialog} onClose={handleCloseNewUserDialog} maxWidth="sm" fullWidth>
         <DialogTitle>Yeni Kullanıcı Ekle</DialogTitle>
         <DialogContent>

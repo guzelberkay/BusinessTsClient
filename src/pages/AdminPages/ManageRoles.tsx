@@ -10,13 +10,13 @@ import { AppDispatch, useAppSelector } from '../../store';
 
 function ManageRoles() {
   const [openNewRoleDialog, setOpenNewRoleDialog] = useState(false);
-  const [openEditRoleDialog, setOpenEditRoleDialog] = useState(false); // Düzenleme dialog'u için state
+  const [openEditRoleDialog, setOpenEditRoleDialog] = useState(false); 
   const [newRole, setNewRole] = useState({
     roleName: '',
     roleDescription: '',
   });
-  const [editRole, setEditRole] = useState<IRole | null>(null); // Düzenlenecek rol için state
-  const [searchQuery, setSearchQuery] = useState(''); // Arama sorgusu için state
+  const [editRole, setEditRole] = useState<IRole | null>(null); 
+  const [searchQuery, setSearchQuery] = useState(''); 
   const dispatch = useDispatch<AppDispatch>();
   const roleList: IRole[] = useAppSelector((state) => state.roleSlice.roleList);
 
@@ -37,7 +37,7 @@ function ManageRoles() {
   };
 
   const handleOpenEditRoleDialog = (role: IRole) => {
-    setEditRole(role); // Düzenlenecek rolü ayarla
+    setEditRole(role); 
     setOpenEditRoleDialog(true);
   };
 
@@ -89,7 +89,7 @@ function ManageRoles() {
     
   };
 
-  // Role list'i arama sorgusuna göre filtrele
+  
   const filteredRoleList = roleList.filter((role) =>
     role.roleName.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -100,7 +100,7 @@ function ManageRoles() {
         Yeni Rol Ekle
       </Button>
 
-      {/* Arama input'u */}
+      
       <TextField
         label="Rol ismine göre ara"
         variant="outlined"
@@ -147,7 +147,7 @@ function ManageRoles() {
         </Table>
       </TableContainer>
 
-      {/* Yeni Rol Ekleme Dialog */}
+      {/* Yeni Rol Ekleme  */}
       <Dialog open={openNewRoleDialog} onClose={handleCloseNewRoleDialog} maxWidth="sm" fullWidth>
         <DialogTitle>Yeni Rol Ekle</DialogTitle>
         <DialogContent>
@@ -174,7 +174,7 @@ function ManageRoles() {
         </DialogActions>
       </Dialog>
 
-      {/* Rol Düzenleme Dialog */}
+      {/* Rol Düzenleme */}
       <Dialog open={openEditRoleDialog} onClose={handleCloseEditRoleDialog} maxWidth="sm" fullWidth>
         <DialogTitle >Rol Düzenle</DialogTitle>
         <DialogContent>
