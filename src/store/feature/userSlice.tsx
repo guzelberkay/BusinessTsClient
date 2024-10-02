@@ -18,7 +18,7 @@ const initialUserState: IUserState = {
         firstName: "",
         lastName: "",
         email: "",
-        role: []
+        userRoles: []
     },
     userRoleList: [],
     userList: [],
@@ -214,6 +214,40 @@ export const fetchUserInformation = createAsyncThunk(
         return result.data;
     }
 )
+//----------------------------------------------------
+
+export const fetchChangeUserEmail = createAsyncThunk(
+    'user/fetchChangeUserMail',
+    async (payload: {id: number, email: string}) => {
+        const result = await axios.put(RestApis.user_management_service_user+"/change-user-email",
+            payload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
+export const fetchChangeUserPassword = createAsyncThunk(
+    'user/fetchChangeUserPassword',
+    async (payload: {userId: number, password: string}) => {
+        const result = await axios.put(RestApis.user_management_service_user+"/change-user-password",
+            payload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
 
 const userSlice = createSlice({
     name: 'user',

@@ -160,7 +160,7 @@ export const fetchRoleList = createAsyncThunk(
 export const fetchAsiggableRoleList = createAsyncThunk(
     'role/fetchAsiggableRoleList',
     async (userId:number) => {
-        const result = await axios.get(RestApis.user_management_service_role+"/assignable-roles?userId="+userId,
+        const result = await axios.get(RestApis.user_management_service_role+"/assignable-roles/"+userId,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -194,3 +194,5 @@ const roleSlice = createSlice({
     }
 
 });
+
+export default roleSlice.reducer;
