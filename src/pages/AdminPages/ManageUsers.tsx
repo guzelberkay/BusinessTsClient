@@ -6,11 +6,12 @@ import {
   List,
   Tooltip,
   ListItemButton,
-  FormControl
+  FormControl,
+  Switch
 } from '@mui/material';
 import { AppDispatch, useAppSelector } from '../../store';
 import { useDispatch } from 'react-redux';
-import { fetchAddRoleToUser, fetchChangeUserEmail, fetchChangeUserPassword, fetchUserList } from '../../store/feature/userSlice';
+import { fetchAddRoleToUser, fetchChangeUserEmail, fetchChangeUserPassword, fetchUpdateUserStatus, fetchUserList } from '../../store/feature/userSlice';
 import { IUser } from '../../model/IUser';
 import { IRole } from '../../model/IRole';
 import { fetchAsiggableRoleList } from '../../store/feature/roleSlice';
@@ -100,16 +101,34 @@ function ManageUsers() {
     handleCloseEditDialog(); 
   };
 
-    const handleEditPassword = () => {
-        dispatch(fetchChangeUserPassword({ userId: selectedUserId, password: newPassword })).then((data) => {
+  const handleEditPassword = () => {
+    dispatch(fetchChangeUserPassword({ userId: selectedUserId, password: newPassword })).then((data) => {
+      if (data.payload.code === 200) {
+        alert(data.payload.message);
+        dispatch(fetchUserList());
+        setNewPassword('');
+      }
+    })
+    handleCloseEditDialog(); 
+  };
+
+  const handleStatusChange = (user: IUser) => {
+    if (user.status === 'ACTIVE') {
+        dispatch(fetchUpdateUserStatus({ userId: user.id, status: 'INACTIVE' })).then((data) => {
             if (data.payload.code === 200) {
-                alert(data.payload.message);
                 dispatch(fetchUserList());
-                setNewPassword('');
             }
-        })
-        handleCloseEditDialog(); 
+        });
+    } else {
+        dispatch(fetchUpdateUserStatus({ userId: user.id, status: 'ACTIVE' })).then((data) => {
+            if (data.payload.code === 200) {
+                dispatch(fetchUserList());
+            }
+        });
     }
+    
+  };
+
   return (
     <div>
       <TextField
@@ -158,8 +177,11 @@ function ManageUsers() {
                   >
                     Düzenle
                   </Button>
-                  <Button variant="contained" color="error" style={{ marginRight: 8 }}>Sil</Button>
-                  <Button variant="contained" color="success">Aktif Et</Button>
+                  <Switch
+                    checked={user.status === 'ACTIVE'}
+                    onChange={() => handleStatusChange(user)}
+                    color="success"
+                  />
                 </TableCell>
               </TableRow>
             ))}
@@ -167,7 +189,7 @@ function ManageUsers() {
         </Table>
       </TableContainer>
 
-      {/* Pop-up Dialog */}
+      {/* Rol Ekleme Pop-up Dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Rol Ekle</DialogTitle>
         <DialogContent>
@@ -240,3 +262,5 @@ function ManageUsers() {
 }
 
 export default ManageUsers;
+
+

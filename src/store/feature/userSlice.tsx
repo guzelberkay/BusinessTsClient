@@ -247,6 +247,21 @@ export const fetchChangeUserPassword = createAsyncThunk(
         return result.data;
     }
 )
+export const fetchUpdateUserStatus = createAsyncThunk(
+    'user/fetchUpdateUserStatus',
+    async (payload: {userId: number, status: string}) => {
+        const result = await axios.put(RestApis.user_management_service_user+"/update-user-status",
+            payload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
 
 
 const userSlice = createSlice({
