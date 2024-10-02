@@ -29,12 +29,11 @@ const initialUserState: IUserState = {
 //----------------------------------------------------
 
 interface IFetchSaveUser {
-    authId: number
     firstName: string
     lastName: string
     email: string
     password: string
-    roleIds: number[]
+    roleIds: number[] 
 }
 /**
  * Admin tarafından bir kullanıcının kaydedilmesi işlemi için kullanılır
@@ -47,7 +46,7 @@ interface IFetchSaveUser {
 export const fetchSaveUser = createAsyncThunk(
     'user/fetchSaveUser',
     async (payload: IFetchSaveUser) => {
-        const user = { authId: payload.authId, firstName: payload.firstName, lastName: payload.lastName, roleIds: payload.roleIds };
+        const user = { firstName: payload.firstName, lastName: payload.lastName, email: payload.email, password: payload.password, roleIds: payload.roleIds };
         const result = await axios.post(RestApis.user_management_service_user+"/save-user", 
             user,
             {

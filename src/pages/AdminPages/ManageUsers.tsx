@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { AppDispatch, useAppSelector } from '../../store';
 import { useDispatch } from 'react-redux';
-import { fetchAddRoleToUser, fetchChangeUserEmail, fetchChangeUserPassword, fetchUpdateUserStatus, fetchUserList } from '../../store/feature/userSlice';
+import { fetchAddRoleToUser, fetchChangeUserEmail, fetchChangeUserPassword, fetchSaveUser, fetchUpdateUserStatus, fetchUserList } from '../../store/feature/userSlice';
 import { IUser } from '../../model/IUser';
 import { IRole } from '../../model/IRole';
 import { fetchAsiggableRoleList } from '../../store/feature/roleSlice';
@@ -23,10 +23,18 @@ function ManageUsers() {
   const [openEditDialog, setOpenEditDialog] = useState(false); // E-posta düzenleme ve Şifre Değiştirme için yeni durum
   const [selectedUserId, setSelectedUserId] = useState<number>(0);
   const [selectedRoleId, setSelectedRoleId] = useState<number | null>(null);
+  const [openNewUserDialog, setOpenNewUserDialog] = useState(false);
   const [newEmail, setNewEmail] = useState(''); 
   const [newPassword, setNewPassword] = useState('');
   const userList: IUser[] = useAppSelector((state) => state.userSlice.userList);
   const availableRoles: IRole[] = useAppSelector((state) => state.roleSlice.assigableRoleList);
+  const [newUser, setNewUser] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    roleIds: [] || null
+  });
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -128,6 +136,28 @@ function ManageUsers() {
     }
     
   };
+  const handleOpenNewUserDialog = () => {
+    setOpenNewUserDialog(true);
+  };
+  const handleCloseNewUserDialog = () => {
+    setOpenNewUserDialog(false);
+    setNewUser({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      roleIds: []
+    });
+  };
+  const handleSaveNewUser = () => {
+    console.log(newUser);
+    dispatch(fetchSaveUser(newUser)).then((data) => {
+      if (data.payload.code === 200) {
+        dispatch(fetchUserList());
+      }
+    });
+    handleCloseNewUserDialog();
+  };
 
   return (
     <div>
@@ -139,6 +169,9 @@ function ManageUsers() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+      <Button variant="contained" color="primary" onClick={handleOpenNewUserDialog}>
+        Yeni Kullanıcı Ekle
+      </Button>
 
       <TableContainer component={Paper}>
         <Table>
@@ -257,6 +290,52 @@ function ManageUsers() {
             <Button onClick={handleCloseEditDialog} color="secondary">Kapat</Button>
           </DialogActions>
         </Dialog>
+         
+         
+         
+         {/* Yeni Kullanıcı Ekleme Dialog */}
+      <Dialog open={openNewUserDialog} onClose={handleCloseNewUserDialog}>
+        <DialogTitle>Yeni Kullanıcı Ekle</DialogTitle>
+        <DialogContent>
+          <FormControl fullWidth sx={{ marginBottom: 2 }}>
+            <TextField
+              label="Ad"
+              variant="outlined"
+              value={newUser.firstName}
+              onChange={(e) => setNewUser({ ...newUser, firstName: e.target.value })}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ marginBottom: 2 }}>
+            <TextField
+              label="Soyad"
+              variant="outlined"
+              value={newUser.lastName}
+              onChange={(e) => setNewUser({ ...newUser, lastName: e.target.value })}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ marginBottom: 2 }}>
+            <TextField
+              label="E-posta"
+              variant="outlined"
+              value={newUser.email}
+              onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+            />
+          </FormControl>
+          <FormControl fullWidth sx={{ marginBottom: 2 }}>
+            <TextField
+              label="Şifre"
+              type="password"
+              variant="outlined"
+              value={newUser.password}
+              onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+            />
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseNewUserDialog} color="secondary">Kapat</Button>
+          <Button onClick={handleSaveNewUser} color="primary">Kaydet</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
