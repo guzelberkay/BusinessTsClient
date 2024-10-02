@@ -43,6 +43,7 @@ export const uploadFile = createAsyncThunk(
             const response = await axios.post(`${RestApis.file_service}/save`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
                 },
             });
             const mimeType = response.data.data.mimeType; 
@@ -60,6 +61,9 @@ export const deleteFile = createAsyncThunk(
     async (uuid: string, { rejectWithValue }) => {
         try {
             await axios.delete(`${RestApis.file_service}/delete`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                },
                 data: { uuid },
             });
             return uuid; // Silinen dosyanın UUID'sini döndür
@@ -77,6 +81,7 @@ export const updateFile = createAsyncThunk(
             const response = await axios.post(`${RestApis.file_service}/update`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
                 },
             });
             const mimeType = response.data.data.mimeType; 
@@ -94,6 +99,9 @@ export const fetchFile = createAsyncThunk(
     async (uuid: string, { rejectWithValue }) => {
         try {
             const response = await axios.get(`${RestApis.file_service}/get/${uuid}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                },
                 responseType: 'blob', // Dosya olarak al
             });
             return response.data; // Blob döner
@@ -102,6 +110,8 @@ export const fetchFile = createAsyncThunk(
         }
     }
 );
+
+
 
 // Slice oluşturma
 const fileSlice = createSlice({
