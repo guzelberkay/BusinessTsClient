@@ -1,4 +1,4 @@
- import {IBudget} from "../../model/IBudget.tsx";
+import {IBudget} from "../../model/IBudget.tsx";
 import {IDeclaration} from "../../model/IDeclaration.tsx";
 import {IExpense} from "../../model/IExpense.tsx";
 import {IFinancialReport} from "../../model/IFinancialReport.tsx";
@@ -159,6 +159,32 @@ interface IFetchCreateDeclaration {
     endDate: Date;
 }
 
+interface IFetchDeclaration {
+    taxType: string;
+    netIncome: number;
+}
+
+export const fetchCreateDeclaration = createAsyncThunk(
+    'finance/fetchCreateDeclaration',
+    async (payload: IFetchDeclaration) => {
+        const declaration = {
+            taxType: payload.taxType,
+            netIncome: payload.netIncome
+        };
+        const result = await axios.post(
+            RestApis.finance_service_declaration + "/create",
+            declaration,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+
 export const fetchCreateDeclarationForIncomeTax = createAsyncThunk(
     'finance/fetchCreateDeclarationForIncomeTax',
     async (payload: IFetchCreateDeclaration) => {
@@ -256,6 +282,7 @@ interface IFetchUpdateExpense {
     expenseDate: Date;
     amount: number;
     description: string;
+    expenseCategory: string;
 }
 
 export const fetchUpdateExpense = createAsyncThunk(
@@ -265,7 +292,8 @@ export const fetchUpdateExpense = createAsyncThunk(
             id: payload.id,
             expenseDate: payload.expenseDate,
             amount: payload.amount,
-            description: payload.description
+            description: payload.description,
+            expenseCategory: payload.expenseCategory
         };
         const result = await axios.put(
             RestApis.finance_service_expense + "/update",
@@ -372,6 +400,86 @@ export const fetchRejectExpense = createAsyncThunk(
     async (id: number) => {
         const result = await axios.post(
             RestApis.finance_service_expense + "/reject?id=" + id,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+interface IFetchFindExpenseByDate {
+    startDate: Date;
+    endDate: Date;
+}
+
+export const fetchFindExpenseByDate = createAsyncThunk(
+    'finance/fetchFindExpenseByDate',
+    async (payload: IFetchFindExpenseByDate) => {
+        const values = {
+            startDate: payload.startDate.toISOString().split('T')[0], // ISO format 'yyyy-mm-dd'
+            endDate: payload.endDate.toISOString().split('T')[0]
+        };
+        const result = await axios.post(
+            RestApis.finance_service_expense + "/find-by-date",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+export const fetchCalculateTotalExpenseByDate = createAsyncThunk(
+    'finance/fetchCalculateTotalExpenseByDate',
+    async (payload: IFetchFindExpenseByDate) => {
+        const values = {
+            startDate: payload.startDate.toISOString().split('T')[0], // ISO format 'yyyy-mm-dd'
+            endDate: payload.endDate.toISOString().split('T')[0]
+        };
+        const result = await axios.post(
+            RestApis.finance_service_expense + "/calculate",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+export const fetchGetAllExpenseCategories = createAsyncThunk(
+    'finance/fetchGetAllExpenseCategories',
+    async () => {
+        const result = await axios.post(
+            RestApis.finance_service_expense + "/get-all-categories",
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+export const fetchExpenseByMonths = createAsyncThunk(
+    'finance/fetchExpenseByMonths',
+    async (payload: IFetchFindExpenseByDate) => {
+        const values = {
+            startDate: payload.startDate.toISOString().split('T')[0], // ISO format 'yyyy-mm-dd'
+            endDate: payload.endDate.toISOString().split('T')[0]
+        };
+        const result = await axios.post(
+            RestApis.finance_service_expense + "/get-for-months",
+            values,
             {
                 headers: {
                     'Content-Type': 'application/json'
@@ -607,25 +715,45 @@ interface IFetchFindIncomeByDate {
     endDate: Date;
 }
 
- export const fetchFindIncomeByDate = createAsyncThunk(
-     'finance/fetchFindIncomeByDate',
-     async (payload: IFetchFindIncomeByDate) => {
-         const values = {
-             startDate: payload.startDate.toISOString().split('T')[0], // ISO format 'yyyy-mm-dd'
-             endDate: payload.endDate.toISOString().split('T')[0]
-         };
-         const result = await axios.post(
-             RestApis.finance_service_income + "/find-by-date",
-             values,
-             {
-                 headers: {
-                     'Content-Type': 'application/json'
-                 }
-             }
-         );
-         return result.data;
-     }
- );
+export const fetchFindIncomeByDate = createAsyncThunk(
+    'finance/fetchFindIncomeByDate',
+    async (payload: IFetchFindIncomeByDate) => {
+        const values = {
+            startDate: payload.startDate.toISOString().split('T')[0], // ISO format 'yyyy-mm-dd'
+            endDate: payload.endDate.toISOString().split('T')[0]
+        };
+        const result = await axios.post(
+            RestApis.finance_service_income + "/find-by-date",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+export const fetchCalculateTotalIncomeByDate = createAsyncThunk(
+    'finance/fetchCalculateTotalIncomeByDate',
+    async (payload: IFetchFindIncomeByDate) => {
+        const values = {
+            startDate: payload.startDate.toISOString().split('T')[0], // ISO format 'yyyy-mm-dd'
+            endDate: payload.endDate.toISOString().split('T')[0]
+        };
+        const result = await axios.post(
+            RestApis.finance_service_income + "/calculate",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
 
 export const fetchFindIncomeById = createAsyncThunk(
     'finance/fetchFindIncomeById',
@@ -658,6 +786,26 @@ export const fetchFindAllIncomes = createAsyncThunk(
         };
         const result = await axios.post(
             RestApis.finance_service_income + "/find-all",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+export const fetchIncomeByMonths = createAsyncThunk(
+    'finance/fetchIncomeByMonths',
+    async (payload: IFetchFindIncomeByDate) => {
+        const values = {
+            startDate: payload.startDate.toISOString().split('T')[0], // ISO format 'yyyy-mm-dd'
+            endDate: payload.endDate.toISOString().split('T')[0]
+        };
+        const result = await axios.post(
+            RestApis.finance_service_income + "/get-for-months",
             values,
             {
                 headers: {
@@ -947,7 +1095,8 @@ const financeSlice = createSlice({
     name: 'finance',
     initialState: initialFinanceState,
     reducers: {
-        closeModal: () => {},
+        closeModal: () => {
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -967,6 +1116,9 @@ const financeSlice = createSlice({
                 state.expenseList = action.payload.data;
             })
             .addCase(fetchFindByCategoryExpense.fulfilled, (state, action: PayloadAction<IResponse>) => {
+                state.expenseList = action.payload.data;
+            })
+            .addCase(fetchGetAllExpenseCategories.fulfilled, (state, action: PayloadAction<IResponse>) => {
                 state.expenseList = action.payload.data;
             })
             .addCase(fetchFindAllFinancialReport.fulfilled, (state, action: PayloadAction<IResponse>) => {
