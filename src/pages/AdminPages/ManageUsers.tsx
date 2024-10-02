@@ -169,7 +169,7 @@ function ManageUsers() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <Button variant="contained" color="primary" onClick={handleOpenNewUserDialog}>
+      <Button variant="contained" color="primary" onClick={handleOpenNewUserDialog} sx={{ marginBottom: '10px' }} >
         Yeni Kullanıcı Ekle
       </Button>
 
@@ -177,23 +177,30 @@ function ManageUsers() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>İsim</TableCell>
-              <TableCell>Soy isim</TableCell>
-              <TableCell>E-posta</TableCell>
-              <TableCell>Kullanıcı Durumu</TableCell>
-              <TableCell>Roller</TableCell>
-              <TableCell>Eylemler</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>İsim</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Soy isim</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>E-posta</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Kullanıcı Durumu</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Roller</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Eylemler</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredUsers.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.firstName}</TableCell>
-                <TableCell>{user.lastName}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.status}</TableCell>
-                <TableCell>{user.userRoles.join(', ')}</TableCell>
-                <TableCell>
+            {filteredUsers.map((user, index) => (
+              <TableRow key={user.id}
+              sx={{
+                backgroundColor: index % 2 === 0 ? 'action.hover' : 'background.paper', // Alternatif satır rengi
+                '&:hover': {
+                  backgroundColor: 'primary.light', // Hover efekti
+                },
+              }}
+              >
+                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.firstName}</TableCell>
+                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.lastName}</TableCell>
+                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.email}</TableCell>
+                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.status}</TableCell>
+                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.userRoles.join(', ')}</TableCell>
+                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
                   <Button 
                     variant="contained" 
                     color="primary" 
@@ -223,7 +230,11 @@ function ManageUsers() {
       </TableContainer>
 
       {/* Rol Ekleme Pop-up Dialog */}
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
+      <Dialog open={openDialog} 
+        onClose={handleCloseDialog}
+        maxWidth="sm" // Genişliği artırmak için maxWidth kullanılıyor
+        fullWidth // Genişliği tam olarak doldurmasını sağlar
+      >
         <DialogTitle>Rol Ekle</DialogTitle>
         <DialogContent>
           <List>
@@ -233,7 +244,7 @@ function ManageUsers() {
                   <ListItemButton onClick={() => handleOpenConfirmationDialog(role.roleId)}>
                     <ListItemText 
                       primary={role.roleName} 
-                      secondary={role.roleDescription ? role.roleDescription.slice(0, 50) : 'No description available'} 
+                      secondary={role.roleDescription ? role.roleDescription.slice(0, 75) : 'No description available'} 
                     />
                   </ListItemButton>
                 </Tooltip>
@@ -294,10 +305,10 @@ function ManageUsers() {
          
          
          {/* Yeni Kullanıcı Ekleme Dialog */}
-      <Dialog open={openNewUserDialog} onClose={handleCloseNewUserDialog}>
+      <Dialog open={openNewUserDialog} onClose={handleCloseNewUserDialog} maxWidth="sm" fullWidth>
         <DialogTitle>Yeni Kullanıcı Ekle</DialogTitle>
         <DialogContent>
-          <FormControl fullWidth sx={{ marginBottom: 2 }}>
+          <FormControl fullWidth sx={{ marginBottom: 2, marginTop: 2 }}>
             <TextField
               label="Ad"
               variant="outlined"

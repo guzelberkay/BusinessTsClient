@@ -46,10 +46,10 @@ export const drawerNavigations: Record<string, Button[]> = {
             type: 'collapse',
             component: DrawerCollapseButton,
             props: {
-                name: 'Admin İşlemleri',
+                name: 'adminMenu',
                 TopLevelIcon: <Settings/>,
                 menuItems: [
-                    'Kullanıcıları Düzenle','Rolleri Düzenle'
+                    'ManageUsers','ManageRoles'
                 ],
                 menuIcons: [
                     <ManageAccounts/>,<Edit/>

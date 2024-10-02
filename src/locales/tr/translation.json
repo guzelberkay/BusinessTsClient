@@ -47,7 +47,10 @@
     "incomes": "Gelirler",
     "invoices": "Faturalar",
     "financial-reports": "Finansal Raporlar",
-    "taxes": "Vergiler"
+    "taxes": "Vergiler",
+    "ManageUsers": "Kullanıcıları Yönet",
+    "ManageRoles": "Rolleri Yönet",
+    "adminMenu": "Admin Menü"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
