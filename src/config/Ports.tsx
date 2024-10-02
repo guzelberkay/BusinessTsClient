@@ -9,7 +9,8 @@ const ports = {
   crm: "9098",
   notification: "9095",
   subscription: "9091",
-  finance: "9089"
+  finance: "9089",
+  file: "9093",
 };
 
 export default ports;
