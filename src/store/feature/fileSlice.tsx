@@ -4,7 +4,7 @@ import RestApis from "../../config/RestApis";
 
 interface IFile {
     uuid: string;
-    extension: string; // Dosya uzantısı
+    extension: string; 
 }
   
 interface IFileState {
@@ -22,6 +22,8 @@ const initialFileState: IFileState = {
 export const EContentType = {
     IMAGE_JPEG: { mimeType: "image/jpeg", extension: "jpg" },
     IMAGE_PNG: { mimeType: "image/png", extension: "png" },
+    APPLICATION_PDF: { mimeType: "application/pdf", extension: "pdf" },
+    EXCEL_XLSX: { mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", extension: "xlsx" }
 };
 
 
@@ -31,14 +33,28 @@ const getExtensionByMimeType = (mimeType: string): string => {
             return EContentType.IMAGE_JPEG.extension;
         case EContentType.IMAGE_PNG.mimeType:
             return EContentType.IMAGE_PNG.extension;
+        case EContentType.APPLICATION_PDF.mimeType:
+            return EContentType.APPLICATION_PDF.extension;
+        case EContentType.EXCEL_XLSX.mimeType:
+            return EContentType.EXCEL_XLSX.extension;
         default:
             return ''; 
     }
+    
 };
 
 export const uploadFile = createAsyncThunk(
     'files/uploadFile',
-    async (formData: FormData, { rejectWithValue }) => {
+    async (file: File, { rejectWithValue }) => {
+        const formData = new FormData();
+        const mimeType = file.type; // MIME türünü al
+        const extension = getExtensionByMimeType(mimeType);
+
+        
+        formData.append('file', file);
+        formData.append('contentType', mimeType);
+        formData.append('token', localStorage.getItem('token') || '');
+
         try {
             const response = await axios.post(`${RestApis.file_service}/save`, formData, {
                 headers: {
@@ -46,54 +62,65 @@ export const uploadFile = createAsyncThunk(
                     'Authorization': `Bearer ${localStorage.getItem('token')}` 
                 },
             });
-            const mimeType = response.data.data.mimeType; 
-            const extension = getExtensionByMimeType(mimeType); 
             return { uuid: response.data.data.uuid, extension }; 
         } catch (error) {
-            return rejectWithValue( 'Dosya yüklenirken bir hata oluştu.');
+            return rejectWithValue('Dosya yüklenirken bir hata oluştu.');
         }
     }
 );
 
-// Dosya silme
+
 export const deleteFile = createAsyncThunk(
     'files/deleteFile',
-    async (uuid: string, { rejectWithValue }) => {
+    async ({ uuid, bucketName }: { uuid: string; bucketName: string }, { rejectWithValue }) => {
         try {
-            await axios.delete(`${RestApis.file_service}/delete`, {
+       
+            const response = await axios.delete(`${RestApis.file_service}/delete`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}` 
                 },
-                data: { uuid },
+                data: {
+                    uuid,
+                    bucketName
+                },
             });
-            return uuid; // Silinen dosyanın UUID'sini döndür
+
+            return response.data.data; 
         } catch (error) {
-            return rejectWithValue( 'Dosya silinirken bir hata oluştu.');
+            return rejectWithValue('Dosya silinirken bir hata oluştu.');
         }
     }
 );
 
-// updateFile
+
+
 export const updateFile = createAsyncThunk(
     'files/updateFile',
-    async ({ uuid, formData }: { uuid: string; formData: FormData }, { rejectWithValue }) => {
+    async ({ uuid, file, contentType }: { uuid: string; file: File; contentType: string }, { rejectWithValue }) => {
         try {
+            const formData = new FormData();
+            formData.append('uuid', uuid); 
+            formData.append('file', file); 
+            formData.append('contentType', contentType); 
+
             const response = await axios.post(`${RestApis.file_service}/update`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
             });
-            const mimeType = response.data.data.mimeType; 
+
+            const mimeType = response.data.data.mimeType;
             const extension = getExtensionByMimeType(mimeType); 
             return { uuid, extension }; 
         } catch (error) {
-            return rejectWithValue( 'Dosya güncellenirken bir hata oluştu.');
+            return rejectWithValue('Dosya güncellenirken bir hata oluştu.');
         }
     }
 );
 
-// Dosya alma
+
+
 export const fetchFile = createAsyncThunk(
     'files/fetchFile',
     async (uuid: string, { rejectWithValue }) => {
@@ -102,9 +129,9 @@ export const fetchFile = createAsyncThunk(
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}` 
                 },
-                responseType: 'blob', // Dosya olarak al
+                responseType: 'blob', 
             });
-            return response.data; // Blob döner
+            return response.data; 
         } catch (error) {
             return rejectWithValue( 'Dosya alınırken bir hata oluştu.');
         }
@@ -113,7 +140,7 @@ export const fetchFile = createAsyncThunk(
 
 
 
-// Slice oluşturma
+
 const fileSlice = createSlice({
     name: 'files',
     initialState: initialFileState,
