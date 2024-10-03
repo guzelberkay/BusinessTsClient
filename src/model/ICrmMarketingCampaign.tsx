@@ -5,6 +5,6 @@
      description: string;
      startDate: Date;
      endDate: Date;
-     budget: number;
+     budsetget: number;
      status:string
  }
