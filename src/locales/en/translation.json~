@@ -37,7 +37,10 @@
     "crm-sales-activity" : "Sales Activities",
     "crm-ticket" : "Tickets",
     "stock-customer": "Customers",
-    "stockmodule": "Stock Module"
+    "stockmodule": "Stock Module",
+    "ManageUsers": "Manage Users",
+    "ManageRoles": "Manage Roles",
+    "adminMenu": "Admin Menu"
 
 
   },

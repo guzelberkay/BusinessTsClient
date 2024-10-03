@@ -6,6 +6,7 @@ import userSlice from "./userSlice.tsx";
 import hrmSlice from "./hrmSlice.tsx";
 import subscriptionSlice from "./subscriptionSlice.tsx";
 import financeSlice from "./financeSlice.tsx";
+import roleSlice from "./roleSlice.tsx";
 
 
 export {
@@ -17,4 +18,5 @@ export {
     crmSlice,
     subscriptionSlice,
     financeSlice,
+    roleSlice
 };

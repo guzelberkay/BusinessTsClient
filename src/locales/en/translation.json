@@ -33,6 +33,12 @@
     "customer": "Customer",
     "supplier": "Supplier",
     "subscription": "Subscription",
+    "hrmmodule": "Human Resources Module",
+    "hrm-employees": "Employee List",
+    "hrm-payrolls": "Payroll List",
+    "hrm-performances": "Performance List",
+    "hrm-benefits": "Benefit List",
+    "hrm-attendance": "Attendance List",
     "customermodule": "Customer Module",
     "crm-customers" : "Costumer List",
     "crm-marketing-campaign" : "Marketing Campaigns",
@@ -48,7 +54,10 @@
     "incomes": "Incomes",
     "invoices": "Invoices",
     "financial-reports": "Financial Reports",
-    "taxes": "Taxes"
+    "taxes": "Taxes",
+    "ManageUsers": "Manage Users",
+    "ManageRoles": "Manage Roles",
+    "adminMenu": "Admin Menu"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -184,7 +193,7 @@
     "out": "Out",
     "arrived": "Arrived",
     "addfromorderid": "Add From Order ID",
-    "orderid": "Order ID"
+    "orderid": "Order ID (Please Only Enter Buy Order ID)"
 
 
 
@@ -250,7 +259,7 @@
     "description": "Description",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "budget": "Budget",
+    "budget": "Budget $",
     "value": "Value",
     "stage": "Stage",
     "probability": "Probability",
@@ -276,11 +285,46 @@
     "successfullydeleted" : "Successfully Deleted!",
     "add" : "ADD",
     "add_customer" : "Add customer",
-    "cancel" : "CANCEL",
     "save" : "SAVE",
     "deleted": "Deleted!",
     "added" : "Customer Saved Successfully!",
-    "closed_date": "Closed Date"
+    "successfullyupdated" : "Successfully Updated!",
+    "add_marketing_campaign" : "Add Marketing Campaign"
+
+
+
+
+
+  },
+  "hrmService":{
+    "firstName": "Name",
+    "lastName": "Lastname",
+    "position": "Position",
+    "department": "Department",
+    "email": "Email",
+    "phone": "Phone",
+    "hireDate": "Start Date",
+    "salary": "Salary",
+    "status" : "Status",
+    "added" : "Employee Saved Successfully!",
+    "error-occurred" : "Error Occurred",
+    "updated" : "Updated",
+    "deleting" : "Do you want to delete it, this action is irreversible!",
+    "cancel" : "CANCEL",
+    "confirmDelete" : "Yes I'm sure",
+    "delete" : "DELETE",
+    "update" : "UPDATE",
+    "checkboxRequired" : "Confirm the box if you want to delete!",
+    "successfullydeleted" : "Successfully Deleted!",
+    "successfullyupdated" : "Successfully Updated!",
+    "deleted": "Deleted!",
+    "searchbyname": "Search by Name",
+    "add" : "ADD",
+    "save" : "SAVE",
+    "add_employee" : "Add employee",
+    "non-added" : "Non Added"
+    
+
   },
   "financeService": {
     "searchbydepartment": "Search by Department",

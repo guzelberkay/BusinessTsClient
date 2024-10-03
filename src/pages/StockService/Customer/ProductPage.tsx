@@ -1,22 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
+import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar,} from "@mui/x-data-grid";
 import {
-    DataGrid,
-    GridColDef,
-    GridRowSelectionModel, GridToolbar,
-} from "@mui/x-data-grid";
-import {
-    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
-    Grid, InputLabel, Select,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    Grid,
+    InputLabel,
+    Select,
     TextField
-
 } from "@mui/material";
 
-import { useDispatch } from "react-redux";
-import  {AppDispatch, useAppSelector} from "../../../store";
+import {useDispatch} from "react-redux";
+import {AppDispatch, useAppSelector} from "../../../store";
 import {
-    fetchChangeAutoOrderModeOfProduct, fetchDeleteProduct,
-    fetchFindAllProduct, fetchFindAllProductCategory,
-    fetchFindAllSupplier, fetchFindAllWareHouse, fetchFindByIdProduct, fetchSaveProduct, fetchUpdateProduct
+    fetchChangeAutoOrderModeOfProduct,
+    fetchDeleteProduct,
+    fetchFindAllProduct,
+    fetchFindAllProductCategory,
+    fetchFindAllSupplier,
+    fetchFindAllWareHouse,
+    fetchFindByIdProduct,
+    fetchSaveProduct,
+    fetchUpdateProduct
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
@@ -24,9 +32,6 @@ import MenuItem from "@mui/material/MenuItem";
 import {ISupplier} from "../../../model/ISupplier.tsx";
 import {IWareHouse} from "../../../model/IWareHouse.tsx";
 import {IProductCategory} from "../../../model/IProductCategory.tsx";
-
-
-
 
 
 const ProductPage = () => {
@@ -467,7 +472,12 @@ const ProductPage = () => {
                             label={t('stockService.price')}
                             name="price"
                             value={price}
-                            onChange={e => setPrice((Number)(e.target.value))}
+                            onChange={e => {
+                                const value = Number(e.target.value);
+                                if (value > 0 || e.target.value === '') {
+                                    setPrice(value);
+                                }
+                            }}
                             required
                             fullWidth
                         />
@@ -476,7 +486,12 @@ const ProductPage = () => {
                             label={t('stockService.stockcount')}
                             name="stockCount"
                             value={stockCount}
-                            onChange={e => setStockCount((Number)(e.target.value))}
+                            onChange={e => {
+                                const value = Number(e.target.value);
+                                if (value > 0 || e.target.value === '') {
+                                    setStockCount(value);
+                                }
+                            }}
                             required
                             fullWidth
                         />
@@ -485,7 +500,12 @@ const ProductPage = () => {
                             label={t('stockService.minstocklevel')}
                             name="minStockLevel"
                             value={minimumStockLevel}
-                            onChange={e => setMinimumStockLevel((Number)(e.target.value))}
+                            onChange={e => {
+                                const value = Number(e.target.value);
+                                if (value > 0 || e.target.value === '') {
+                                    setMinimumStockLevel(value);
+                                }
+                            }}
                             required
                             fullWidth
                         />

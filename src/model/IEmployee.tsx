@@ -1,5 +1,6 @@
 export interface IEmployee{
     id: number;
+    memberId:number
     firstName: string;
     lastName: string;
     position: string;

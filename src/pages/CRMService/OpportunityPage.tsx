@@ -13,7 +13,11 @@ import {
 
 import {useDispatch} from "react-redux";
 import {AppDispatch, useAppSelector} from "../../store";
-import {fetchFindAllOpportunity} from "../../store/feature/crmSlice.tsx";
+import {fetchFindAllOpportunity,
+    fetchSaveOpportunity,
+    fetchUpdateOpportunity,
+    fetchFindOpportunityById,
+    fetchDeleteOpportunity} from "../../store/feature/crmSlice.tsx";
 import {useTranslation} from "react-i18next";
 import Swal from "sweetalert2";
 
@@ -30,6 +34,16 @@ const OpportunityPage = () => {
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation();
+
+    // modal
+    const [openAddOpportunityModal, setOpenAddOpportunityModal] = useState(false);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [value, setValue] = useState(0);
+    const [stage, setStage] = useState('');
+    const [probability, setProbability] = useState(0);
+    const [status, setStatus] = useState('');
+
 
     useEffect(() => {
         dispatch(fetchFindAllOpportunity({
