@@ -21,6 +21,7 @@ import {
     AttachMoney,
     AccountBalance,
     Description,
+    Assignment,
     Receipt,
     Assessment,
     MonetizationOn,
@@ -105,6 +106,25 @@ export const drawerNavigations: Record<string, Button[]> = {
                 ],
                 menuNavigations: [
                     'customer', 'marketing-campaign', 'opportunity', 'sales-activity', 'tickets'
+                ],
+            } as DrawerCollapseButtonProps,
+        },
+    ],
+    HRMM: [
+        {
+            type: 'collapse',
+            component: DrawerCollapseButton,
+            props: {
+                name: 'hrmmodule',
+                TopLevelIcon: <FormatListNumbered/>,
+                menuItems: [
+                    'hrm-employees', 'hrm-payrolls', 'hrm-performances', 'hrm-benefits', 'hrm-attendance'
+                ],
+                menuIcons: [
+                    <People/>, <AttachMoney/>, <ShowChart/>, <RequestQuote/>, <Assignment/>
+                ],
+                menuNavigations: [
+                    'employee-page', 'payroll-page', 'performance-page', 'benefit-page', 'attandance-page'
                 ],
             } as DrawerCollapseButtonProps,
         },

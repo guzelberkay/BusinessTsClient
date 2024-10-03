@@ -30,6 +30,12 @@
     "productcategories": "Urun Kategorileri",
     "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
     "stockmovements": "Stok Hareketleri",
+    "hrmmodule": "İnsan Kaynakları Modulu",
+    "hrm-employees": "Çalışanlar",
+    "hrm-payrolls": "Maaş Bordroları",
+    "hrm-performances": "Performanslar",
+    "hrm-benefits": "Yan Haklar",
+    "hrm-attendance": "Devam Takip",
     "customermodule": "Musteri Modulu",
     "crm-customers": "Musteriler",
     "crm-marketing-campaign" : "Pazarlama Kampanyaları",
@@ -286,6 +292,36 @@
     "save" : "KAYDET",
     "added" : "Müşteri Başarıyla Eklendi!"
    
+
+  },
+  "hrmService":{
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "position": "Pozisyon",
+    "department": "Departman",
+    "email": "Email",
+    "phone": "Telefon",
+    "hireDate": "Başlama Tarihi",
+    "salary": "Maaş",
+    "status" : "Durum",
+    "added" : "Çalışan Başarıyla Eklendi!",
+    "error-occurred" : "Hata meydana geldi!",
+    "updated" : "Güncellendi!",
+    "deleting" : "Silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!",
+    "delete" : "SİL",
+    "cancel" : "İPTAL",
+    "confirmDelete" : "Evet, eminim",
+    "checkboxRequired" : "Silmek için önce kutucuğu işaretleyin!",
+    "deleted" : "Silindi!",
+    "successfullydeleted" : "Başarıyla Silindi!",
+    "successfullyupdated" : "Başarıyla Güncellendi!",
+    "searchbyname":"Ad'a Göre Ara",
+    "add" : "EKLE",
+    "update" : "GÜNCELLE",
+    "save" : "KAYDET",
+    "add_employee" : "Çalışan Ekle",
+    "non-added" : "Eklenemedi"
+    
 
   },
 
