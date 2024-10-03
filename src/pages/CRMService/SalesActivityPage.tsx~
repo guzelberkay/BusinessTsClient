@@ -307,7 +307,6 @@ const SalesActivityPage = () => {
                                 sx={{marginTop: '15px'}}
                                 label={t('crmService.type')}
                                 name="type"
-                                value={type}
                                 onChange={e => setType(e.target.value)}
                                 required
                                 fullWidth

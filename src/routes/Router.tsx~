@@ -17,7 +17,6 @@ import OpportunitySavePage from "../pages/CRMService/OpportunitySavePage.tsx";
 import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
 import SalesActivitySavePage from "../pages/CRMService/SalesActivitySavePage.tsx";
-import TicketSavePage from "../pages/CRMService/TicketSavePage.tsx";
 
 
 /**
@@ -243,10 +242,6 @@ export default function Router() {
                 {
                     path: '/sales-activity/save',
                     element: <PrivateRoute element={<SalesActivitySavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
-                },
-                {
-                    path: '/ticket/save',
-                    element: <PrivateRoute element={<TicketSavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
                 },
                 {
                     path: 'test',

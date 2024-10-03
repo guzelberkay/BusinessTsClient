@@ -285,8 +285,10 @@
     "save" : "KAYDET",
     "added" : "Müşteri Başarıyla Eklendi!",
     "successfullyupdated" : "Başarıyla Güncellendi!",
-    "add_marketing_campaign" : ""
-   
+    "add_marketing_campaign" : "Pazarlama Kampanyası Ekle / Güncelle",
+    "make-opportunity" : "Fırsat oluştur",
+    "make-sales-activity" : "Satış aktivitesi oluştur",
+
 
   },
 

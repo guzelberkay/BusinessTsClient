@@ -280,7 +280,9 @@
     "deleted": "Deleted!",
     "added" : "Customer Saved Successfully!",
     "successfullyupdated" : "Successfully Updated!",
-    "add_marketing_campaign" : "Add Marketing Campaign"
+    "add_marketing_campaign" : "Add Marketing Campaign",
+    "make-opportunity" : "Make Opportunity",
+    "make-sales-activity" : "Make Sales Activity"
 
 
 
