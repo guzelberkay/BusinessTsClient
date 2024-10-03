@@ -330,6 +330,10 @@
     "update" : "GÜNCELLE",
     "save" : "KAYDET",
     "add_employee" : "Çalışan Ekle",
+    "salaryDate": "Maaş Tarihi",
+    "grossSalary": "Brüt Maaş",
+    "deductions": "Kesintiler",
+    "netSalary": "Net Maaş",
     "non-added" : "Eklenemedi"
     
 
