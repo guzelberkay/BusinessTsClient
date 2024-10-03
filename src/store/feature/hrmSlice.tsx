@@ -168,6 +168,32 @@ export const fetchDeleteEmployee = createAsyncThunk(
 //#region Attendance
 //#region Benefit
 //#region Payroll
+
+interface IfetchFindAllPayroll{
+    searchText:string;
+    page:number;
+    size:number;
+
+}
+export const fetchFindAllPayroll = createAsyncThunk(
+    'hrm/fetchFindAllPayroll',
+    async (payload:IfetchFindAllPayroll) => {
+        const values = { searchText: payload.searchText,page: payload.page,size: payload.size };
+        const result = await axios.post(
+         "http://localhost:9096/dev/v1/payroll/find-all",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                    
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
 //#region Performance
 
 const hrmSlice = createSlice({
@@ -182,6 +208,9 @@ const hrmSlice = createSlice({
         builder.addCase(fetchFindAllEmployee.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.employeeList = action.payload.data;
         })
+        builder.addCase(fetchFindAllPayroll.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.payrollList = action.payload.data;
+        });
       
     }
 });
