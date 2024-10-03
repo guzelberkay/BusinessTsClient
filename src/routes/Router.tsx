@@ -16,6 +16,10 @@ import TicketPage from "../pages/CRMService/TicketPage.tsx";
 import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
 import IncomePage from "../pages/FinanceService/IncomePage.tsx";
+import AddUser from "../pages/AdminPages/AddUser.tsx";
+import ManageUsers from "../pages/AdminPages/ManageUsers.tsx";
+import AddRole from "../pages/AdminPages/AddRole.tsx";
+import ManageRoles from "../pages/AdminPages/ManageRoles.tsx";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -254,7 +258,14 @@ export default function Router() {
                     element: <PrivateRoute element={<IncomePage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
                 },{
                     path: 'profile-management',
-                    element: <PrivateRoute element={<ProfileManagement />}  />,
+                    element: <PrivateRoute element={<ProfileManagement />}  roles={['ADMIN','MEMBER','SUPER_ADMIN']} />,
+                },
+                {
+                    path:'ManageUsers',
+                    element: <PrivateRoute element={<ManageUsers />} roles={['ADMIN','SUPER_ADMIN']} />,
+                },{
+                    path:'ManageRoles',
+                    element: <PrivateRoute element={<ManageRoles />} roles={['ADMIN','SUPER_ADMIN']} />,
                 }
             ]
         }
