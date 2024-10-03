@@ -84,20 +84,38 @@ const CustomerPageStock = () => {
         })
     }
     const handleUpdate = async () => {
-        dispatch(fetchUpdateCustomer({ id: selectedRowIds[0], name: name, surname: surname, email: email, identityNo: identityNo, phoneNo: phoneNo })).then(() => {
-            setName('')
-            setSurname('')
-            setEmail('')
-            setIdentityNo('')
-            setPhoneNo('')
-            setOpenAddCustomerModal(false);
-            Swal.fire({
-                title: t("stockService.updated"),
-                text: t("stockService.successfullyupdated"),
-                icon: "success",
-            });
-            setIsUpdating(false)
+        dispatch(fetchUpdateCustomer({ id: selectedRowIds[0], name: name, surname: surname, email: email, identityNo: identityNo, phoneNo: phoneNo })).then((data) => {
+            if (data.payload.message === "Success") {
+                setName('')
+                setSurname('')
+                setEmail('')
+                setIdentityNo('')
+                setPhoneNo('')
+                setOpenAddCustomerModal(false);
+                Swal.fire({
+                    title: t("stockService.updated"),
+                    text: t("stockService.successfullyupdated"),
+                    icon: "success",
+                });
+                setIsUpdating(false)
+            } else {
+
+                setName('')
+                setSurname('')
+                setEmail('')
+                setIdentityNo('')
+                setPhoneNo('')
+                setOpenAddCustomerModal(false);
+                Swal.fire({
+                    title: t("swal.error"),
+                    text: data.payload.message,
+                    icon: "error",
+                    confirmButtonText: t("swal.ok"),
+                });
+                setIsUpdating(false)
+            }
         })
+
     }
 
     const handleSaveCustomer = async () => {
