@@ -164,7 +164,7 @@ const CustomerPage = () => {
                 showCancelButton: true,
                 confirmButtonText: t("crmService.delete"),
                 cancelButtonText: t("crmService.cancel"),
-                html: `<input type="checkbox" size="large" id="confirm-checkbox" />
+                html: `<input type="checkbox" id="confirm-checkbox" />
                    <label for="confirm-checkbox">${t("crmService.confirmDelete")}</label>`,
                 preConfirm: () => {
                     const popup = Swal.getPopup();

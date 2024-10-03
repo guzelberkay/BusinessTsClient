@@ -92,7 +92,7 @@ const CustomerPage = () => {
                     setOpenAddSalesActivityModel(false);
                     Swal.fire({
                         title: t("swal.success"),
-                        text: t("crmService.added_opportunity"),
+                        text: t("crmService.added_sales_activity"),
                         icon: "success",
                     }).then(
                         goToSalesActivityPage

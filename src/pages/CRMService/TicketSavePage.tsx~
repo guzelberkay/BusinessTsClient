@@ -54,7 +54,7 @@ const TicketSavePage = () => {
 
 
     const goToTicketPage = () => {
-        navigate("/ticket");
+        navigate("/tickets");
     }
 
 

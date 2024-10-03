@@ -232,7 +232,7 @@ const TicketSavePage = () => {
                     <Dialog open={openAddTicketModal} onClose={() => setOpenAddTicketModel(false)}
                             fullWidth
                             maxWidth='lg'>
-                        <DialogTitle>{isUpdating ? t('crmService.update') : t('crmService.add_sales_activity')}</DialogTitle>
+                        <DialogTitle>{isUpdating ? t('crmService.update') : t('crmService.make-ticket')}</DialogTitle>
                         <DialogContent>
                             <TextField
                                 sx={{marginTop: '15px'}}

@@ -292,8 +292,7 @@
     "make-ticket" : "Create a Ticket",
     "added_ticket": "Ticket Saved Successfully!",
     "updated_ticket": "Ticket Updated Successfully!",
-    "deleted-sales-activity": "Sales Activity Deleted Successfully!",
-    "added_sales_activity": "Sales Activity Saved Successfully!"
+    "deleted-sales-activity": "Sales Activity Deleted Successfully!"
 
 
 

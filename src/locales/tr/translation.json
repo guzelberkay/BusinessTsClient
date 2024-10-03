@@ -287,7 +287,18 @@
     "successfullyupdated" : "Başarıyla Güncellendi!",
     "add_marketing_campaign" : "Pazarlama Kampanyası Ekle / Güncelle",
     "make-opportunity" : "Fırsat oluştur",
-    "make-sales-activity" : "Satış aktivitesi oluştur"
+    "make-sales-activity" : "Satış aktivitesi oluştur",
+    "add_opportunity" : "Fırsat Ekle",
+    "added_opportunity" : "Fırsat Başarıyla Eklendi!",
+    "updated_opportunity": "Fırsat güncellendi!",
+    "successfullyadded" : "Başarıyla Eklendi!",
+    "add_sales_activity" : "Satış Aktivitesi Ekle",
+    "updated_sales_activity" : "Satış Aktivitesi güncellendi!",
+    "make-ticket" : "Bilet oluştur",
+    "added_ticket": "Bilet Başarıyla Eklendi!",
+    "updated_ticket": "Bilet güncellendi!",
+    "deleted-sales-activity": "Satış aktivitesi silindi!",
+    "added_sales_activity": "Satış aktivitesi eklendi!"
 
 
   },
