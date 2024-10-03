@@ -114,7 +114,15 @@ const BudgetPage: React.FC = () => {
     }
 
     const handleUpdateBudget = () => {
-        dispatch(fetchUpdateBudget({id: selectedRowIds[0], department, year, amount, description})).then(() => {
+        dispatch(fetchUpdateBudget(
+            {
+                id: selectedRowIds[0],
+                department,
+                year,
+                amount,
+                description
+            })
+        ).then(() => {
             setDepartment('');
             setYear(0);
             setAmount(0);

@@ -30,10 +30,18 @@
     "productcategories": "Urun Kategorileri",
     "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
     "stockmovements": "Stok Hareketleri",
+    "hrmmodule": "İnsan Kaynakları Modulu",
+    "hrm-employees": "Çalışanlar",
+    "hrm-payrolls": "Maaş Bordroları",
+    "hrm-performances": "Performanslar",
+    "hrm-benefits": "Yan Haklar",
+    "hrm-attendance": "Devam Takip",
     "customermodule": "Musteri Modulu",
     "crm-customers": "Musteriler",
     "crm-marketing-campaign" : "Pazarlama Kampanyaları",
     "crm-opportunity" : "Fırsatlar",
+    "crm-sales-activity" : "Satış Aktiviteleri",
+    "crm-ticket" : "Biletler",
     "success": "Basarili",
     "supplier": "Tedarikci",
     "subscription": "Abonelik",
@@ -47,7 +55,10 @@
     "incomes": "Gelirler",
     "invoices": "Faturalar",
     "financial-reports": "Finansal Raporlar",
-    "taxes": "Vergiler"
+    "taxes": "Vergiler",
+    "ManageUsers": "Kullanıcıları Yönet",
+    "ManageRoles": "Rolleri Yönet",
+    "adminMenu": "Admin Menü"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -187,7 +198,7 @@
     "out": "Çıkış",
     "arrived": "Teslim Alindi",
     "addfromorderid": "Siparis No'dan Ekle",
-    "orderid": "Siparis Id"
+    "orderid": "Siparis Id (Lütfen Sadece Alış Siparişi Giriniz.)"
 
   },
 
@@ -253,7 +264,7 @@
     "description": "Açıklama",
     "startDate": "Başlama Tarihi",
     "endDate": "Bitiş Tarihi",
-    "budget": "Bütçe",
+    "budget": "Bütçe $",
     "value": "Değer",
     "stage": "Aşama",
     "probability": "Olasılık",
@@ -281,8 +292,40 @@
     "add" : "EKLE",
     "add_customer" : "Müşteri Ekle",
     "save" : "KAYDET",
-    "added" : "Müşteri Başarıyla Eklendi!"
+    "added" : "Müşteri Başarıyla Eklendi!",
+    "successfullyupdated" : "Başarıyla Güncellendi!",
+    "add_marketing_campaign" : "Pazarlama Kampanyası Ekle"
    
+
+  },
+  "hrmService":{
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "position": "Pozisyon",
+    "department": "Departman",
+    "email": "Email",
+    "phone": "Telefon",
+    "hireDate": "Başlama Tarihi",
+    "salary": "Maaş",
+    "status" : "Durum",
+    "added" : "Çalışan Başarıyla Eklendi!",
+    "error-occurred" : "Hata meydana geldi!",
+    "updated" : "Güncellendi!",
+    "deleting" : "Silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!",
+    "delete" : "SİL",
+    "cancel" : "İPTAL",
+    "confirmDelete" : "Evet, eminim",
+    "checkboxRequired" : "Silmek için önce kutucuğu işaretleyin!",
+    "deleted" : "Silindi!",
+    "successfullydeleted" : "Başarıyla Silindi!",
+    "successfullyupdated" : "Başarıyla Güncellendi!",
+    "searchbyname":"Ad'a Göre Ara",
+    "add" : "EKLE",
+    "update" : "GÜNCELLE",
+    "save" : "KAYDET",
+    "add_employee" : "Çalışan Ekle",
+    "non-added" : "Eklenemedi"
+    
 
   },
 
@@ -298,7 +341,7 @@
     "deleteproduct": "Bütçeyi silmek istediğinizden emin misiniz?",
     "delete": "SİL",
     "yesdeleteit": "Evet sil!",
-    "cancel": "İptal",
+    "cancel": "İPTAL",
     "deleted": "Silindi!",
     "budgetdeleted": "Bütçe Başarıyla Silindi",
     "budgetsuccesfullyupdated": "Bütçe Başarıyla Güncellendi",
@@ -310,7 +353,28 @@
     "source": "Kaynak",
     "incomesuccesfullyadded": "Gelir Başarıyla Eklendi",
     "startdate": "Başlangıç Tarihi",
-    "enddate": "Bitiş Tarihi"
+    "enddate": "Bitiş Tarihi",
+    "vat": "KDV",
+    "corporate": "Kurumlar Vergisi",
+    "income": "Gelir Vergisi",
+    "createdeclaration": "Vergi Beyannamesi Oluştur",
+    "netincome": "Net Gelir",
+    "taxtype": "Vergi Türü",
+    "totaltax": "Toplam Vergi",
+    "grossincome": "Brüt Gelir",
+    "expense": "Gider",
+    "downloadpdf:": "PDF İndir",
+    "netincomeaftertax": "Net Gelir",
+    "incomedistributionchart": "Gelir Dağılım Grafiği",
+    "searchbydescription": "Açıklamaya Göre Ara",
+    "category": "Kategori",
+    "date": "Tarih",
+    "search": "BUL",
+    "getreport": "RAPOR OLUŞTUR",
+    "createdeclaration": "BEYANNAME OLUŞTUR",
+    "grossIncome": "Brüt Gelir",
+    "netIncome": "Net Gelir",
+    "expense": "Giderler"
   }
 }
 

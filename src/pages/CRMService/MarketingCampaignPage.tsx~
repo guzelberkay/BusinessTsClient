@@ -169,7 +169,7 @@ const MarketingCampaignPage = () => {
                     if (!selectedMarketingCampaign) continue;
 
                     const data = await dispatch(fetchDeleteMarketingCampaign(selectedMarketingCampaign.id));
-
+                    console.log(data)
 
                     if (data.payload.message !== "Marketing campaign deleted successfully") {
                         await Swal.fire({

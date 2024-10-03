@@ -21,10 +21,16 @@ import {
     AttachMoney,
     AccountBalance,
     Description,
+    Assignment,
     Receipt,
     Assessment,
     MonetizationOn,
-    RequestQuote, KeyboardArrowUp, ArrowUpward, ArrowDownward
+    RequestQuote, KeyboardArrowUp, ArrowUpward, ArrowDownward,
+    Settings,
+    PersonAdd,
+    ManageAccounts,
+    GroupAdd,
+    Edit
 } from '@mui/icons-material';
 
 import DrawerCollapseButton, {DrawerCollapseButtonProps} from '../../atoms/DrawerCollapseButton';
@@ -38,42 +44,19 @@ export type Button =
 export const drawerNavigations: Record<string, Button[]> = {
     SUPER_ADMIN: [
         {
-            type: 'button',
-            component: DrawerButton,
-            props: {name: 'dashboard', icon: <Dashboard/>, navigation: 'admin-dashboard'} as DrawerButtonProps,
-        },
-        {
             type: 'collapse',
             component: DrawerCollapseButton,
             props: {
-                name: 'stock',
-                TopLevelIcon: <FormatListNumbered/>,
+                name: 'adminMenu',
+                TopLevelIcon: <Settings/>,
                 menuItems: [
-                    'products', 'buyorders', 'sellorders', 'suppliers', 'warehouses', 'productcategories', 'productsbyminstocklevel', 'stockmovements'
+                    'ManageUsers','ManageRoles'
                 ],
                 menuIcons: [
-                    <ProductionQuantityLimits/>, <Shop/>, <Sell/>, <SupportAgent/>, <Warehouse/>, <Category/>,
-                    <Inventory/>, <ShowChart/>
+                    <ManageAccounts/>,<Edit/>
                 ],
                 menuNavigations: [
-                    'products', 'buy-orders', 'sell-orders', 'suppliers', 'ware-houses', 'product-categories', 'products-by-min-stock-level', 'stock-movements'
-                ],
-            } as DrawerCollapseButtonProps,
-        },
-        {
-            type: 'collapse',
-            component: DrawerCollapseButton,
-            props: {
-                name: 'supplier',
-                TopLevelIcon: <FormatListNumbered/>,
-                menuItems: [
-                    'buyorders'
-                ],
-                menuIcons: [
-                    <ProductionQuantityLimits/>
-                ],
-                menuNavigations: [
-                    'supplier-orders'
+                    'ManageUsers','ManageRoles'
                 ],
             } as DrawerCollapseButtonProps,
         }
@@ -119,10 +102,29 @@ export const drawerNavigations: Record<string, Button[]> = {
                     'crm-customers', 'crm-marketing-campaign', 'crm-opportunity', 'crm-sales-activity', 'crm-ticket'
                 ],
                 menuIcons: [
-                    <People/>, <Shop/>, <TipsAndUpdates/>, <Shop/>, <AirplaneTicket/>
+                    <People/>, <Campaign/>, <TipsAndUpdates/>, <Shop/>, <AirplaneTicket/>
                 ],
                 menuNavigations: [
                     'customer', 'marketing-campaign', 'opportunity', 'sales-activity', 'tickets'
+                ],
+            } as DrawerCollapseButtonProps,
+        },
+    ],
+    HRMM: [
+        {
+            type: 'collapse',
+            component: DrawerCollapseButton,
+            props: {
+                name: 'hrmmodule',
+                TopLevelIcon: <FormatListNumbered/>,
+                menuItems: [
+                    'hrm-employees', 'hrm-payrolls', 'hrm-performances', 'hrm-benefits', 'hrm-attendance'
+                ],
+                menuIcons: [
+                    <People/>, <AttachMoney/>, <ShowChart/>, <RequestQuote/>, <Assignment/>
+                ],
+                menuNavigations: [
+                    'employee-page', 'payroll-page', 'performance-page', 'benefit-page', 'attandance-page'
                 ],
             } as DrawerCollapseButtonProps,
         },
