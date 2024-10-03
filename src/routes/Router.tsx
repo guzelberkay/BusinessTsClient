@@ -55,7 +55,8 @@ export const ResetPassword=lazy(() => import('../pages/ResetPassword'));
 export const Subscription=lazy(() => import('../pages/SubscriptionService/Subscription'));
 export const SubscriptionHistory=lazy(() => import('../pages/SubscriptionService/SubscriptionHistory'));
 export const AddEditPlan=lazy(() => import('../pages/SubscriptionService/AddEditPlan'));
-
+export const CreateProjectPage = lazy(() => import('../pages/ProjectService/CreateProject'));
+export const ListProjectPage = lazy(() => import('../pages/ProjectService/ListProject'));
 // For testing purposes (with delay) 
 const TestPage = lazy(() => delay(1000).then(() => import('../pages/TestPage')));
 
@@ -107,8 +108,7 @@ export default function Router() {
                 <PostAuthTemplate>
                     <Suspense fallback={<Loader />}>
                         <SideBarNotifications/>
-                    </Suspense>
-                </PostAuthTemplate>
+                    </Suspense></PostAuthTemplate>
             ),
         },
         {
@@ -278,6 +278,14 @@ export default function Router() {
                 {
                     path: 'budgets',
                     element: <PrivateRoute element={<BudgetPage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                },
+                {
+                  path:'create-project',
+                  element:<CreateProjectPage />,
+                },
+                {
+                    path: 'list-project',
+                    element: <ListProjectPage />,
                 },
                 {
                     path: 'incomes',

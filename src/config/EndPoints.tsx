@@ -33,6 +33,7 @@ const endpoints = {
   plan: "/plan",
   // FILE Endpoints
   file: "/file",
+  project_management: "/project"
 };
 
 export default endpoints;
