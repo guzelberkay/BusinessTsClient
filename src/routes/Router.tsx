@@ -16,6 +16,7 @@ import TicketPage from "../pages/CRMService/TicketPage.tsx";
 import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
 import IncomePage from "../pages/FinanceService/IncomePage.tsx";
+import UserChat from "../pages/UserChat.tsx";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -255,6 +256,11 @@ export default function Router() {
                 },{
                     path: 'profile-management',
                     element: <PrivateRoute element={<ProfileManagement />}  />,
+                }
+                ,
+                {
+                    path: 'user-chat',
+                    element: <PrivateRoute element={<UserChat />} roles={['ADMIN','SUPER_ADMIN','MEMBER']} />,
                 }
             ]
         }
