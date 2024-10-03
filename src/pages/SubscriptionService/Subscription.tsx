@@ -66,8 +66,8 @@ const Subscription: React.FC = () => {
    * @param {string} planName - The name of the subscription plan.
    * @returns {boolean} - True if the user is subscribed to the plan, otherwise false.
    */
-  const checkSubscriptions = (planName: string) => {
-    return activeSubscriptionRoles.includes(planName.toUpperCase());
+  const checkSubscriptions = (roles: string[]) => {
+    return roles.every(role => activeSubscriptionRoles.includes(role));
   };
 
   return (
@@ -94,10 +94,10 @@ const Subscription: React.FC = () => {
             <CardActions>
               <Button
                 variant="contained"
-                color={checkSubscriptions(plan.name) ? 'error' : 'success'}
-                onClick={() => handleSubscription(plan.id, checkSubscriptions(plan.name))}
+                color={checkSubscriptions(plan.roles) ? 'error' : 'success'}
+                onClick={() => handleSubscription(plan.id, checkSubscriptions(plan.roles))}
               >
-                {checkSubscriptions(plan.name) ? t('subscription.unsubscribe') : t('subscription.subscribe')}
+                {checkSubscriptions(plan.roles) ? t('subscription.unsubscribe') : t('subscription.subscribe')}
               </Button>
             </CardActions>
           </Card>
