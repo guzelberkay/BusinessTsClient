@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import RestApis from "../../config/RestApis";
+import { IResponse } from "../../model/IResponse";
 
 interface IFile {
     uuid: string;
@@ -8,22 +9,24 @@ interface IFile {
 }
   
 interface IFileState {
+    uuid: string;
     files: IFile[];
     isLoading: boolean;
     error: string | null;
 }
   
 const initialFileState: IFileState = {
+    uuid: '',
     files: [],
     isLoading: false,
     error: null,
 };
   
 export const EContentType = {
-    IMAGE_JPEG: { mimeType: "image/jpeg", extension: "jpg" },
-    IMAGE_PNG: { mimeType: "image/png", extension: "png" },
-    APPLICATION_PDF: { mimeType: "application/pdf", extension: "pdf" },
-    EXCEL_XLSX: { mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", extension: "xlsx" }
+    IMAGE_JPEG: { mimeType: "image/jpeg", extension: "jpg", enum: "IMAGE_JPEG" },
+    IMAGE_PNG: { mimeType: "image/png", extension: "png", enum: "IMAGE_PNG" },
+    APPLICATION_PDF: { mimeType: "application/pdf", extension: "pdf", enum: "APPLICATION_PDF" },
+    EXCEL_XLSX: { mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", extension: "xlsx", enum: "EXCEL_XLSX" }
 };
 
 
@@ -40,19 +43,33 @@ const getExtensionByMimeType = (mimeType: string): string => {
         default:
             return ''; 
     }
-    
 };
+
+const getEnumByMimeType = (mimeType: string): string => {
+    switch (mimeType) {
+        case EContentType.IMAGE_JPEG.mimeType:
+            return EContentType.IMAGE_JPEG.enum;
+        case EContentType.IMAGE_PNG.mimeType:
+            return EContentType.IMAGE_PNG.enum;
+        case EContentType.APPLICATION_PDF.mimeType:
+            return EContentType.APPLICATION_PDF.enum;
+        case EContentType.EXCEL_XLSX.mimeType:
+            return EContentType.EXCEL_XLSX.enum;
+        default:
+            return ''; 
+    }
+};
+
 
 export const uploadFile = createAsyncThunk(
     'files/uploadFile',
     async (file: File, { rejectWithValue }) => {
         const formData = new FormData();
-        const mimeType = file.type; // MIME türünü al
+        const mimeType = file.type; // MIME türünü al image/jpeg
         const extension = getExtensionByMimeType(mimeType);
-
-        
+        const enum2 = getEnumByMimeType(mimeType);
         formData.append('file', file);
-        formData.append('contentType', mimeType);
+        formData.append('contentType', enum2);
         formData.append('token', localStorage.getItem('token') || '');
 
         try {
@@ -62,7 +79,7 @@ export const uploadFile = createAsyncThunk(
                     'Authorization': `Bearer ${localStorage.getItem('token')}` 
                 },
             });
-            return { uuid: response.data.data.uuid, extension }; 
+            return response.data; 
         } catch (error) {
             return rejectWithValue('Dosya yüklenirken bir hata oluştu.');
         }
@@ -154,9 +171,9 @@ const fileSlice = createSlice({
             .addCase(uploadFile.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(uploadFile.fulfilled, (state, action) => {
+            .addCase(uploadFile.fulfilled, (state, action: PayloadAction<IResponse>) => {
                 state.isLoading = false;
-                state.files.push({ uuid: action.payload.uuid, extension: action.payload.extension }); 
+                state.uuid = action.payload.data;
             })
             .addCase(uploadFile.rejected, (state, action) => {
                 state.isLoading = false;

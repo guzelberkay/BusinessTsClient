@@ -11,12 +11,13 @@ import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
 import Swal from 'sweetalert2';
 import { IPlanTranslation } from '../../model/IPlanTranslation';
+import { fetchRoleList } from '../../store/feature/roleSlice';
 
 const Subscription: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { t } = useTranslation();
     const plans = useSelector((state: RootState) => state.subscription.planList);
-    const assigableRoleList = useSelector((state: RootState) => state.roleSlice.assigableRoleList);
+    const roleList = useSelector((state: RootState) => state.roleSlice.roleList);
     const language = useSelector((state: RootState) => state.pageSettings.language);
 
     const [openAddDialog, setOpenAddDialog] = useState(false);
@@ -28,6 +29,7 @@ const Subscription: React.FC = () => {
 
     useEffect(() => {
         dispatch(fetchFindAllPlans(language));
+        dispatch(fetchRoleList());
     }, [dispatch, language]);
 
     const handleAddPlanOpen = () => {
@@ -190,8 +192,8 @@ const Subscription: React.FC = () => {
                             value={planDetails.roles}
                             onChange={()=>handleRolesChange}
                         >
-                            {assigableRoleList.map((role) => (
-                                <MenuItem key={role.roleName} value={role.roleName}>
+                            {roleList.map((role) => (
+                                <MenuItem key={role.roleId} value={role.roleName}>
                                     {role.roleName}
                                 </MenuItem>
                             ))}
