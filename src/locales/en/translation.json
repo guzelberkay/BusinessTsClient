@@ -196,7 +196,9 @@
     "out": "Out",
     "arrived": "Arrived",
     "addfromorderid": "Add From Order ID",
-    "orderid": "Order ID (Please Only Enter Buy Order ID)"
+    "orderid": "Order ID (Please Only Enter Buy Order ID)",
+    "identityno": "Identity No",
+    "phoneno": "Phone No"
 
 
 
