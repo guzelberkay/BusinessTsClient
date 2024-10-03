@@ -489,6 +489,26 @@ export const fetchExpenseByMonths = createAsyncThunk(
         return result.data;
     }
 );
+
+export const fetchGetHighestExpenseCategories = createAsyncThunk(
+    'finance/fetchGetHighestExpenseCategories',
+    async (payload: IFetchFindExpenseByDate) => {
+        const values = {
+            startDate: payload.startDate.toISOString().split('T')[0], // ISO format 'yyyy-mm-dd'
+            endDate: payload.endDate.toISOString().split('T')[0]
+        };
+        const result = await axios.post(
+            RestApis.finance_service_expense + "/get-most",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
 //#endregion Expense
 
 
@@ -806,6 +826,26 @@ export const fetchIncomeByMonths = createAsyncThunk(
         };
         const result = await axios.post(
             RestApis.finance_service_income + "/get-for-months",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+export const fetchGetHighestIncomeSources = createAsyncThunk(
+    'finance/fetchGetHighestIncomeSources',
+    async (payload: IFetchFindIncomeByDate) => {
+        const values = {
+            startDate: payload.startDate.toISOString().split('T')[0],
+            endDate: payload.endDate.toISOString().split('T')[0]
+        };
+        const result = await axios.post(
+            RestApis.finance_service_income + "/get-most",
             values,
             {
                 headers: {
