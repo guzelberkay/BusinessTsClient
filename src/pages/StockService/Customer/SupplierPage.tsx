@@ -1,35 +1,18 @@
 import React, {useEffect, useState} from "react";
-import {
-    DataGrid,
-    GridColDef,
-    GridRowSelectionModel, GridToolbar,
-} from "@mui/x-data-grid";
-import {
-    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
-    Grid, InputLabel, Select,
-    TextField
-
-} from "@mui/material";
+import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar,} from "@mui/x-data-grid";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField} from "@mui/material";
 
 import {useDispatch} from "react-redux";
-import {AppDispatch, useAppSelector} from "../../../store";
+import {AppDispatch} from "../../../store";
 import {
-    fetchChangeAutoOrderModeOfProduct, fetchDeleteOrder, fetchDeleteSupplier,
-    fetchFindAllBuyOrder,
-    fetchFindAllByMinimumStockLevel,
-    fetchFindAllCustomer,
-    fetchFindAllProduct,
-    fetchFindAllSellOrder,
+    fetchDeleteSupplier,
     fetchFindAllSupplier,
-    fetchFindByIdOrder, fetchFindByIdSupplier,
-    fetchSaveSellOrder,
-    fetchSaveSupplier, fetchUpdateBuyOrder, fetchUpdateSupplier
+    fetchFindByIdSupplier,
+    fetchSaveSupplier,
+    fetchUpdateSupplier
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProduct} from "../../../model/IProduct.tsx";
-import MenuItem from "@mui/material/MenuItem";
-import {ICustomer} from "../../../model/ICustomer.tsx";
 import {ISupplier} from "../../../model/ISupplier.tsx";
 
 
