@@ -8,7 +8,6 @@ import SideBarNotifications from "../components/molecules/SideBarNotifications";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
-import Subscription from "../pages/SubscriptionService/Subscription.tsx";
 import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.tsx";
 import OpportunityPage from "../pages/CRMService/OpportunityPage.tsx";
 import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
@@ -16,9 +15,7 @@ import TicketPage from "../pages/CRMService/TicketPage.tsx";
 import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
 import IncomePage from "../pages/FinanceService/IncomePage.tsx";
-import AddUser from "../pages/AdminPages/AddUser.tsx";
 import ManageUsers from "../pages/AdminPages/ManageUsers.tsx";
-import AddRole from "../pages/AdminPages/AddRole.tsx";
 import ManageRoles from "../pages/AdminPages/ManageRoles.tsx";
 import TaxAndDeclarationPage from "../pages/FinanceService/TaxAndDeclarationPage.tsx";
 import ExpensePage from "../pages/FinanceService/ExpensePage.tsx";
@@ -54,6 +51,9 @@ export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
 export const ResetPassword=lazy(() => import('../pages/ResetPassword'));
+export const Subscription=lazy(() => import('../pages/SubscriptionService/Subscription'));
+export const SubscriptionHistory=lazy(() => import('../pages/SubscriptionService/SubscriptionHistory'));
+export const AddEditPlan=lazy(() => import('../pages/SubscriptionService/AddEditPlan'));
 
 // For testing purposes (with delay) 
 const TestPage = lazy(() => delay(1000).then(() => import('../pages/TestPage')));
@@ -180,7 +180,7 @@ export default function Router() {
                 },
                 {
                     path: 'subscription',
-                    element: <PrivateRoute element={<Subscription />} roles={['MEMBER','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<Subscription />} roles={['MEMBER']} />,
                 },
                 {
                     path: 'products',
@@ -283,7 +283,15 @@ export default function Router() {
                     element: <PrivateRoute element={<IncomePage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
                 },
                 {
-                    path: 'profile-management',
+                    path: 'subscription-history',
+                    element: <PrivateRoute element={<SubscriptionHistory />} roles={['MEMBER']} />,
+                },
+                {
+                    path: 'add-edit-plan',
+                    element: <PrivateRoute element={<AddEditPlan />} roles={['ADMIN','SUPER_ADMIN']} />,
+                },
+                {
+                    path:'profile-management',
                     element: <PrivateRoute element={<ProfileManagement />}  roles={['ADMIN','MEMBER','SUPER_ADMIN']} />,
                 },
                 {

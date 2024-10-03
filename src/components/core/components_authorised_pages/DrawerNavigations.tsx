@@ -40,41 +40,71 @@ export type Button =
     | { type: 'button', component: typeof DrawerButton, props: DrawerButtonProps }
     | { type: 'collapse', component: typeof DrawerCollapseButton, props: DrawerCollapseButtonProps };
 
+// Define shared-admin button configurations
+const sharedAdminButtons: Button[] = [
+    {
+        type: 'button',
+        component: DrawerButton,
+        props: { name: 'dashboard', icon: <Dashboard />, navigation: 'admin-dashboard' } as DrawerButtonProps,
+    },
+    {
+        type: 'collapse',
+        component: DrawerCollapseButton,
+        props: {
+            name: 'subscription',
+            TopLevelIcon: <Loyalty/>,
+            menuItems: [
+                'plans'
+            ],
+            menuIcons: [
+                <ProductionQuantityLimits/>
+            ],
+            menuNavigations: [
+                'add-edit-plan',
+            ],
+        } as DrawerCollapseButtonProps,
+    },
+    {
+        type: 'collapse',
+        component: DrawerCollapseButton,
+        props: {
+            name: 'adminMenu',
+            TopLevelIcon: <Settings/>,
+            menuItems: [
+                'ManageUsers','ManageRoles'
+            ],
+            menuIcons: [
+                <ManageAccounts/>,<Edit/>
+            ],
+            menuNavigations: [
+                'ManageUsers','ManageRoles'
+            ],
+        } as DrawerCollapseButtonProps,
+    }
+];
+
 // Define role-based button configurations
 export const drawerNavigations: Record<string, Button[]> = {
-    SUPER_ADMIN: [
+    SUPER_ADMIN: [...sharedAdminButtons],
+    ADMIN: [...sharedAdminButtons],  
+
+    MEMBER: [
         {
             type: 'collapse',
             component: DrawerCollapseButton,
             props: {
-                name: 'adminMenu',
-                TopLevelIcon: <Settings/>,
+                name: 'subscription',
+                TopLevelIcon: <Loyalty/>,
                 menuItems: [
-                    'ManageUsers','ManageRoles'
+                    'slctSubs','historySubs'
                 ],
                 menuIcons: [
-                    <ManageAccounts/>,<Edit/>
+                    <ProductionQuantityLimits/>, <ProductionQuantityLimits/>
                 ],
                 menuNavigations: [
-                    'ManageUsers','ManageRoles'
+                    'subscription', 'subscription-history'
                 ],
             } as DrawerCollapseButtonProps,
-        }
-    ],
-
-    ADMIN: [
-        {
-            type: 'button',
-            component: DrawerButton,
-            props: {name: 'dashboard', icon: <Dashboard/>, navigation: 'admin-dashboard'} as DrawerButtonProps,
-        }
-    ],
-
-    MEMBER: [
-        {
-            type: 'button',
-            component: DrawerButton,
-            props: {name: 'subscription', icon: <Loyalty/>} as DrawerButtonProps,
         },
         {
             type: 'button',
