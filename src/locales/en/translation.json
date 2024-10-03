@@ -350,6 +350,27 @@
     "source": "Source",
     "incomesuccesfullyadded": "Income Succesfully Added",
     "startdate": "Start Date",
-    "enddate": "End Date"
+    "enddate": "End Date",
+    "vat": "VAT",
+    "corporate": "Corporate Tax",
+    "income": "Income Tax",
+    "createdeclaration": "Create Tax Declaration",
+    "netincome": "Net Income",
+    "taxtype": "Tax Type",
+    "totaltax": "Total Tax",
+    "grossincome": "Gross Income",
+    "expense": "Expense",
+    "downloadpdf": "Download PDF",
+    "netincomeaftertax": "Net Income",
+    "incomedistributionchart": "Income Distribution Chart",
+    "searchbydescription": "Search by Description",
+    "category": "Category",
+    "date": "Date",
+    "search": "SEARCH",
+    "getreport": "GET REPORT",
+    "createdeclaration": "CREATE DECLARATION",
+    "grossIncome": "Gross Income",
+    "netIncome": "Net Income",
+    "expense": "Expenses"
   }
 }

@@ -261,7 +261,7 @@ const IncomePage = () => {
                     <Button
                         onClick={handleOpenUpdateIncomeModal}
                         variant="contained"
-                        color="info"
+                        color="warning"
                         disabled={loading || selectedRowIds.length > 1 || selectedRowIds.length === 0}
                         //startIcon={<DeclineIcon />}
                         sx={{

@@ -20,6 +20,9 @@ import AddUser from "../pages/AdminPages/AddUser.tsx";
 import ManageUsers from "../pages/AdminPages/ManageUsers.tsx";
 import AddRole from "../pages/AdminPages/AddRole.tsx";
 import ManageRoles from "../pages/AdminPages/ManageRoles.tsx";
+import TaxAndDeclarationPage from "../pages/FinanceService/TaxAndDeclarationPage.tsx";
+import ExpensePage from "../pages/FinanceService/ExpensePage.tsx";
+import FinancialReportPage from "../pages/FinanceService/FinancialReportPage.tsx";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -277,7 +280,8 @@ export default function Router() {
                 {
                     path: 'incomes',
                     element: <PrivateRoute element={<IncomePage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
-                },{
+                },
+                {
                     path: 'profile-management',
                     element: <PrivateRoute element={<ProfileManagement />}  roles={['ADMIN','MEMBER','SUPER_ADMIN']} />,
                 },
@@ -287,6 +291,18 @@ export default function Router() {
                 },{
                     path:'ManageRoles',
                     element: <PrivateRoute element={<ManageRoles />} roles={['ADMIN','SUPER_ADMIN']} />,
+                },
+                {
+                    path:'taxes',
+                    element: <PrivateRoute element={<TaxAndDeclarationPage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                },
+                {
+                    path: 'expenses',
+                    element: <PrivateRoute element={<ExpensePage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                },
+                {
+                    path: 'financial-reports',
+                    element: <PrivateRoute element={<FinancialReportPage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
                 }
             ]
         }

@@ -341,7 +341,7 @@
     "deleteproduct": "Bütçeyi silmek istediğinizden emin misiniz?",
     "delete": "SİL",
     "yesdeleteit": "Evet sil!",
-    "cancel": "İptal",
+    "cancel": "İPTAL",
     "deleted": "Silindi!",
     "budgetdeleted": "Bütçe Başarıyla Silindi",
     "budgetsuccesfullyupdated": "Bütçe Başarıyla Güncellendi",
@@ -353,7 +353,28 @@
     "source": "Kaynak",
     "incomesuccesfullyadded": "Gelir Başarıyla Eklendi",
     "startdate": "Başlangıç Tarihi",
-    "enddate": "Bitiş Tarihi"
+    "enddate": "Bitiş Tarihi",
+    "vat": "KDV",
+    "corporate": "Kurumlar Vergisi",
+    "income": "Gelir Vergisi",
+    "createdeclaration": "Vergi Beyannamesi Oluştur",
+    "netincome": "Net Gelir",
+    "taxtype": "Vergi Türü",
+    "totaltax": "Toplam Vergi",
+    "grossincome": "Brüt Gelir",
+    "expense": "Gider",
+    "downloadpdf:": "PDF İndir",
+    "netincomeaftertax": "Net Gelir",
+    "incomedistributionchart": "Gelir Dağılım Grafiği",
+    "searchbydescription": "Açıklamaya Göre Ara",
+    "category": "Kategori",
+    "date": "Tarih",
+    "search": "BUL",
+    "getreport": "RAPOR OLUŞTUR",
+    "createdeclaration": "BEYANNAME OLUŞTUR",
+    "grossIncome": "Brüt Gelir",
+    "netIncome": "Net Gelir",
+    "expense": "Giderler"
   }
 }
 
