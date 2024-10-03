@@ -47,7 +47,10 @@
     "incomes": "Gelirler",
     "invoices": "Faturalar",
     "financial-reports": "Finansal Raporlar",
-    "taxes": "Vergiler"
+    "taxes": "Vergiler",
+    "slctSubs": "Abonelik Seçimi",
+    "historySubs": "Abonelik Geçmişi",
+    "plans": "Abonelik Planları"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -229,17 +232,18 @@
     "delete": "Sil"
   },
 
-  "plans":{
-    "name" : {
-      "pmm" : "Proje Yönetimi Modülü",
-      "crmm" : "Müşteri İlişkileri Yönetimi Modülü",
-      "imm" : "Envanter Yönetimi Modülü",
-      "hrmm" : "İnsan Kaynakları Yönetim Modülü",
-      "fam" : "Finans ve Muhasebe Modülü",
-      "oam" : "Operasyon Analiz Modülü"
-    }
+  "subscription": {
+    "title": "Abonelik Gecmisi",
+    "planName": "Plan Adı",
+    "planDescription": "Plan Açıklaması",
+    "planPrice": "Fiyat",
+    "startDate": "Başlama Tarihi",
+    "endDate": "Bitiş Tarihi",
+    "status": "Durum",
+    "noData": "Abonelik Gecmisi Bulunamadi.",
+    "subscribe": "Abone Ol",
+    "unsubscribe": "Abonelikten Çık"
   },
-
   "crmService":{
     "customer": "Müşteri",
     "firstName": "Ad",

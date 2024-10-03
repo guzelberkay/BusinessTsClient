@@ -194,3 +194,5 @@ const roleSlice = createSlice({
     }
 
 });
+
+export default roleSlice.reducer;

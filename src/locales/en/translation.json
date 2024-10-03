@@ -48,7 +48,10 @@
     "incomes": "Incomes",
     "invoices": "Invoices",
     "financial-reports": "Financial Reports",
-    "taxes": "Taxes"
+    "taxes": "Taxes",
+    "slctSubs": "Select Subscription",
+    "historySubs": "Subscription History",
+    "plans": "Subscription Plans"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -227,15 +230,18 @@
     "addwarehouse": "Add Warehouse",
     "delete": "Delete"
   },
-  "plans": {
-    "name": {
-      "pmm": "Project Management Module",
-      "crmm": "Customer Relationship Management Module",
-      "imm": "Inventory Management Module",
-      "hrmm": "Human Resources Management Module",
-      "fam": "Finance and Accounting Module",
-      "oam": "Operation Analysis Module"
-    }
+
+  "subscription": {
+    "title": "Subscription History",
+    "planName": "Plan Name",
+    "planDescription": "Plan Description",
+    "planPrice": "Price",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "status": "Status",
+    "noData": "No subscription history available.",
+    "subscribe": "Subscribe",
+    "unsubscribe": "Unsubscribe"
   },
   "crmService": {
     "customer": "Customer",
