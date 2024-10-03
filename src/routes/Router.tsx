@@ -15,6 +15,11 @@ import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
 import TicketPage from "../pages/CRMService/TicketPage.tsx";
 import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
+import IncomePage from "../pages/FinanceService/IncomePage.tsx";
+import AddUser from "../pages/AdminPages/AddUser.tsx";
+import ManageUsers from "../pages/AdminPages/ManageUsers.tsx";
+import AddRole from "../pages/AdminPages/AddRole.tsx";
+import ManageRoles from "../pages/AdminPages/ManageRoles.tsx";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -27,7 +32,12 @@ export const AnalyticsDash = lazy(() => import('../pages/AnalyticsDash'));
 export const CustomerPage = lazy(() => import('../pages/CRMService/CustomerPage.tsx'));
 export const MarketingCampaignPage = lazy(() => import('../pages/CRMService/MarketingCampaignPage.tsx'));
 export const ProductByMinStockLevelPage = lazy(() => import('../pages/StockService/Customer/ProductByMinStockLevelPage.tsx'));
-export const HRMPage = lazy(() => import('../pages/HRMPage'));
+export const EmployeePage = lazy(() => import('../pages/HRMService/EmployeePage.tsx'));
+export const AttendancePage = lazy(() => import('../pages/HRMService/AttendancePage.tsx'));
+export const BenefitPage = lazy(() => import('../pages/HRMService/BenefitPage.tsx'));
+export const PayrollPage = lazy(() => import('../pages/HRMService/PayrollPage.tsx'));
+export const PerformancePage = lazy(() => import('../pages/HRMService/PerformancePage.tsx'));
+
 export const BuyOrderPage = lazy(() => import('../pages/StockService/Customer/BuyOrderPage.tsx'));
 export const SellOrderPage = lazy(() => import('../pages/StockService/Customer/SellOrderPage.tsx'));
 export const SupplierPage = lazy(() => import('../pages/StockService/Customer/SupplierPage.tsx'));
@@ -209,8 +219,24 @@ export default function Router() {
                     element: <PrivateRoute element={<SupplierOrderPage />} roles={['SUPPLIER']} />,
                 },
                 {
-                    path: 'hrm-page',
-                    element: <PrivateRoute element={<HRMPage />} roles={['ADMIN','SUPER_ADMIN']} />,
+                    path: 'employee-page',
+                    element: <PrivateRoute element={<EmployeePage />} roles={['ADMIN','SUPER_ADMIN','HRMM']} />,
+                },
+                {
+                    path: 'attandance-page',
+                    element: <PrivateRoute element={<AttendancePage />} roles={['ADMIN','SUPER_ADMIN','HRMM']} />,
+                },
+                {
+                    path: 'benefit-page',
+                    element: <PrivateRoute element={<BenefitPage />} roles={['ADMIN','SUPER_ADMIN','HRMM']} />,
+                },
+                {
+                    path: 'payroll-page',
+                    element: <PrivateRoute element={<PayrollPage />} roles={['ADMIN','SUPER_ADMIN','HRMM']} />,
+                },
+                {
+                    path: 'performance-page',
+                    element: <PrivateRoute element={<PerformancePage />} roles={['ADMIN','SUPER_ADMIN','HRMM']} />,
                 },
                 {
                     path: 'customer',
@@ -247,9 +273,20 @@ export default function Router() {
                 {
                     path: 'budgets',
                     element: <PrivateRoute element={<BudgetPage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                },
+                {
+                    path: 'incomes',
+                    element: <PrivateRoute element={<IncomePage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
                 },{
                     path: 'profile-management',
-                    element: <PrivateRoute element={<ProfileManagement />}  />,
+                    element: <PrivateRoute element={<ProfileManagement />}  roles={['ADMIN','MEMBER','SUPER_ADMIN']} />,
+                },
+                {
+                    path:'ManageUsers',
+                    element: <PrivateRoute element={<ManageUsers />} roles={['ADMIN','SUPER_ADMIN']} />,
+                },{
+                    path:'ManageRoles',
+                    element: <PrivateRoute element={<ManageRoles />} roles={['ADMIN','SUPER_ADMIN']} />,
                 }
             ]
         }

@@ -30,6 +30,12 @@
     "productcategories": "Urun Kategorileri",
     "productsbyminstocklevel": "Stok Seviyesine Gore Urunler",
     "stockmovements": "Stok Hareketleri",
+    "hrmmodule": "İnsan Kaynakları Modulu",
+    "hrm-employees": "Çalışanlar",
+    "hrm-payrolls": "Maaş Bordroları",
+    "hrm-performances": "Performanslar",
+    "hrm-benefits": "Yan Haklar",
+    "hrm-attendance": "Devam Takip",
     "customermodule": "Musteri Modulu",
     "crm-customers": "Musteriler",
     "crm-marketing-campaign" : "Pazarlama Kampanyaları",
@@ -49,7 +55,10 @@
     "incomes": "Gelirler",
     "invoices": "Faturalar",
     "financial-reports": "Finansal Raporlar",
-    "taxes": "Vergiler"
+    "taxes": "Vergiler",
+    "ManageUsers": "Kullanıcıları Yönet",
+    "ManageRoles": "Rolleri Yönet",
+    "adminMenu": "Admin Menü"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -189,7 +198,7 @@
     "out": "Çıkış",
     "arrived": "Teslim Alindi",
     "addfromorderid": "Siparis No'dan Ekle",
-    "orderid": "Siparis Id"
+    "orderid": "Siparis Id (Lütfen Sadece Alış Siparişi Giriniz.)"
 
   },
 
@@ -289,6 +298,36 @@
    
 
   },
+  "hrmService":{
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "position": "Pozisyon",
+    "department": "Departman",
+    "email": "Email",
+    "phone": "Telefon",
+    "hireDate": "Başlama Tarihi",
+    "salary": "Maaş",
+    "status" : "Durum",
+    "added" : "Çalışan Başarıyla Eklendi!",
+    "error-occurred" : "Hata meydana geldi!",
+    "updated" : "Güncellendi!",
+    "deleting" : "Silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!",
+    "delete" : "SİL",
+    "cancel" : "İPTAL",
+    "confirmDelete" : "Evet, eminim",
+    "checkboxRequired" : "Silmek için önce kutucuğu işaretleyin!",
+    "deleted" : "Silindi!",
+    "successfullydeleted" : "Başarıyla Silindi!",
+    "successfullyupdated" : "Başarıyla Güncellendi!",
+    "searchbyname":"Ad'a Göre Ara",
+    "add" : "EKLE",
+    "update" : "GÜNCELLE",
+    "save" : "KAYDET",
+    "add_employee" : "Çalışan Ekle",
+    "non-added" : "Eklenemedi"
+    
+
+  },
 
   "financeService": {
     "searchbydepartment": "Departmana Göre Ara",
@@ -307,7 +346,14 @@
     "budgetdeleted": "Bütçe Başarıyla Silindi",
     "budgetsuccesfullyupdated": "Bütçe Başarıyla Güncellendi",
     "updated": "Güncellendi!",
-    "update": "GÜNCELLE"
+    "update": "GÜNCELLE",
+    "searchbysource": "Kaynağa Göre Ara",
+    "incomesuccesfullyupdated": "Gelir Başarıyla Güncellendi",
+    "incomedate": "Tarih",
+    "source": "Kaynak",
+    "incomesuccesfullyadded": "Gelir Başarıyla Eklendi",
+    "startdate": "Başlangıç Tarihi",
+    "enddate": "Bitiş Tarihi"
   }
 }
 

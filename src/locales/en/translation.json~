@@ -30,15 +30,6 @@
     "productcategories": "Product Categories",
     "productsbyminstocklevel": "Products By Min. Stock Level",
     "stockmovements": "Stock Movements",
-    "customer": "Customer",
-    "supplier": "Supplier",
-    "subscription": "Subscription",
-    "hrmmodule": "Human Resources Module",
-    "hrm-employees": "Employee List",
-    "hrm-payrolls": "Payroll List",
-    "hrm-performances": "Performance List",
-    "hrm-benefits": "Benefit List",
-    "hrm-attendance": "Attendance List",
     "customermodule": "Customer Module",
     "crm-customers" : "Costumer List",
     "crm-marketing-campaign" : "Marketing Campaigns",
@@ -47,17 +38,11 @@
     "crm-ticket" : "Tickets",
     "stock-customer": "Customers",
     "stockmodule": "Stock Module",
-    "financemodule": "Finance Module",
-    "budgets": "Budgets",
-    "declarations": "Declarations",
-    "expenses": "Expenses",
-    "incomes": "Incomes",
-    "invoices": "Invoices",
-    "financial-reports": "Financial Reports",
-    "taxes": "Taxes",
     "ManageUsers": "Manage Users",
     "ManageRoles": "Manage Roles",
     "adminMenu": "Admin Menu"
+
+
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -73,18 +58,20 @@
     "accountHasBeenActivated": "Your account has been successfully activated!",
     "accountGreeting": " Congratulations! You can now actively use your account. You can enjoy all the features our platform has to offer and start making your personal settings.",
     "passwordMismatch": "Passwords do not match. Please enter again.",
-    "requiredField": "Required Field",
+    "requiredField" : "Required Field",
     "invalidEmail": "The entered email address is invalid.",
-    "fillAllFields": "Please fill in all fields.",
+    "fillAllFields" : "Please fill in all fields.",
     "resetPassword": "Reset Password",
-    "newPassword": "New Password",
-    "reEnterNewPassword": "Re-enter New Password"
+    "newPassword" : "New Password",
+    "reEnterNewPassword" : "Re-enter New Password"
   },
+
   "errorPage": {
     "404": "Page Not Found",
     "goBack": "Go Back",
     "goHome": "Go to Home Page"
   },
+
   "footer": {
     "copyright": "Copyright © 2024 BilgeAdam Technologies. All rights reserved.",
     "privacyPolicy": "Privacy Policy",
@@ -114,16 +101,19 @@
     "success": "Success!",
     "updatePassword": "Update Password",
     "infoForPasswordReset": "We will send you an email with instructions on how to reset your password.",
-    "sendEmail": "Send Email",
-    "send": "Send",
-    "passwordMismatch": "Passwords do not match.",
-    "passwordSuccesfullyChanged": "Password Succesfully Changed",
-    "failedChangePassword": "Failed to Change Password",
-    "infoSentEmailForPasswordReset": "Password reset email has been sent.",
-    "unsubscribe": "You can use the relevant services until the end of the subscription period."
+    "sendEmail" : "Send Email",
+    "send" : "Send",
+    "passwordMismatch":"Passwords do not match.",
+    "passwordSuccesfullyChanged" : "Password Succesfully Changed",
+    "failedChangePassword" : "Failed to Change Password",
+    "infoSentEmailForPasswordReset" : "Password reset email has been sent."
+  
+    
+    
+
   },
   "stockService": {
-    "changeautoordermode": "Change Auto Order",
+    "changeautoordermode": "Change Auto Order Mode",
     "description": "Description",
     "price": "Price $",
     "stockcount": "Stock Count",
@@ -140,9 +130,9 @@
     "createdat": "Created At",
     "productName": "Product Name",
     "searchbyproductname": "Search by Product Name",
-    "address": "Address",
-    "notes": "Notes",
-    "location": "Location",
+    "address" : "Address",
+    "notes" : "Notes",
+    "location" : "Location",
     "productname": "Product Name",
     "warehousename": "Ware House Name",
     "stockmovementtype": "Stock Movement Type",
@@ -178,28 +168,12 @@
     "successfullydeleted": "Successfully Deleted!",
     "addproductcategory": "Add Product Category",
     "pleaseselectstockmovementtype": "Please Select Stock Movement Type",
-    "addstockmovement": "Add Stock Movement",
-    "warehouse": "Warehouse",
-    "productcategory": "Product Category",
-    "approve": "APPROVE",
-    "approving": "Approving...",
-    "approveit": "Approve it!",
-    "approved": "Approved",
-    "successfullyapproved": "Successfully Approved!",
-    "open": "ENABLED",
-    "close": "CLOSED",
-    "active": "Active",
-    "in": "In",
-    "out": "Out",
-    "arrived": "Arrived",
-    "addfromorderid": "Add From Order ID",
-    "orderid": "Order ID (Please Only Enter Buy Order ID)"
-
-
+    "addstockmovement": "Add Stock Movement"
 
   },
+
   "dashboard": {
-    "numberofemployees": "Number of Employees ",
+    "numberofemployees" : "Number of Employees ",
     "last": "Last",
     "days": "days",
     "dailyincome": "Daily Income",
@@ -209,14 +183,14 @@
     "name": "Name",
     "buy": "Buy",
     "sell": "Sell",
-    "price": "Price",
+    "price":"Price",
     "latest": "Latest",
     "viewall": "View All",
     "all": "All",
     "users": "Users",
     "customers": "Customers",
-    "employees": "Employees",
-    "sales": "Sales"
+   "employees": "Employees",
+   "sales": "Sales"
   },
 
   "notifications": {
@@ -233,33 +207,25 @@
     "noNotifications": "No notifications found",
     "viewAllNotifications": "View All Notifications",
     "close": "Close",
+    "delete": "Delete",
     "addwarehouse": "Add Warehouse",
     "delete": "Delete"
   },
-  "plans": {
-    "name": {
-      "pmm": "Project Management Module",
-      "crmm": "Customer Relationship Management Module",
-      "imm": "Inventory Management Module",
-      "hrmm": "Human Resources Management Module",
-      "fam": "Finance and Accounting Module",
-      "oam": "Operation Analysis Module"
-    }
-  },
-  "crmService": {
+
+  "crmService":{
     "customer": "Customer",
     "firstName": "Name",
     "lastName": "Lastname",
-    "searchbyname": "Search by Name",
+    "searchbyname":"Search by Name",
     "email": "Email",
     "phone": "Phone",
     "address": "Adress",
-    "status": "Status",
+    "status" : "Status",
     "name": "Name",
     "description": "Description",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "budget": "Budget $",
+    "budget": "Budget",
     "value": "Value",
     "stage": "Stage",
     "probability": "Probability",
@@ -285,71 +251,19 @@
     "successfullydeleted" : "Successfully Deleted!",
     "add" : "ADD",
     "add_customer" : "Add customer",
-    "save" : "SAVE",
-    "deleted": "Deleted!",
-    "added" : "Customer Saved Successfully!",
-    "successfullyupdated" : "Successfully Updated!",
-    "add_marketing_campaign" : "Add Marketing Campaign"
-
-
-
-
-
-  },
-  "hrmService":{
-    "firstName": "Name",
-    "lastName": "Lastname",
-    "position": "Position",
-    "department": "Department",
-    "email": "Email",
-    "phone": "Phone",
-    "hireDate": "Start Date",
-    "salary": "Salary",
-    "status" : "Status",
-    "added" : "Employee Saved Successfully!",
-    "error-occurred" : "Error Occurred",
-    "updated" : "Updated",
-    "deleting" : "Do you want to delete it, this action is irreversible!",
     "cancel" : "CANCEL",
-    "confirmDelete" : "Yes I'm sure",
-    "delete" : "DELETE",
-    "update" : "UPDATE",
-    "checkboxRequired" : "Confirm the box if you want to delete!",
-    "successfullydeleted" : "Successfully Deleted!",
-    "successfullyupdated" : "Successfully Updated!",
-    "deleted": "Deleted!",
-    "searchbyname": "Search by Name",
-    "add" : "ADD",
     "save" : "SAVE",
-    "add_employee" : "Add employee",
-    "non-added" : "Non Added"
-    
+    "added" : "Customer Saved Successfully!"
 
-  },
-  "financeService": {
-    "searchbydepartment": "Search by Department",
-    "budgetsuccesfullyadded": "Budget Succesfully Added",
-    "add": "ADD",
-    "department": "Department",
-    "description": "Description",
-    "year": "Year",
-    "amount": "Amount",
-    "save": "SAVE",
-    "deleteproduct": "Are you sure you want to delete the budget?",
-    "delete": "DELETE",
-    "yesdeleteit": "Yes, delete it!",
-    "cancel": "CANCEL",
-    "deleted": "Deleted!",
-    "budgetdeleted": "Budget Deleted Succesfully",
-    "budgetsuccesfullyupdated": "Budget Succesfully Updated",
-    "updated": "Updated!",
-    "update": "UPDATE",
-    "searchbysource": "Search by Source",
-    "incomesuccesfullyupdated": "Income Succesfully Updated",
-    "incomedate": "Date",
-    "source": "Source",
-    "incomesuccesfullyadded": "Income Succesfully Added",
-    "startdate": "Start Date",
-    "enddate": "End Date"
+
+
+
+
+
+
+
+
+   
+
   }
 }

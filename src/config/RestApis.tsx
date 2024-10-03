@@ -65,6 +65,10 @@ const apis = {
   finance_service_invoice: base_url + host + Ports.finance + profile + version + EndPoints.invoice,
   finance_service_tax: base_url + host + Ports.finance + profile + version + EndPoints.tax,
   //#endregion Finance
+
+    //#region File
+    file_service: base_url + host + Ports.file + profile + version + EndPoints.file,
+     //#endregion File
 };
 
 export default apis;

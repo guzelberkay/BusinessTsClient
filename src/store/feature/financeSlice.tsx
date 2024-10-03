@@ -607,15 +607,57 @@ interface IFetchFindIncomeByDate {
     endDate: Date;
 }
 
-export const fetchFindIncomeByDate = createAsyncThunk(
-    'finance/fetchFindIncomeByDate',
-    async (payload: IFetchFindIncomeByDate) => {
+ export const fetchFindIncomeByDate = createAsyncThunk(
+     'finance/fetchFindIncomeByDate',
+     async (payload: IFetchFindIncomeByDate) => {
+         const values = {
+             startDate: payload.startDate.toISOString().split('T')[0], // ISO format 'yyyy-mm-dd'
+             endDate: payload.endDate.toISOString().split('T')[0]
+         };
+         const result = await axios.post(
+             RestApis.finance_service_income + "/find-by-date",
+             values,
+             {
+                 headers: {
+                     'Content-Type': 'application/json'
+                 }
+             }
+         );
+         return result.data;
+     }
+ );
+
+export const fetchFindIncomeById = createAsyncThunk(
+    'finance/fetchFindIncomeById',
+    async (id: number) => {
+        const result = await axios.post(
+            RestApis.finance_service_income + "/find-by-id?id=" + id,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+interface IfetchFindAllIncomes {
+    searchText: string;
+    page: number;
+    size: number;
+}
+
+export const fetchFindAllIncomes = createAsyncThunk(
+    'finance/fetchFindAllIncomes',
+    async (payload: IfetchFindAllIncomes) => {
         const values = {
-            startDate: payload.startDate,
-            endDate: payload.endDate
+            searchText: payload.searchText,
+            page: payload.page,
+            size: payload.size
         };
         const result = await axios.post(
-            RestApis.finance_service_income + "/find-by-date",
+            RestApis.finance_service_income + "/find-all",
             values,
             {
                 headers: {
@@ -917,6 +959,9 @@ const financeSlice = createSlice({
             })
             .addCase(fetchFindAllExpense.fulfilled, (state, action: PayloadAction<IResponse>) => {
                 state.expenseList = action.payload.data;
+            })
+            .addCase(fetchFindAllIncomes.fulfilled, (state, action: PayloadAction<IResponse>) => {
+                state.incomeList = action.payload.data;
             })
             .addCase(fetchFindByIdExpense.fulfilled, (state, action: PayloadAction<IResponse>) => {
                 state.expenseList = action.payload.data;
