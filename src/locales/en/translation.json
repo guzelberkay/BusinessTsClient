@@ -328,6 +328,10 @@
     "add" : "ADD",
     "save" : "SAVE",
     "add_employee" : "Add employee",
+    "salaryDate": "Salary Date",
+    "grossSalary": "Gross Salary",
+    "deductions": "Deductions",
+    "netSalary": "Net Salary",
     "non-added" : "Non Added"
     
 
