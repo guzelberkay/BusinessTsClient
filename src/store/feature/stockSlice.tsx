@@ -954,12 +954,14 @@ interface IfetchSaveCustomer{
     name:string;
     surname:string;
     email:string;
+    identityNo:string;
+    phoneNo:string;
 }
 
 export const fetchSaveCustomer = createAsyncThunk(
     'stock/fetchSaveWareHouse',
     async (payload:IfetchSaveCustomer) => {
-        const values = { name: payload.name,surname: payload.surname,email: payload.email };
+        const values = { name: payload.name,surname: payload.surname,email: payload.email,identityNo: payload.identityNo,phoneNo: payload.phoneNo };
 
         const result = await axios.post(
             RestApis.stock_service_customer+"/save",
@@ -999,11 +1001,13 @@ interface IfetchUpdateCustomer{
     name:string;
     surname:string;
     email:string;
+    identityNo:string;
+    phoneNo:string;
 }
 export const fetchUpdateCustomer = createAsyncThunk(
     'stock/fetchUpdateWareHouse',
     async (payload:IfetchUpdateCustomer) => {
-        const values = {   id: payload.id,name: payload.name,surname: payload.surname,email: payload.email };
+        const values = {   id: payload.id,name: payload.name,surname: payload.surname,email: payload.email,identityNo: payload.identityNo,phoneNo: payload.phoneNo };
 
         const result = await axios.put(
             RestApis.stock_service_customer+"/update",

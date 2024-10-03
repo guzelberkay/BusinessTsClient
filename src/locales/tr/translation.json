@@ -201,7 +201,9 @@
     "out": "Çıkış",
     "arrived": "Teslim Alindi",
     "addfromorderid": "Siparis No'dan Ekle",
-    "orderid": "Siparis Id (Lütfen Sadece Alış Siparişi Giriniz.)"
+    "orderid": "Siparis Id (Lütfen Sadece Alış Siparişi Giriniz.)",
+    "identityno": "Kimlik No",
+    "phoneno": "Telefon No"
 
   },
 
@@ -328,6 +330,10 @@
     "update" : "GÜNCELLE",
     "save" : "KAYDET",
     "add_employee" : "Çalışan Ekle",
+    "salaryDate": "Maaş Tarihi",
+    "grossSalary": "Brüt Maaş",
+    "deductions": "Kesintiler",
+    "netSalary": "Net Maaş",
     "non-added" : "Eklenemedi"
     
 
