@@ -76,7 +76,7 @@ function PostAuthTemplate({ children }: PostAuthTemplateProps) {
     const handlers = useSwipeable({
         onSwipedRight: handleDrawerOpen,  // Open drawer on swipe right
         onSwipedLeft: handleDrawerClose,   // Close drawer on swipe left
-        trackMouse: true, // Optional: enables mouse swipes for testing
+        trackMouse: false, // Optional: enables mouse swipes for testing
     });
 
     return (
