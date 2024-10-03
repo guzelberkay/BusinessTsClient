@@ -1,5 +1,6 @@
 export interface IRole {
     roleId: number,
     roleName: string,
-    roleDescription: string
+    status: string,
+    roleDescription: string 
 }

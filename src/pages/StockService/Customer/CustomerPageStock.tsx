@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from "react";
-import {
-    DataGrid,
-    GridColDef,
-    GridRowSelectionModel, GridToolbar,
-} from "@mui/x-data-grid";
-import {
-    Button, Dialog, DialogActions, DialogContent, DialogTitle,
-    Grid,
-    TextField
+import React, {useEffect, useState} from "react";
+import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar,} from "@mui/x-data-grid";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField} from "@mui/material";
 
-} from "@mui/material";
-
-import { useDispatch } from "react-redux";
-import  {AppDispatch} from "../../../store";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../store";
 
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import {
     fetchDeleteCustomer,
-    fetchDeleteWareHouse,
-    fetchFindAllCustomer, fetchFindByIdCustomer,
-    fetchFindByIdWareHouse, fetchSaveWareHouse, fetchUpdateCustomer,
-    fetchUpdateWareHouse
+    fetchFindAllCustomer,
+    fetchFindByIdCustomer,
+    fetchSaveCustomer,
+    fetchUpdateCustomer
 } from "../../../store/feature/stockSlice.tsx";
 import {ICustomer} from "../../../model/ICustomer.tsx";
-import {fetchSaveCustomer} from "../../../store/feature/stockSlice.tsx";
-
 
 
 const CustomerPageStock = () => {

@@ -21,10 +21,16 @@ import {
     AttachMoney,
     AccountBalance,
     Description,
+    Assignment,
     Receipt,
     Assessment,
     MonetizationOn,
-    RequestQuote, KeyboardArrowUp, ArrowUpward, ArrowDownward
+    RequestQuote, KeyboardArrowUp, ArrowUpward, ArrowDownward,
+    Settings,
+    PersonAdd,
+    ManageAccounts,
+    GroupAdd,
+    Edit
 } from '@mui/icons-material';
 
 import DrawerCollapseButton, {DrawerCollapseButtonProps} from '../../atoms/DrawerCollapseButton';
@@ -57,6 +63,23 @@ const sharedAdminButtons: Button[] = [
                 'add-edit-plan',
             ],
         } as DrawerCollapseButtonProps,
+    },
+    {
+        type: 'collapse',
+        component: DrawerCollapseButton,
+        props: {
+            name: 'adminMenu',
+            TopLevelIcon: <Settings/>,
+            menuItems: [
+                'ManageUsers','ManageRoles'
+            ],
+            menuIcons: [
+                <ManageAccounts/>,<Edit/>
+            ],
+            menuNavigations: [
+                'ManageUsers','ManageRoles'
+            ],
+        } as DrawerCollapseButtonProps,
     }
 ];
 
@@ -64,6 +87,7 @@ const sharedAdminButtons: Button[] = [
 export const drawerNavigations: Record<string, Button[]> = {
     SUPER_ADMIN: [...sharedAdminButtons],
     ADMIN: [...sharedAdminButtons],  
+
     MEMBER: [
         {
             type: 'collapse',
@@ -108,10 +132,29 @@ export const drawerNavigations: Record<string, Button[]> = {
                     'crm-customers', 'crm-marketing-campaign', 'crm-opportunity', 'crm-sales-activity', 'crm-ticket'
                 ],
                 menuIcons: [
-                    <People/>, <Shop/>, <TipsAndUpdates/>, <Shop/>, <AirplaneTicket/>
+                    <People/>, <Campaign/>, <TipsAndUpdates/>, <Shop/>, <AirplaneTicket/>
                 ],
                 menuNavigations: [
                     'customer', 'marketing-campaign', 'opportunity', 'sales-activity', 'tickets'
+                ],
+            } as DrawerCollapseButtonProps,
+        },
+    ],
+    HRMM: [
+        {
+            type: 'collapse',
+            component: DrawerCollapseButton,
+            props: {
+                name: 'hrmmodule',
+                TopLevelIcon: <FormatListNumbered/>,
+                menuItems: [
+                    'hrm-employees', 'hrm-payrolls', 'hrm-performances', 'hrm-benefits', 'hrm-attendance'
+                ],
+                menuIcons: [
+                    <People/>, <AttachMoney/>, <ShowChart/>, <RequestQuote/>, <Assignment/>
+                ],
+                menuNavigations: [
+                    'employee-page', 'payroll-page', 'performance-page', 'benefit-page', 'attandance-page'
                 ],
             } as DrawerCollapseButtonProps,
         },

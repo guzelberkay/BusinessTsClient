@@ -15,7 +15,8 @@ const initialRoleState: IRoleState = {
     role: {
         roleId: 0,
         roleName: "",
-        roleDescription: ""
+        roleDescription: "",
+        status: "",
     },
     roleList: [],
     assigableRoleList: [],
@@ -160,11 +161,27 @@ export const fetchRoleList = createAsyncThunk(
 export const fetchAsiggableRoleList = createAsyncThunk(
     'role/fetchAsiggableRoleList',
     async (userId:number) => {
-        const result = await axios.get(RestApis.user_management_service_role+"/assignable-roles?userId="+userId,
+        const result = await axios.get(RestApis.user_management_service_role+"/assignable-roles/"+userId,
             {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
+export const fetchUpdateUserRoleStatus = createAsyncThunk(
+    'role/fetchUpdateUserRoleStatus',
+    async (payload: {roleId: number, status: string}) => {
+        const result = await axios.put(RestApis.user_management_service_role+"/update-user-role-status",
+            payload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
                 }
             }
         );

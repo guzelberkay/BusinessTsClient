@@ -18,7 +18,7 @@ const initialUserState: IUserState = {
         firstName: "",
         lastName: "",
         email: "",
-        role: []
+        userRoles: []
     },
     userRoleList: [],
     userList: [],
@@ -29,12 +29,11 @@ const initialUserState: IUserState = {
 //----------------------------------------------------
 
 interface IFetchSaveUser {
-    authId: number
     firstName: string
     lastName: string
     email: string
     password: string
-    roleIds: number[]
+    roleIds: number[] 
 }
 /**
  * Admin tarafından bir kullanıcının kaydedilmesi işlemi için kullanılır
@@ -47,7 +46,7 @@ interface IFetchSaveUser {
 export const fetchSaveUser = createAsyncThunk(
     'user/fetchSaveUser',
     async (payload: IFetchSaveUser) => {
-        const user = { authId: payload.authId, firstName: payload.firstName, lastName: payload.lastName, roleIds: payload.roleIds };
+        const user = { firstName: payload.firstName, lastName: payload.lastName, email: payload.email, password: payload.password, roleIds: payload.roleIds };
         const result = await axios.post(RestApis.user_management_service_user+"/save-user", 
             user,
             {
@@ -214,6 +213,55 @@ export const fetchUserInformation = createAsyncThunk(
         return result.data;
     }
 )
+//----------------------------------------------------
+
+export const fetchChangeUserEmail = createAsyncThunk(
+    'user/fetchChangeUserMail',
+    async (payload: {id: number, email: string}) => {
+        const result = await axios.put(RestApis.user_management_service_user+"/change-user-email",
+            payload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
+export const fetchChangeUserPassword = createAsyncThunk(
+    'user/fetchChangeUserPassword',
+    async (payload: {userId: number, password: string}) => {
+        const result = await axios.put(RestApis.user_management_service_user+"/change-user-password",
+            payload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
+export const fetchUpdateUserStatus = createAsyncThunk(
+    'user/fetchUpdateUserStatus',
+    async (payload: {userId: number, status: string}) => {
+        const result = await axios.put(RestApis.user_management_service_user+"/update-user-status",
+            payload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
 
 const userSlice = createSlice({
     name: 'user',
