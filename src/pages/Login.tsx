@@ -78,6 +78,9 @@ export function Login() {
                             } else if (roles.includes('SUPPLIER')) {
                                 navigate('/supplier-orders');
                             }
+                            else if (roles.includes('SUPPORTER')) {
+                                navigate('/supporter-chat');
+                            }
                         });
                     })    
                 } else {
