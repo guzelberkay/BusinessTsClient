@@ -64,7 +64,7 @@ const BuyOrderPage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchApproveOrder(selectedBuyOrder.id));
 
-                    if (data.payload.code !=="Success") {
+                    if (data.payload.message !=="Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
