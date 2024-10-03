@@ -33,14 +33,13 @@ const UserChat: React.FC = () => {
         clientRef.current.connect({}, (frame: string) => {
             console.log('Connected: ' + frame);
 
-            // Subscribe to receive messages
+            
             clientRef.current?.subscribe('/topic/messages', (stompMessage) => {
                 const chatMessage: ChatMessage = JSON.parse(stompMessage.body);
                 setMessages((prevMessages) => [...prevMessages, chatMessage]);
             });
         });
 
-        // Clean up on unmount
         return () => {
             clientRef.current?.disconnect();
         };
@@ -86,9 +85,9 @@ const UserChat: React.FC = () => {
                                     bgcolor: msg.senderRole === 'USER' ? '#d1e7dd' : '#cfe2ff',
                                     borderRadius: 1,
                                     padding: 1,
-                                    maxWidth: '75%', // Max width for messages
-                                    overflowWrap: 'break-word', // Allow word breaking
-                                    whiteSpace: 'normal', // Break lines normally
+                                    maxWidth: '75%', 
+                                    overflowWrap: 'break-word', 
+                                    whiteSpace: 'normal', 
                                     alignSelf: msg.senderRole === 'USER' ? 'flex-end' : 'flex-start',
                                     textAlign: msg.senderRole === 'USER' ? 'right' : 'left',
                                 }}

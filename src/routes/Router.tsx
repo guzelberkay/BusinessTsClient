@@ -21,6 +21,7 @@ import TaxAndDeclarationPage from "../pages/FinanceService/TaxAndDeclarationPage
 import ExpensePage from "../pages/FinanceService/ExpensePage.tsx";
 import FinancialReportPage from "../pages/FinanceService/FinancialReportPage.tsx";
 import UserChat from "../pages/UserChat.tsx";
+import SupporterChat from "../pages/SupporterChat.tsx";
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
@@ -320,8 +321,8 @@ export default function Router() {
                 }
                 ,
                 {
-                    path: 'user-chat',
-                    element: <PrivateRoute element={<UserChat />} roles={['ADMIN','SUPER_ADMIN','MEMBER']} />,
+                    path: 'supporter-chat',
+                    element: <PrivateRoute element={<SupporterChat />} roles={['SUPPORTER']} />,
                 }
             ]
         }
