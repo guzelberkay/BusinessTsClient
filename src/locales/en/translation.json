@@ -252,7 +252,22 @@
     "status": "Status",
     "noData": "No subscription history available.",
     "subscribe": "Subscribe",
-    "unsubscribe": "Unsubscribe"
+    "unsubscribe": "Unsubscribe",
+    "edit": "Edit",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "price": "Price",
+    "roles": "Roles",
+    "language": "Language",
+    "english": "English",
+    "turkish": "Turkish",
+    "name": "Name",
+    "description": "Description",
+    "addTranslation": "Add Translation",
+    "cancel": "Cancel",
+    "save": "Save",
+    "editPlan": "Edit Plan",
+    "update": "Update"
   },
   "crmService": {
     "customer": "Customer",

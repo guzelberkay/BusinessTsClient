@@ -255,7 +255,22 @@
     "status": "Durum",
     "noData": "Abonelik Gecmisi Bulunamadi.",
     "subscribe": "Abone Ol",
-    "unsubscribe": "Abonelikten Çık"
+    "unsubscribe": "Abonelikten Çık",
+    "edit": "Düzenle",
+    "monthly": "Aylık",
+    "yearly": "Yıllık",
+    "price": "Fiyat",
+    "roles": "Roller",
+    "language": "Dil",
+    "english": "Ingilizce",
+    "turkish": "Türkçe",
+    "name": "Ad",
+    "description": "Açıklama",
+    "addTranslation": "Açıklama Ekle",
+    "cancel": "Iptal",
+    "save": "Kaydet",
+    "editPlan": "Planı Düzenle",
+    "update": "Güncelle"
   },
   "crmService":{
     "customer": "Müşteri",

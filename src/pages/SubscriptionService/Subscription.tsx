@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Card, CardContent, Typography, CardActions, Button } from '@mui/material';
 import { AppDispatch, RootState } from '../../store';
-import { fetchCheckSubscription, fetchFindAllPlans, fetchSubscribe, fetchUnsubscribe } from '../../store/feature/subscriptionSlice';
+import { fetchCheckSubscription, fetchFindAllActiveSubscriptionPlans, fetchFindAllPlans, fetchSubscribe, fetchUnsubscribe } from '../../store/feature/subscriptionSlice';
 import { useTranslation } from 'react-i18next';
 import { fetchUserRoles } from '../../store/feature/userSlice';
 import Swal from 'sweetalert2';
+import { IPlan } from '../../model/IPlan';
 
 /**
  * Subscription component displays available subscription plans and allows the user to subscribe or unsubscribe.
@@ -18,14 +19,15 @@ const Subscription: React.FC = () => {
   const userRoles = useSelector((state: RootState) => state.userSlice.userRoleList);
   const activeSubscriptionRoles = useSelector((state: RootState) => state.subscription.activeSubscriptionRoles);
   const language = useSelector((state: RootState) => state.pageSettings.language);
-
+  const activeSubscriptionPlans = useSelector((state: RootState) => state.subscription.activeSubscriptionPlans);
   /**
    * Function to dispatch actions that fetch data for subscriptions and user roles.
    */
   const fetchData = () => {
     dispatch(fetchCheckSubscription());
-    dispatch(fetchFindAllPlans(language));
+    dispatch(fetchFindAllPlans());
     dispatch(fetchUserRoles());
+    dispatch(fetchFindAllActiveSubscriptionPlans());
   };
 
   // Fetch data on component mount
@@ -60,14 +62,15 @@ const Subscription: React.FC = () => {
     }
   };
 
+
   /**
    * Checks if a subscription for a given plan name exists by comparing with active subscription roles.
    * 
    * @param {string} planName - The name of the subscription plan.
    * @returns {boolean} - True if the user is subscribed to the plan, otherwise false.
    */
-  const checkSubscriptions = (roles: string[]) => {
-    return roles.every(role => activeSubscriptionRoles.includes(role));
+  const checkSubscriptions = (planId: number) => {
+    return activeSubscriptionPlans.map((plan) => plan.id).includes(planId);
   };
 
   return (
@@ -85,7 +88,7 @@ const Subscription: React.FC = () => {
           <Card sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '100%' }}>
             <CardContent>
               <Typography variant="h5" component="div">
-                {plan.name}
+                {plan.translations.find((translation) => translation.language === language)?.name || 'Unknown'}
               </Typography>
               <Typography variant="h6" color="text.primary" sx={{ marginTop: 2 }}>
                 ${plan.price}/month
@@ -94,10 +97,10 @@ const Subscription: React.FC = () => {
             <CardActions>
               <Button
                 variant="contained"
-                color={checkSubscriptions(plan.roles) ? 'error' : 'success'}
-                onClick={() => handleSubscription(plan.id, checkSubscriptions(plan.roles))}
+                color={checkSubscriptions(plan.id) ? 'error' : 'success'}
+                onClick={() => handleSubscription(plan.id, checkSubscriptions(plan.id))}
               >
-                {checkSubscriptions(plan.roles) ? t('subscription.unsubscribe') : t('subscription.subscribe')}
+                {checkSubscriptions(plan.id) ? t('subscription.unsubscribe') : t('subscription.subscribe')}
               </Button>
             </CardActions>
           </Card>
