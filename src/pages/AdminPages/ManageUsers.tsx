@@ -9,6 +9,7 @@ import {
   FormControl,
   Switch
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import { AppDispatch, useAppSelector } from '../../store';
 import { useDispatch } from 'react-redux';
 import { fetchAddRoleToUser, fetchChangeUserEmail, fetchChangeUserPassword, fetchSaveUser, fetchUpdateUserStatus, fetchUserList } from '../../store/feature/userSlice';
@@ -180,6 +181,7 @@ function ManageUsers() {
               <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Soy isim</TableCell>
               <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>E-posta</TableCell>
               <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Kullanıcı Durumu</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}></TableCell>
               <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Roller</TableCell>
               <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Eylemler</TableCell>
             </TableRow>
@@ -198,6 +200,13 @@ function ManageUsers() {
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.lastName}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.email}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.status}</TableCell>
+                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
+                  <Switch 
+                    checked={user.status === 'ACTIVE'}
+                    onChange={() => handleStatusChange(user)}
+                    color="success"
+                  />
+                </TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.userRoles.join(', ')}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
                   <Button 
@@ -212,15 +221,12 @@ function ManageUsers() {
                     variant="contained" 
                     color="secondary" 
                     style={{ marginRight: 8 }} 
+                    startIcon={<EditIcon />}
                     onClick={() => handleOpenEditDialog(user)} 
                   >
                     Düzenle
                   </Button>
-                  <Switch
-                    checked={user.status === 'ACTIVE'}
-                    onChange={() => handleStatusChange(user)}
-                    color="success"
-                  />
+                  
                 </TableCell>
               </TableRow>
             ))}
