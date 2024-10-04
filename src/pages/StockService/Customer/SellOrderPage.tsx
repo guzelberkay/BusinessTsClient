@@ -369,7 +369,7 @@ const SellOrderPage = () => {
                 </Grid>
 
                 <Dialog open={openAddBuyOrderModal} onClose={() => setOpenAddBuyOrderModal(false)} fullWidth maxWidth='sm'>
-                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addbuyorder')}</DialogTitle>
+                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addsellorder')}</DialogTitle>
                     <DialogContent>
                         <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
                             <InputLabel>{t('stockService.pleaseselectcustomer')}</InputLabel>

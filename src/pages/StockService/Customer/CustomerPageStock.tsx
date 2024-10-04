@@ -317,7 +317,7 @@ const CustomerPageStock = () => {
                 </Grid>
                 <Dialog open={openAddCustomerModal} onClose={() => setOpenAddCustomerModal(false)} fullWidth
                         maxWidth='sm'>
-                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addproductcategory')}</DialogTitle>
+                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addcustomer')}</DialogTitle>
                     <DialogContent>
                         <TextField
                             sx={{marginTop: '15px'}}

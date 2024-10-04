@@ -157,7 +157,7 @@
     "productsuccesfullyadded": "Urun Basariyla Eklendi",
     "cancel": "IPTAL",
     "save": "KAYDET",
-    "addproduct": "URUN EKLE",
+    "addproduct": "Ürün Ekle",
     "pleaseselectsupplier": "Tedarikci Seciniz",
     "pleaseselectwarehouse": "Depo Seciniz",
     "pleaseselectcategory": "Kategori Seciniz",
@@ -174,7 +174,7 @@
     "supplier": "Supplier",
     "add": "EKLE",
     "pleaseselectproduct": "Lütfen Urun Seciniz",
-    "addbuyorder": "ALIS SIPARISI EKLE",
+    "addbuyorder": "Aliş Siparişi Ekle",
     "buyordersuccessfullyadded": "Alis Siparişi Basariyla Eklendi!",
     "successfullyupdated": "Basariyla Guncellendi!",
     "deleteorder": "Siparişi silmek istediginizden emin misiniz?",
@@ -204,7 +204,9 @@
     "addfromorderid": "Siparis No'dan Ekle",
     "orderid": "Siparis Id (Lütfen Sadece Alış Siparişi Giriniz.)",
     "identityno": "Kimlik No",
-    "phoneno": "Telefon No"
+    "phoneno": "Telefon No",
+    "addsellorder": "Satış Siparişi Ekle",
+    "addcustomer": "Müşteri Ekle"
 
   },
 
