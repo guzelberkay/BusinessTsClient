@@ -209,14 +209,13 @@ export const drawerNavigations: Record<string, Button[]> = {
                 name: 'financemodule',
                 TopLevelIcon: <FormatListNumbered/>,
                 menuItems: [
-                    'budgets', 'incomes', 'expenses', 'invoices', 'taxes', 'declarations', 'financial-reports'
+                    'budgets', 'incomes', 'expenses', 'invoices', 'taxes', 'financial-reports'
                 ],
                 menuIcons: [
-                    <AttachMoney/>, <ArrowDownward/>, <ArrowUpward/>, <RequestQuote/>, <AccountBalance/>, <Description/>,
-                    <Assessment/>,
+                    <AttachMoney/>, <ArrowDownward/>, <ArrowUpward/>, <RequestQuote/>, <AccountBalance/>, <Assessment/>,
                 ],
                 menuNavigations: [
-                    'budgets', 'incomes', 'expenses', 'invoices', 'taxes', 'declarations', 'financial-reports'
+                    'budgets', 'incomes', 'expenses', 'invoices', 'taxes', 'financial-reports'
                 ],
             } as DrawerCollapseButtonProps,
         }

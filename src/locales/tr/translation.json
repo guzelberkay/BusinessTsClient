@@ -413,7 +413,14 @@
     "createdeclaration": "BEYANNAME OLUŞTUR",
     "grossIncome": "Brüt Gelir",
     "netIncome": "Net Gelir",
-    "expense": "Giderler"
+    "expense": "Giderler",
+    "searchbyproductname": "Ürün Adına Göre Ara",
+    "taxesanddeclarations": "Vergiler ve Beyannameler",
+    "amounttl": "Miktar (₺)",
+    "incomeVsExpense": "Gelir - Gider",
+    "expenseBreakdown": "Gider Dağılımı",
+    "totalIncome": "Toplam Gelir",
+    "totalExpenses": "Toplam Gider"
   }
 }
 

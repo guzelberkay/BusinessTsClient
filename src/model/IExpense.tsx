@@ -5,4 +5,5 @@ export interface IExpense{
     amount: number;
     description: string;
     status: string;
+    department: string;
 }

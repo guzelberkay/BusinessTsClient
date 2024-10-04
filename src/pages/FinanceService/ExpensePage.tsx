@@ -8,7 +8,7 @@ import {
     fetchFindAllExpense,
     fetchFindByIdExpense,
     fetchFindExpenseByDate,
-    fetchGetAllExpenseCategories,
+    fetchGetAllExpenseCategories, fetchGetDepartments,
     fetchSaveExpense,
     fetchUpdateExpense,
 } from "../../store/feature/financeSlice";
@@ -31,6 +31,7 @@ import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import {IIncome} from "../../model/IIncome";
 import {IExpenseCategory} from "../../model/IExpenseCategory";
+import {IDepartments} from "../../model/IDepartments.tsx";
 
 const ExpensePage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
@@ -49,16 +50,19 @@ const ExpensePage = () => {
     const [searchText, setSearchText] = useState("");
     const [expenseCategory, setExpenseCategory] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const [department, setDepartment] = useState<string>("");
     const [expenseCategories, setExpenseCategories] = useState<IExpenseCategory[]>([]);
+    const [departments, setDepartments] = useState<IDepartments[]>([]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     };
 
     const columns: GridColDef[] = [
-        {field: "amount", headerName: t("financeService.amount"), width: 120, type: "number"},
-        {field: "description", headerName: t("financeService.description"), width: 150},
-        {field: "expenseDate", headerName: t("financeService.date"), width: 150},
+        {field: "amount", headerName: t("financeService.amounttl"), flex: 1.5, headerAlign: "center", type: "number"},
+        {field: "description", headerName: t("financeService.description"), flex: 1.5, headerAlign: "center"},
+        {field: "expenseDate", headerName: t("financeService.date"), flex: 1.5, headerAlign: "center"},
+        {field: "department", headerName: t("financeService.department"), flex: 1.5, headerAlign: "center"},
     ];
 
     useEffect(() => {
@@ -71,6 +75,12 @@ const ExpensePage = () => {
         );
     }, [dispatch, searchText]);
 
+    useEffect(() => {
+        dispatch(fetchGetDepartments()).then((data) => {
+            setDepartments(data.payload.data);
+        });
+    }, [dispatch]);
+
     const fetchExpenseData = () => {
         dispatch(
             fetchFindAllExpense({
@@ -80,6 +90,8 @@ const ExpensePage = () => {
             })
         );
     };
+
+
 
     const handleOpenSaveExpenseModal = () => {
         setOpenSaveExpenseModal(true);
@@ -107,11 +119,12 @@ const ExpensePage = () => {
 
     const handleSaveExpense = () => {
         setLoading(true);
-        dispatch(fetchSaveExpense({expenseCategory, expenseDate, amount, description})).then(() => {
+        dispatch(fetchSaveExpense({expenseCategory, expenseDate, amount, description, department})).then(() => {
             setAmount(0);
             setExpenseDate(new Date());
             setDescription("");
             setExpenseCategory("");
+            setDepartment(""); // Reset department
             setLoading(false);
             Swal.fire({
                 title: t("swal.success"),
@@ -138,6 +151,7 @@ const ExpensePage = () => {
             setAmount(0);
             setExpenseDate(new Date());
             setDescription("");
+            setDepartment(""); // Reset department
             setLoading(false);
             Swal.fire({
                 title: t("financeService.updated"),
@@ -251,6 +265,25 @@ const ExpensePage = () => {
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
                 autoHeight={true}
+                sx={{
+                    "& .MuiDataGrid-columnHeaders": {
+                        backgroundColor: "rgba(224, 224, 224, 1)",
+                    },
+                    "& .MuiDataGrid-columnHeaderTitle": {
+                        textAlign: "center",
+                        fontWeight: "bold",
+                    },
+                    "& .MuiDataGrid-cell": {
+                        textAlign: "center",
+                    },
+                    "& .approved-row": {
+                        backgroundColor: "#e0f2e9",
+                    },
+                    "& .unapproved-row": {
+                        backgroundColor: "#ffe0e0",
+                    },
+
+                }}
                 rowSelectionModel={selectedRowIds}
             />
             <Grid container spacing={2} sx={{
@@ -326,6 +359,14 @@ const ExpensePage = () => {
                             ))}
                         </Select>
                     </FormControl>
+                    <TextField
+                        label={t("financeService.department")}
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        value={department}
+                        onChange={(e) => setDepartment(e.target.value)}
+                    />
                     <TextField
                         label={t("financeService.amount")}
                         type="number"

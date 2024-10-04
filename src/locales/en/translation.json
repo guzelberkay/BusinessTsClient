@@ -412,6 +412,13 @@
     "createdeclaration": "CREATE DECLARATION",
     "grossIncome": "Gross Income",
     "netIncome": "Net Income",
-    "expense": "Expenses"
+    "expense": "Expenses",
+    "searchbyproductname": "Search by Product Name",
+    "taxesanddeclarations": "Taxes and Declarations",
+    "amounttl": "Amount (₺)",
+    "incomeVsExpense": "Income vs Expense",
+    "expenseBreakdown": "Expense Breakdown",
+    "totalIncome": "Total Income",
+    "totalExpenses": "Total Expenses"
   }
 }
