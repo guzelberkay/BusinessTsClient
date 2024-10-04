@@ -267,7 +267,10 @@ const userSlice = createSlice({
     name: 'user',
     initialState: initialUserState,
     reducers: {
-
+        clearRoles(state){
+            localStorage.removeItem('userRoleList');
+            state.userRoleList = [];
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchUserList.fulfilled, (state, action: PayloadAction<IResponse>) => {
@@ -291,5 +294,7 @@ const userSlice = createSlice({
     }
 });
 
-
+export const {
+    clearRoles
+} = userSlice.actions;
 export default userSlice.reducer;

@@ -17,7 +17,7 @@ import {
 } from "../../store/feature/crmSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import dayjs, {Dayjs} from "dayjs";
+    import dayjs, {Dayjs} from "dayjs";
 
 const MarketingCampaignPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
@@ -96,7 +96,7 @@ const MarketingCampaignPage = () => {
             setBudget(data.payload.data.budget);
         })
     }
-    const handleUpdateMarketingCampaign = () => {
+    const handleUpdateMarketingCampaign = async () => {
         dispatch(fetchUpdateMarketingCampaign({
             id: selectedRowIds[0],
             name: name,
@@ -117,6 +117,7 @@ const MarketingCampaignPage = () => {
                 text: t("crmService.successfullyupdated"),
                 icon: "success",
             });
+            setIsUpdating(false);
         }).catch((error) => {
             setOpenAddMarketingCampaignModal(false);
             setIsUpdating(false);

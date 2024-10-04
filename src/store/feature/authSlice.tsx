@@ -222,6 +222,7 @@ const authSlice = createSlice({
         },
         clearToken(state){
             state.isAuth = false;
+            localStorage.removeItem('token');
             state.token = '';
         }
     },
