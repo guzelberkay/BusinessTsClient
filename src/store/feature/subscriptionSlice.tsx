@@ -16,6 +16,7 @@ interface ISubscriptionState {
     planList: IPlan[]; // List of all available plans.
     activeSubscriptionRoles: string[]; // Roles for the active subscriptions.
     subscriptionHistory: ISubscriptionHistory[]; // Subscription history.
+    activeSubscriptionPlans: IPlan[];
 }
 
 /**
@@ -25,6 +26,7 @@ const initialSubscriptionState: ISubscriptionState = {
     planList: [],
     activeSubscriptionRoles: [],
     subscriptionHistory: [],
+    activeSubscriptionPlans: [],
 };
 
 /**
@@ -35,9 +37,9 @@ const initialSubscriptionState: ISubscriptionState = {
  */
 export const fetchFindAllPlans = createAsyncThunk(
     'subscription/IFetchFindAllPlans',
-    async (language: string) => {
+    async () => {
         const result = await axios.post(
-            `${RestApis.subscription_service_plan}/find-all?language=${encodeURIComponent(language)}`,
+            RestApis.subscription_service_plan + "/find-all",
             null,
             {
                 headers: {
@@ -200,6 +202,23 @@ export const fetchAddPlan = createAsyncThunk(
     }
 )
 
+export const fetchFindAllActiveSubscriptionPlans = createAsyncThunk(
+    'subscription/fetchFindAllActiveSubscriptionPlans',
+    async () => {
+        const result = await axios.post(
+            RestApis.subscription_service_subscription + "/find-all-active-subscription-plans",
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token'),
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
 
 const subscriptionSlice = createSlice({
     name: 'subscription',
@@ -214,6 +233,9 @@ const subscriptionSlice = createSlice({
         });
         builder.addCase(fetchSubscriptionHistory.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.subscriptionHistory = action.payload.data;
+        })
+        builder.addCase(fetchFindAllActiveSubscriptionPlans.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.activeSubscriptionPlans = action.payload.data;
         })
     }
 });
