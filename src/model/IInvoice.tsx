@@ -1,9 +1,12 @@
 export interface IInvoice{
     id: number;
-    customerIdOrSupplierId: number;
+    buyerTcNo: string;
+    buyerEmail: string;
+    buyerPhone: string;
+    productId: number;
+    productName: string;
+    quantity: number;
     invoiceDate: Date;
     totalAmount: number;
-    paidAmount: number;
-    invoiceStatus: string;
-    description: string;
+    price: number;
 }

@@ -96,19 +96,6 @@ const TaxAndDeclarationPage = () => {
 
     return (
         <div style={{ height: "auto" }}>
-            <Box sx={{ mb: 2 }}>
-                <Typography
-                    variant="h4"
-                    gutterBottom
-                    sx={{
-                        color: '#333',
-                        fontWeight: '600',
-                        fontSize: '1.5rem',
-                        textAlign: 'center'
-                    }}>
-                    {t("financeService.createdeclaration")}
-                </Typography>
-            </Box>
             <div style={{ display: 'flex', gap: '10px' }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
@@ -174,39 +161,6 @@ const TaxAndDeclarationPage = () => {
                         {t("financeService.downloadpdf")}
                     </Button>
 
-                    <Box sx={{ marginTop: '20px' }}>
-                        <Typography variant="h6" sx={{ textAlign: 'center' }}>
-                            {t("financeService.incomedistributionchart")}
-                        </Typography>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <PieChart>
-                                <Pie
-                                    data={[
-                                        { name: t("financeService.expense"), value: expense },
-                                        { name: t("financeService.netincomeaftertax"), value: netIncomeAfterTax },
-                                        { name: t("financeService.totaltax"), value: totalTax },
-                                    ]}
-                                    cx="50%"
-                                    cy="50%"
-                                    outerRadius={100}
-                                    fill="#8884d8"
-                                    dataKey="value"
-                                >
-                                    {[
-                                        { name: t("financeService.expense"), value: expense },
-                                        { name: t("financeService.netincomeaftertax"), value: netIncomeAfterTax },
-                                        { name: t("financeService.totaltax"), value: totalTax },
-                                    ].map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
-                                </Pie>
-                                <Tooltip
-                                    formatter={(value: number, name: string) => [`${value} TL`, name]}
-                                    labelFormatter={(name) => `${name}`}
-                                />
-                            </PieChart>
-                        </ResponsiveContainer>
-                    </Box>
                 </>
             )}
         </div>

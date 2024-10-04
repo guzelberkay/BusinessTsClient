@@ -43,9 +43,9 @@ const IncomePage = () => {
     };
 
     const columns: GridColDef[] = [
-        {field: 'source', headerName: 'Source', width: 150},
-        {field: 'amount', headerName: 'Amount (₺)', width: 120, type: 'number'},
-        {field: 'incomeDate', headerName: 'Income Date', width: 150},
+        {field: 'source', headerName: 'Source', flex: 1.5, headerAlign: "center"},
+        {field: 'amount', headerName: 'Amount (₺)', flex: 1.5, headerAlign: "center", type: 'number'},
+        {field: 'incomeDate', headerName: 'Income Date', flex: 1.5, headerAlign: "center"},
     ];
 
     useEffect(() => {
@@ -231,6 +231,25 @@ const IncomePage = () => {
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
                 autoHeight={true}
+                sx={{
+                    "& .MuiDataGrid-columnHeaders": {
+                        backgroundColor: "rgba(224, 224, 224, 1)",
+                    },
+                    "& .MuiDataGrid-columnHeaderTitle": {
+                        textAlign: "center",
+                        fontWeight: "bold",
+                    },
+                    "& .MuiDataGrid-cell": {
+                        textAlign: "center",
+                    },
+                    "& .approved-row": {
+                        backgroundColor: "#e0f2e9",
+                    },
+                    "& .unapproved-row": {
+                        backgroundColor: "#ffe0e0",
+                    },
+
+                }}
                 rowSelectionModel={selectedRowIds}
             />
             <Grid container spacing={2} sx={{

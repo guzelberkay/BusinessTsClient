@@ -150,6 +150,21 @@ export const fetchFindByIdBudget = createAsyncThunk(
         return result.data;
     }
 );
+
+export const fetchGetDepartments = createAsyncThunk(
+    'finance/fetchGetDepartments',
+    async () => {
+        const result = await axios.post(
+            RestApis.finance_service_budget + "/get-departments",
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
 //#endregion Budget
 
 
@@ -253,6 +268,7 @@ interface IFetchSaveExpense {
     expenseDate: Date;
     amount: number;
     description: string;
+    department: string;
 }
 
 export const fetchSaveExpense = createAsyncThunk(
@@ -262,7 +278,8 @@ export const fetchSaveExpense = createAsyncThunk(
             expenseCategory: payload.expenseCategory,
             expenseDate: payload.expenseDate,
             amount: payload.amount,
-            description: payload.description
+            description: payload.description,
+            department: payload.department
         };
         const result = await axios.post(
             RestApis.finance_service_expense + "/save",
