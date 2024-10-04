@@ -61,7 +61,8 @@
     "plans": "Abonelik Planları",
     "ManageUsers": "Kullanıcıları Yönet",
     "ManageRoles": "Rolleri Yönet",
-    "adminMenu": "Admin Menü"
+    "adminMenu": "Admin Menü",
+    "logout": "Cikis Yap"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",

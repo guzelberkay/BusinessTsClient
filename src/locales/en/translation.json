@@ -60,7 +60,8 @@
     "plans": "Subscription Plans",
     "ManageUsers": "Manage Users",
     "ManageRoles": "Manage Roles",
-    "adminMenu": "Admin Menu"
+    "adminMenu": "Admin Menu",
+    "logout": "Logout"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",

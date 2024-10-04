@@ -31,6 +31,8 @@ import {
   fetchUnreadNotificationCount
 } from "../../../store/feature/notificationSlice.tsx";
 import { Client } from "@stomp/stompjs";
+import { clearToken } from "../../../store/feature/authSlice.tsx";
+import { clearRoles } from "../../../store/feature/userSlice.tsx";
 const drawerWidth = 240;
 
 // Interface defining the props for the AppBar component
@@ -300,6 +302,12 @@ function Appbar({
     setNotificationAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    dispatch(clearRoles());
+    dispatch(clearToken());
+    navigate('/login');
+  }
+
   const renderNotificationMenu = (
       <Menu
           anchorEl={notificationAnchorEl}
@@ -357,6 +365,12 @@ function Appbar({
             onClick={handleLanguageChange}
         >
           {t("localization.locale")}
+        </MenuItem>
+        <MenuItem
+            sx={{ color: "primary.main" }}
+            onClick={handleLogout}
+        >
+          {t("navigation.logout")}
         </MenuItem>
       </Menu>
   );
