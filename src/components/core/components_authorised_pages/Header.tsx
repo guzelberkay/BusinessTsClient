@@ -6,6 +6,8 @@ import Appbar from './Appbar';
 interface HeaderProps {
     drawerState: boolean; // Indicates whether the drawer is open or closed
     setDrawerState: (state: boolean) => void; // Function to set the drawer state
+    fetchUnreadCount: () => Promise<void>;
+    unreadCount: number;
 }
 
 /**
@@ -19,14 +21,16 @@ interface HeaderProps {
  * @param {function} param0.setDrawerState - Function to update the drawer's open state.
  * @returns {React.ReactNode} - The rendered Header component.
  */
-export default function Header({ drawerState, setDrawerState }: HeaderProps) {
+export default function Header({ drawerState, setDrawerState, fetchUnreadCount, unreadCount }: HeaderProps) {
     //#region UI
     return (
         <>
             <CssBaseline /> {/* Provides a consistent baseline for styles */}
-            <Appbar 
-                drawerState={drawerState} 
-                setDrawerState={setDrawerState} 
+            <Appbar
+                drawerState={drawerState}
+                setDrawerState={setDrawerState}
+                fetchUnreadCount={fetchUnreadCount}
+                unreadCount={unreadCount}
             />
             <Drawer open={drawerState} setDrawerState={setDrawerState} />
         </>

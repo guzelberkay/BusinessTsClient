@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from "react";
-import {
-    DataGrid,
-    GridColDef,
-    GridRowSelectionModel, GridToolbar,
-} from "@mui/x-data-grid";
-import {
-    Button, Dialog, DialogActions, DialogContent, DialogTitle,
-    Grid,
-    TextField
+import React, {useEffect, useState} from "react";
+import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar,} from "@mui/x-data-grid";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField} from "@mui/material";
 
-} from "@mui/material";
-
-import { useDispatch } from "react-redux";
-import  {AppDispatch} from "../../../store";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../store";
 
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import {
     fetchDeleteCustomer,
-    fetchDeleteWareHouse,
-    fetchFindAllCustomer, fetchFindByIdCustomer,
-    fetchFindByIdWareHouse, fetchSaveWareHouse, fetchUpdateCustomer,
-    fetchUpdateWareHouse
+    fetchFindAllCustomer,
+    fetchFindByIdCustomer,
+    fetchSaveCustomer,
+    fetchUpdateCustomer
 } from "../../../store/feature/stockSlice.tsx";
 import {ICustomer} from "../../../model/ICustomer.tsx";
-import {fetchSaveCustomer} from "../../../store/feature/stockSlice.tsx";
-
 
 
 const CustomerPageStock = () => {
@@ -49,6 +38,8 @@ const CustomerPageStock = () => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
+    const [phoneNo, setPhoneNo] = useState('');
+    const [identityNo, setIdentityNo] = useState('');
     const [contactInfo, setContactInfo] = useState('');
     const [address, setAddress] = useState('');
     const [notes, setNotes] = useState('');
@@ -88,21 +79,43 @@ const CustomerPageStock = () => {
             setName(data.payload.data.name)
             setSurname(data.payload.data.surname)
             setEmail(data.payload.data.email)
+            setIdentityNo(data.payload.data.identityNo)
+            setPhoneNo(data.payload.data.phoneNo)
         })
     }
     const handleUpdate = async () => {
-        dispatch(fetchUpdateCustomer({ id: selectedRowIds[0], name: name, surname: surname, email: email })).then(() => {
-            setName('')
-            setSurname('')
-            setEmail('')
-            setOpenAddCustomerModal(false);
-            Swal.fire({
-                title: t("stockService.updated"),
-                text: t("stockService.successfullyupdated"),
-                icon: "success",
-            });
-            setIsUpdating(false)
+        dispatch(fetchUpdateCustomer({ id: selectedRowIds[0], name: name, surname: surname, email: email, identityNo: identityNo, phoneNo: phoneNo })).then((data) => {
+            if (data.payload.message === "Success") {
+                setName('')
+                setSurname('')
+                setEmail('')
+                setIdentityNo('')
+                setPhoneNo('')
+                setOpenAddCustomerModal(false);
+                Swal.fire({
+                    title: t("stockService.updated"),
+                    text: t("stockService.successfullyupdated"),
+                    icon: "success",
+                });
+                setIsUpdating(false)
+            } else {
+
+                setName('')
+                setSurname('')
+                setEmail('')
+                setIdentityNo('')
+                setPhoneNo('')
+                setOpenAddCustomerModal(false);
+                Swal.fire({
+                    title: t("swal.error"),
+                    text: data.payload.message,
+                    icon: "error",
+                    confirmButtonText: t("swal.ok"),
+                });
+                setIsUpdating(false)
+            }
         })
+
     }
 
     const handleSaveCustomer = async () => {
@@ -110,13 +123,17 @@ const CustomerPageStock = () => {
         dispatch(fetchSaveCustomer({
             name: name,
             surname: surname,
-            email: email
+            email: email,
+            identityNo: identityNo,
+            phoneNo: phoneNo
         }))
             .then((data) => {
                 if (data.payload.message === "Success") {
                     setName('')
                     setSurname('')
                     setEmail('')
+                    setIdentityNo('')
+                    setPhoneNo('')
                     setOpenAddCustomerModal(false);
                     Swal.fire({
                         title: t("swal.success"),
@@ -129,6 +146,8 @@ const CustomerPageStock = () => {
                     setName('')
                     setSurname('')
                     setEmail('')
+                    setIdentityNo('')
+                    setPhoneNo('')
                     setOpenAddCustomerModal(false);
                     Swal.fire({
                         title: t("swal.error"),
@@ -194,6 +213,8 @@ const CustomerPageStock = () => {
     const columns: GridColDef[] = [
         { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
         { field: "surname", headerName: t("stockService.surname"), flex: 1.5, headerAlign: "center" },
+        { field: "identityNo", headerName: t("stockService.identityno"), flex: 1.5, headerAlign: "center" },
+        { field: "phoneNo", headerName: t("stockService.phoneno"), flex: 1.5, headerAlign: "center" },
         { field: "email", headerName: "Email", flex: 1.5, headerAlign: "center" },
     ];
 
@@ -318,6 +339,24 @@ const CustomerPageStock = () => {
                         />
                         <TextField
                             sx={{marginTop: '15px'}}
+                            label={t('stockService.identityno')}
+                            name="identityNo"
+                            value={identityNo}
+                            onChange={e => setIdentityNo(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('stockService.phoneno')}
+                            name="phoneNo"
+                            value={phoneNo}
+                            onChange={e => setPhoneNo(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
                             label="Email"
                             name="email"
                             value={email}
@@ -331,10 +370,10 @@ const CustomerPageStock = () => {
                             setOpenAddCustomerModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
                         {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
-                                              disabled={name === '' || surname === '' || email === ''}>{t('stockService.update')}</Button>
+                                              disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === ''}>{t('stockService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveCustomer()} color="success" variant="contained"
-                                    disabled={name === '' || surname === '' || email === ''}>{t('stockService.save')}</Button>
+                                    disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === ''}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>

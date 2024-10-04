@@ -293,5 +293,4 @@ const SideBarNotifications: React.FC = () => {
       </Box>
   );
 };
-
 export default SideBarNotifications;

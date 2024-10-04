@@ -8,7 +8,6 @@ import SideBarNotifications from "../components/molecules/SideBarNotifications";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
-import Subscription from "../pages/SubscriptionService/Subscription.tsx";
 import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.tsx";
 import OpportunityPage from "../pages/CRMService/OpportunityPage.tsx";
 import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
@@ -16,6 +15,14 @@ import TicketPage from "../pages/CRMService/TicketPage.tsx";
 import OpportunitySavePage from "../pages/CRMService/OpportunitySavePage.tsx";
 import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
+import IncomePage from "../pages/FinanceService/IncomePage.tsx";
+import ManageUsers from "../pages/AdminPages/ManageUsers.tsx";
+import ManageRoles from "../pages/AdminPages/ManageRoles.tsx";
+import TaxAndDeclarationPage from "../pages/FinanceService/TaxAndDeclarationPage.tsx";
+import ExpensePage from "../pages/FinanceService/ExpensePage.tsx";
+import FinancialReportPage from "../pages/FinanceService/FinancialReportPage.tsx";
+import UserChat from "../pages/UserChat.tsx";
+import SupporterChat from "../pages/SupporterChat.tsx";
 import SalesActivitySavePage from "../pages/CRMService/SalesActivitySavePage.tsx";
 import TicketSavePage from "../pages/CRMService/TicketSavePage.tsx";
 
@@ -31,7 +38,12 @@ export const AnalyticsDash = lazy(() => import('../pages/AnalyticsDash'));
 export const CustomerPage = lazy(() => import('../pages/CRMService/CustomerPage.tsx'));
 export const MarketingCampaignPage = lazy(() => import('../pages/CRMService/MarketingCampaignPage.tsx'));
 export const ProductByMinStockLevelPage = lazy(() => import('../pages/StockService/Customer/ProductByMinStockLevelPage.tsx'));
-export const HRMPage = lazy(() => import('../pages/HRMPage'));
+export const EmployeePage = lazy(() => import('../pages/HRMService/EmployeePage.tsx'));
+export const AttendancePage = lazy(() => import('../pages/HRMService/AttendancePage.tsx'));
+export const BenefitPage = lazy(() => import('../pages/HRMService/BenefitPage.tsx'));
+export const PayrollPage = lazy(() => import('../pages/HRMService/PayrollPage.tsx'));
+export const PerformancePage = lazy(() => import('../pages/HRMService/PerformancePage.tsx'));
+
 export const BuyOrderPage = lazy(() => import('../pages/StockService/Customer/BuyOrderPage.tsx'));
 export const SellOrderPage = lazy(() => import('../pages/StockService/Customer/SellOrderPage.tsx'));
 export const SupplierPage = lazy(() => import('../pages/StockService/Customer/SupplierPage.tsx'));
@@ -44,6 +56,9 @@ export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
 export const ResetPassword=lazy(() => import('../pages/ResetPassword'));
+export const Subscription=lazy(() => import('../pages/SubscriptionService/Subscription'));
+export const SubscriptionHistory=lazy(() => import('../pages/SubscriptionService/SubscriptionHistory'));
+export const AddEditPlan=lazy(() => import('../pages/SubscriptionService/AddEditPlan'));
 
 // For testing purposes (with delay) 
 const TestPage = lazy(() => delay(1000).then(() => import('../pages/TestPage')));
@@ -170,7 +185,7 @@ export default function Router() {
                 },
                 {
                     path: 'subscription',
-                    element: <PrivateRoute element={<Subscription />} roles={['MEMBER','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<Subscription />} roles={['MEMBER']} />,
                 },
                 {
                     path: 'products',
@@ -213,8 +228,24 @@ export default function Router() {
                     element: <PrivateRoute element={<SupplierOrderPage />} roles={['SUPPLIER']} />,
                 },
                 {
-                    path: 'hrm-page',
-                    element: <PrivateRoute element={<HRMPage />} roles={['ADMIN','SUPER_ADMIN']} />,
+                    path: 'employee-page',
+                    element: <PrivateRoute element={<EmployeePage />} roles={['ADMIN','SUPER_ADMIN','HRMM']} />,
+                },
+                {
+                    path: 'attandance-page',
+                    element: <PrivateRoute element={<AttendancePage />} roles={['ADMIN','SUPER_ADMIN','HRMM']} />,
+                },
+                {
+                    path: 'benefit-page',
+                    element: <PrivateRoute element={<BenefitPage />} roles={['ADMIN','SUPER_ADMIN','HRMM']} />,
+                },
+                {
+                    path: 'payroll-page',
+                    element: <PrivateRoute element={<PayrollPage />} roles={['ADMIN','SUPER_ADMIN','HRMM']} />,
+                },
+                {
+                    path: 'performance-page',
+                    element: <PrivateRoute element={<PerformancePage />} roles={['ADMIN','SUPER_ADMIN','HRMM']} />,
                 },
                 {
                     path: 'customer',
@@ -263,9 +294,51 @@ export default function Router() {
                 {
                     path: 'budgets',
                     element: <PrivateRoute element={<BudgetPage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                },
+                {
+                    path: 'incomes',
+                    element: <PrivateRoute element={<IncomePage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                },
+                {
+                    path: 'subscription-history',
+                    element: <PrivateRoute element={<SubscriptionHistory />} roles={['MEMBER']} />,
+                },
+                {
+                    path: 'add-edit-plan',
+                    element: <PrivateRoute element={<AddEditPlan />} roles={['ADMIN','SUPER_ADMIN']} />,
+                },
+                {
+                    path:'profile-management',
+                    element: <PrivateRoute element={<ProfileManagement />}  roles={['ADMIN','MEMBER','SUPER_ADMIN']} />,
+                },
+                {
+                    path:'ManageUsers',
+                    element: <PrivateRoute element={<ManageUsers />} roles={['ADMIN','SUPER_ADMIN']} />,
                 },{
-                    path: 'profile-management',
-                    element: <PrivateRoute element={<ProfileManagement />}  />,
+                    path:'ManageRoles',
+                    element: <PrivateRoute element={<ManageRoles />} roles={['ADMIN','SUPER_ADMIN']} />,
+                },
+                {
+                    path:'taxes',
+                    element: <PrivateRoute element={<TaxAndDeclarationPage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                },
+                {
+                    path: 'expenses',
+                    element: <PrivateRoute element={<ExpensePage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                },
+                {
+                    path: 'financial-reports',
+                    element: <PrivateRoute element={<FinancialReportPage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                }
+                ,
+                {
+                    path: 'user-chat',
+                    element: <PrivateRoute element={<UserChat />} roles={['ADMIN','SUPER_ADMIN','MEMBER']} />,
+                }
+                ,
+                {
+                    path: 'supporter-chat',
+                    element: <PrivateRoute element={<SupporterChat />} roles={['SUPPORTER']} />,
                 }
             ]
         }

@@ -1,5 +1,5 @@
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
@@ -25,15 +25,18 @@ export interface DrawerButtonProps {
 const DrawerButton: React.FC<DrawerButtonProps> = ({ name, icon, navigation }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-
+    const route = navigation ? navigation : name; // Use navigation prop if provided, otherwise use name
+    const [isSelected, setIsSelected] = React.useState(false);
     const handleClick = () => {
-        // Use navigation prop if provided, otherwise use name
-        const route = navigation ? `/${navigation}` : `/${name}`;
         navigate(route);
     };
 
+    useEffect(() => {
+        setIsSelected(location.pathname === `/${route}`);
+    })
+
     return (
-        <ListItemButton onClick={handleClick}>
+        <ListItemButton onClick={handleClick} sx={{bgcolor: isSelected ? 'lightblue' : 'inherit'}}>
             <ListItemIcon>
                 {icon}
             </ListItemIcon>

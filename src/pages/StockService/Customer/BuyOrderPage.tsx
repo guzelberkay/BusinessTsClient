@@ -1,40 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
+import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar,} from "@mui/x-data-grid";
 import {
-    DataGrid,
-    GridColDef,
-    GridRowSelectionModel, GridToolbar,
-} from "@mui/x-data-grid";
-import {
-    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
-    Grid, InputLabel, Select,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    Grid,
+    InputLabel,
+    Select,
     TextField
-
 } from "@mui/material";
 
-import { useDispatch } from "react-redux";
-import  {AppDispatch, useAppSelector} from "../../../store";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../store";
 import {
     fetchDeleteOrder,
-    fetchDeleteProduct,
     fetchFindAllBuyOrder,
     fetchFindAllProduct,
-    fetchFindAllProductCategory,
     fetchFindAllSupplier,
-    fetchFindAllWareHouse, fetchFindByIdOrder, fetchFindByIdProduct, fetchSaveBuyOrder,
-    fetchSaveProduct, fetchSaveSellOrder, fetchUpdateBuyOrder, fetchUpdateProduct,
-
+    fetchFindByIdOrder,
+    fetchSaveBuyOrder,
+    fetchUpdateBuyOrder,
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import {IProduct} from "../../../model/IProduct.tsx";
 import {ISupplier} from "../../../model/ISupplier.tsx";
 import MenuItem from "@mui/material/MenuItem";
-import {IWareHouse} from "../../../model/IWareHouse.tsx";
-import {IProductCategory} from "../../../model/IProductCategory.tsx";
 import {IOrder} from "../../../model/IOrder.tsx";
-
-
-
 
 
 const BuyOrderPage = () => {
@@ -395,7 +390,12 @@ const BuyOrderPage = () => {
                             label={t('stockService.quantity')}
                             name="quantity"
                             value={quantity}
-                            onChange={e => setQuantity((Number)(e.target.value))}
+                            onChange={e => {
+                                const value = Number(e.target.value);
+                                if (value > 0 || e.target.value === '') {
+                                    setQuantity(value);
+                                }
+                            }}
                             required
                             fullWidth
                         />

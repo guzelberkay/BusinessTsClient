@@ -6,6 +6,8 @@ import { IBenefit } from "../../model/IBenefit";
 import { IEmployee } from "../../model/IEmployee";
 import { IPayroll } from "../../model/IPayroll";
 import { IPerformance } from "../../model/IPerformance";
+import { IResponse } from "../../model/IResponse";
+
 
 
 
@@ -58,8 +60,8 @@ export const fetchSaveEmployee = createAsyncThunk(
             usersName,
             {
                 headers: {
-                    'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                   'Content-Type': 'application/json',
+                   'Authorization': `Bearer ` + localStorage.getItem('token')
                 }
             }
         );
@@ -93,28 +95,30 @@ export const fetchUpdateEmployee = createAsyncThunk(
             hireDate: payload.hireDate,
             salary: payload.salary
         };
-        const result = await axios.post(
+        const result = await axios.put(
             RestApis.hrm_service_employee+"/update",
             values,
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                   'Authorization': `Bearer ` + localStorage.getItem('token')
                 }
             }
         );
         return result.data;
     }
 );
+
+
 export const fetchFindByIdEmployee = createAsyncThunk(
     'hrm/fetchFindByIdEmployee',
     async (id:number) => {
-        const result = await axios.get(
-            RestApis.hrm_service_employee+"/find-by-id?id="+id,
+        const result = await axios.post(
+            RestApis.hrm_service_employee+"/find-by-id?id="+id,null,
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
                 }
             }
         );
@@ -138,7 +142,7 @@ export const fetchFindAllEmployee = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
                 }
             }
         );
@@ -154,7 +158,7 @@ export const fetchDeleteEmployee = createAsyncThunk(
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${payload.token}` // Token eklemek gerekiyorsa
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
                 }
             }
         );
@@ -164,30 +168,53 @@ export const fetchDeleteEmployee = createAsyncThunk(
 //#region Attendance
 //#region Benefit
 //#region Payroll
+
+interface IfetchFindAllPayroll{
+    searchText:string;
+    page:number;
+    size:number;
+
+}
+export const fetchFindAllPayroll = createAsyncThunk(
+    'hrm/fetchFindAllPayroll',
+    async (payload:IfetchFindAllPayroll) => {
+        const values = { searchText: payload.searchText,page: payload.page,size: payload.size };
+        const result = await axios.post(
+         "http://localhost:9096/dev/v1/payroll/find-all",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                    
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
 //#region Performance
 
 const hrmSlice = createSlice({
-    name: "hrm",
-    initialState:initialHrmState,
+    name: 'hrm',
+    initialState: initialHrmState,
     reducers: {
-        setAttendanceList: (state, action: PayloadAction<IAttendance[]>) => {
-            state.attendanceList = action.payload;
+        closeModal: () => {
+
         },
-        setBenefitList: (state, action: PayloadAction<IBenefit[]>) => {
-            state.benefitList = action.payload;
-        },
-        setEmployeeList: (state, action: PayloadAction<IEmployee[]>) => {
-            state.employeeList = action.payload;
-        },
-        setPayrollList: (state, action: PayloadAction<IPayroll[]>) => {
-            state.payrollList = action.payload;
-        },
-        setPerformanceList: (state, action: PayloadAction<IPerformance[]>) => {
-            state.performanceList = action.payload;
-        },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchFindAllEmployee.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.employeeList = action.payload.data;
+        })
+        builder.addCase(fetchFindAllPayroll.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.payrollList = action.payload.data;
+        });
+      
     }
 });
 
-export const { setAttendanceList, setBenefitList, setEmployeeList, setPayrollList, setPerformanceList } = hrmSlice.actions;
-
 export default hrmSlice.reducer;
+
+export const {} = hrmSlice.actions;

@@ -1,31 +1,13 @@
-import React, { useEffect, useState } from "react";
-import {
-    DataGrid,
-    GridColDef,
-    GridRowSelectionModel, GridToolbar,
-} from "@mui/x-data-grid";
-import {
-    Button,
-    Grid,
-    TextField
+import React, {useEffect, useState} from "react";
+import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar,} from "@mui/x-data-grid";
+import {Button, Grid, TextField} from "@mui/material";
 
-} from "@mui/material";
-
-import { useDispatch } from "react-redux";
-import  {AppDispatch, useAppSelector} from "../../../store";
-import {
-    fetchApproveOrder,
-    fetchChangeAutoOrderModeOfProduct, fetchDeleteOrder, fetchFindAllBuyOrder,
-    fetchFindAllByMinimumStockLevel, fetchFindAllOrdersOfSupplier,
-    fetchFindAllProduct
-} from "../../../store/feature/stockSlice.tsx";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../store";
+import {fetchApproveOrder, fetchFindAllOrdersOfSupplier} from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProduct} from "../../../model/IProduct.tsx";
 import {IOrder} from "../../../model/IOrder.tsx";
-
-
-
 
 
 const BuyOrderPage = () => {
@@ -82,7 +64,7 @@ const BuyOrderPage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchApproveOrder(selectedBuyOrder.id));
 
-                    if (data.payload.code !=="Success") {
+                    if (data.payload.message !=="Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
