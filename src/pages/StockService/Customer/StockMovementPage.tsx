@@ -358,6 +358,40 @@ const StockMovementPage = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
+                localeText={{
+                    toolbarColumns: t("dataGrid.toolbarColumns"),
+                    toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
+                    toolbarFilters: t("dataGrid.toolbarFilters"),
+                    toolbarFiltersLabel: t("dataGrid.toolbarFiltersLabel"),
+                    toolbarDensity: t("dataGrid.toolbarDensity"),
+                    toolbarDensityLabel: t("dataGrid.toolbarDensityLabel"),
+                    toolbarDensityStandard: t("dataGrid.toolbarDensityStandard"),
+                    toolbarDensityComfortable: t("dataGrid.toolbarDensityComfortable"),
+                    columnsManagementSearchTitle: t("dataGrid.columnsManagementSearchTitle"),
+                    columnsManagementShowHideAllText: t("dataGrid.columnsManagementShowHideAllText"),
+                    toolbarDensityCompact: t("dataGrid.toolbarDensityCompact"),
+                    toolbarExport: t("dataGrid.toolbarExport"),
+                    toolbarExportLabel: t("dataGrid.toolbarExportLabel"),
+                    toolbarExportCSV: t("dataGrid.toolbarExportCSV"),
+                    toolbarExportPrint: t("dataGrid.toolbarExportPrint"),
+                    noRowsLabel: t("dataGrid.noRowsLabel"),
+                    noResultsOverlayLabel: t("dataGrid.noResultsOverlayLabel"),
+                    footerRowSelected: (count) =>
+                        count !== 1
+                            ? `${count.toLocaleString()} ${t("dataGrid.footerRowSelected")}`
+                            : `${count.toLocaleString()} ${t("dataGrid.footerRowSelected")}`,
+                    footerTotalRows: t("dataGrid.footerTotalRows"),
+                    columnMenuLabel: t("dataGrid.columnMenuLabel"),
+                    columnMenuShowColumns: t("dataGrid.columnMenuShowColumns"),
+                    columnMenuFilter: t("dataGrid.columnMenuFilter"),
+                    columnMenuHideColumn: t("dataGrid.columnMenuHideColumn"),
+                    columnMenuUnsort: t("dataGrid.columnMenuUnsort"),
+                    columnMenuSortAsc: t("dataGrid.columnMenuSortAsc"),
+                    columnMenuSortDesc: t("dataGrid.columnMenuSortDesc"),
+                    MuiTablePagination: {
+                        labelRowsPerPage: t("dataGrid.labelRowsPerPage")
+                    }
+                }}
             />
 
             <Grid container spacing={2} sx={{
