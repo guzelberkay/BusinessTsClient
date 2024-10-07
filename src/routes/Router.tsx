@@ -61,7 +61,6 @@ export const Subscription = lazy(() => import('../pages/SubscriptionService/Subs
 export const SubscriptionHistory = lazy(() => import('../pages/SubscriptionService/SubscriptionHistory'));
 export const AddEditPlan = lazy(() => import('../pages/SubscriptionService/AddEditPlan'));
 export const CreateProjectPage = lazy(() => import('../pages/ProjectService/CreateProject'));
-export const ListProjectPage = lazy(() => import('../pages/ProjectService/ListProject'));
 // For testing purposes (with delay) 
 const TestPage = lazy(() => delay(1000).then(() => import('../pages/TestPage')));
 
@@ -301,10 +300,6 @@ export default function Router() {
                 {
                   path:'create-project',
                   element:<CreateProjectPage />,
-                },
-                {
-                    path: 'list-project',
-                    element: <ListProjectPage />,
                 },
                 {
                     path: 'incomes',
