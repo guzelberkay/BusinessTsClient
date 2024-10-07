@@ -3,6 +3,7 @@ import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper, TextField, Dialog, DialogTitle, DialogContent, DialogActions, FormControl,
   Switch
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch } from 'react-redux';
 import { fetchRoleList, fetchSaveRole, fetchUpdateRole, fetchUpdateUserRoleStatus } from '../../store/feature/roleSlice';
 import { IRole } from '../../model/IRole';
@@ -117,6 +118,7 @@ function ManageRoles() {
               <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Rol İsmi</TableCell>
               <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Rol Açıklaması</TableCell>
               <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Rol Durumu</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}></TableCell>
               <TableCell sx={{ fontWeight: 'bold', borderRight: '1px solid rgba(224, 224, 224, 1)' }}>Eylemler</TableCell>
             </TableRow>
           </TableHead>
@@ -132,14 +134,17 @@ function ManageRoles() {
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{role.roleDescription}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{role.status}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-                  <Button variant="contained" color="secondary" onClick={() => handleOpenEditRoleDialog(role)}>
-                    Düzenle
-                  </Button>
                   <Switch
                     checked={role.status === 'ACTIVE'}
                     onChange={() => handleStatusChange(role)}
                     color="success"
                   />
+                </TableCell>
+                <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
+                  <Button variant="contained" color="secondary" onClick={() => handleOpenEditRoleDialog(role)} startIcon={<EditIcon />}>
+                    Düzenle
+                  </Button>
+                  
                 </TableCell>
               </TableRow>
             ))}
