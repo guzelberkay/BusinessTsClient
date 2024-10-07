@@ -10,7 +10,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import { fetchGetAllNotifications, markNotificationAsRead, deleteNotification } from "../../store/feature/notificationSlice";
+import {
+  fetchGetAllNotifications,
+  markNotificationAsRead,
+  deleteNotification,
+  fetchGetAllUnreadNotifications
+} from "../../store/feature/notificationSlice";
 import { RootState, AppDispatch } from "../../store";
 import { useTranslation } from "react-i18next";
 
@@ -32,8 +37,9 @@ const DropdownNotification: React.FC = () => {
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
 
   useEffect(() => {
-    dispatch(fetchGetAllNotifications());
+    dispatch(fetchGetAllUnreadNotifications());
   }, [dispatch]);
+
 
   const sortedNotifications = [...notifications]
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -46,6 +52,7 @@ const DropdownNotification: React.FC = () => {
       dispatch(markNotificationAsRead(notification.id)).then(() => {
         const updatedNotification = { ...notification, isRead: true };
         setSelectedNotification(updatedNotification);
+        dispatch(fetchGetAllUnreadNotifications());
       });
     }
   };
@@ -60,6 +67,7 @@ const DropdownNotification: React.FC = () => {
       dispatch(deleteNotification([selectedNotification.id])).then(() => {
         setOpen(false);
         setSelectedNotification(null);
+
       }).catch((error) => {
         console.error('Failed to delete notification:', error);
       });

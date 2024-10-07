@@ -1,29 +1,36 @@
-import { lazy, Suspense } from "react";
+import {lazy, Suspense} from "react";
 import PrivateRoute from "./PrivateRoute";
 import PostAuthTemplate from "../components/core/PostAuthTemplate";
-import { Outlet, useRoutes, Navigate } from "react-router-dom";
-import { delay } from "../util/delay";
+import {Outlet, useRoutes, Navigate} from "react-router-dom";
+import {delay} from "../util/delay";
 import Loader from "../components/atoms/loader/Loader";
 import SideBarNotifications from "../components/molecules/SideBarNotifications";
 import PreAuthTemplate from "../components/core/PreAuthTemplate";
 import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
-import Subscription from "../pages/SubscriptionService/Subscription.tsx";
 import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.tsx";
 import OpportunityPage from "../pages/CRMService/OpportunityPage.tsx";
 import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
 import TicketPage from "../pages/CRMService/TicketPage.tsx";
+import OpportunitySavePage from "../pages/CRMService/OpportunitySavePage.tsx";
 import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
 import IncomePage from "../pages/FinanceService/IncomePage.tsx";
-import AddUser from "../pages/AdminPages/AddUser.tsx";
 import ManageUsers from "../pages/AdminPages/ManageUsers.tsx";
-import AddRole from "../pages/AdminPages/AddRole.tsx";
 import ManageRoles from "../pages/AdminPages/ManageRoles.tsx";
+import TaxAndDeclarationPage from "../pages/FinanceService/TaxAndDeclarationPage.tsx";
+import ExpensePage from "../pages/FinanceService/ExpensePage.tsx";
+import FinancialReportPage from "../pages/FinanceService/FinancialReportPage.tsx";
+import UserChat from "../pages/UserChat.tsx";
+import InvoicePage from "../pages/FinanceService/InvoicePage.tsx";
+import SupporterChat from "../pages/SupporterChat.tsx";
+import SalesActivitySavePage from "../pages/CRMService/SalesActivitySavePage.tsx";
+import TicketSavePage from "../pages/CRMService/TicketSavePage.tsx";
+
 
 /**
  * By wrapping our component imports with `lazy`, we ensure that these components are only loaded
- * when they are needed (e.g., when the user navigates to a specific route). This reduces the 
+ * when they are needed (e.g., when the user navigates to a specific route). This reduces the
  * initial bundle size, leading to faster load times and improved performance for the application.
  */
 export const VerifyAccount = lazy(() => import('../pages/VerifyAccount'));
@@ -32,7 +39,12 @@ export const AnalyticsDash = lazy(() => import('../pages/AnalyticsDash'));
 export const CustomerPage = lazy(() => import('../pages/CRMService/CustomerPage.tsx'));
 export const MarketingCampaignPage = lazy(() => import('../pages/CRMService/MarketingCampaignPage.tsx'));
 export const ProductByMinStockLevelPage = lazy(() => import('../pages/StockService/Customer/ProductByMinStockLevelPage.tsx'));
-export const HRMPage = lazy(() => import('../pages/HRMPage'));
+export const EmployeePage = lazy(() => import('../pages/HRMService/EmployeePage.tsx'));
+export const AttendancePage = lazy(() => import('../pages/HRMService/AttendancePage.tsx'));
+export const BenefitPage = lazy(() => import('../pages/HRMService/BenefitPage.tsx'));
+export const PayrollPage = lazy(() => import('../pages/HRMService/PayrollPage.tsx'));
+export const PerformancePage = lazy(() => import('../pages/HRMService/PerformancePage.tsx'));
+
 export const BuyOrderPage = lazy(() => import('../pages/StockService/Customer/BuyOrderPage.tsx'));
 export const SellOrderPage = lazy(() => import('../pages/StockService/Customer/SellOrderPage.tsx'));
 export const SupplierPage = lazy(() => import('../pages/StockService/Customer/SupplierPage.tsx'));
@@ -44,8 +56,12 @@ export const Login = lazy(() => import('../pages/Login'));
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
 export const HomePage = lazy(() => import('../pages/HomePage'));
 export const Register = lazy(() => import('../pages/Register'));
-export const ResetPassword=lazy(() => import('../pages/ResetPassword'));
-
+export const ResetPassword = lazy(() => import('../pages/ResetPassword'));
+export const Subscription = lazy(() => import('../pages/SubscriptionService/Subscription'));
+export const SubscriptionHistory = lazy(() => import('../pages/SubscriptionService/SubscriptionHistory'));
+export const AddEditPlan = lazy(() => import('../pages/SubscriptionService/AddEditPlan'));
+export const CreateProjectPage = lazy(() => import('../pages/ProjectService/CreateProject'));
+export const ListProjectPage = lazy(() => import('../pages/ProjectService/ListProject'));
 // For testing purposes (with delay) 
 const TestPage = lazy(() => delay(1000).then(() => import('../pages/TestPage')));
 
@@ -65,8 +81,8 @@ export default function Router() {
             path: '/',
             element: (
                 <PreAuthTemplate>
-                    <Suspense fallback={<Loader />}>
-                        <HomePage />
+                    <Suspense fallback={<Loader/>}>
+                        <HomePage/>
                     </Suspense>
                 </PreAuthTemplate>
             ),
@@ -75,8 +91,8 @@ export default function Router() {
             path: '/analyticdash',
             element: (
                 <PreAuthTemplate>
-                    <Suspense fallback={<Loader />}>
-                        <AnalyticsDash />
+                    <Suspense fallback={<Loader/>}>
+                        <AnalyticsDash/>
                     </Suspense>
                 </PreAuthTemplate>
             ),
@@ -85,8 +101,8 @@ export default function Router() {
             path: 'login',
             element: (
                 <PreAuthTemplate>
-                    <Suspense fallback={<Loader />}>
-                        <Login />
+                    <Suspense fallback={<Loader/>}>
+                        <Login/>
                     </Suspense>
                 </PreAuthTemplate>
             ),
@@ -95,18 +111,17 @@ export default function Router() {
             path: 'notifications',
             element: (
                 <PostAuthTemplate>
-                    <Suspense fallback={<Loader />}>
+                    <Suspense fallback={<Loader/>}>
                         <SideBarNotifications/>
-                    </Suspense>
-                </PostAuthTemplate>
+                    </Suspense></PostAuthTemplate>
             ),
         },
         {
             path: 'register',
             element: (
                 <PreAuthTemplate>
-                    <Suspense fallback={<Loader />}>
-                        <Register />
+                    <Suspense fallback={<Loader/>}>
+                        <Register/>
                     </Suspense>
                 </PreAuthTemplate>
             ),
@@ -115,17 +130,17 @@ export default function Router() {
             path: '404',
             element: (
                 <PreAuthTemplate>
-                    <Suspense fallback={<Loader />}>
-                        <ErrorPage />
+                    <Suspense fallback={<Loader/>}>
+                        <ErrorPage/>
                     </Suspense>
                 </PreAuthTemplate>
             ),
         },
         {
             path: '*',
-            element: 
-                <Suspense fallback={<Loader />}>
-                   <Navigate to="/404" replace />
+            element:
+                <Suspense fallback={<Loader/>}>
+                    <Navigate to="/404" replace/>
                 </Suspense>
             ,
         },
@@ -133,8 +148,8 @@ export default function Router() {
             path: 'dev/v1/auth/verify-account',
             element: (
                 <PreAuthTemplate>
-                    <Suspense fallback={<Loader />}>
-                        <VerifyAccount />
+                    <Suspense fallback={<Loader/>}>
+                        <VerifyAccount/>
                     </Suspense>
                 </PreAuthTemplate>
             ),
@@ -144,8 +159,8 @@ export default function Router() {
             path: 'dev/v1/auth/reset-password',
             element: (
                 <PreAuthTemplate>
-                    <Suspense fallback={<Loader />}>
-                        <ResetPassword />
+                    <Suspense fallback={<Loader/>}>
+                        <ResetPassword/>
                     </Suspense>
                 </PreAuthTemplate>
             ),
@@ -155,117 +170,190 @@ export default function Router() {
         {
             element: (
                 <PostAuthTemplate>
-                    <Suspense fallback={<Loader />}>
-                        <Outlet />
+                    <Suspense fallback={<Loader/>}>
+                        <Outlet/>
                     </Suspense>
                 </PostAuthTemplate>
             ),
             children: [
                 {
                     path: 'admin-dashboard',
-                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<DashBoard/>} roles={['ADMIN', 'SUPER_ADMIN']}/>,
                 },
                 {
                     path: 'member-dashboard',
-                    element: <PrivateRoute element={<DashBoard />} roles={['ADMIN','SUPER_ADMIN','MEMBER']} />,
+                    element: <PrivateRoute element={<DashBoard/>} roles={['ADMIN', 'SUPER_ADMIN', 'MEMBER']}/>,
                 },
                 {
                     path: 'subscription',
-                    element: <PrivateRoute element={<Subscription />} roles={['MEMBER','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<Subscription/>} roles={['MEMBER']}/>,
                 },
                 {
                     path: 'products',
-                    element: <PrivateRoute element={<ProductPage />} roles={['IMM']} />,
+                    element: <PrivateRoute element={<ProductPage/>} roles={['IMM']}/>,
                 },
                 {
                     path: 'products-by-min-stock-level',
-                    element: <PrivateRoute element={<ProductByMinStockLevelPage />} roles={['IMM']} />,
+                    element: <PrivateRoute element={<ProductByMinStockLevelPage/>} roles={['IMM']}/>,
                 },
                 {
                     path: 'buy-orders',
-                    element: <PrivateRoute element={<BuyOrderPage />} roles={['IMM']} />,
+                    element: <PrivateRoute element={<BuyOrderPage/>} roles={['IMM']}/>,
                 },
                 {
                     path: 'sell-orders',
-                    element: <PrivateRoute element={<SellOrderPage />} roles={['IMM']} />,
+                    element: <PrivateRoute element={<SellOrderPage/>} roles={['IMM']}/>,
                 },
                 {
                     path: 'suppliers',
-                    element: <PrivateRoute element={<SupplierPage />} roles={['IMM']} />,
+                    element: <PrivateRoute element={<SupplierPage/>} roles={['IMM']}/>,
                 },
                 {
                     path: 'ware-houses',
-                    element: <PrivateRoute element={<WareHousePage />} roles={['IMM']} />,
+                    element: <PrivateRoute element={<WareHousePage/>} roles={['IMM']}/>,
                 },
                 {
                     path: 'product-categories',
-                    element: <PrivateRoute element={<ProductCategoryPage />} roles={['IMM']} />,
+                    element: <PrivateRoute element={<ProductCategoryPage/>} roles={['IMM']}/>,
                 },
                 {
                     path: 'stock-movements',
-                    element: <PrivateRoute element={<StockMovementPage />} roles={['IMM']} />,
+                    element: <PrivateRoute element={<StockMovementPage/>} roles={['IMM']}/>,
                 },
                 {
                     path: 'stock-customer',
-                    element: <PrivateRoute element={<CustomerPageStock />} roles={['IMM']} />,
+                    element: <PrivateRoute element={<CustomerPageStock/>} roles={['IMM']}/>,
                 },
                 {
                     path: 'supplier-orders',
-                    element: <PrivateRoute element={<SupplierOrderPage />} roles={['SUPPLIER']} />,
+                    element: <PrivateRoute element={<SupplierOrderPage/>} roles={['SUPPLIER']}/>,
                 },
                 {
-                    path: 'hrm-page',
-                    element: <PrivateRoute element={<HRMPage />} roles={['ADMIN','SUPER_ADMIN']} />,
+                    path: 'employee-page',
+                    element: <PrivateRoute element={<EmployeePage/>} roles={['ADMIN', 'SUPER_ADMIN', 'HRMM']}/>,
+                },
+                {
+                    path: 'attandance-page',
+                    element: <PrivateRoute element={<AttendancePage/>} roles={['ADMIN', 'SUPER_ADMIN', 'HRMM']}/>,
+                },
+                {
+                    path: 'benefit-page',
+                    element: <PrivateRoute element={<BenefitPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'HRMM']}/>,
+                },
+                {
+                    path: 'payroll-page',
+                    element: <PrivateRoute element={<PayrollPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'HRMM']}/>,
+                },
+                {
+                    path: 'performance-page',
+                    element: <PrivateRoute element={<PerformancePage/>} roles={['ADMIN', 'SUPER_ADMIN', 'HRMM']}/>,
                 },
                 {
                     path: 'customer',
-                    element: <PrivateRoute element={<CustomerPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                    element: <PrivateRoute element={<CustomerPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
                 },
                 {
                     path: 'marketing-campaign',
-                    element: <PrivateRoute element={<MarketingCampaignPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                    element: <PrivateRoute element={<MarketingCampaignPage/>}
+                                           roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
                 },
                 {
                     path: 'opportunity',
-                    element: <PrivateRoute element={<OpportunityPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                    element: <PrivateRoute element={<OpportunityPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
                 },
                 {
                     path: 'sales-activity',
-                    element: <PrivateRoute element={<SalesActivityPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                    element: <PrivateRoute element={<SalesActivityPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
                 },
                 {
                     path: 'tickets',
-                    element: <PrivateRoute element={<TicketPage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                    element: <PrivateRoute element={<TicketPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
+                },
+                {
+                    path: '/opportunity/save',
+                    element: <PrivateRoute element={<OpportunitySavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                },
+                {
+                    path: '/sales-activity/save',
+                    element: <PrivateRoute element={<SalesActivitySavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                },
+                {
+                    path: '/ticket/save',
+                    element: <PrivateRoute element={<TicketSavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
                 },
                 {
                     path: 'test',
-                    element: <PrivateRoute element={<TestPage />} roles={['ADMIN','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<TestPage/>} roles={['ADMIN', 'SUPER_ADMIN']}/>,
                 },
                 {
                     path: 'profile',
-                    element: <PrivateRoute element={<Profile />} roles={['ADMIN','MEMBER','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<Profile/>} roles={['ADMIN', 'MEMBER', 'SUPER_ADMIN']}/>,
                 },
                 {
                     path: 'supplier-orders',
-                    element: <PrivateRoute element={<SupplierOrderPage />} roles={['ADMIN','ADMIN','SUPER_ADMIN','SUPPLIER']} />,
+                    element: <PrivateRoute element={<SupplierOrderPage/>}
+                                           roles={['ADMIN', 'ADMIN', 'SUPER_ADMIN', 'SUPPLIER']}/>,
                 },
                 {
                     path: 'budgets',
-                    element: <PrivateRoute element={<BudgetPage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
+                    element: <PrivateRoute element={<BudgetPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'FAM']}/>,
+                },
+                {
+                  path:'create-project',
+                  element:<CreateProjectPage />,
+                },
+                {
+                    path: 'list-project',
+                    element: <ListProjectPage />,
                 },
                 {
                     path: 'incomes',
-                    element: <PrivateRoute element={<IncomePage />} roles={['ADMIN','SUPER_ADMIN','FAM']} />,
-                },{
-                    path: 'profile-management',
-                    element: <PrivateRoute element={<ProfileManagement />}  roles={['ADMIN','MEMBER','SUPER_ADMIN']} />,
+                    element: <PrivateRoute element={<IncomePage/>} roles={['ADMIN', 'SUPER_ADMIN', 'FAM']}/>,
                 },
                 {
-                    path:'ManageUsers',
-                    element: <PrivateRoute element={<ManageUsers />} roles={['ADMIN','SUPER_ADMIN']} />,
-                },{
-                    path:'ManageRoles',
-                    element: <PrivateRoute element={<ManageRoles />} roles={['ADMIN','SUPER_ADMIN']} />,
+                    path: 'subscription-history',
+                    element: <PrivateRoute element={<SubscriptionHistory/>} roles={['MEMBER']}/>,
+                },
+                {
+                    path: 'add-edit-plan',
+                    element: <PrivateRoute element={<AddEditPlan/>} roles={['ADMIN', 'SUPER_ADMIN']}/>,
+                },
+                {
+                    path: 'profile-management',
+                    element: <PrivateRoute element={<ProfileManagement/>} roles={['ADMIN', 'MEMBER', 'SUPER_ADMIN']}/>,
+                },
+                {
+                    path: 'ManageUsers',
+                    element: <PrivateRoute element={<ManageUsers/>} roles={['ADMIN', 'SUPER_ADMIN']}/>,
+                }, {
+                    path: 'ManageRoles',
+                    element: <PrivateRoute element={<ManageRoles/>} roles={['ADMIN', 'SUPER_ADMIN']}/>,
+                },
+                {
+                    path: 'taxes',
+                    element: <PrivateRoute element={<TaxAndDeclarationPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'FAM']}/>,
+                },
+                {
+                    path: 'expenses',
+                    element: <PrivateRoute element={<ExpensePage/>} roles={['ADMIN', 'SUPER_ADMIN', 'FAM']}/>,
+                },
+                {
+                    path: 'financial-reports',
+                    element: <PrivateRoute element={<FinancialReportPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'FAM']}/>,
+                }
+                ,
+                {
+                    path: 'user-chat',
+                    element: <PrivateRoute element={<UserChat/>} roles={['ADMIN', 'SUPER_ADMIN', 'MEMBER']}/>,
+                }
+                ,
+                {
+                    path: 'invoices',
+                    element: <PrivateRoute element={<InvoicePage/>} roles={['ADMIN', 'SUPER_ADMIN', 'FAM']}/>,
+                },
+                {
+                    path: 'supporter-chat',
+                    element: <PrivateRoute element={<SupporterChat/>} roles={['SUPPORTER']}/>,
                 }
             ]
         }

@@ -33,6 +33,12 @@
     "customer": "Customer",
     "supplier": "Supplier",
     "subscription": "Subscription",
+    "hrmmodule": "Human Resources Module",
+    "hrm-employees": "Employee List",
+    "hrm-payrolls": "Payroll List",
+    "hrm-performances": "Performance List",
+    "hrm-benefits": "Benefit List",
+    "hrm-attendance": "Attendance List",
     "customermodule": "Customer Module",
     "crm-customers" : "Costumer List",
     "crm-marketing-campaign" : "Marketing Campaigns",
@@ -49,9 +55,13 @@
     "invoices": "Invoices",
     "financial-reports": "Financial Reports",
     "taxes": "Taxes",
+    "slctSubs": "Select Subscription",
+    "historySubs": "Subscription History",
+    "plans": "Subscription Plans",
     "ManageUsers": "Manage Users",
     "ManageRoles": "Manage Roles",
-    "adminMenu": "Admin Menu"
+    "adminMenu": "Admin Menu",
+    "logout": "Logout"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -143,7 +153,7 @@
     "productsuccesfullyadded": "Product Succesfully Added",
     "cancel": "CANCEL",
     "save": "SAVE",
-    "addproduct": "ADD PRODUCT",
+    "addproduct": "Add Product",
     "pleaseselectsupplier": "Please Select Supplier",
     "pleaseselectwarehouse": "Please Select Warehouse",
     "pleaseselectcategory": "Please Select Category",
@@ -160,7 +170,7 @@
     "surname": "Surname",
     "add": "ADD",
     "pleaseselectproduct": "Please Select Product",
-    "addbuyorder": "ADD BUY ORDER",
+    "addbuyorder": "Add Buy Order",
     "buyordersuccesfullyadded": "Buy Order Succesfully Added",
     "successfullyupdated": "Successfully Updated",
     "deleteorder": "Are you sure you want to delete this order?",
@@ -187,7 +197,11 @@
     "out": "Out",
     "arrived": "Arrived",
     "addfromorderid": "Add From Order ID",
-    "orderid": "Order ID"
+    "orderid": "Order ID (Please Only Enter Buy Order ID)",
+    "identityno": "Identity No",
+    "phoneno": "Phone No",
+    "addsellorder": "Add Sell Order",
+    "addcustomer": "Add Customer"
 
 
 
@@ -230,15 +244,33 @@
     "addwarehouse": "Add Warehouse",
     "delete": "Delete"
   },
-  "plans": {
-    "name": {
-      "pmm": "Project Management Module",
-      "crmm": "Customer Relationship Management Module",
-      "imm": "Inventory Management Module",
-      "hrmm": "Human Resources Management Module",
-      "fam": "Finance and Accounting Module",
-      "oam": "Operation Analysis Module"
-    }
+
+  "subscription": {
+    "title": "Subscription History",
+    "planName": "Plan Name",
+    "planDescription": "Plan Description",
+    "planPrice": "Price",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "status": "Status",
+    "noData": "No subscription history available.",
+    "subscribe": "Subscribe",
+    "unsubscribe": "Unsubscribe",
+    "edit": "Edit",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "price": "Price",
+    "roles": "Roles",
+    "language": "Language",
+    "english": "English",
+    "turkish": "Turkish",
+    "name": "Name",
+    "description": "Description",
+    "addTranslation": "Add Translation",
+    "cancel": "Cancel",
+    "save": "Save",
+    "editPlan": "Edit Plan",
+    "update": "Update"
   },
   "crmService": {
     "customer": "Customer",
@@ -253,7 +285,7 @@
     "description": "Description",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "budget": "Budget",
+    "budget": "Budget $",
     "value": "Value",
     "stage": "Stage",
     "probability": "Probability",
@@ -279,11 +311,63 @@
     "successfullydeleted" : "Successfully Deleted!",
     "add" : "ADD",
     "add_customer" : "Add customer",
-    "cancel" : "CANCEL",
     "save" : "SAVE",
     "deleted": "Deleted!",
     "added" : "Customer Saved Successfully!",
-    "closed_date": "Closed Date"
+    "successfullyupdated" : "Successfully Updated!",
+    "add_marketing_campaign" : "Add Marketing Campaign",
+    "make-opportunity" : "Make Opportunity",
+    "make-sales-activity" : "Make Sales Activity",
+    "add_opportunity" : "Add Opportunity",
+    "added_opportunity" : "Opportunity Saved Successfully!",
+    "updated_opportunity": "Opportunity Updated Successfully!",
+    "successfullyadded" : "Successfully Added!",
+    "add_sales_activity" : "Add Sales Activity",
+    "updated_sales_activity" : "Sales Activity Updated Successfully!",
+    "make-ticket" : "Create a Ticket",
+    "added_ticket": "Ticket Saved Successfully!",
+    "updated_ticket": "Ticket Updated Successfully!",
+    "deleted-sales-activity": "Sales Activity Deleted Successfully!",
+    "added_sales_activity": "Sales Activity Saved Successfully!"
+
+
+
+
+
+  },
+  "hrmService":{
+    "firstName": "Name",
+    "lastName": "Lastname",
+    "position": "Position",
+    "department": "Department",
+    "email": "Email",
+    "phone": "Phone",
+    "hireDate": "Start Date",
+    "salary": "Salary",
+    "status" : "Status",
+    "added" : "Employee Saved Successfully!",
+    "error-occurred" : "Error Occurred",
+    "updated" : "Updated",
+    "deleting" : "Do you want to delete it, this action is irreversible!",
+    "cancel" : "CANCEL",
+    "confirmDelete" : "Yes I'm sure",
+    "delete" : "DELETE",
+    "update" : "UPDATE",
+    "checkboxRequired" : "Confirm the box if you want to delete!",
+    "successfullydeleted" : "Successfully Deleted!",
+    "successfullyupdated" : "Successfully Updated!",
+    "deleted": "Deleted!",
+    "searchbyname": "Search by Name",
+    "add" : "ADD",
+    "save" : "SAVE",
+    "add_employee" : "Add employee",
+    "salaryDate": "Salary Date",
+    "grossSalary": "Gross Salary",
+    "deductions": "Deductions",
+    "netSalary": "Net Salary",
+    "non-added" : "Non Added"
+    
+
   },
   "financeService": {
     "searchbydepartment": "Search by Department",
@@ -309,6 +393,34 @@
     "source": "Source",
     "incomesuccesfullyadded": "Income Succesfully Added",
     "startdate": "Start Date",
-    "enddate": "End Date"
+    "enddate": "End Date",
+    "vat": "VAT",
+    "corporate": "Corporate Tax",
+    "income": "Income Tax",
+    "createdeclaration": "Create Tax Declaration",
+    "netincome": "Net Income",
+    "taxtype": "Tax Type",
+    "totaltax": "Total Tax",
+    "grossincome": "Gross Income",
+    "expense": "Expense",
+    "downloadpdf": "Download PDF",
+    "netincomeaftertax": "Net Income",
+    "incomedistributionchart": "Income Distribution Chart",
+    "searchbydescription": "Search by Description",
+    "category": "Category",
+    "date": "Date",
+    "search": "SEARCH",
+    "getreport": "GET REPORT",
+    "createdeclaration": "CREATE DECLARATION",
+    "grossIncome": "Gross Income",
+    "netIncome": "Net Income",
+    "expense": "Expenses",
+    "searchbyproductname": "Search by Product Name",
+    "taxesanddeclarations": "Taxes and Declarations",
+    "amounttl": "Amount (₺)",
+    "incomeVsExpense": "Income vs Expense",
+    "expenseBreakdown": "Expense Breakdown",
+    "totalIncome": "Total Income",
+    "totalExpenses": "Total Expenses"
   }
 }

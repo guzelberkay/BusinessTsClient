@@ -5,7 +5,7 @@ import {
     GridRowSelectionModel, GridToolbar,
 } from "@mui/x-data-grid";
 import {
-    Button,
+    Button, Dialog, DialogActions, DialogContent, DialogTitle,
     Grid,
     TextField
 
@@ -13,23 +13,46 @@ import {
 
 import {useDispatch} from "react-redux";
 import {AppDispatch, useAppSelector} from "../../store";
-import {fetchFindAllOpportunity} from "../../store/feature/crmSlice.tsx";
+import {
+    fetchFindAllOpportunity,
+    fetchSaveOpportunity,
+    fetchUpdateOpportunity,
+    fetchFindOpportunityById,
+    fetchDeleteOpportunity, fetchUpdateCustomer, fetchFindCustomerById, fetchDeleteCustomer
+} from "../../store/feature/crmSlice.tsx";
 import {useTranslation} from "react-i18next";
 import Swal from "sweetalert2";
+import {useNavigate} from "react-router-dom";
 
 const OpportunityPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
     const dispatch = useDispatch<AppDispatch>();
-    const opportunityList = useAppSelector((state) => state.crmSlice.opportunityList);
+    const opportunities = useAppSelector((state) => state.crmSlice.opportunityList);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation();
+
+    // modal
+    const [openAddOpportunityModal, setOpenAddOpportunityModal] = useState(false);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [value, setValue] = useState(0);
+    const [stage, setStage] = useState('');
+    const [probability, setProbability] = useState(0);
+    const [status, setStatus] = useState('');
+    const navigate = useNavigate();
+
+    const goToSavePage = () => {
+        navigate("/opportunity/save");
+    }
+
 
     useEffect(() => {
         dispatch(fetchFindAllOpportunity({
@@ -42,6 +65,117 @@ const OpportunityPage = () => {
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     }
+    const handleOpenUpdateModal = async () => {
+        setOpenAddOpportunityModal(true);
+        setIsUpdating(true);
+
+        dispatch(fetchFindOpportunityById(selectedRowIds[0])).then((data) => {
+            setName(data.payload.data.name);
+            setDescription(data.payload.data.description);
+            setValue(data.payload.data.value);
+            setStage(data.payload.data.stage);
+            setProbability(data.payload.data.probability);
+        })
+    }
+    const handleUpdateOpportunity = async () => {
+        dispatch(fetchUpdateOpportunity({
+            id: selectedRowIds[0],
+            name: name,
+            description: description,
+            value: value,
+            stage: stage,
+            probability: probability,
+        })).then(() => {
+            setName('')
+            setDescription('')
+            setValue(0)
+            setStage('')
+            setProbability(0)
+            setOpenAddOpportunityModal(false);
+            setIsUpdating(false);
+            Swal.fire({
+                title: t("swal.success"),
+                text: t("crmService.updated_opportunity"),
+                icon: "success",
+            });
+            setIsUpdating(false);
+        }).catch((error) => {
+            setOpenAddOpportunityModal(false);
+            setIsUpdating(false);
+            Swal.fire({
+                title: t("swal.error"),
+                text: t("crmService.error-occurred"),
+                icon: "error",
+            });
+        })
+    }
+    const handleDeleteOpportunity = async () => {
+        if (selectedRowIds.length === 0) return;
+
+        setIsDeleting(true);
+        try {
+
+            const result = await Swal.fire({
+                title: t("swal.areyousure"),
+                text: t("crmService.deleting"),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: t("crmService.delete"),
+                cancelButtonText: t("crmService.cancel"),
+                html: `<input type="checkbox" id="confirm-checkbox" />
+                   <label for="confirm-checkbox">${t("crmService.confirmDelete")}</label>`,
+                preConfirm: () => {
+                    const popup = Swal.getPopup();
+                    if (popup) {
+                        const checkbox = popup.querySelector('#confirm-checkbox') as HTMLInputElement;
+                        if (checkbox && !checkbox.checked) {
+                            Swal.showValidationMessage(t("crmService.checkboxRequired"));
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+            });
+
+            if (result.isConfirmed) {
+                let hasError = false;
+                for (const id of selectedRowIds) {
+                    const selectedOpportunity = opportunities.find(
+                        (selectedOpportunity) => selectedOpportunity.id === id
+                    );
+                    if (!selectedOpportunity) continue;
+
+                    const data = await dispatch(fetchDeleteOpportunity(selectedOpportunity.id));
+
+                    if (data.payload.message !== "Opportunity deleted successfully") {
+                        await Swal.fire({
+                            title: t("swal.error"),
+                            text: data.payload.message,
+                            icon: "error",
+                            confirmButtonText: t("swal.ok"),
+                        });
+                        hasError = true;
+                        break;
+                    }
+                }
+
+                if (!hasError) {
+                    await Swal.fire({
+                        title: t("crmService.deleted"),
+                        text: t("crmService.successfullydeleted"),
+                        icon: "success",
+                    });
+
+                    setSelectedRowIds([]);
+                }
+            }
+        } catch (error) {
+            localStorage.removeItem("token");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
 
     const columns: GridColDef[] = [
         {field: "name", headerName: t("crmService.name"), flex: 1.5, headerAlign: "center"},
@@ -71,7 +205,7 @@ const OpportunityPage = () => {
                 slots={{
                     toolbar: GridToolbar,
                 }}
-                rows={opportunityList}
+                rows={opportunities}
                 columns={columns}
                 initialState={{
                     pagination: {
@@ -109,6 +243,134 @@ const OpportunityPage = () => {
                 }}
                 rowSelectionModel={selectedRowIds}
             />
+            <Grid container spacing={2} sx={{
+                flexGrow: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'stretch',
+                marginTop: '2%',
+                marginBottom: '2%'
+            }}>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
+                    <Button
+                        onClick={goToSavePage}
+                        variant="contained"
+                        color="success"
+                        //startIcon={<ApproveIcon />}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        {t("crmService.make-opportunity")}
+                    </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
+                    <Button
+                        onClick={handleOpenUpdateModal}
+                        variant="contained"
+                        color="primary"
+
+                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        {t("crmService.update")}
+                    </Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
+                    <Button
+                        onClick={handleDeleteOpportunity}
+                        variant="contained"
+                        color="error"
+                        disabled={isDeleting || selectedRowIds.length === 0}
+                        //startIcon={<CancelIcon/>}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        {t("crmService.delete")}
+                    </Button>
+                </Grid>
+                <Dialog open={openAddOpportunityModal} onClose={() => setOpenAddOpportunityModal(false)} fullWidth
+                        maxWidth='lg'>
+                    <DialogTitle>{isUpdating ? t('crmService.update') : t('crmService.add_opportunity')}</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('crmService.name')}
+                            name="name"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('crmService.description')}
+                            name="description"
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('crmService.value')}
+                            name="value"
+                            value={value}
+                            onChange={e => setValue(parseInt(e.target.value))}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('crmService.stage')}
+                            name="stage"
+                            value={stage}
+                            onChange={e => setStage(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
+                            label={t('crmService.probability')}
+                            name="probability"
+                            value={probability}
+                            onChange={e => setProbability(parseInt(e.target.value))}
+                            required
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setOpenAddOpportunityModal(false);
+                            setIsUpdating(false);
+                            setName('');
+                            setDescription('');
+                            setValue(0);
+                            setStage('');
+                            setProbability(0);
+                        }} color="error" variant="contained">{t('crmService.cancel')}</Button>
+                        {
+                            <Button onClick={() => handleUpdateOpportunity()} color="success" variant="contained"
+                                    disabled={name === '' || description === '' || value === 0 || stage === '' || probability === 0}>{t('crmService.save')}</Button>}
+
+
+                    </DialogActions>
+                </Dialog>
+            </Grid>
 
 
         </div>

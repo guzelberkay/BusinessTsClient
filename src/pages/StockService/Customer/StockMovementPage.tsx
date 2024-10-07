@@ -1,36 +1,28 @@
 import React, {useEffect, useState} from "react";
+import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar,} from "@mui/x-data-grid";
 import {
-    DataGrid,
-    GridColDef,
-    GridRowSelectionModel, GridToolbar,
-} from "@mui/x-data-grid";
-import {
-    Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl,
-    Grid, InputLabel, Select,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    Grid,
+    InputLabel,
+    Select,
     TextField
-
 } from "@mui/material";
 
 import {useDispatch} from "react-redux";
-import {AppDispatch, useAppSelector} from "../../../store";
+import {AppDispatch} from "../../../store";
 import {
-    fetchChangeAutoOrderModeOfProduct,
-    fetchDeleteProductCategory,
     fetchDeleteStockMovement,
-    fetchFindAllBuyOrder,
-    fetchFindAllByMinimumStockLevel,
     fetchFindAllProduct,
-    fetchFindAllProductCategory,
-    fetchFindAllSellOrder,
     fetchFindAllStockMovement,
-    fetchFindAllSupplier,
     fetchFindAllWareHouse,
-    fetchFindByIdProductCategory,
     fetchFindByIdStockMovement,
-    fetchSaveProductCategory,
     fetchSaveStockMovement,
     fetchSaveStockMovementFromOrderId,
-    fetchUpdateProductCategory,
     fetchUpdateStockMovement
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
@@ -38,7 +30,6 @@ import {useTranslation} from "react-i18next";
 import {IProduct} from "../../../model/IProduct.tsx";
 import {IStockMovement} from "../../../model/IStockMovement.tsx";
 import MenuItem from "@mui/material/MenuItem";
-import {ISupplier} from "../../../model/ISupplier.tsx";
 import {IWareHouse} from "../../../model/IWareHouse.tsx";
 
 
@@ -471,7 +462,12 @@ const StockMovementPage = () => {
                             label={t('stockService.quantity')}
                             name="quantity"
                             value={quantity}
-                            onChange={e => setQuantity((Number)(e.target.value))}
+                            onChange={e => {
+                                const value = Number(e.target.value);
+                                if (value > 0 || e.target.value === '') {
+                                    setQuantity(value);
+                                }
+                            }}
                             required
                             fullWidth
                         />
@@ -516,7 +512,12 @@ const StockMovementPage = () => {
                             label={t('stockService.orderid')}
                             name="orderId"
                             value={orderId}
-                            onChange={e => setOrderId((Number)(e.target.value))}
+                            onChange={e => {
+                                const value = Number(e.target.value);
+                                if (value > 0 || e.target.value === '') {
+                                    setOrderId(value);
+                                }
+                            }}
                             required
                             fullWidth
                         />

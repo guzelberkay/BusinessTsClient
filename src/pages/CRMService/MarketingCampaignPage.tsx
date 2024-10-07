@@ -1,22 +1,23 @@
 import React, {useEffect, useState} from "react";
+import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar} from "@mui/x-data-grid";
 import {
-    DataGrid,
-    GridColDef,
-    GridRowSelectionModel, GridToolbar,
-} from "@mui/x-data-grid";
-import {
-    Button,
-    Grid,
-    TextField
-
+    Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField
 } from "@mui/material";
-
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {useDispatch} from "react-redux";
 import {AppDispatch, useAppSelector} from "../../store";
-
-import {fetchFindAllMarketingCampaign} from "../../store/feature/crmSlice.tsx";
+import {
+    fetchDeleteCustomer, fetchDeleteMarketingCampaign,
+    fetchFindAllMarketingCampaign,
+    fetchFindMarketingCampaignById,
+    fetchSaveMarketingCampaign,
+    fetchUpdateMarketingCampaign
+} from "../../store/feature/crmSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+    import dayjs, {Dayjs} from "dayjs";
 
 const MarketingCampaignPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
@@ -25,12 +26,23 @@ const MarketingCampaignPage = () => {
     const dispatch = useDispatch<AppDispatch>();
     const marketingCampaigns = useAppSelector((state) => state.crmSlice.marketingCampaignList);
     const [loading, setLoading] = useState(false);
-    const [isActivating, setIsActivating] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
+    const [openAddMarketingCampaignModal, setOpenAddMarketingCampaignModal] = useState(false);
     const {t} = useTranslation();
+
+
+    //modal
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+    const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
+    const [budget, setBudget] = useState<number>(0);
+
+
 
     useEffect(() => {
         dispatch(fetchFindAllMarketingCampaign({
@@ -38,82 +50,334 @@ const MarketingCampaignPage = () => {
             size: 100,
             searchText: searchText,
         }));
-    }, [dispatch, searchText, loading, isActivating, isUpdating, isDeleting]);
+    }, [dispatch, searchText, isSaving, isUpdating, isDeleting]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     }
 
-    const columns: GridColDef[] = [
-        {field: "name", headerName: t("crmService.name"), flex: 1.5, headerAlign: "center"},
-        {field: "description", headerName: t("crmService.description"), flex: 1.5, headerAlign: "center"},
-        {field: "startDate", headerName: t("crmService.startDate"), flex: 1.5, headerAlign: "center"},
-        {field: "endDate", headerName: t("crmService.endDate"), flex: 1.5, headerAlign: "center"},
-        {field: "budget", headerName: t("crmService.budget"), flex: 1.5, headerAlign: "center"},
-        {field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1},
-    ]
+    const handleOpenMarketingCampaignModal = () => {
+        setOpenAddMarketingCampaignModal(true);
+    }
+    const handleSaveMarketingCampaign = () => {
+        setIsSaving(true);
+        dispatch(fetchSaveMarketingCampaign({
+            name: name,
+            description: description,
+            startDate: startDate?.toDate() || new Date(),
+            endDate: endDate?.toDate() || new Date(),
+            budget: budget
+        })).then((data) => {
+            if (data.payload.message === "Marketing campaign saved successfully") {
+                setName('');
+                setDescription('');
+                setStartDate(dayjs());
+                setEndDate(dayjs());
+                setBudget(0);
+                setOpenAddMarketingCampaignModal(false);
+                Swal.fire({
+                    title: t("swal.success"),
+                    text: t("crmService.successfullyadded"),
+                    icon: "success",
+                });
+                setIsSaving(false);
+            }
+        });
+    }
+    const handleOpenUpdateModal = async () => {
+        setOpenAddMarketingCampaignModal(true);
+        setIsUpdating(true);
+
+        dispatch(fetchFindMarketingCampaignById(selectedRowIds[0])).then((data) => {
+            setName(data.payload.data.name);
+            setDescription(data.payload.data.description);
+            setStartDate(dayjs(data.payload.data.startDate));
+            setEndDate(dayjs(data.payload.data.endDate));
+            setBudget(data.payload.data.budget);
+        })
+    }
+    const handleUpdateMarketingCampaign = async () => {
+        dispatch(fetchUpdateMarketingCampaign({
+            id: selectedRowIds[0],
+            name: name,
+            description: description,
+            startDate: startDate?.toDate() || new Date(),
+            endDate: endDate?.toDate() || new Date(),
+            budget: budget
+        })).then(() => {
+            setOpenAddMarketingCampaignModal(false);
+            setIsUpdating(false);
+            setName('');
+            setDescription('');
+            setStartDate(dayjs());
+            setEndDate(dayjs());
+            setBudget(0);
+            Swal.fire({
+                title: t("swal.success"),
+                text: t("crmService.successfullyupdated"),
+                icon: "success",
+            });
+            setIsUpdating(false);
+        }).catch((error) => {
+            setOpenAddMarketingCampaignModal(false);
+            setIsUpdating(false);
+            setName('');
+            setDescription('');
+            setStartDate(dayjs());
+            setEndDate(dayjs());
+            setBudget(0);
+            Swal.fire({
+                title: t("swal.error"),
+                text: t("crmService.error-occurred"),
+                icon: "error",
+            });
+        });
+    };
+    const handleDeleteMarketingCampaign = async () => {
+        if (selectedRowIds.length === 0) return;
+
+        setIsDeleting(true);
+        try {
+
+            const result = await Swal.fire({
+                title: t("swal.areyousure"),
+                text: t("crmService.deleting"),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: t("crmService.delete"),
+                cancelButtonText: t("crmService.cancel"),
+                html: `<input type="checkbox" id="confirm-checkbox" />
+                   <label for="confirm-checkbox">${t("crmService.confirmDelete")}</label>`,
+                preConfirm: () => {
+                    const popup = Swal.getPopup();
+                    if (popup) {
+                        const checkbox = popup.querySelector('#confirm-checkbox') as HTMLInputElement;
+                        if (checkbox && !checkbox.checked) {
+                            Swal.showValidationMessage(t("crmService.checkboxRequired"));
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+            });
+
+            if (result.isConfirmed) {
+                let hasError = false;
+                for (const id of selectedRowIds) {
+                    const selectedMarketingCampaign = marketingCampaigns.find(
+                        (selectedMarketingCampaign) => selectedMarketingCampaign.id === id
+                    );
+                    if (!selectedMarketingCampaign) continue;
+
+                    const data = await dispatch(fetchDeleteMarketingCampaign(selectedMarketingCampaign.id));
+
+
+                    if (data.payload.message !== "Marketing campaign deleted successfully") {
+                        await Swal.fire({
+                            title: t("swal.error"),
+                            text: data.payload.message,
+                            icon: "error",
+                            confirmButtonText: t("swal.ok"),
+                        });
+                        hasError = true;
+                        break;
+                    }
+                }
+
+                if (!hasError) {
+                    await Swal.fire({
+                        title: t("crmService.deleted"),
+                        text: t("crmService.successfullydeleted"),
+                        icon: "success",
+                    });
+
+                    setSelectedRowIds([]);
+                }
+            }
+        } catch (error) {
+            localStorage.removeItem("token");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     return (
-        <div style={{height: "auto"}}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <div style={{height: "auto"}}>
 
-            <TextField
-                label={t("crmService.searchbyname")}
-                variant="outlined"
-                onChange={(event) => {
-                    setSearchText(event.target.value);
-                }}
-                value={searchText}
-                style={{marginBottom: "1%", marginTop: "1%"}}
-                fullWidth
-                inputProps={{maxLength: 50}}
-            />
+                <TextField
+                    label={t("crmService.searchbyname")}
+                    variant="outlined"
+                    onChange={(event) => setSearchText(event.target.value)}
+                    value={searchText}
+                    style={{marginBottom: "1%", marginTop: "1%"}}
+                    fullWidth
+                    inputProps={{maxLength: 50}}
+                />
 
-            <DataGrid
-                slots={{
-                    toolbar: GridToolbar,
-                }}
-                rows={marketingCampaigns}
-                columns={columns}
-                initialState={{
-                    pagination: {
-                        paginationModel: {page: 1, pageSize: 5},
-                    }
-                }}
-                // getRowClassName={(params)=>
-                //     params.row.isExpenditureApproved
-                //         ? "approved-row"
-                //         : "unapproved-row"
-                // }
-                pageSizeOptions={[5, 10]}
-                checkboxSelection
-                onRowSelectionModelChange={handleRowSelection}
-                autoHeight={true}
-                sx={{
-                    "& .MuiDataGrid-columnHeaders": {
-                        backgroundColor: "rgba(224, 224, 224, 1)",
-                    },
-                    "& .MuiDataGrid-columnHeaderTitle": {
-                        textAlign: "center",
-                        fontWeight: "bold",
-                    },
-                    "& .MuiDataGrid-cell": {
-                        textAlign: "center",
-                    },
-                    // "& .approved-row": {
-                    //     backgroundColor: "rgba(77, 148, 255,1)",
+                <DataGrid
+                    slots={{
+                        toolbar: GridToolbar,
+                    }}
+                    rows={marketingCampaigns}
+                    columns={[
+                        {field: "name", headerName: t("crmService.name"), flex: 1.5, headerAlign: "center"},
+                        {
+                            field: "description",
+                            headerName: t("crmService.description"),
+                            flex: 1.5,
+                            headerAlign: "center"
+                        },
+                        {field: "startDate", headerName: t("crmService.startDate"), flex: 1.5, headerAlign: "center"},
+                        {field: "endDate", headerName: t("crmService.endDate"), flex: 1.5, headerAlign: "center"},
+                        {field: "budget", headerName: t("crmService.budget"), flex: 1.5, headerAlign: "center"},
+                        {field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1},
+                    ]}
+                    pageSizeOptions={[5, 10]}
+                    checkboxSelection
+                    onRowSelectionModelChange={handleRowSelection}
+                    autoHeight={true}
+                    sx={{
+                        "& .MuiDataGrid-columnHeaders": {
+                            backgroundColor: "rgba(224, 224, 224, 1)",
+                        },
+                        "& .MuiDataGrid-columnHeaderTitle": {
+                            textAlign: "center",
+                            fontWeight: "bold",
+                        },
+                        "& .MuiDataGrid-cell": {
+                            textAlign: "center",
+                        },
+                    }}
+                    rowSelectionModel={selectedRowIds}
+                />
 
-                    // },
-                    // "& .unapproved-row": {
-                    //     backgroundColor: "rgba(242, 242, 242,1)",
-                    // },
+                <Grid container spacing={2} sx={{
+                    flexGrow: 1,
+                    justifyContent: 'flex-start',
+                    alignItems: 'stretch',
+                    marginTop: '2%',
+                    marginBottom: '2%'
+                }}>
+                    <Grid item xs={12} sm={6} md={3} lg={2}>
+                        <Button
+                            onClick={handleOpenMarketingCampaignModal}
+                            variant="contained"
+                            color="success"
+                            sx={{
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            {t("crmService.add")}
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3} lg={2}>
+                        <Button
+                            onClick={handleOpenUpdateModal}
+                            variant="contained"
+                            color="primary"
 
-                }}
-                rowSelectionModel={selectedRowIds}
-            />
+                            disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
+                            sx={{
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            {t("crmService.update")}
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3} lg={2}>
+                        <Button
+                            onClick={handleDeleteMarketingCampaign}
+                            variant="contained"
+                            color="error"
+                            disabled={isDeleting || selectedRowIds.length === 0}
+                            //startIcon={<CancelIcon/>}
+                            sx={{
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            {t("crmService.delete")}
+                        </Button>
+                    </Grid>
+                    <Dialog open={openAddMarketingCampaignModal} onClose={() => setOpenAddMarketingCampaignModal(false)}
+                            fullWidth maxWidth='sm'>
+                        <DialogTitle>{t('crmService.add_marketing_campaign')}</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                sx={{marginTop: '15px'}}
+                                label={t('crmService.name')}
+                                name="name"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                                required
+                                fullWidth
+                            />
+                            <TextField
+                                sx={{marginTop: '15px'}}
+                                label={t('crmService.description')}
+                                name="Description"
+                                value={description}
+                                onChange={e => setDescription(e.target.value)}
+                                required
+                                fullWidth
+                            />
+                            <DatePicker
+                                label={t('crmService.startDate')}
+                                value={startDate}
+                                onChange={(newDate) => setStartDate(newDate)}
+                                sx={{marginTop: '15px'}}
 
+                            />
+                            <DatePicker
+                                label={t('crmService.endDate')}
+                                value={endDate}
+                                onChange={(newDate) => setEndDate(newDate)}
+                                sx={{marginTop: '15px'}}
 
-        </div>
+                            />
+                            <TextField
+                                sx={{marginTop: '15px'}}
+                                label={t('crmService.budget')}
+                                name="budget"
+                                value={budget}
+                                onChange={e => setBudget(parseInt(e.target.value))}
+                                required
+                                fullWidth
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => {
+                                setOpenAddMarketingCampaignModal(false);
+                                setIsUpdating(false);
+                                setName('');
+                                setDescription('');
+                                setStartDate(dayjs());
+                                setEndDate(dayjs());
+                                setBudget(0);
+                            }} color="error" variant="contained">{t('crmService.cancel')}</Button>
+                            {isUpdating ?
+                                <Button onClick={handleUpdateMarketingCampaign} color="primary" variant="contained"
+                                        disabled={name === '' || description === '' || startDate === null || endDate === null || budget === 0}>{t('crmService.update')}</Button>
+                                :
+                                <Button onClick={handleSaveMarketingCampaign} color="success" variant="contained"
+                                        disabled={name === '' || description === '' || startDate === null || endDate === null || budget === 0}>{t('crmService.save')}</Button>}
+                        </DialogActions>
+                    </Dialog>
+                </Grid>
+            </div>
+        </LocalizationProvider>
     );
-
 }
 export default MarketingCampaignPage;

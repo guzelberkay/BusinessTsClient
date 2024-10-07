@@ -135,12 +135,30 @@ export const fetchFindAllCustomer = createAsyncThunk(
         return result.data;
     }
 );
+export const fetchFindAllCustomerForOpportunity = createAsyncThunk(
+    'crm/fetchCustomerListForOpportunity',
+    async (payload: IfetchFindAllCustomer) => {
+        const values = {page: payload.page, size: payload.size, searchText: payload.searchText};
+
+        const result = await axios.post(
+            RestApis.crm_service_customer + "/for-opportunity",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
 
 export const fetchFindCustomerById = createAsyncThunk(
     'crm/fetchCustomerById',
     async (id: number) => {
         const result = await axios.post(
-            RestApis.crm_service_customer + "/find-by-id?id=" + id,null,
+            RestApis.crm_service_customer + "/find-by-id?id=" + id, null,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -153,29 +171,30 @@ export const fetchFindCustomerById = createAsyncThunk(
 );
 
 
+
 //# endregion Customer Operations
 
 // # region Marketing Campaign Operations
-interface IfetchSaveMarketingCampaign {
-    memberId: number;
+interface IFetchSaveMarketingCampaign {
+
     name: string;
     description: string;
     startDate: Date;
     endDate: Date;
     budget: number;
-    status: string
+
 }
 
 export const fetchSaveMarketingCampaign = createAsyncThunk(
     'crm/fetchSaveMarketingCampaign',
-    async (payload: IfetchSaveMarketingCampaign) => {
+    async (payload: IFetchSaveMarketingCampaign) => {
         const values = {
             name: payload.name,
             description: payload.description,
             startDate: payload.startDate,
             endDate: payload.endDate,
             budget: payload.budget,
-            status: payload.status
+
         };
 
         const result = await axios.post(
@@ -208,18 +227,25 @@ export const fetchDeleteMarketingCampaign = createAsyncThunk(
     }
 );
 
+interface IFetchUpdateMarketingCampaign {
+    id: number;
+    name: string;
+    description: string;
+    startDate: Date;
+    endDate: Date;
+    budget: number;
+}
 
 export const fetchUpdateMarketingCampaign = createAsyncThunk(
     'crm/fetchUpdateMarketingCampaign',
-    async (payload: IfetchSaveMarketingCampaign) => {
+    async (payload: IFetchUpdateMarketingCampaign) => {
         const values = {
-            id: payload.memberId,
+            id: payload.id,
             name: payload.name,
             description: payload.description,
             startDate: payload.startDate,
             endDate: payload.endDate,
             budget: payload.budget,
-            status: payload.status
         };
 
         const result = await axios.put(
@@ -260,20 +286,32 @@ export const fetchFindAllMarketingCampaign = createAsyncThunk(
         return result.data;
     }
 );
+export const fetchFindMarketingCampaignById = createAsyncThunk(
+    'crm/fetchMarketingCampaignById',
+    async (id: number) => {
+        const result = await axios.post(
+            RestApis.crm_service_marketing_campaign + "/find-by-id?id=" + id, null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
 
 //# endregion Marketing Campaign Operations
 //# region Opportunity Operations
 
 interface IFetchSaveOpportunity {
-    id: number;
-    memberId: number;
     customerId: number;
     name: string;
     description: string;
     value: number;
     stage: string;
     probability: number;
-    status: string
 }
 
 export const fetchSaveOpportunity = createAsyncThunk(
@@ -285,7 +323,6 @@ export const fetchSaveOpportunity = createAsyncThunk(
             value: payload.value,
             stage: payload.stage,
             probability: payload.probability,
-            status: payload.status,
             customerId: payload.customerId,
 
         };
@@ -318,9 +355,17 @@ export const fetchDeleteOpportunity = createAsyncThunk(
         return result.data;
     }
 );
+interface IFetchUpdateOpportunity {
+    id: number;
+    name: string;
+    description: string;
+    value: number;
+    stage: string;
+    probability: number;
+}
 export const fetchUpdateOpportunity = createAsyncThunk(
     'crm/fetchUpdateOpportunity',
-    async (payload: IFetchSaveOpportunity) => {
+    async (payload: IFetchUpdateOpportunity) => {
         const values = {
             id: payload.id,
             name: payload.name,
@@ -328,8 +373,7 @@ export const fetchUpdateOpportunity = createAsyncThunk(
             value: payload.value,
             stage: payload.stage,
             probability: payload.probability,
-            status: payload.status,
-            customerId: payload.customerId,
+
 
         };
 
@@ -371,6 +415,22 @@ export const fetchFindAllOpportunity = createAsyncThunk(
         return result.data;
     }
 )
+
+export const fetchFindOpportunityById = createAsyncThunk(
+    'crm/fetchOpportunityById',
+    async (id: number) => {
+        const result = await axios.post(
+            RestApis.crm_service_opportunity + "/find-by-id?id=" + id, null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+)
 //# endregion Opportunity Operations
 //# SalesActivity Operations
 interface IFetchSaveSalesActivity {
@@ -378,7 +438,7 @@ interface IFetchSaveSalesActivity {
     type: string;
     date: Date;
     notes: string;
-    status: string;
+
 }
 
 export const fetchSaveSalesActivity = createAsyncThunk(
@@ -389,7 +449,7 @@ export const fetchSaveSalesActivity = createAsyncThunk(
             type: payload.type,
             date: payload.date,
             notes: payload.notes,
-            status: payload.status
+
         };
 
         const result = await axios.post(
@@ -408,12 +468,20 @@ export const fetchSaveSalesActivity = createAsyncThunk(
 
 interface IFetchUpdateSalesActivity {
     id: number;
+    type: string;
+    date: Date;
+    notes: string;
 }
 
 export const fetchUpdateSalesActivity = createAsyncThunk(
     'crm/fetchUpdateSalesActivity',
     async (payload: IFetchUpdateSalesActivity) => {
-        const values = {id: payload.id};
+        const values = {
+            id: payload.id,
+            type: payload.type,
+            date: payload.date,
+            notes: payload.notes
+        };
 
         const result = await axios.put(
             RestApis.crm_service_sales_activity + "/update",
@@ -449,6 +517,7 @@ interface IFetchFindAllSalesActivity {
     size: number;
     searchText: string
 }
+
 export const fetchFindAllSalesActivity = createAsyncThunk(
     'crm/fetchSalesActivityList',
     async (payload: IFetchFindAllSalesActivity) => {
@@ -467,6 +536,21 @@ export const fetchFindAllSalesActivity = createAsyncThunk(
         return result.data;
     }
 );
+export const fetchFindSalesActivityById = createAsyncThunk(
+    'crm/fetchSalesActivityById',
+    async (id: number) => {
+        const result = await axios.post(
+            RestApis.crm_service_sales_activity + "/find-by-id?id=" + id, null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+)
 //# endregion SalesActivity Operations
 //# Ticket Operations
 interface IFetchSaveTicket {
@@ -477,7 +561,7 @@ interface IFetchSaveTicket {
     priority: string;
     createdDate: Date;
     closedDate: Date;
-    status: string;
+
 }
 
 export const fetchSaveTicket = createAsyncThunk(
@@ -490,8 +574,8 @@ export const fetchSaveTicket = createAsyncThunk(
             ticketStatus: payload.ticketStatus,
             priority: payload.priority,
             createdDate: payload.createdDate,
-            closedDate: payload.closedDate,
-            status: payload.status
+            closedDate: payload.closedDate
+
         };
         const result = await axios.post(
             RestApis.crm_service_ticket + "/save",
@@ -509,12 +593,26 @@ export const fetchSaveTicket = createAsyncThunk(
 
 interface IFetchUpdateTicket {
     id: number;
+    subject: string;
+    description: string;
+    ticketStatus: string;
+    priority: string;
+    createdDate: Date;
+    closedDate: Date;
 }
 
 export const fetchUpdateTicket = createAsyncThunk(
     'crm/fetchUpdateTicket',
     async (payload: IFetchUpdateTicket) => {
-        const values = {id: payload.id};
+        const values = {
+            id: payload.id,
+            subject: payload.subject,
+            description: payload.description,
+            ticketStatus: payload.ticketStatus,
+            priority: payload.priority,
+            createdDate: payload.createdDate,
+            closedDate: payload.closedDate
+        };
 
         const result = await axios.put(
             RestApis.crm_service_ticket + "/update",
@@ -551,6 +649,7 @@ interface IFetchFindAllTicket {
     size: number;
     searchText: string
 }
+
 export const fetchFindAllTicket = createAsyncThunk(
     'crm/fetchTicketList',
     async (payload: IFetchFindAllTicket) => {
@@ -569,6 +668,21 @@ export const fetchFindAllTicket = createAsyncThunk(
         return result.data;
     }
 );
+export const fetchFindTicketById = createAsyncThunk(
+    'crm/fetchTicketById',
+    async (id: number) => {
+        const result = await axios.post(
+            RestApis.crm_service_ticket + "/find-by-id?id=" + id, null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+)
 
 //# endregion Ticket Operations
 
@@ -583,6 +697,9 @@ const crmSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchFindAllCustomer.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.customerList = action.payload.data;
+        })
+        builder.addCase(fetchFindAllCustomerForOpportunity.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.customerList = action.payload.data;
         })
         builder.addCase(fetchFindAllMarketingCampaign.fulfilled, (state, action: PayloadAction<IResponse>) => {

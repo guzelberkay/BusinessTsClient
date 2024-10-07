@@ -3,5 +3,6 @@ export interface IBudget{
     department: string;
     year: number;
     amount: number;
+    spentAmount: number;
     description: string;
 }
