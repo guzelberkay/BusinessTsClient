@@ -26,10 +26,10 @@ import {
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProduct} from "../../../model/IProduct.tsx";
+import {IProduct} from "../../../model/StockService/IProduct.tsx";
 import MenuItem from "@mui/material/MenuItem";
-import {IOrder} from "../../../model/IOrder.tsx";
-import {ICustomer} from "../../../model/ICustomer.tsx";
+import {IOrder} from "../../../model/StockService/IOrder.tsx";
+import {ICustomer} from "../../../model/StockService/ICustomer.tsx";
 
 
 const SellOrderPage = () => {

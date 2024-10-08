@@ -14,7 +14,7 @@ import {
     fetchSaveCustomer,
     fetchUpdateCustomer
 } from "../../../store/feature/stockSlice.tsx";
-import {ICustomer} from "../../../model/ICustomer.tsx";
+import {ICustomer} from "../../../model/StockService/ICustomer.tsx";
 
 
 const CustomerPageStock = () => {

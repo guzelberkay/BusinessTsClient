@@ -1,14 +1,14 @@
 import RestApis from "../../config/RestApis";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
-import {IProductCategory} from "../../model/IProductCategory";
+import {IProductCategory} from "../../model/StockService/IProductCategory.tsx";
 import {IResponse} from "../../model/IResponse";
-import {IOrder} from "../../model/IOrder";
-import {IProduct} from "../../model/IProduct";
-import {IStockMovement} from "../../model/IStockMovement";
-import {ISupplier} from "../../model/ISupplier";
-import {IWareHouse} from "../../model/IWareHouse";
-import {ICustomer} from "../../model/ICustomer";
+import {IOrder} from "../../model/StockService/IOrder.tsx";
+import {IProduct} from "../../model/StockService/IProduct.tsx";
+import {IStockMovement} from "../../model/StockService/IStockMovement.tsx";
+import {ISupplier} from "../../model/StockService/ISupplier.tsx";
+import {IWareHouse} from "../../model/StockService/IWareHouse.tsx";
+import {ICustomer} from "../../model/StockService/ICustomer.tsx";
 
 
 
