@@ -4,6 +4,6 @@ export interface IUser {
     email: string;
     firstName: string;
     lastName: string;
-    status: string;
+    status?: string;
     userRoles: string[];
 }

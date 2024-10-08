@@ -14,6 +14,16 @@ function SubscriptionHistory() {
     dispatch(fetchSubscriptionHistory(language));
   }, [dispatch,language]);
 
+  const handleStatus = (subscription: any) => {
+      return t('subscription.' + subscription.status) 
+  }
+  const handleCancelationDate = (subscription: any) => {
+    if(subscription.cancellationDate === null){
+      return "-"
+    } else {
+      return new Date(subscription.cancellationDate).toLocaleDateString()
+    }
+  }
   return (
     <Box p={3}>
       <Typography variant="h4" gutterBottom>
@@ -31,6 +41,7 @@ function SubscriptionHistory() {
                 <TableCell>{t('subscription.startDate')}</TableCell>
                 <TableCell>{t('subscription.endDate')}</TableCell>
                 <TableCell>{t('subscription.status')}</TableCell>
+                <TableCell>{t('subscription.cancelationDate')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -41,7 +52,8 @@ function SubscriptionHistory() {
                   <TableCell>{subscription.planPrice} $</TableCell>
                   <TableCell>{new Date(subscription.startDate).toLocaleDateString()}</TableCell>
                   <TableCell>{new Date(subscription.endDate).toLocaleDateString()}</TableCell>
-                  <TableCell>{subscription.status}</TableCell>
+                  <TableCell>{handleStatus(subscription)}</TableCell>
+                  <TableCell>{handleCancelationDate(subscription)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

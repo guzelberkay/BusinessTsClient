@@ -276,7 +276,11 @@
     "cancel": "Iptal",
     "save": "Kaydet",
     "editPlan": "Planı Düzenle",
-    "update": "Güncelle"
+    "update": "Güncelle",
+    "CANCELLED": "İptal Edildi",
+    "ACTIVE": "Aktif",
+    "ENDED": "Sonlandı",
+    "cancelationDate": "İptal Edilme Tarihi"
   },
   "crmService": {
     "customer": "Müşteri",
