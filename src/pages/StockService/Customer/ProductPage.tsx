@@ -29,9 +29,9 @@ import {
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
-import {ISupplier} from "../../../model/ISupplier.tsx";
-import {IWareHouse} from "../../../model/IWareHouse.tsx";
-import {IProductCategory} from "../../../model/IProductCategory.tsx";
+import {ISupplier} from "../../../model/StockService/ISupplier.tsx";
+import {IWareHouse} from "../../../model/StockService/IWareHouse.tsx";
+import {IProductCategory} from "../../../model/StockService/IProductCategory.tsx";
 
 
 const ProductPage = () => {

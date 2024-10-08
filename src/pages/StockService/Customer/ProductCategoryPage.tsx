@@ -13,7 +13,7 @@ import {
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProductCategory} from "../../../model/IProductCategory.tsx";
+import {IProductCategory} from "../../../model/StockService/IProductCategory.tsx";
 
 
 const ProductCategoryPage = () => {

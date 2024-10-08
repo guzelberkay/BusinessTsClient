@@ -13,7 +13,7 @@ import {
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IWareHouse} from "../../../model/IWareHouse.tsx";
+import {IWareHouse} from "../../../model/StockService/IWareHouse.tsx";
 
 
 const WareHousePage = () => {

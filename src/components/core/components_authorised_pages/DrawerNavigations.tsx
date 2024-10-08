@@ -30,7 +30,7 @@ import {
     PersonAdd,
     ManageAccounts,
     GroupAdd,
-    Edit
+    Edit, Apartment
 } from '@mui/icons-material';
 
 import DrawerCollapseButton, {DrawerCollapseButtonProps} from '../../atoms/DrawerCollapseButton';
@@ -89,6 +89,23 @@ export const drawerNavigations: Record<string, Button[]> = {
     ADMIN: [...sharedAdminButtons],  
 
     MEMBER: [
+        {
+            type: 'collapse',
+            component: DrawerCollapseButton,
+            props: {
+                name: 'organizationManagementModule',
+                TopLevelIcon: <FormatListNumbered/>,
+                menuItems: [
+                    'oms-department', 'oms-employee', 'oms-manager',
+                ],
+                menuIcons: [
+                    <Apartment/>, <Person/>, <ManageAccounts/>
+                ],
+                menuNavigations: [
+                    'oms-department', 'oms-employee', 'oms-manager',
+                ],
+            } as DrawerCollapseButtonProps,
+        },
         {
             type: 'collapse',
             component: DrawerCollapseButton,

@@ -51,6 +51,7 @@ export const SupplierPage = lazy(() => import('../pages/StockService/Customer/Su
 export const WareHousePage = lazy(() => import('../pages/StockService/Customer/WareHousePage.tsx'));
 export const ProductCategoryPage = lazy(() => import('../pages/StockService/Customer/ProductCategoryPage.tsx'));
 export const StockMovementPage = lazy(() => import('../pages/StockService/Customer/StockMovementPage.tsx'));
+export const OMSEmployeePage = lazy(() => import('../pages/OrganizationManagementService/EmployeePage.tsx'));
 export const DashBoard = lazy(() => import('../pages/DashBoard'));
 export const Login = lazy(() => import('../pages/Login'));
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
@@ -349,6 +350,11 @@ export default function Router() {
                 {
                     path: 'supporter-chat',
                     element: <PrivateRoute element={<SupporterChat/>} roles={['SUPPORTER']}/>,
+                }
+                ,
+                {
+                    path: 'oms-employee',
+                    element: <PrivateRoute element={<OMSEmployeePage/>} roles={['MEMBER']}/>,
                 }
             ]
         }

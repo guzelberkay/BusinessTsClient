@@ -7,7 +7,7 @@ import {AppDispatch} from "../../../store";
 import {fetchApproveOrder, fetchFindAllOrdersOfSupplier} from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IOrder} from "../../../model/IOrder.tsx";
+import {IOrder} from "../../../model/StockService/IOrder.tsx";
 
 
 const BuyOrderPage = () => {

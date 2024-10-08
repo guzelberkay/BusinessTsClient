@@ -10,7 +10,7 @@ import {
 } from "../../../store/feature/stockSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
-import {IProduct} from "../../../model/IProduct.tsx";
+import {IProduct} from "../../../model/StockService/IProduct.tsx";
 
 
 const ProductByMinStockLevelPage = () => {

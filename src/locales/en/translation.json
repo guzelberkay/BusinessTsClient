@@ -61,7 +61,11 @@
     "ManageUsers": "Manage Users",
     "ManageRoles": "Manage Roles",
     "adminMenu": "Admin Menu",
-    "logout": "Logout"
+    "logout": "Logout",
+    "oms-employee": "Employee",
+    "oms-manager": "Manager",
+    "oms-department": "Department",
+    "organizationManagementModule": "Organization Management Module"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -201,7 +205,12 @@
     "identityno": "Identity No",
     "phoneno": "Phone No",
     "addsellorder": "Add Sell Order",
-    "addcustomer": "Add Customer"
+    "addcustomer": "Add Customer",
+    "departmentname": "Department Name",
+    "managername": "Manager Name",
+    "pleaseselectdepartment": "Please Select Department",
+    "pleaseselectmanager": "Please Select Manager",
+    "addemployee": "Add Employee"
   },
   "dashboard": {
     "numberofemployees": "Number of Employees ",
