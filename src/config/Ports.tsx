@@ -11,7 +11,8 @@ const ports = {
   subscription: "9091",
   finance: "9089",
   file: "9093",
-  project:"8095"
+  project:"8095",
+  organization_management:"9100"
 };
 
 export default ports;

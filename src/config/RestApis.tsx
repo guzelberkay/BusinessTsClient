@@ -29,6 +29,12 @@ const apis = {
   stock_service_customer: base_url + host + Ports.stock + profile + version + EndPoints.customerStock,
   //#endregion Stock
 
+  //#region Organization Management
+  organization_management_department: base_url + host + Ports.organization_management + profile + version + EndPoints.department,
+  organization_management_employee: base_url + host + Ports.organization_management + profile + version + EndPoints.OMemployee,
+  organization_management_manager: base_url + host + Ports.organization_management + profile + version + EndPoints.OMmanager,
+  //#endregion Stock
+
     //#region CRM
     crm_service_customer: base_url + host + Ports.crm + profile + version + EndPoints.customer,
     crm_service_marketing_campaign: base_url + host + Ports.crm + profile + version + EndPoints.marketing_campaign,

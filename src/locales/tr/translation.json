@@ -62,7 +62,11 @@
     "ManageUsers": "Kullanıcıları Yönet",
     "ManageRoles": "Rolleri Yönet",
     "adminMenu": "Admin Menü",
-    "logout": "Cikis Yap"
+    "logout": "Cikis Yap",
+    "oms-employee": "Personel",
+    "oms-manager": "Yonetici",
+    "oms-department": "Departman",
+    "organizationManagementModule": "Organizasyon Yonetim Modulu"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -204,7 +208,12 @@
     "identityno": "Kimlik No",
     "phoneno": "Telefon No",
     "addsellorder": "Satış Siparişi Ekle",
-    "addcustomer": "Müşteri Ekle"
+    "addcustomer": "Müşteri Ekle",
+    "departmentname": "Departman Adı",
+    "managername": "Yönetici Adı",
+    "pleaseselectdepartment": "Lütfen Departman Seciniz",
+    "pleaseselectmanager": "Lütfen Yönetici Seciniz",
+    "addemployee": "Çalışan Ekle"
   },
   "dashboard": {
     "numberofemployees": "Çalışan Sayısı",
