@@ -265,7 +265,11 @@
     "cancel": "Cancel",
     "save": "Save",
     "editPlan": "Edit Plan",
-    "update": "Update"
+    "update": "Update",
+    "CANCELLED": "Cancelled",
+    "ACTIVE": "Active",
+    "ENDED": "Ended",
+    "cancelationDate": "Cancelation Date"
   },
   "crmService": {
     "customer": "Customer",
