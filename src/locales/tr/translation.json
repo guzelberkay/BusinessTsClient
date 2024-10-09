@@ -66,7 +66,8 @@
     "oms-employee": "Personel",
     "oms-manager": "Yonetici",
     "oms-department": "Departman",
-    "organizationManagementModule": "Organizasyon Yonetim Modulu"
+    "organizationManagementModule": "Organizasyon Yonetim Modulu",
+    "oms-treeview": "Organizasyon Şeması"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -213,7 +214,9 @@
     "managername": "Yönetici Adı",
     "pleaseselectdepartment": "Lütfen Departman Seciniz",
     "pleaseselectmanager": "Lütfen Yönetici Seciniz",
-    "addemployee": "Çalışan Ekle"
+    "addemployee": "Çalışan Ekle",
+    "addmanager": "Yönetici Ekle",
+    "adddepartment": "Departman Ekle"
   },
   "dashboard": {
     "numberofemployees": "Çalışan Sayısı",
