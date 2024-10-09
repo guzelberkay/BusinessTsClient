@@ -210,7 +210,9 @@
     "managername": "Manager Name",
     "pleaseselectdepartment": "Please Select Department",
     "pleaseselectmanager": "Please Select Manager",
-    "addemployee": "Add Employee"
+    "addemployee": "Add Employee",
+    "addmanager": "Add Manager",
+    "adddepartment": "Add Department"
   },
   "dashboard": {
     "numberofemployees": "Number of Employees ",

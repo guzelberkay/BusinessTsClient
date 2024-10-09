@@ -19,37 +19,36 @@ import {AppDispatch} from "../../store";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import {
-    fetchDeleteEmployee,
+    fetchDeleteManager,
     fetchFindAllDepartment,
-    fetchFindAllEmployee,
     fetchFindAllManager,
-    fetchFindByIdEmployee,
-    fetchSaveEmployee,
-    fetchUpdateEmployee
+    fetchFindByIdManager,
+    fetchSaveManager,
+    fetchUpdateManager
 } from "../../store/feature/organizationManagementSlice.tsx"
-import {IEmployee} from "../../model/OrganizationManagementService/IEmployee.tsx";
 import {IManager} from "../../model/OrganizationManagementService/IManager.tsx";
 import {IDepartment} from "../../model/OrganizationManagementService/IDepartment.tsx";
 import MenuItem from "@mui/material/MenuItem";
 
 
-const EmployeePage = () => {
+const ManagerPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const [searchText, setSearchText] = useState('');
 
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [employees, setEmployees] = useState<IEmployee[]>([]);
+    const [managers, setManagers] = useState<IManager[]>([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
+    const [price, setPrice] = useState(0);
+    const [description, setDescription] = useState('');
+    const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation()
 
     //MODAL
-    const [openAddCustomerModal, setOpenAddEmployee] = useState(false);
-    const [managers, setManagers] = useState<IManager[]>([]);
-    const [selectedManagerId, setSelectedManagerId] = useState(0);
+    const [openAddManagerModal, setOpenAddManagerModal] = useState(false);
     const [departments, setDepartments] = useState<IDepartment[]>([]);
     const [selectedDepartmentId, setSelectedDepartmentId] = useState(0);
 
@@ -58,6 +57,12 @@ const EmployeePage = () => {
     const [email, setEmail] = useState('');
     const [phoneNo, setPhoneNo] = useState('');
     const [identityNo, setIdentityNo] = useState('');
+    const [contactInfo, setContactInfo] = useState('');
+    const [address, setAddress] = useState('');
+    const [notes, setNotes] = useState('');
+    const [selectedCustomer, setSelectedCustomer] = useState(0);
+    const [selectedProduct, setSelectedProduct] = useState(0);
+    const [quantity, setQuantity] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
@@ -65,13 +70,13 @@ const EmployeePage = () => {
 
     useEffect(() => {
         dispatch(
-            fetchFindAllEmployee({
+            fetchFindAllManager({
                 page: 0,
                 size: 100,
                 searchText: searchText,
             })
         ).then(data => {
-            setEmployees(data.payload.data);
+            setManagers(data.payload.data);
         })
     }, [dispatch, searchText, loading, isActivating, isUpdating, isSaving, isDeleting]);
 
@@ -79,8 +84,8 @@ const EmployeePage = () => {
         setSelectedRowIds(newSelectionModel as number[]);
     };
 
-    const handleOpenEmployeeModal = () => {
-        setOpenAddEmployee(true);
+    const handleOpenAddManagerModal = () => {
+        setOpenAddManagerModal(true);
         setIsUpdating(false)
         dispatch(
             fetchFindAllDepartment({
@@ -91,41 +96,29 @@ const EmployeePage = () => {
         ).then(data => {
             setDepartments(data.payload.data);
         })
-
-        dispatch(
-            fetchFindAllManager({
-                page: 0,
-                size: 10000,
-                searchText: '',
-            })
-        ).then(data => {
-            setManagers(data.payload.data);
-        })
     };
 
     const handleOpenUpdateModal = async () => {
-        setOpenAddEmployee(true);
+        setOpenAddManagerModal(true);
         setIsUpdating(true)
 
-        dispatch(fetchFindByIdEmployee(selectedRowIds[0])).then((data) => {
+        dispatch(fetchFindByIdManager(selectedRowIds[0])).then((data) => {
             setName(data.payload.data.name)
             setSurname(data.payload.data.surname)
             setEmail(data.payload.data.email)
             setIdentityNo(data.payload.data.identityNo)
             setPhoneNo(data.payload.data.phoneNo)
             setSelectedDepartmentId(data.payload.data.department.id)
-            setSelectedManagerId(data.payload.data.manager.id)
         })
     }
     const handleUpdate = async () => {
         setIsUpdating(true)
-        dispatch(fetchUpdateEmployee({
+        dispatch(fetchUpdateManager({
             id: selectedRowIds[0],
             name: name,
             surname: surname,
             identityNo: identityNo,
             phoneNo: phoneNo,
-            managerId: selectedManagerId,
             departmentId: selectedDepartmentId
         })).then((data) => {
             if (data.payload.message === "Success") {
@@ -135,8 +128,7 @@ const EmployeePage = () => {
                 setIdentityNo('')
                 setPhoneNo('')
                 setSelectedDepartmentId(0)
-                setSelectedManagerId(0)
-                setOpenAddEmployee(false);
+                setOpenAddManagerModal(false);
                 Swal.fire({
                     title: t("stockService.updated"),
                     text: t("stockService.successfullyupdated"),
@@ -151,8 +143,7 @@ const EmployeePage = () => {
                 setIdentityNo('')
                 setPhoneNo('')
                 setSelectedDepartmentId(0)
-                setSelectedManagerId(0)
-                setOpenAddEmployee(false);
+                setOpenAddManagerModal(false);
                 Swal.fire({
                     title: t("swal.error"),
                     text: data.payload.message,
@@ -165,15 +156,14 @@ const EmployeePage = () => {
 
     }
 
-    const handleSaveEmployee = async () => {
+    const handleSaveManager = async () => {
         setIsSaving(true)
-        dispatch(fetchSaveEmployee({
+        dispatch(fetchSaveManager({
             name: name,
             surname: surname,
             email: email,
             identityNo: identityNo,
             phoneNo: phoneNo,
-            managerId: selectedManagerId,
             departmentId: selectedDepartmentId
         }))
             .then((data) => {
@@ -183,7 +173,8 @@ const EmployeePage = () => {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
-                    setOpenAddEmployee(false);
+                    setSelectedDepartmentId(0)
+                    setOpenAddManagerModal(false);
                     Swal.fire({
                         title: t("swal.success"),
                         text: t("stockService.successfullyadded"),
@@ -197,7 +188,8 @@ const EmployeePage = () => {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
-                    setOpenAddEmployee(false);
+                    setSelectedDepartmentId(0)
+                    setOpenAddManagerModal(false);
                     Swal.fire({
                         title: t("swal.error"),
                         text: data.payload.message,
@@ -220,13 +212,13 @@ const EmployeePage = () => {
             cancelButtonText: t("stockService.cancel"),
         });
         for (let id of selectedRowIds) {
-            const selectedCustomer = employees.find(
+            const selectedCustomer = managers.find(
                 (selectedCustomer) => selectedCustomer.id === id
             );
             if (!selectedCustomer) continue;
             try {
                 if (result.isConfirmed) {
-                    const data = await dispatch(fetchDeleteEmployee(selectedCustomer.id));
+                    const data = await dispatch(fetchDeleteManager(selectedCustomer.id));
 
                     if (data.payload.message !== "Success") {
                         await Swal.fire({
@@ -266,7 +258,6 @@ const EmployeePage = () => {
         {field: "email", headerName: "Email", flex: 1.5, headerAlign: "center"},
         {field: "identityNo", headerName: t("stockService.identityno"), flex: 1.5, headerAlign: "center"},
         {field: "phoneNo", headerName: t("stockService.phoneno"), flex: 1.5, headerAlign: "center"},
-        {field: "managerName", headerName: t("stockService.managername"), flex: 1.5, headerAlign: "center"},
     ];
 
 
@@ -286,7 +277,7 @@ const EmployeePage = () => {
                     toolbar: GridToolbar,
 
                 }}
-                rows={employees}
+                rows={managers}
                 columns={columns}
                 initialState={{
                     pagination: {
@@ -367,7 +358,7 @@ const EmployeePage = () => {
             }}>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleOpenEmployeeModal}
+                        onClick={handleOpenAddManagerModal}
                         variant="contained"
                         color="success"
                         //startIcon={<ApproveIcon />}
@@ -418,9 +409,9 @@ const EmployeePage = () => {
                         {t("stockService.delete")}
                     </Button>
                 </Grid>
-                <Dialog open={openAddCustomerModal} onClose={() => setOpenAddEmployee(false)} fullWidth
+                <Dialog open={openAddManagerModal} onClose={() => setOpenAddManagerModal(false)} fullWidth
                         maxWidth='sm'>
-                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addemployee')}</DialogTitle>
+                    <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addmanager')}</DialogTitle>
                     <DialogContent>
                         <FormControl variant="outlined" sx={{width: '100%', marginTop: '15px'}}>
                             <InputLabel>{t('stockService.pleaseselectdepartment')}</InputLabel>
@@ -432,21 +423,6 @@ const EmployeePage = () => {
                                 {Object.values(departments).map(department => (
                                     <MenuItem key={department.id} value={department.id}>
                                         {department.name}
-                                    </MenuItem>
-                                ))}
-
-                            </Select>
-                        </FormControl>
-                        <FormControl variant="outlined" sx={{width: '100%', marginTop: '15px'}}>
-                            <InputLabel>{t('stockService.pleaseselectmanager')}</InputLabel>
-                            <Select
-                                value={selectedManagerId}
-                                onChange={event => setSelectedManagerId((Number)(event.target.value))}
-                                label="Product Categories"
-                            >
-                                {Object.values(managers).map(manager => (
-                                    <MenuItem key={manager.id} value={manager.id}>
-                                        {manager.name + " " + manager.surname}
                                     </MenuItem>
                                 ))}
 
@@ -501,13 +477,13 @@ const EmployeePage = () => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            setOpenAddEmployee(false), setIsUpdating(false)
+                            setOpenAddManagerModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
                         {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
-                                              disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === '' || selectedManagerId === 0 || selectedDepartmentId === 0}>{t('stockService.update')}</Button>
+                                              disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === '' || selectedDepartmentId === 0}>{t('stockService.update')}</Button>
                             :
-                            <Button onClick={() => handleSaveEmployee()} color="success" variant="contained"
-                                    disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === '' || selectedManagerId === 0 || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
+                            <Button onClick={() => handleSaveManager()} color="success" variant="contained"
+                                    disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === '' || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>
@@ -518,4 +494,4 @@ const EmployeePage = () => {
 }
 
 
-export default EmployeePage
+export default ManagerPage

@@ -213,7 +213,9 @@
     "managername": "Yönetici Adı",
     "pleaseselectdepartment": "Lütfen Departman Seciniz",
     "pleaseselectmanager": "Lütfen Yönetici Seciniz",
-    "addemployee": "Çalışan Ekle"
+    "addemployee": "Çalışan Ekle",
+    "addmanager": "Yönetici Ekle",
+    "adddepartment": "Departman Ekle"
   },
   "dashboard": {
     "numberofemployees": "Çalışan Sayısı",
