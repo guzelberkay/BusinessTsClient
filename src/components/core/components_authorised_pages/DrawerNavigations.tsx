@@ -96,13 +96,13 @@ export const drawerNavigations: Record<string, Button[]> = {
                 name: 'organizationManagementModule',
                 TopLevelIcon: <FormatListNumbered/>,
                 menuItems: [
-                    'oms-department', 'oms-employee', 'oms-manager',
+                    'oms-department', 'oms-employee', 'oms-manager',"oms-treeview"
                 ],
                 menuIcons: [
-                    <Apartment/>, <Person/>, <ManageAccounts/>
+                    <Apartment/>, <Person/>, <ManageAccounts/>, <ManageAccounts/>
                 ],
                 menuNavigations: [
-                    'oms-department', 'oms-employee', 'oms-manager',
+                    'oms-department', 'oms-employee', 'oms-manager',"oms-treeview"
                 ],
             } as DrawerCollapseButtonProps,
         },

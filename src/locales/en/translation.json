@@ -65,7 +65,8 @@
     "oms-employee": "Employee",
     "oms-manager": "Manager",
     "oms-department": "Department",
-    "organizationManagementModule": "Organization Management Module"
+    "organizationManagementModule": "Organization Management Module",
+    "oms-treeview": "Ogranization Chart"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",

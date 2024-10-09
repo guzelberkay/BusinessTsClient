@@ -54,6 +54,7 @@ export const StockMovementPage = lazy(() => import('../pages/StockService/Custom
 export const OMSEmployeePage = lazy(() => import('../pages/OrganizationManagementService/EmployeePage.tsx'));
 export const OMSManagerPage = lazy(() => import('../pages/OrganizationManagementService/ManagerPage.tsx'));
 export const OMSDepartmentPage = lazy(() => import('../pages/OrganizationManagementService/DepartmentPage.tsx'));
+export const OMSTreeView = lazy(() => import('../pages/OrganizationManagementService/TreeView.tsx'));
 export const DashBoard = lazy(() => import('../pages/DashBoard'));
 export const Login = lazy(() => import('../pages/Login'));
 export const ErrorPage = lazy(() => import('../pages/page404/ErrorPage'));
@@ -365,6 +366,11 @@ export default function Router() {
                 {
                     path: 'oms-department',
                     element: <PrivateRoute element={<OMSDepartmentPage/>} roles={['MEMBER']}/>,
+                }
+                ,
+                {
+                    path: 'oms-treeview',
+                    element: <PrivateRoute element={<OMSTreeView/>} roles={['MEMBER']}/>,
                 }
             ]
         }
