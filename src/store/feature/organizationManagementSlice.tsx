@@ -283,6 +283,25 @@ export const fetchFindByIdEmployee = createAsyncThunk(
     }
 );
 
+export const fetchGetEmployeeHierarchy = createAsyncThunk(
+    'organization-management/fetchGetEmployeeHierarchy',
+    async () => {
+        const result = await axios.post(
+            RestApis.organization_management_employee + "/get-employee-hierarchy",
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+
 //#endregion
 
 //#region Manager
