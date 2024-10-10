@@ -22,13 +22,13 @@ function FileUploadProps(props: IFileUpload) {
   const handleUploadClick = () => {
     if (selectedFiles.length > 0) {
       props.onFileUpload(selectedFiles);
-      const file = selectedFiles[0]; // İlk dosyayı al
+      const file = selectedFiles[0]; 
       if (file.type === 'application/pdf') {
-        // PDF dosyası yüklendiyse, indirme URL'sini oluştur
+        
         const blobUrl = URL.createObjectURL(file);
-        setDownloadUrl(blobUrl); // PDF için indirme URL'sini ayarla
+        setDownloadUrl(blobUrl); 
       }
-      setSelectedFiles([]); // Yükleme sonrası seçilen dosyaları sıfırla
+      setSelectedFiles([]);
     }
   };
 
