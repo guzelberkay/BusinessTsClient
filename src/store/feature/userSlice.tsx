@@ -233,7 +233,7 @@ export const fetchChangeUserEmail = createAsyncThunk(
 
 export const fetchChangeUserPassword = createAsyncThunk(
     'user/fetchChangeUserPassword',
-    async (payload: {userId: number, password: string}) => {
+    async (payload: {userId: number}) => {
         const result = await axios.put(RestApis.user_management_service_user+"/change-user-password",
             payload,
             {

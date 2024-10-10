@@ -7,7 +7,8 @@ import {
   Tooltip,
   ListItemButton,
   FormControl,
-  Switch
+  Switch,
+  Box
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { AppDispatch, useAppSelector } from '../../store';
@@ -16,6 +17,7 @@ import { fetchAddRoleToUser, fetchChangeUserEmail, fetchChangeUserPassword, fetc
 import { IUser } from '../../model/IUser';
 import { IRole } from '../../model/IRole';
 import { fetchAsiggableRoleList } from '../../store/feature/roleSlice';
+import { GroupAdd } from '@mui/icons-material';
 
 function ManageUsers() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -110,7 +112,7 @@ function ManageUsers() {
   };
 
   const handleEditPassword = () => {
-    dispatch(fetchChangeUserPassword({ userId: selectedUserId, password: newPassword })).then((data) => {
+    dispatch(fetchChangeUserPassword({ userId: selectedUserId})).then((data) => {
       if (data.payload.code === 200) {
         alert(data.payload.message);
         dispatch(fetchUserList());
@@ -201,32 +203,39 @@ function ManageUsers() {
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.email}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.status}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-                  <Switch 
-                    checked={user.status === 'ACTIVE'}
-                    onChange={() => handleStatusChange(user)}
-                    color="success"
-                  />
+                  <Tooltip title={user.status === 'ACTIVE' ? 'Kullanıcıyı Pasifleştir' : 'Kullanıcıyı Aktifleştir'}   arrow>
+                    <Switch 
+                      checked={user.status === 'ACTIVE'}
+                      onChange={() => handleStatusChange(user)}
+                      color="success"
+                    />
+                  </Tooltip>
+                  
                 </TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.userRoles.join(', ')}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-                  <Button 
-                    variant="contained" 
-                    color="primary" 
-                    style={{ marginRight: 8 }} 
-                    onClick={() => handleOpenDialog(user.id)}
-                  >
-                    Rol Ekle
-                  </Button>
-                  <Button 
-                    variant="contained" 
-                    color="secondary" 
-                    style={{ marginRight: 8 }} 
-                    startIcon={<EditIcon />}
-                    onClick={() => handleOpenEditDialog(user)} 
-                  >
-                    Düzenle
-                  </Button>
-                  
+                  <Box sx={{ justifyContent: 'center', display: 'flex' }}>
+                    <Tooltip title="Rol Ekle" arrow>
+                      <Button 
+                        variant="contained" 
+                        color="primary"  
+                        onClick={() => handleOpenDialog(user.id)}                   
+                        startIcon={<GroupAdd sx={{ marginLeft: '12px' }} />}
+                      >                    
+                      </Button>
+                    </Tooltip>
+
+                    <Tooltip title="Düzenle" arrow>
+                      <Button 
+                        sx={{ marginLeft: '5px' }}
+                        variant="contained" 
+                        color="secondary"                    
+                        startIcon={<EditIcon sx={{ marginLeft: '12px' }} />}
+                        onClick={() => handleOpenEditDialog(user)} 
+                      >
+                      </Button>
+                    </Tooltip> 
+                  </Box>                 
                 </TableCell>
               </TableRow>
             ))}
@@ -274,32 +283,26 @@ function ManageUsers() {
         </DialogActions>
       </Dialog>
 
-        {/* E-posta Düzenleme Diyaloğu */}
+        {/* Düzenleme Diyaloğu */}
         <Dialog 
           open={openEditDialog} 
           onClose={handleCloseEditDialog} 
           maxWidth="sm" 
           fullWidth 
         >
-          <DialogTitle >E-posta Düzenle</DialogTitle>
+          <DialogTitle >Kullanıcıyı Düzenle</DialogTitle>
             <DialogContent >
-              <FormControl fullWidth sx={{ marginTop: 2 }}>
+              <FormControl fullWidth sx={{ marginTop: 2  }}>
                   <TextField
                     label="Yeni E-posta"
                     variant="outlined"
                     value={newEmail}
                     onChange={(e) => setNewEmail(e.target.value)} 
                   />
-                  <Button onClick={handleEditEmail} color="primary">Yeni Maili Kaydet</Button>
+                  <Button variant='contained' onClick={handleEditEmail} color="primary" sx={{ marginTop: 2 }}>Yeni Maili Kaydet</Button>
               </FormControl>
               <FormControl fullWidth sx={{ marginTop: 2 }}>
-              <TextField
-                    label="Yeni Şifre"
-                    variant="outlined"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)} 
-                  />
-                  <Button onClick={handleEditPassword} color="primary">Yeni Şifreyi Kaydet</Button>
+                  <Button variant='contained' onClick={handleEditPassword} color="secondary">Yeni Şifre Gönder</Button>
                 </FormControl>
             </DialogContent>
           <DialogActions>
