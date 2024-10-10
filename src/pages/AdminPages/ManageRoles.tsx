@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper, TextField, Dialog, DialogTitle, DialogContent, DialogActions, FormControl,
-  Switch
+  Switch,
+  Tooltip,
+  Box
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch } from 'react-redux';
@@ -134,17 +136,23 @@ function ManageRoles() {
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{role.roleDescription}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{role.status}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-                  <Switch
-                    checked={role.status === 'ACTIVE'}
-                    onChange={() => handleStatusChange(role)}
-                    color="success"
-                  />
+                  <Box sx={{ justifyContent: 'center', display: 'flex' }}>
+                    <Tooltip title={role.status === 'ACTIVE' ? 'Rolü Pasifleştir ' : 'Rolü Aktifleştir'}>
+                      <Switch
+                        checked={role.status === 'ACTIVE'}
+                        onChange={() => handleStatusChange(role)}
+                        color="success"
+                      />
+                    </Tooltip>
+                  </Box>
                 </TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-                  <Button variant="contained" color="secondary" onClick={() => handleOpenEditRoleDialog(role)} startIcon={<EditIcon />}>
-                    Düzenle
-                  </Button>
-                  
+                  <Tooltip title="Düzenle" arrow>
+                    <Box sx={{ justifyContent: 'center', display: 'flex' }}>
+                      <Button variant="contained" color="secondary" onClick={() => handleOpenEditRoleDialog(role)} sx={{ marginLeft: '5px' }} startIcon={<EditIcon sx={{ marginLeft: '12px' }} />}>
+                      </Button>
+                    </Box>      
+                  </Tooltip>                    
                 </TableCell>
               </TableRow>
             ))}

@@ -203,13 +203,15 @@ function ManageUsers() {
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.email}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.status}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-                  <Tooltip title={user.status === 'ACTIVE' ? 'Kullanıcıyı Pasifleştir' : 'Kullanıcıyı Aktifleştir'}   arrow>
-                    <Switch 
-                      checked={user.status === 'ACTIVE'}
-                      onChange={() => handleStatusChange(user)}
-                      color="success"
-                    />
-                  </Tooltip>
+                  <Box sx={{ justifyContent: 'center', display: 'flex' }}>
+                    <Tooltip title={user.status === 'ACTIVE' ? 'Kullanıcıyı Pasifleştir' : 'Kullanıcıyı Aktifleştir'}   arrow>
+                      <Switch 
+                        checked={user.status === 'ACTIVE'}
+                        onChange={() => handleStatusChange(user)}
+                        color="success"
+                      />
+                    </Tooltip>
+                  </Box>
                   
                 </TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.userRoles.join(', ')}</TableCell>
