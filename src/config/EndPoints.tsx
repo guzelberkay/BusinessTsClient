@@ -38,7 +38,9 @@ const endpoints = {
   plan: "/plan",
   // FILE Endpoints
   file: "/file",
-  project_management: "/project"
+  project_management: "/project",
+  // CalendarAndPlanning Endpoints
+  event: "/event",
 };
 
 export default endpoints;
