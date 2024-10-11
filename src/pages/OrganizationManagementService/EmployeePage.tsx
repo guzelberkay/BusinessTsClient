@@ -93,7 +93,7 @@ const EmployeePage = () => {
         })
 
         dispatch(
-            fetchFindAllManager({
+            fetchFindAllEmployee({
                 page: 0,
                 size: 10000,
                 searchText: '',
@@ -107,14 +107,34 @@ const EmployeePage = () => {
         setOpenAddEmployee(true);
         setIsUpdating(true)
 
+        dispatch(
+            fetchFindAllDepartment({
+                page: 0,
+                size: 10000,
+                searchText: '',
+            })
+        ).then(data => {
+            setDepartments(data.payload.data);
+        })
+
+        dispatch(
+            fetchFindAllEmployee({
+                page: 0,
+                size: 10000,
+                searchText: '',
+            })
+        ).then(data => {
+            setManagers(data.payload.data);
+        })
+
         dispatch(fetchFindByIdEmployee(selectedRowIds[0])).then((data) => {
             setName(data.payload.data.name)
             setSurname(data.payload.data.surname)
             setEmail(data.payload.data.email)
             setIdentityNo(data.payload.data.identityNo)
             setPhoneNo(data.payload.data.phoneNo)
-            setSelectedDepartmentId(data.payload.data.department.id)
-            setSelectedManagerId(data.payload.data.manager.id)
+            setSelectedDepartmentId(data.payload.data.departmentId)
+            setSelectedManagerId(data.payload.data.managerId)
         })
     }
     const handleUpdate = async () => {
