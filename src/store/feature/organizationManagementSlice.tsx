@@ -179,6 +179,45 @@ export const fetchSaveEmployee = createAsyncThunk(
     }
 );
 
+
+interface IfetchSaveSubordinate {
+    managerId: number;
+    departmentId: number;
+    identityNo: string;
+    phoneNo: string;
+    name: string;
+    surname: string;
+    email: string;
+}
+
+export const fetchSaveSubordinate = createAsyncThunk(
+    'organization-management/fetchSaveSubordinate',
+    async (payload: IfetchSaveSubordinate) => {
+        const usersName = {
+            managerId: payload.managerId,
+            departmentId: payload.departmentId,
+            identityNo: payload.identityNo,
+            phoneNo: payload.phoneNo,
+            name: payload.name,
+            surname: payload.surname,
+            email: payload.email
+        };
+
+        const result = await axios.post(
+            RestApis.organization_management_employee + "/save-subordinate",
+            usersName,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
 export const fetchDeleteEmployee = createAsyncThunk(
     'organization-management/fetchDeleteEmployee',
     async (id: number) => {
