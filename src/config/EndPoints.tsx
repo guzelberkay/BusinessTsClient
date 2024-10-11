@@ -33,6 +33,7 @@ const endpoints = {
   income: "/finance/income",
   invoice: "/finance/invoice",
   tax: "/finance/tax",
+  department_finance: "/finance/department",
   // SUB Endpoints
   subscription: "/subscription",
   plan: "/plan",

@@ -427,7 +427,9 @@
     "incomeVsExpense": "Gelir - Gider",
     "expenseBreakdown": "Gider Dağılımı",
     "totalIncome": "Toplam Gelir",
-    "totalExpenses": "Toplam Gider"
+    "totalExpenses": "Toplam Gider",
+    "details": "Detay",
+    "expensesuccesfullyadded": "Gider Eklendi"
   },
   "dataGrid": {
     "toolbarColumns": "Sütunlar",

@@ -33,9 +33,9 @@ const initialFinanceState: IFinanceState = {
 
 //#region Budget
 interface IFetchSaveBudget {
-    department: string;
-    year: number;
-    amount: number;
+    departmentId: number;
+    subAmount: number;
+    budgetCategory: string;
     description: string;
 }
 
@@ -44,9 +44,9 @@ export const fetchSaveBudget = createAsyncThunk(
     'finance/fetchSaveBudget',
     async (payload: IFetchSaveBudget) => {
         const budget = {
-            department: payload.department,
-            year: payload.year,
-            amount: payload.amount,
+            departmentId: payload.departmentId,
+            subAmount: payload.subAmount,
+            budgetCategory: payload.budgetCategory,
             description: payload.description
         };
         const result = await axios.post(
@@ -80,9 +80,9 @@ export const fetchDeleteBudget = createAsyncThunk(
 
 interface IUpdateBudget {
     id: number;
-    department: string;
-    amount: number;
-    year: number;
+    departmentId: number;
+    subAmount: number;
+    budgetCategory: string;
     description: string;
 }
 
@@ -91,9 +91,9 @@ export const fetchUpdateBudget = createAsyncThunk(
     async (payload: IUpdateBudget) => {
         const budget = {
             id: payload.id,
-            department: payload.department,
-            year: payload.year,
-            amount: payload.amount,
+            departmentId: payload.departmentId,
+            subAmount: payload.subAmount,
+            budgetCategory: payload.budgetCategory,
             description: payload.description
         };
         const result = await axios.put(
@@ -156,6 +156,36 @@ export const fetchGetDepartments = createAsyncThunk(
     async () => {
         const result = await axios.post(
             RestApis.finance_service_budget + "/get-departments",
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+export const fetchGetBudgetCategories = createAsyncThunk(
+    'finance/fetchGetBudgetCategories',
+    async () => {
+        const result = await axios.post(
+            RestApis.finance_service_budget + "/get-all-categories",
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
+export const fetchGetBudgetByDepartmentName = createAsyncThunk(
+    'finance/fetchGetBudgetByDepartmentName',
+    async (departmentName: string) => {
+        const result = await axios.post(
+            RestApis.finance_service_budget + "/find-all-by-department-name?departmentName=" + departmentName,
             {
                 headers: {
                     'Content-Type': 'application/json'
@@ -264,22 +294,22 @@ export const fetchCreateDeclarationForCorporateTax = createAsyncThunk(
 
 //#region Expense
 interface IFetchSaveExpense {
+    departmentId: number;
     expenseCategory: string;
     expenseDate: Date;
     amount: number;
     description: string;
-    department: string;
 }
 
 export const fetchSaveExpense = createAsyncThunk(
     'finance/fetchSaveExpense',
     async (payload: IFetchSaveExpense) => {
         const expense = {
+            departmentId: payload.departmentId,
             expenseCategory: payload.expenseCategory,
             expenseDate: payload.expenseDate,
             amount: payload.amount,
-            description: payload.description,
-            department: payload.department
+            description: payload.description
         };
         const result = await axios.post(
             RestApis.finance_service_expense + "/save",
@@ -372,21 +402,6 @@ export const fetchFindByIdExpense = createAsyncThunk(
     async (id: number) => {
         const result = await axios.post(
             RestApis.finance_service_expense + "/find-by-id?id=" + id,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-        return result.data;
-    }
-);
-
-export const fetchFindByCategoryExpense = createAsyncThunk(
-    'finance/fetchFindByCategoryExpense',
-    async (category: string) => {
-        const result = await axios.post(
-            RestApis.finance_service_expense + "/find-by-category?category=" + category,
             {
                 headers: {
                     'Content-Type': 'application/json'
@@ -1147,6 +1162,22 @@ export const fetchCalculateTax = createAsyncThunk(
 );
 //#endregion Tax
 
+//#region Department
+export const fetchGetDepartmentList = createAsyncThunk(
+    'finance/fetchGetDepartmentList',
+    async () => {
+        const result = await axios.post(
+            RestApis.finance_service_department + "/get-departments",
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
 
 const financeSlice = createSlice({
     name: 'finance',
@@ -1170,9 +1201,6 @@ const financeSlice = createSlice({
                 state.incomeList = action.payload.data;
             })
             .addCase(fetchFindByIdExpense.fulfilled, (state, action: PayloadAction<IResponse>) => {
-                state.expenseList = action.payload.data;
-            })
-            .addCase(fetchFindByCategoryExpense.fulfilled, (state, action: PayloadAction<IResponse>) => {
                 state.expenseList = action.payload.data;
             })
             .addCase(fetchGetAllExpenseCategories.fulfilled, (state, action: PayloadAction<IResponse>) => {

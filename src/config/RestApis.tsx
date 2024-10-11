@@ -74,6 +74,7 @@ const apis = {
   finance_service_income: base_url + host + Ports.finance + profile + version + EndPoints.income,
   finance_service_invoice: base_url + host + Ports.finance + profile + version + EndPoints.invoice,
   finance_service_tax: base_url + host + Ports.finance + profile + version + EndPoints.tax,
+  finance_service_department: base_url + host + Ports.finance + profile + version + EndPoints.department_finance,
   //#endregion Finance
 
     //#region File
