@@ -79,6 +79,10 @@ const apis = {
     //#region File
     file_service: base_url + host + Ports.file + profile + version + EndPoints.file,
      //#endregion File
+
+  //#region Caledar_and_Planning
+  calendar_and_planning_service_event: base_url + host + Ports.calendar_and_planning + profile + version + EndPoints.event,
+  //#endregion Caledar_and_Planning 
 };
 
 export default apis;
