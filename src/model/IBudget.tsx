@@ -1,8 +1,11 @@
+import {IDepartment} from "./IDepartment.tsx";
+
 export interface IBudget{
     id: number;
-    department: string;
-    year: number;
-    amount: number;
+    totalAmount: number;
+    subAmount: number;
     spentAmount: number;
+    budgetCategory: string;
     description: string;
+    departmentName: string;
 }

@@ -8,7 +8,7 @@ import {
     fetchFindAllExpense,
     fetchFindByIdExpense,
     fetchFindExpenseByDate,
-    fetchGetAllExpenseCategories, fetchGetDepartments,
+    fetchGetAllExpenseCategories, fetchGetDepartmentList, fetchGetDepartments,
     fetchSaveExpense,
     fetchUpdateExpense,
 } from "../../store/feature/financeSlice";
@@ -31,7 +31,6 @@ import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import {IIncome} from "../../model/IIncome";
 import {IExpenseCategory} from "../../model/IExpenseCategory";
-import {IDepartments} from "../../model/IDepartments.tsx";
 
 const ExpensePage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
@@ -52,7 +51,9 @@ const ExpensePage = () => {
     const [description, setDescription] = useState<string>("");
     const [department, setDepartment] = useState<string>("");
     const [expenseCategories, setExpenseCategories] = useState<IExpenseCategory[]>([]);
-    const [departments, setDepartments] = useState<IDepartments[]>([]);
+    const [departments, setDepartments] = useState<{ id: number; name: string }[]>([]);
+    const [departmentId, setDepartmentId] = useState<number>(0);
+
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
@@ -62,7 +63,8 @@ const ExpensePage = () => {
         {field: "amount", headerName: t("financeService.amounttl"), flex: 1.5, headerAlign: "center", type: "number"},
         {field: "description", headerName: t("financeService.description"), flex: 1.5, headerAlign: "center"},
         {field: "expenseDate", headerName: t("financeService.date"), flex: 1.5, headerAlign: "center"},
-        {field: "department", headerName: t("financeService.department"), flex: 1.5, headerAlign: "center"},
+        {field: "departmentName", headerName: t("financeService.department"), flex: 1.5, headerAlign: "center"},
+        {field: "expenseCategory", headerName: t("financeService.category"), flex: 1.5, headerAlign: "center"},
     ];
 
     useEffect(() => {
@@ -76,7 +78,7 @@ const ExpensePage = () => {
     }, [dispatch, searchText]);
 
     useEffect(() => {
-        dispatch(fetchGetDepartments()).then((data) => {
+        dispatch(fetchGetDepartmentList()).then(data => {
             setDepartments(data.payload.data);
         });
     }, [dispatch]);
@@ -119,16 +121,14 @@ const ExpensePage = () => {
 
     const handleSaveExpense = () => {
         setLoading(true);
-        dispatch(fetchSaveExpense({expenseCategory, expenseDate, amount, description, department})).then(() => {
+        dispatch(fetchSaveExpense({departmentId, expenseCategory, expenseDate, amount, description})).then(() => {
             setAmount(0);
             setExpenseDate(new Date());
             setDescription("");
-            setExpenseCategory("");
-            setDepartment(""); // Reset department
             setLoading(false);
             Swal.fire({
                 title: t("swal.success"),
-                text: t("financeService.incomesuccesfullyadded"),
+                text: t("financeService.expensesuccesfullyadded"),
                 icon: "success",
             });
             fetchExpenseData();
@@ -151,11 +151,10 @@ const ExpensePage = () => {
             setAmount(0);
             setExpenseDate(new Date());
             setDescription("");
-            setDepartment(""); // Reset department
             setLoading(false);
             Swal.fire({
                 title: t("financeService.updated"),
-                text: t("financeService.incomesuccesfullyupdated"),
+                text: t("financeService.expensesuccesfullyupdated"),
                 icon: "success",
             });
             fetchExpenseData();
@@ -345,6 +344,27 @@ const ExpensePage = () => {
             </Grid>
             <Dialog open={openSaveExpenseModal} onClose={() => setOpenSaveExpenseModal(false)}>
                 <DialogContent>
+                    <Grid item xs={12}>
+                        <TextField
+                            select
+                            fullWidth
+                            label={t("financeService.department")}
+                            variant="outlined"
+                            value={departmentId}
+                            onChange={(e) => setDepartmentId(Number(e.target.value))}
+                            SelectProps={{
+                                native: true,
+                            }}
+                            required
+                        >
+                            <option value="">Select Department</option>
+                            {departments.map((dept) => (
+                                <option key={dept.id} value={dept.id}>
+                                    {dept.name}
+                                </option>
+                            ))}
+                        </TextField>
+                    </Grid>
                     <FormControl fullWidth>
                         <InputLabel id="expense-category-label">{t("financeService.category")}</InputLabel>
                         <Select
@@ -359,14 +379,6 @@ const ExpensePage = () => {
                             ))}
                         </Select>
                     </FormControl>
-                    <TextField
-                        label={t("financeService.department")}
-                        variant="outlined"
-                        fullWidth
-                        margin="normal"
-                        value={department}
-                        onChange={(e) => setDepartment(e.target.value)}
-                    />
                     <TextField
                         label={t("financeService.amount")}
                         type="number"

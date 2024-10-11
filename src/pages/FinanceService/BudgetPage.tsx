@@ -7,42 +7,58 @@ import {
     DialogContent,
     DialogTitle,
     TextField,
-    Grid,
+    Grid, InputLabel, MenuItem, Select, TableContainer, Paper,
 } from '@mui/material';
 import {AppDispatch, useAppSelector} from "../../store";
 import {
     fetchDeleteBudget,
     fetchFindAllBudget,
-    fetchFindByIdBudget,
+    fetchFindByIdBudget, fetchGetBudgetByDepartmentName, fetchGetBudgetCategories, fetchGetDepartmentList,
     fetchSaveBudget, fetchUpdateBudget
 } from "../../store/feature/financeSlice.tsx";
-import {IBudget} from "../../model/IBudget.tsx";
 import {useTranslation} from "react-i18next";
 import Swal from "sweetalert2";
+import {IBudgetCategory} from "../../model/IBudgetCategory.tsx";
+import {IBudgetMergedByDepartment} from "../../model/IBudgetMergedByDepartment.tsx";
+import {IBudgetByDepartment} from "../../model/IBudgetByDepartment.tsx";
+import TableCell from "@mui/material/TableCell";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableBody from "@mui/material/TableBody";
 
 const BudgetPage: React.FC = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
     const dispatch = useDispatch<AppDispatch>();
-    const [budgetList, setBudgetList] = useState<IBudget[]>([]);
+    const [budgetList, setBudgetList] = useState<IBudgetMergedByDepartment[]>([]);
+    const [budgetListByDepartmentId, setBudgetListByDepartmentId] = useState<IBudgetByDepartment[]>([]);
     const budgets = useAppSelector((state) => state.financeSlice.budgetList);
     const [searchText, setSearchText] = useState('');
     const [loading, setLoading] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const {t} = useTranslation();
     const [openSaveBudgetModal, setOpenSaveBudgetModal] = useState(false);
+    const [openDetailsModal, setOpenDetailsModal] = useState(false);
     const [department, setDepartment] = useState('');
-    const [year, setYear] = useState(0);
-    const [amount, setAmount] = useState(0);
+    const [departments, setDepartments] = useState<{ id: number; name: string }[]>([]);
+    const [departmentId, setDepartmentId] = useState<number>(0);
+    const [subAmount, setSubAmount] = useState(0);
+    const [budgetCategory, setBudgetCategory] = useState('');
+    const [budgetCategories, setBudgetCategories] = useState<IBudgetCategory[]>([]);
     const [description, setDescription] = useState('');
+    const [selectedDetailRowId, setSelectedDetailRowId] = useState<number | null>(null);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     };
 
+    const handleDetailRowSelection = (newSelectionModel: GridRowSelectionModel) => {
+        setSelectedDetailRowId(newSelectionModel.length > 0 ? newSelectionModel[0] as number : null);
+    };
+
     const columns: GridColDef[] = [
-        {field: 'department', headerName: 'Department', flex: 1.5, headerAlign: "center"},
-        {field: 'year', headerName: 'Year', flex: 1.5, headerAlign: "center"},
-        {field: 'amount', headerName: 'Amount', flex: 1.5, headerAlign: "center", type: 'number'},
+        {field: 'departmentName', headerName: 'Department', flex: 1.5, headerAlign: "center"},
+        {field: 'totalAmount', headerName: 'Total Amount', flex: 1.5, headerAlign: "center", type: 'number'},
         {
             field: 'spentAmount',
             headerName: 'Spent Amount',
@@ -64,8 +80,13 @@ const BudgetPage: React.FC = () => {
                 );
             },
         },
-        {field: 'description', headerName: 'Description', flex: 1.5, headerAlign: "center"},
     ];
+
+    useEffect(() => {
+        dispatch(fetchGetDepartmentList()).then(data => {
+            setDepartments(data.payload.data);
+        });
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(
@@ -91,26 +112,58 @@ const BudgetPage: React.FC = () => {
 
     const handleOpenSaveBudgetModal = () => {
         setOpenSaveBudgetModal(true);
+        dispatch(fetchGetBudgetCategories()).then(data => {
+            setBudgetCategories(data.payload.data);
+        });
+        dispatch(fetchGetDepartmentList()).then(data => {
+            setDepartments(data.payload.data);
+        });
+    };
+
+    const handleOpenUpdateBudgetModalFromDetails = async () => {
+        if (!selectedDetailRowId) return;
+        setOpenDetailsModal(false);
+        setOpenSaveBudgetModal(true);
+        setIsUpdating(true);
+        dispatch(fetchGetBudgetCategories()).then(data => {
+            setBudgetCategories(data.payload.data);
+        });
+        dispatch(fetchFindByIdBudget(selectedDetailRowId)).then(data => {
+            setDepartment(data.payload.data.department);
+            setSubAmount(data.payload.data.amount);
+            setDescription(data.payload.data.description);
+        });
     };
 
     const handleOpenUpdateBudgetModal = async () => {
         const selectedId = selectedRowIds[0];
         setOpenSaveBudgetModal(true);
         setIsUpdating(true);
+        dispatch(fetchGetBudgetCategories()).then(data => {
+            setBudgetCategories(data.payload.data);
+        });
         dispatch(fetchFindByIdBudget(selectedId)).then(data => {
             setDepartment(data.payload.data.department);
-            setYear(data.payload.data.year);
-            setAmount(data.payload.data.amount);
-            setDescription(data.payload.data.description);
+            setSubAmount(data.payload.data.amount);
         });
+    };
+
+    const handleFetchDetails = async () => {
+        setSelectedDetailRowId(null);
+        const selectedId = selectedRowIds[0];
+        const selectedDepartmentName = budgetList.find(budget => budget.id === selectedId)?.departmentName;
+        if (selectedDepartmentName) {
+            const data = await dispatch(fetchGetBudgetByDepartmentName(selectedDepartmentName));
+            setBudgetListByDepartmentId(data.payload.data);
+            setOpenDetailsModal(true);
+        }
     };
 
     const handleSaveBudget = () => {
         setLoading(true);
-        dispatch(fetchSaveBudget({department, year, amount, description})).then(() => {
+        dispatch(fetchSaveBudget({departmentId, subAmount, budgetCategory, description})).then(() => {
             setDepartment('');
-            setYear(0);
-            setAmount(0);
+            setSubAmount(0);
             setDescription('');
             setLoading(false);
             Swal.fire({
@@ -126,16 +179,14 @@ const BudgetPage: React.FC = () => {
     const handleUpdateBudget = () => {
         dispatch(fetchUpdateBudget(
             {
-                id: selectedRowIds[0],
-                department,
-                year,
-                amount,
+                id: selectedDetailRowId!,
+                departmentId,
+                subAmount,
+                budgetCategory,
                 description
             })
         ).then(() => {
-            setDepartment('');
-            setYear(0);
-            setAmount(0);
+            setSubAmount(0);
             setDescription('');
             setIsUpdating(false);
             setOpenSaveBudgetModal(false);
@@ -146,50 +197,52 @@ const BudgetPage: React.FC = () => {
             });
             fetchBudgetData();
         });
+        setSelectedDetailRowId(null);
     };
 
     const handleDeleteBudget = async () => {
-        for (let id of selectedRowIds) {
-            const selectedBudget = budgets.find(
-                (selectedBudget) => selectedBudget.id === id
-            );
-            if (!selectedBudget) continue;
+        setOpenDetailsModal(false);
+        if (!selectedDetailRowId) return;
 
-            try {
-                const result = await Swal.fire({
-                    title: t("swal.areyousure"),
-                    text: t("financeService.deleteproduct"),
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: t("financeService.yesdeleteit"),
-                    cancelButtonText: t("financeService.cancel"),
-                });
+        const selectedBudget = budgetListByDepartmentId.find(
+            (selectedBudget) => selectedBudget.id === selectedDetailRowId
+        );
+        if (!selectedBudget) return;
 
-                if (result.isConfirmed) {
-                    const data = await dispatch(fetchDeleteBudget(selectedBudget.id));
+        try {
+            const result = await Swal.fire({
+                title: t("swal.areyousure"),
+                text: t("financeService.deleteproduct"),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: t("financeService.yesdeleteit"),
+                cancelButtonText: t("financeService.cancel"),
+            });
 
-                    if (data.payload.message !== "Success") {
-                        await Swal.fire({
-                            title: t("swal.error"),
-                            text: data.payload.message,
-                            icon: "error",
-                            confirmButtonText: t("swal.ok"),
-                        });
-                        return;
-                    } else {
-                        await Swal.fire({
-                            title: t("financeService.deleted"),
-                            text: t("financeService.budgetdeleted"),
-                            icon: "success",
-                        });
-                        fetchBudgetData();
-                    }
+            if (result.isConfirmed) {
+                const data = await dispatch(fetchDeleteBudget(selectedBudget.id));
+
+                if (data.payload.message !== "Success") {
+                    await Swal.fire({
+                        title: t("swal.error"),
+                        text: data.payload.message,
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+                    return;
+                } else {
+                    await Swal.fire({
+                        title: t("financeService.deleted"),
+                        text: t("financeService.budgetdeleted"),
+                        icon: "success",
+                    });
+                    fetchBudgetData();
                 }
-            } catch (error) {
-                localStorage.removeItem("token");
             }
+        } catch (error) {
+            localStorage.removeItem("token");
         }
-        setSelectedRowIds([]);
+        setSelectedDetailRowId(null);
     };
 
     return (
@@ -257,10 +310,10 @@ const BudgetPage: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleOpenUpdateBudgetModal}
+                        onClick={handleFetchDetails}
                         variant="contained"
-                        color="info"
-                        disabled={loading || selectedRowIds.length > 1 || selectedRowIds.length === 0}
+                        color="secondary"
+                        disabled={loading || selectedRowIds.length != 1}
                         sx={{
                             width: '100%',
                             height: '100%',
@@ -269,24 +322,7 @@ const BudgetPage: React.FC = () => {
                             justifyContent: 'center'
                         }}
                     >
-                        {t("financeService.update")}
-                    </Button>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3} lg={2}>
-                    <Button
-                        onClick={handleDeleteBudget}
-                        variant="contained"
-                        color="error"
-                        disabled={loading || selectedRowIds.length === 0}
-                        sx={{
-                            width: '100%',
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        {t("financeService.delete")}
+                        {t("financeService.details")}
                     </Button>
                 </Grid>
             </Grid>
@@ -298,24 +334,38 @@ const BudgetPage: React.FC = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
+                                select
                                 fullWidth
-                                label={t("financeService.department")}
+                                //label={t("financeService.department")}
                                 variant="outlined"
-                                value={department}
-                                onChange={(e) => setDepartment(e.target.value)}
+                                value={departmentId}
+                                onChange={(e) => setDepartmentId(Number(e.target.value))}
+                                SelectProps={{
+                                    native: true,
+                                }}
                                 required
-                            />
+                            >
+                                <option value="">Select Department</option>
+                                {departments.map((dept) => (
+                                    <option key={dept.id} value={dept.id}>
+                                        {dept.name}
+                                    </option>
+                                ))}
+                            </TextField>
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
+                            <Select
+                                value={budgetCategory}
                                 fullWidth
-                                label={t("financeService.year")}
-                                variant="outlined"
-                                type="number"
-                                value={year}
-                                onChange={(e) => setYear(Number(e.target.value))}
-                                required
-                            />
+                                onChange={(e) => setBudgetCategory(e.target.value)}
+                                labelId={t("financeService.category")}
+                            >
+                                {Object.values(budgetCategories).map(category => (
+                                    <MenuItem key={category.id} value={category.id}>
+                                        {category.budgetCategory}
+                                    </MenuItem>
+                                ))}
+                            </Select>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -323,8 +373,8 @@ const BudgetPage: React.FC = () => {
                                 label={t("financeService.amount")}
                                 variant="outlined"
                                 type="number"
-                                value={amount}
-                                onChange={(e) => setAmount(Number(e.target.value))}
+                                value={subAmount}
+                                onChange={(e) => setSubAmount(Number(e.target.value))}
                                 required
                             />
                         </Grid>
@@ -333,6 +383,7 @@ const BudgetPage: React.FC = () => {
                                 fullWidth
                                 label={t("financeService.description")}
                                 variant="outlined"
+                                margin="normal"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                                 required
@@ -341,9 +392,49 @@ const BudgetPage: React.FC = () => {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpenSaveBudgetModal(false)}>{t("swal.cancel")}</Button>
+                    <Button onClick={() => setOpenSaveBudgetModal(false)}>{t("financeService.cancel")}</Button>
                     <Button onClick={isUpdating ? handleUpdateBudget : handleSaveBudget}>
                         {isUpdating ? t("financeService.update") : t("financeService.save")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog open={openDetailsModal} onClose={() => setOpenDetailsModal(false)} maxWidth="md" fullWidth>
+                <DialogTitle>{t("financeService.budgetdetails")}</DialogTitle>
+                <DialogContent>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>{t("financeService.category")}</TableCell>
+                                    <TableCell>{t("financeService.amount")}</TableCell>
+                                    <TableCell>{t("financeService.description")}</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {budgetListByDepartmentId.map((budget) => (
+                                    <TableRow
+                                        key={budget.id}
+                                        selected={selectedDetailRowId === budget.id}
+                                        onClick={() => handleDetailRowSelection([budget.id])}
+                                    >
+                                        <TableCell>{budget.budgetCategory}</TableCell>
+                                        <TableCell>{budget.subAmount}</TableCell>
+                                        <TableCell>{budget.description}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleOpenUpdateBudgetModalFromDetails} disabled={!selectedDetailRowId}>
+                        {t("financeService.update")}
+                    </Button>
+                    <Button onClick={handleDeleteBudget} disabled={!selectedDetailRowId}>
+                        {t("financeService.delete")}
+                    </Button>
+                    <Button onClick={() => setOpenDetailsModal(false)} color="primary">
+                        {t("financeService.cancel")}
                     </Button>
                 </DialogActions>
             </Dialog>
