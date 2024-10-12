@@ -18,6 +18,7 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import {
+    fetchDeleteEmployee,
     fetchFindAllDepartment,
     fetchGetEmployeeHierarchy,
     fetchSaveSubordinate, fetchSaveTopLevelManager
@@ -30,7 +31,8 @@ import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
 import AddIcon from "@mui/icons-material/Add";
-import {selectedGridRowsSelector} from "@mui/x-data-grid"; // PrimeReact Button bileşenini ekliyoruz
+import {selectedGridRowsSelector} from "@mui/x-data-grid";
+import {Delete} from "@mui/icons-material"; // PrimeReact Button bileşenini ekliyoruz
 
 interface CustomTreeNode extends TreeNode {
     type?: string;
@@ -81,67 +83,7 @@ export default function SelectionDemo() {
 
     };
 
-    /*const handleOpenUpdateModal = async () => {
-        setAddSubordinateModal(true);
-        setIsUpdating(true)
 
-        dispatch(fetchFindByIdEmployee(selectedRowIds[0])).then((data) => {
-            setName(data.payload.data.name)
-            setSurname(data.payload.data.surname)
-            setEmail(data.payload.data.email)
-            setIdentityNo(data.payload.data.identityNo)
-            setPhoneNo(data.payload.data.phoneNo)
-            setSelectedDepartmentId(data.payload.data.department.id)
-            setSelectedManagerId(data.payload.data.manager.id)
-        })
-    }
-    const handleUpdate = async () => {
-        setIsUpdating(true)
-        dispatch(fetchUpdateEmployee({
-            id: selectedRowIds[0],
-            name: name,
-            surname: surname,
-            identityNo: identityNo,
-            phoneNo: phoneNo,
-            managerId: selectedManagerId,
-            departmentId: selectedDepartmentId
-        })).then((data) => {
-            if (data.payload.message === "Success") {
-                setName('')
-                setSurname('')
-                setEmail('')
-                setIdentityNo('')
-                setPhoneNo('')
-                setSelectedDepartmentId(0)
-                setSelectedManagerId(0)
-                setAddSubordinateModal(false);
-                Swal.fire({
-                    title: t("stockService.updated"),
-                    text: t("stockService.successfullyupdated"),
-                    icon: "success",
-                });
-                setIsUpdating(false)
-            } else {
-
-                setName('')
-                setSurname('')
-                setEmail('')
-                setIdentityNo('')
-                setPhoneNo('')
-                setSelectedDepartmentId(0)
-                setSelectedManagerId(0)
-                setAddSubordinateModal(false);
-                Swal.fire({
-                    title: t("swal.error"),
-                    text: data.payload.message,
-                    icon: "error",
-                    confirmButtonText: t("swal.ok"),
-                });
-                setIsUpdating(false)
-            }
-        })
-
-    }*/
 
     const handleSaveEmployee = async () => {
         setIsSaving(true)
@@ -234,7 +176,7 @@ export default function SelectionDemo() {
             })
     };
 
-   /* const handleDelete = async () => {
+    const handleDelete = async () => {
         setIsDeleting(true);
         const result = await Swal.fire({
             title: t("swal.areyousure"),
@@ -244,14 +186,9 @@ export default function SelectionDemo() {
             confirmButtonText: t("stockService.yesdeleteit"),
             cancelButtonText: t("stockService.cancel"),
         });
-        for (let id of selectedRowIds) {
-            const selectedCustomer = employees.find(
-                (selectedCustomer) => selectedCustomer.id === id
-            );
-            if (!selectedCustomer) continue;
             try {
                 if (result.isConfirmed) {
-                    const data = await dispatch(fetchDeleteEmployee(selectedCustomer.id));
+                    const data = await dispatch(fetchDeleteEmployee(selectedEmployeeId));
 
                     if (data.payload.message !== "Success") {
                         await Swal.fire({
@@ -260,7 +197,7 @@ export default function SelectionDemo() {
                             icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
-                        setSelectedRowIds([]);
+
                         setIsDeleting(false);
                         return;
                     }
@@ -268,7 +205,7 @@ export default function SelectionDemo() {
             } catch (error) {
                 localStorage.removeItem("token");
             }
-        }
+
         if (result.isConfirmed) {
             await Swal.fire({
                 title: t("stockService.deleted"),
@@ -276,13 +213,12 @@ export default function SelectionDemo() {
                 icon: "success",
             });
         }
-        setSelectedRowIds([]);
         setIsDeleting(false);
-    }*/
+    }
 
     useEffect(() => {
         fetchDatas();
-    }, [dispatch, isSaving ,isUpdating]);
+    }, [dispatch, isSaving ,isUpdating,isDeleting]);
 
     const fetchDatas = () => {
         setLoading(true);
@@ -307,20 +243,34 @@ export default function SelectionDemo() {
 
             {/* Seçili olan düğüme sağ üstte + butonu ekliyoruz */}
             {selection && selection.data?.name === node.data?.name && (
-                <IconButton
-                    color="primary"
-                    size="small"
-                    style={{ position: 'absolute', top: '-10px', right: '-10px' , backgroundColor: 'white',}}
-                    onClick={() => handleOpenAddSubordinateModal()}
-                >
-                    <AddIcon /> {/* + işaretini göstermek için Material UI Add ikonu */}
-                </IconButton>
+                <>
+                    <IconButton
+                        color="primary"
+                        size="small"
+                        style={{ position: 'absolute', top: '-10px', right: '-10px', backgroundColor: 'white' }}
+                        onClick={() => handleOpenAddSubordinateModal()}
+                    >
+                        <AddIcon /> {/* + işaretini göstermek için Material UI Add ikonu */}
+                    </IconButton>
+
+                    {/* Sol üst köşeye silme butonu ekliyoruz */}
+                    <IconButton
+                        color="primary"
+                        size="small"
+                        style={{ position: 'absolute', top: '-10px', left: '-10px', backgroundColor: 'white' }}
+                        onClick={() => handleDelete()}
+                    >
+                        <Delete /> {/* Çöp kutusu simgesini göstermek için Material UI Delete ikonu */}
+                    </IconButton>
+                </>
             )}
         </div>
     );
+
     const handleSelectionChange = (e: OrganizationChartSelectionChangeEvent) => {
-        setSelection(e.data as CustomTreeNode || null); // Sadece bir düğüm seçilebilir
-        setSelectedEmployeeId(selection?.data?.id || 0)
+        const selectedNode = e.data as CustomTreeNode || null;
+        setSelection(selectedNode); // Seçimi güncelliyoruz
+        setSelectedEmployeeId(selectedNode?.data?.id || selectedEmployeeId); // Güncel seçimden id alıyoruz
     };
 
     return (
