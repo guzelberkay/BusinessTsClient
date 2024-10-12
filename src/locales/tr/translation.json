@@ -285,7 +285,7 @@
     "budget": "Bütçe $",
     "value": "Değer",
     "stage": "Aşama",
-    "probability": "Olasılık",
+    "probability": "Olasılık (%)",
     "search-by-type": "Tipe Göre Ara",
     "type": "Tip",
     "date": "Tarih",
@@ -325,7 +325,11 @@
     "added_ticket": "Bilet Başarıyla Eklendi!",
     "updated_ticket": "Bilet güncellendi!",
     "deleted-sales-activity": "Satış aktivitesi silindi!",
-    "added_sales_activity": "Satış aktivitesi eklendi!"
+    "added_sales_activity": "Satış aktivitesi eklendi!",
+    "details": "Detay",
+    "opportunity_details": "Fırsat Detayları",
+    "no-name": "Bilgi yok",
+    "no-founded-customer": "Henüz bu fırsatta müşteri yok!"
   },
   "hrmService": {
     "firstName": "Ad",
