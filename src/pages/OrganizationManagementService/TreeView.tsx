@@ -5,7 +5,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    FormControl,
+    FormControl, Grid, Grid2,
     IconButton,
     InputLabel,
     Select,
@@ -20,7 +20,7 @@ import 'primeicons/primeicons.css';
 import {
     fetchFindAllDepartment,
     fetchGetEmployeeHierarchy,
-    fetchSaveSubordinate
+    fetchSaveSubordinate, fetchSaveTopLevelManager
 } from '../../store/feature/organizationManagementSlice.tsx';
 import {AppDispatch} from '../../store';
 import {useDispatch} from 'react-redux';
@@ -29,7 +29,8 @@ import {IDepartment} from "../../model/OrganizationManagementService/IDepartment
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
-import AddIcon from "@mui/icons-material/Add"; // PrimeReact Button bileşenini ekliyoruz
+import AddIcon from "@mui/icons-material/Add";
+import {selectedGridRowsSelector} from "@mui/x-data-grid"; // PrimeReact Button bileşenini ekliyoruz
 
 interface CustomTreeNode extends TreeNode {
     type?: string;
@@ -188,6 +189,51 @@ export default function SelectionDemo() {
             })
     };
 
+    const handleSaveTopLevelManager = async () => {
+        setIsSaving(true)
+        dispatch(fetchSaveTopLevelManager({
+            name: name,
+            surname: surname,
+            email: email,
+            identityNo: identityNo,
+            phoneNo: phoneNo,
+            departmentId: selectedDepartmentId
+        }))
+            .then((data) => {
+                if (data.payload.message === "Success") {
+                    setName('')
+                    setSurname('')
+                    setEmail('')
+                    setIdentityNo('')
+                    setPhoneNo('')
+                    setAddSubordinateModal(false);
+                    Swal.fire({
+                        title: t("swal.success"),
+                        text: t("stockService.successfullyadded"),
+                        icon: "success",
+                    });
+                    setIsSaving(false)
+                    fetchDatas();
+                } else {
+
+                    setName('')
+                    setSurname('')
+                    setEmail('')
+                    setIdentityNo('')
+                    setPhoneNo('')
+                    setAddSubordinateModal(false);
+                    Swal.fire({
+                        title: t("swal.error"),
+                        text: data.payload.message,
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+                    setIsSaving(false)
+                    fetchDatas();
+                }
+            })
+    };
+
    /* const handleDelete = async () => {
         setIsDeleting(true);
         const result = await Swal.fire({
@@ -279,9 +325,26 @@ export default function SelectionDemo() {
 
     return (
         <div className="card overflow-x-auto">
-            {/* Yükleniyor durumunu kontrol ediyoruz */}
-            {loading ? (
-                <p>Loading...</p>
+            {/* Yükleniyor durumunu ve data2de data var mı yok mu kontrol ediyoruz. Yoksa toplevelmanager oluşturmak için buton koyuldu. */}
+            {loading  || data2.length === 0 ? (
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <Grid item>
+                        <Button
+                            onClick={() => handleOpenAddSubordinateModal()}
+                            sx={{ marginTop: '15px', textAlign: 'center' }}
+                            color="success"
+                            variant="contained"
+                        >
+                            {t('stockService.addtoplevelmanager')}
+                        </Button>
+                    </Grid>
+                </Grid>
             ) : (
                 // Veri yüklendikten sonra OrganizationChart bileşenini render ediyoruz
                 <OrganizationChart
@@ -302,7 +365,7 @@ export default function SelectionDemo() {
                         <Select
                             value={selectedDepartmentId}
                             onChange={event => setSelectedDepartmentId((Number)(event.target.value))}
-                            label="Product Categories"
+                            label="Departments"
                         >
                             {Object.values(departments).map(department => (
                                 <MenuItem key={department.id} value={department.id}>
@@ -364,9 +427,14 @@ export default function SelectionDemo() {
                         setAddSubordinateModal(false), setIsUpdating(false)
                     }} color="error" variant="contained">{t('stockService.cancel')}</Button>
 
+
+                    {data2.length === 0 ? <Button onClick={() => handleSaveTopLevelManager()} color="success" variant="contained"
+                                                  disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === ''  || selectedDepartmentId === 0}>{t('stockService.savemanager')}</Button>
+                    :
+
                         <Button onClick={() => handleSaveEmployee()} color="success" variant="contained"
                                 disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === ''  || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
-
+                    }
 
                 </DialogActions>
             </Dialog>

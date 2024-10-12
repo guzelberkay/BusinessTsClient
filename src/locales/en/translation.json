@@ -213,7 +213,9 @@
     "pleaseselectmanager": "Please Select Manager",
     "addemployee": "Add Employee",
     "addmanager": "Add Manager",
-    "adddepartment": "Add Department"
+    "adddepartment": "Add Department",
+    "addtoplevelmanager": "Add Top Level Manager",
+    "savemanager": "Save Manager"
   },
   "dashboard": {
     "numberofemployees": "Number of Employees ",

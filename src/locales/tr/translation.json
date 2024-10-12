@@ -216,7 +216,9 @@
     "pleaseselectmanager": "Lütfen Yönetici Seciniz",
     "addemployee": "Çalışan Ekle",
     "addmanager": "Yönetici Ekle",
-    "adddepartment": "Departman Ekle"
+    "adddepartment": "Departman Ekle",
+    "addtoplevelmanager": "Üst Seviye Yönetici Ekle",
+    "savemanager": "Yöneticiyi Kaydet"
   },
   "dashboard": {
     "numberofemployees": "Çalışan Sayısı",
