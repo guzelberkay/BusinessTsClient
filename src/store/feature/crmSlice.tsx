@@ -7,6 +7,7 @@ import {ICrmOpportunity} from "../../model/ICrmOpportunity.tsx";
 import {ICrmSalesActivity} from "../../model/ICrmSalesActivity.tsx";
 import {ICrmTicket} from "../../model/ICrmTicket.tsx";
 import {IResponse} from "../../model/IResponse";
+import {ICrmOpportunityDetail} from "../../model/ICrmOpportunityDetail";
 
 
 interface ICrmState {
@@ -15,6 +16,7 @@ interface ICrmState {
     opportunityList: ICrmOpportunity[]
     salesActivityList: ICrmSalesActivity[]
     ticketList: ICrmTicket[]
+    opportunityDetail: ICrmOpportunityDetail[]
 }
 
 const initialCrmState: ICrmState = {
@@ -22,7 +24,8 @@ const initialCrmState: ICrmState = {
     marketingCampaignList: [],
     opportunityList: [],
     salesActivityList: [],
-    ticketList: []
+    ticketList: [],
+    opportunityDetail: [],
 }
 
 interface IfetchSaveCustomer {
@@ -306,12 +309,11 @@ export const fetchFindMarketingCampaignById = createAsyncThunk(
 //# region Opportunity Operations
 
 interface IFetchSaveOpportunity {
-    customerId: number;
     name: string;
     description: string;
     value: number;
     stage: string;
-    probability: number;
+    probability: bigint;
 }
 
 export const fetchSaveOpportunity = createAsyncThunk(
@@ -323,8 +325,7 @@ export const fetchSaveOpportunity = createAsyncThunk(
             value: payload.value,
             stage: payload.stage,
             probability: payload.probability,
-            customerId: payload.customerId,
-
+       
         };
 
         const result = await axios.post(
@@ -340,6 +341,34 @@ export const fetchSaveOpportunity = createAsyncThunk(
         return result.data;
     }
 );
+interface IFetchCustomerOpportunity {
+    id: number
+    customers: number[]
+}
+export const fetchSaveCustomerOpportunity = createAsyncThunk(
+    'crm/fetchSaveCustomerOpportunity',
+    async (payload: IFetchCustomerOpportunity) => {
+        const values = {
+            id: payload.id,
+            customers: payload.customers
+        }
+
+        const result = await axios.put(
+            RestApis.crm_service_opportunity + "/save-customer",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+        
+    }
+);
+
+
 export const fetchDeleteOpportunity = createAsyncThunk(
     'crm/fetchDeleteOpportunity',
     async (id: number) => {
@@ -361,7 +390,7 @@ interface IFetchUpdateOpportunity {
     description: string;
     value: number;
     stage: string;
-    probability: number;
+    probability: bigint;
 }
 export const fetchUpdateOpportunity = createAsyncThunk(
     'crm/fetchUpdateOpportunity',
@@ -430,7 +459,23 @@ export const fetchFindOpportunityById = createAsyncThunk(
         );
         return result.data;
     }
+);
+export const fetchGetDetailsOpportunity = createAsyncThunk(
+    'crm/fetchGetDetailsOpportunity',
+    async (id: number) => {
+        const result = await axios.post(
+            RestApis.crm_service_opportunity + "/get-details?id=" + id, null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
 )
+
 //# endregion Opportunity Operations
 //# SalesActivity Operations
 interface IFetchSaveSalesActivity {

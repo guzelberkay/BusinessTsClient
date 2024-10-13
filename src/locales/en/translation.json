@@ -301,7 +301,7 @@
     "budget": "Budget $",
     "value": "Value",
     "stage": "Stage",
-    "probability": "Probability",
+    "probability": "Probability (%)",
     "search-by-type": "Search by Type",
     "type": "Type",
     "date": "Date",
@@ -341,7 +341,11 @@
     "added_ticket": "Ticket Saved Successfully!",
     "updated_ticket": "Ticket Updated Successfully!",
     "deleted-sales-activity": "Sales Activity Deleted Successfully!",
-    "added_sales_activity": "Sales Activity Saved Successfully!"
+    "added_sales_activity": "Sales Activity Saved Successfully!",
+    "details": "Details",
+    "opportunity_details": "Opportunity Details",
+    "no-name": "No Information",
+    "no-founded-customer": "No founded customer"
   },
   "hrmService": {
     "firstName": "Name",

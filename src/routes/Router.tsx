@@ -273,10 +273,6 @@ export default function Router() {
                     element: <PrivateRoute element={<TicketPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
                 },
                 {
-                    path: '/opportunity/save',
-                    element: <PrivateRoute element={<OpportunitySavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
-                },
-                {
                     path: '/sales-activity/save',
                     element: <PrivateRoute element={<SalesActivitySavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
                 },
