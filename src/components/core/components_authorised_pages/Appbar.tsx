@@ -207,7 +207,7 @@ function Appbar({
         console.log("Connected to WebSocket");
 
         // Unread count'u almak için ilk abone olma
-        stompClient.subscribe("/topic/unreadNotifications", (message) => {
+        stompClient.subscribe("/topic/unreadcountNotifications", (message) => {
           const newCount = JSON.parse(message.body);
           setUnreadCount(newCount); // Sunucudan alınan yeni unread count
         });
