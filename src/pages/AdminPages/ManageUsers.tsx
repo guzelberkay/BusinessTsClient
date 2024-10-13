@@ -8,16 +8,20 @@ import {
   ListItemButton,
   FormControl,
   Switch,
-  Box
+  Box,
+  Pagination,
+  MenuItem,
+  Select
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { AppDispatch, useAppSelector } from '../../store';
 import { useDispatch } from 'react-redux';
-import { fetchAddRoleToUser, fetchChangeUserEmail, fetchChangeUserPassword, fetchSaveUser, fetchUpdateUserStatus, fetchUserList } from '../../store/feature/userSlice';
+import { fetchAddRoleToUser, fetchChangeUserEmail, fetchChangeUserPassword, fetchGetAllUsersPageable, fetchSaveUser, fetchUpdateUserStatus, fetchUserList } from '../../store/feature/userSlice';
 import { IUser } from '../../model/IUser';
 import { IRole } from '../../model/IRole';
 import { fetchAsiggableRoleList } from '../../store/feature/roleSlice';
 import { GroupAdd } from '@mui/icons-material';
+import { IPageableUserList } from '../../model/IPageableUserList';
 
 function ManageUsers() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -30,7 +34,12 @@ function ManageUsers() {
   const [newEmail, setNewEmail] = useState(''); 
   const [newPassword, setNewPassword] = useState('');
   const userList: IUser[] = useAppSelector((state) => state.userSlice.userList);
+  const [userListPageable, setUserListPageable] = useState<IUser[]>([]);
   const availableRoles: IRole[] = useAppSelector((state) => state.roleSlice.assigableRoleList);
+  const [currentPage, setCurrentPage] = useState(0);  // Mevcut sayfa
+  const [totalPages, setTotalPages] = useState(1);    // Toplam sayfa sayısı
+  const [totalElements, setTotalElements] = useState(0); // Toplam eleman sayısı
+  const [pageSize, setPageSize] = useState(5);  // Sayfa başına kullanıcı sayısı (sabitleyebilir veya değiştirebilirsiniz)
   const [newUser, setNewUser] = useState({
     firstName: '',
     lastName: '',
@@ -39,18 +48,32 @@ function ManageUsers() {
     roleIds: [] || null
   });
   const dispatch = useDispatch<AppDispatch>();
-
   useEffect(() => {
-    dispatch(fetchUserList()).then((data) => {
+    dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
       if (data.payload.code === 200) {
-        console.log(data.payload.data);
+        const userData: IPageableUserList = data.payload.data;
+        setTotalPages(userData.totalPages);
+        setTotalElements(userData.totalElements);
+        setUserListPageable(userData.userList);
+        console.log('userListPageable : ',userData);
       }
     });
-  }, [dispatch]);
+  }, [dispatch, currentPage, pageSize,searchTerm]);
+
+  //useEffect(() => {
+  //  dispatch(fetchUserList()).then((data) => {
+  //    if (data.payload.code === 200) {
+  //      console.log(data.payload.data);
+  //    }
+  //  });
+  //}, [dispatch]);
 
   const filteredUsers = userList.filter(user =>
     user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   const handleOpenDialog = (userId: number) => {
     dispatch(fetchAsiggableRoleList(userId)).then((data) => {
@@ -82,7 +105,14 @@ function ManageUsers() {
     if (selectedRoleId !== null) {
       dispatch(fetchAddRoleToUser({ userId: selectedUserId, roleId: selectedRoleId })).then((data) => {
         if (data.payload.code === 200) {
-          dispatch(fetchUserList());
+          dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+            if (data.payload.code === 200) {
+              const userData: IPageableUserList = data.payload.data;
+              setTotalPages(userData.totalPages);
+              setTotalElements(userData.totalElements);
+              setUserListPageable(userData.userList);
+            }
+          })
         }
       });
     }
@@ -105,7 +135,14 @@ function ManageUsers() {
   const handleEditEmail = () => {
     dispatch(fetchChangeUserEmail({ id: selectedUserId, email: newEmail })).then((data) => {
       if (data.payload.code === 200) {
-        dispatch(fetchUserList());
+        dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+          if (data.payload.code === 200) {
+            const userData: IPageableUserList = data.payload.data;
+            setTotalPages(userData.totalPages);
+            setTotalElements(userData.totalElements);
+            setUserListPageable(userData.userList);
+          }
+        })
       }
     });
     handleCloseEditDialog(); 
@@ -115,7 +152,14 @@ function ManageUsers() {
     dispatch(fetchChangeUserPassword({ userId: selectedUserId})).then((data) => {
       if (data.payload.code === 200) {
         alert(data.payload.message);
-        dispatch(fetchUserList());
+        dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+          if (data.payload.code === 200) {
+            const userData: IPageableUserList = data.payload.data;
+            setTotalPages(userData.totalPages);
+            setTotalElements(userData.totalElements);
+            setUserListPageable(userData.userList);
+          }
+        })
         setNewPassword('');
       }
     })
@@ -126,13 +170,27 @@ function ManageUsers() {
     if (user.status === 'ACTIVE') {
         dispatch(fetchUpdateUserStatus({ userId: user.id, status: 'INACTIVE' })).then((data) => {
             if (data.payload.code === 200) {
-                dispatch(fetchUserList());
+              dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+                if (data.payload.code === 200) {
+                  const userData: IPageableUserList = data.payload.data;
+                  setTotalPages(userData.totalPages);
+                  setTotalElements(userData.totalElements);
+                  setUserListPageable(userData.userList);
+                }
+              })
             }
         });
     } else {
         dispatch(fetchUpdateUserStatus({ userId: user.id, status: 'ACTIVE' })).then((data) => {
             if (data.payload.code === 200) {
-                dispatch(fetchUserList());
+              dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+                if (data.payload.code === 200) {
+                  const userData: IPageableUserList = data.payload.data;
+                  setTotalPages(userData.totalPages);
+                  setTotalElements(userData.totalElements);
+                  setUserListPageable(userData.userList);
+                }
+              })
             }
         });
     }
@@ -155,7 +213,14 @@ function ManageUsers() {
     console.log(newUser);
     dispatch(fetchSaveUser(newUser)).then((data) => {
       if (data.payload.code === 200) {
-        dispatch(fetchUserList());
+        dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+          if (data.payload.code === 200) {
+            const userData: IPageableUserList = data.payload.data;
+            setTotalPages(userData.totalPages);
+            setTotalElements(userData.totalElements);
+            setUserListPageable(userData.userList);
+          }
+        })
       }
     });
     handleCloseNewUserDialog();
@@ -189,7 +254,7 @@ function ManageUsers() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredUsers.map((user, index) => (
+            {userListPageable.map((user, index) => (
               <TableRow key={user.id}
               sx={{
                 backgroundColor: index % 2 === 0 ? 'action.hover' : 'background.paper', // Alternatif satır rengi
@@ -244,6 +309,27 @@ function ManageUsers() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+        <Pagination
+          count={totalPages}
+          page={currentPage + 1} // Pagination component 1-indexed çalışıyor
+          onChange={(event, value) => handlePageChange(value - 1)}  // 0-indexed için ayar
+          color="primary"
+        />
+        <FormControl variant="outlined" sx={{ marginBottom: 2 }}>
+            <Select 
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                setCurrentPage(0); // Sayfa boyutu değiştiğinde ilk sayfaya dön
+              }}
+            >
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+            </Select>
+          </FormControl>
+      </Box>
 
       {/* Rol Ekleme Pop-up  */}
       <Dialog open={openDialog} 

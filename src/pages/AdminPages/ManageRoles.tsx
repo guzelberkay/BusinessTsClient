@@ -137,7 +137,7 @@ function ManageRoles() {
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{role.status}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
                   <Box sx={{ justifyContent: 'center', display: 'flex' }}>
-                    <Tooltip title={role.status === 'ACTIVE' ? 'Rolü Pasifleştir ' : 'Rolü Aktifleştir'}>
+                    <Tooltip title={role.status === 'ACTIVE' ? 'Rolü Pasifleştir ' : 'Rolü Aktifleştir'} arrow>
                       <Switch
                         checked={role.status === 'ACTIVE'}
                         onChange={() => handleStatusChange(role)}

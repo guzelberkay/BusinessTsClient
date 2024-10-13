@@ -3,11 +3,13 @@ import { IUser } from "../../model/IUser";
 import axios, { AxiosResponse } from "axios";
 import { IResponse } from "../../model/IResponse";
 import RestApis from "../../config/RestApis";
+import { IPageableUserList } from "../../model/IPageableUserList";
 
 interface IUserState {
     user: IUser
     userRoleList: string[]
     userList: IUser[]
+    pagableUserList: IPageableUserList
     isLoading: boolean
 }
 
@@ -22,6 +24,12 @@ const initialUserState: IUserState = {
     },
     userRoleList: [],
     userList: [],
+    pagableUserList: {
+        userList: [],
+        totalElements: 0,
+        totalPages: 0,
+        currentPage: 0
+    },
     isLoading: false
     
 };
@@ -134,6 +142,7 @@ export const fetchUserList = createAsyncThunk(
     'user/fetchUserList',
     async () => {
         const result = await axios.get(RestApis.user_management_service_user+"/get-all-users",
+            
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -262,6 +271,22 @@ export const fetchUpdateUserStatus = createAsyncThunk(
     }
 )
 
+export const fetchGetAllUsersPageable = createAsyncThunk(
+    'user/fetchGetAllUsersPageable',
+    async (payload: {searchText: string ,page: number, size: number}) => {
+        const result = await axios.post(RestApis.user_management_service_user+"/get-users-with-page",
+            payload,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                }
+            }
+        );
+        return result.data;
+    }
+)
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -291,6 +316,12 @@ const userSlice = createSlice({
                 state.user = action.payload.data;
             }
         });
+        builder.addCase(fetchGetAllUsersPageable.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            if(action.payload.code == 200){
+                state.pagableUserList = action.payload.data;
+                state.userList = action.payload.data.userList;
+            }
+        })
     }
 });
 
