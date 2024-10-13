@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     DataGrid,
     GridColDef,
@@ -11,18 +11,19 @@ import {
 
 } from "@mui/material";
 
-import {useDispatch} from "react-redux";
-import {AppDispatch, useAppSelector} from "../../store/index.tsx";
+import { useDispatch } from "react-redux";
+import { AppDispatch, useAppSelector } from "../../store/index.tsx";
 
 import {
-    fetchFindAllCustomer,
-    fetchSaveCustomer,
-    fetchDeleteCustomer,
-    fetchUpdateCustomer,
-    fetchFindCustomerById
-} from "../../store/feature/crmSlice.tsx";
+    fetchFindAllBenefit,
+    fetchSaveBenefit,
+    fetchDeleteBenefit,
+    fetchUpdateBenefit,
+    fetchFindByIdBenefit
+} from "../../store/feature/hrmSlice.tsx";
 import Swal from "sweetalert2";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import dayjs, { Dayjs } from "dayjs";
 
 
 const BenefitPage = () => {
@@ -31,7 +32,7 @@ const BenefitPage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const customers = useAppSelector((state) => state.crmSlice.customerList);
+    const benefits = useAppSelector((state) => state.hrmSlice.benefitList);
     const [loading, setLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -39,19 +40,22 @@ const BenefitPage = () => {
 
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
-    const {t} = useTranslation()
+    const { t } = useTranslation()
+   
 
     //modal
-    const [openAddCustomerModal, setOpenAddCustomerModel] = useState(false);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
+    const [openAddBenefitModal, setOpenAddBenefitModel] = useState(false);
+
+    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+    const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
+    const [amount, setAmount] = useState(0);
+    const [type, setType] = useState('');
+    
+    const [employeeId, setEmployeeId] = useState(0);
 
 
     useEffect(() => {
-        dispatch(fetchFindAllCustomer({
+        dispatch(fetchFindAllBenefit({
             page: 0,
             size: 100,
             searchText: searchText,
@@ -62,96 +66,66 @@ const BenefitPage = () => {
         setSelectedRowIds(newSelectionModel as number[]);
     }
 
-    const handleOpenCustomerModal = () => {
-        setOpenAddCustomerModel(true);
+    const handleOpenBenefitModal = () => {
+        setOpenAddBenefitModel(true);
     }
 
-    const handleSaveCustomer = () => {
-        setIsSaving(true);
-        dispatch(fetchSaveCustomer({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phone: phone,
-            address: address
-        })).then((data) => {
-            if (data.payload.message === "Customer saved successfully") {
-                setFirstName('');
-                setLastName('');
-                setEmail('');
-                setPhone('');
-                setAddress('');
-                setOpenAddCustomerModel(false);
-                Swal.fire({
-                    title: t("swal.success"),
-                    text: t("crmService.added"),
-                    icon: "success",
-                });
-            } else {
-                Swal.fire({
-                    title: t("swal.error"),
-                    text: t("crmService.non-added"),
-                    icon: "error",
-                    confirmButtonText: t("swal.ok"),
-                });
-            }
-            setIsSaving(false);
-        }).catch((error) => {
-            setOpenAddCustomerModel(false);
-            Swal.fire({
-                title: t("swal.error"),
-                text: t("crmService.error-occurred"),
-                icon: "error",
-            });
-            setIsSaving(false);
-        });
-    }
+
     const handleOpenUpdateModal = async () => {
-        setOpenAddCustomerModel(true);
+        setOpenAddBenefitModel(true);
         setIsUpdating(true);
 
-        dispatch(fetchFindCustomerById(selectedRowIds[0])).then((data) => {
-            setFirstName(data.payload.data.firstName);
-            setLastName(data.payload.data.lastName);
-            setEmail(data.payload.data.email);
-            setPhone(data.payload.data.phone);
-            setAddress(data.payload.data.address);
-        })
-    }
-    const handleUpdateCustomer = async () => {
-        dispatch(fetchUpdateCustomer({
-            id: selectedRowIds[0],
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phone: phone,
-            address: address
-        })).then(() => {
-            setFirstName('')
-            setLastName('')
-            setEmail('')
-            setPhone('')
-            setAddress('')
-            setOpenAddCustomerModel(false);
-            setIsUpdating(false);
-            Swal.fire({
-                title: t("swal.success"),
-                text: t("crmService.updated"),
-                icon: "success",
-            });
-            setIsUpdating(false);
-        }).catch((error) => {
-            setOpenAddCustomerModel(false);
-            setIsUpdating(false);
-            Swal.fire({
-                title: t("swal.error"),
-                text: t("crmService.error-occurred"),
-                icon: "error",
-            });
-        })
+        dispatch(fetchFindByIdBenefit(selectedRowIds[0])).then((data) => {
+
+            setStartDate(dayjs(data.payload.data.startDate));
+            setEndDate(dayjs(data.payload.data.endDate));
+            setAmount(data.payload.data.amount);
+            setType(data.payload.data.type);
+            
+
+
+        });
     }
 
-    const handleDeleteCustomer = async () => {
+    const handleUpdateBenefit = () => {
+        dispatch(fetchUpdateBenefit({
+            id: selectedRowIds[0],
+            employeeId: employeeId,
+            type: type,
+            amount: amount,
+            startDate: startDate?.toDate() || new Date(),
+            endDate: endDate?.toDate() || new Date()
+           
+        })).then(() => {
+            setOpenAddBenefitModel(false);
+            setIsUpdating(false);
+            setStartDate(dayjs())
+            setEndDate(dayjs())
+            setAmount(0)
+            setType('')
+            
+
+            Swal.fire({
+                title: t("swal.success"),
+                text: t("hrmService.successfullyupdated"),
+                icon: "success",
+            });
+        }).catch((error) => {
+            setOpenAddBenefitModel(false);
+            setIsUpdating(false);
+            setStartDate(dayjs())
+            setEndDate(dayjs())
+            setAmount(0)
+            setType('')
+            Swal.fire({
+                title: t("swal.error"),
+                text: t("hrmService.error-occurred"),
+                icon: "error",
+            });
+        });
+    };
+
+    const handleDeleteBenefit = async () => {
         if (selectedRowIds.length === 0) return;
 
         setIsDeleting(true);
@@ -159,19 +133,19 @@ const BenefitPage = () => {
 
             const result = await Swal.fire({
                 title: t("swal.areyousure"),
-                text: t("crmService.deleting"),
+                text: t("hrmService.deleting"),
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: t("crmService.delete"),
-                cancelButtonText: t("crmService.cancel"),
+                confirmButtonText: t("hrmService.delete"),
+                cancelButtonText: t("hrmService.cancel"),
                 html: `<input type="checkbox" id="confirm-checkbox" />
-                   <label for="confirm-checkbox">${t("crmService.confirmDelete")}</label>`,
+                   <label for="confirm-checkbox">${t("hrmService.confirmDelete")}</label>`,
                 preConfirm: () => {
                     const popup = Swal.getPopup();
                     if (popup) {
                         const checkbox = popup.querySelector('#confirm-checkbox') as HTMLInputElement;
                         if (checkbox && !checkbox.checked) {
-                            Swal.showValidationMessage(t("crmService.checkboxRequired"));
+                            Swal.showValidationMessage(t("hrmService.checkboxRequired"));
                             return false;
                         }
                         return true;
@@ -182,14 +156,14 @@ const BenefitPage = () => {
             if (result.isConfirmed) {
                 let hasError = false;
                 for (const id of selectedRowIds) {
-                    const selectedCustomer = customers.find(
-                        (selectedCustomer) => selectedCustomer.id === id
+                    const selectedEmployee = benefits.find(
+                        (selectedEmployee) => selectedEmployee.id === id
                     );
-                    if (!selectedCustomer) continue;
+                    if (!selectedEmployee) continue;
 
-                    const data = await dispatch(fetchDeleteCustomer(selectedCustomer.id));
+                    const data = await dispatch(fetchDeleteBenefit(selectedEmployee.id));
 
-                    if (data.payload.message !== "Customer deleted successfully") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -203,8 +177,8 @@ const BenefitPage = () => {
 
                 if (!hasError) {
                     await Swal.fire({
-                        title: t("crmService.deleted"),
-                        text: t("crmService.successfullydeleted"),
+                        title: t("hrmService.deleted"),
+                        text: t("hrmService.successfullydeleted"),
                         icon: "success",
                     });
 
@@ -219,41 +193,42 @@ const BenefitPage = () => {
     };
 
 
+
     const columns: GridColDef[] = [
-        {field: "firstName", headerName: t("crmService.firstName"), flex: 1.5, headerAlign: "center"},
-        {field: "lastName", headerName: t("crmService.lastName"), flex: 1.5, headerAlign: "center"},
-        {field: "email", headerName: t("crmService.email"), flex: 1.5, headerAlign: "center"},
-        {field: "phone", headerName: t("crmService.phone"), flex: 1.5, headerAlign: "center"},
-        {field: "address", headerName: t("crmService.address"), flex: 1.5, headerAlign: "center"},
-        {field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1},
+        { field: "firstName", headerName: t("hrmService.firstName"), flex: 1.5, headerAlign: "center" },
+        { field: "lastName", headerName: t("hrmService.lastName"), flex: 1.5, headerAlign: "center" },
+        { field: "startDate", headerName: t("hrmService.startDate"), flex: 1.5, headerAlign: "center" },
+        { field: "endDate", headerName: t("hrmService.endDate"), flex: 1.5, headerAlign: "center" },
+        { field: "type", headerName: t("hrmService.type"), flex: 1.5, headerAlign: "center" },
+        { field: "amount", headerName: t("hrmService.amount"), flex: 1.5, headerAlign: "center" },
     ]
 
 
     return (
-        <div style={{height: "auto"}}>
+        <div style={{ height: "auto" }}>
 
             <TextField
-                label={t("crmService.searchbyname")}
+                label={t("hrmService.searchbyname")}
                 variant="outlined"
                 onChange={(event) => {
                     setSearchText(event.target.value);
                 }}
                 value={searchText}
-                style={{marginBottom: "1%", marginTop: "1%"}}
+                style={{ marginBottom: "1%", marginTop: "1%" }}
                 fullWidth
-                inputProps={{maxLength: 50}}
+                inputProps={{ maxLength: 50 }}
             />
-            <h1>benefit</h1>
+            <h1>Benifit</h1>
 
             <DataGrid
                 slots={{
                     toolbar: GridToolbar,
                 }}
-                rows={customers}
+                rows={benefits}
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: {page: 1, pageSize: 5},
+                        paginationModel: { page: 1, pageSize: 5 },
                     }
                 }}
                 // getRowClassName={(params)=>
@@ -294,23 +269,7 @@ const BenefitPage = () => {
                 marginTop: '2%',
                 marginBottom: '2%'
             }}>
-                <Grid item xs={12} sm={6} md={3} lg={2}>
-                    <Button
-                        onClick={handleOpenCustomerModal}
-                        variant="contained"
-                        color="success"
-                        //startIcon={<ApproveIcon />}
-                        sx={{
-                            width: '100%',
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        {t("crmService.add")}
-                    </Button>
-                </Grid>
+               
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleOpenUpdateModal}
@@ -326,12 +285,12 @@ const BenefitPage = () => {
                             justifyContent: 'center'
                         }}
                     >
-                        {t("crmService.update")}
+                        {t("hrmService.update")}
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleDeleteCustomer}
+                        onClick={handleDeleteBenefit}
                         variant="contained"
                         color="error"
                         disabled={isDeleting || selectedRowIds.length === 0}
@@ -344,77 +303,93 @@ const BenefitPage = () => {
                             justifyContent: 'center'
                         }}
                     >
-                        {t("crmService.delete")}
+                        {t("hrmService.delete")}
                     </Button>
                 </Grid>
-                <Dialog open={openAddCustomerModal} onClose={() => setOpenAddCustomerModel(false)} fullWidth
-                        maxWidth='sm'>
-                    <DialogTitle>{isUpdating ? t('crmService.update') : t('crmService.add_customer')}</DialogTitle>
+                <Dialog open={openAddBenefitModal} onClose={() => setOpenAddBenefitModel(false)} fullWidth
+                    maxWidth='sm'>
+                    <DialogTitle>{isUpdating ? t('hrmService.update') : t('hrmService.add_employee')}</DialogTitle>
                     <DialogContent>
                         <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.firstName')}
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.startDate')}
+                            name="startDate"
+                            type="date"
+                            value={startDate ? startDate.toISOString().substring(0, 10) : ''}
+                            onChange={e => setStartDate(dayjs(e.target.value))}
+                            required
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                         <TextField
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.endDate')}
+                            name="endDate"
+                            type="date"
+                            value={endDate ? endDate.toISOString().substring(0, 10) : ''}
+                            onChange={e => setEndDate(dayjs(e.target.value))}
+                            required
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <TextField
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.amount')}
+                            name="amount"
+                            value={amount !== undefined ? amount : ''}
+                            onChange={e => {
+                                const value = e.target.value;
+                                setAmount(value ? parseInt(value) : 0);
+                            }}
+                            required
+                            fullWidth
+                        />
+                          <TextField
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.type')}
                             name="name"
-                            value={firstName}
-                            onChange={e => setFirstName(e.target.value)}
+                            value={type}
+                            onChange={e => setType(e.target.value)}
                             required
                             fullWidth
                         />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.lastName')}
-                            name="Lastname"
-                            value={lastName}
-                            onChange={e => setLastName(e.target.value)}
-                            required
-                            fullWidth
-                        />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.email')}
-                            name="email"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            required
-                            fullWidth
-                        />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.phone')}
-                            name="phone"
-                            value={phone}
-                            onChange={e => setPhone(e.target.value)}
-                            required
-                            fullWidth
-                        />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.address')}
-                            name="address"
-                            value={address}
-                            onChange={e => setAddress(e.target.value)}
-                            required
-                            fullWidth
-                        />
+                       
+
+
+
+
+
+
+
+
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            setOpenAddCustomerModel(false);
+                            setOpenAddBenefitModel(false);
                             setIsUpdating(false);
-                            setFirstName('');
-                            setLastName('');
-                            setEmail('');
-                            setPhone('');
-                            setAddress('');
-                        }} color="error" variant="contained">{t('crmService.cancel')}</Button>
-                        {isUpdating ? <Button onClick={() => handleUpdateCustomer()} color="primary" variant="contained"
-                                              disabled={firstName === '' || lastName === '' || email === '' || phone === '' || address === ''}>{t('crmService.update')}</Button>
-                            :
-                            <Button onClick={() => handleSaveCustomer()} color="success" variant="contained"
-                                    disabled={firstName === '' || lastName === '' || email === '' || phone === '' || address === ''}>{t('crmService.save')}</Button>}
+                            setStartDate(dayjs());
+                            setEndDate(dayjs());
+                            setAmount(0);
+                            setType('');
+                            
+                        }} color="error" variant="contained">{t('hrmService.cancel')}</Button>
 
-
+                        {isUpdating && (
+                            <Button
+                                onClick={() => handleUpdateBenefit()}
+                                color="primary"
+                                variant="contained"
+                                disabled={startDate === null || endDate === null || amount === 0 ||  type === ''}
+                            >
+                                {t('hrmService.update')}
+                            </Button>
+                        )}
                     </DialogActions>
+
                 </Dialog>
 
             </Grid>
