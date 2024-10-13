@@ -48,7 +48,7 @@ const EmployeePage = () => {
 
     //MODAL
     const [openAddCustomerModal, setOpenAddEmployee] = useState(false);
-    const [managers, setManagers] = useState<IManager[]>([]);
+    const [managers, setManagers] = useState<IEmployee[]>([]);
     const [selectedManagerId, setSelectedManagerId] = useState(0);
     const [departments, setDepartments] = useState<IDepartment[]>([]);
     const [selectedDepartmentId, setSelectedDepartmentId] = useState(0);
@@ -447,7 +447,7 @@ const EmployeePage = () => {
                             <Select
                                 value={selectedDepartmentId}
                                 onChange={event => setSelectedDepartmentId((Number)(event.target.value))}
-                                label="Product Categories"
+                                label="Departments"
                             >
                                 {Object.values(departments).map(department => (
                                     <MenuItem key={department.id} value={department.id}>
@@ -462,7 +462,11 @@ const EmployeePage = () => {
                             <Select
                                 value={selectedManagerId}
                                 onChange={event => setSelectedManagerId((Number)(event.target.value))}
-                                label="Product Categories"
+                                label="Managers"
+                                disabled={
+                                    selectedManagerId === -1
+                                }
+
                             >
                                 {Object.values(managers).map(manager => (
                                     <MenuItem key={manager.id} value={manager.id}>

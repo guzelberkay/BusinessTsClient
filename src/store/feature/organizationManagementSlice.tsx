@@ -180,6 +180,44 @@ export const fetchSaveEmployee = createAsyncThunk(
 );
 
 
+interface IfetchSaveTopLevelManager {
+    departmentId: number;
+    identityNo: string;
+    phoneNo: string;
+    name: string;
+    surname: string;
+    email: string;
+}
+
+export const fetchSaveTopLevelManager = createAsyncThunk(
+    'organization-management/fetchSaveTopLevelManager',
+    async (payload: IfetchSaveTopLevelManager) => {
+        const usersName = {
+
+            departmentId: payload.departmentId,
+            identityNo: payload.identityNo,
+            phoneNo: payload.phoneNo,
+            name: payload.name,
+            surname: payload.surname,
+            email: payload.email
+        };
+
+        const result = await axios.post(
+            RestApis.organization_management_employee + "/save-top-level-manager",
+            usersName,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+
 interface IfetchSaveSubordinate {
     managerId: number;
     departmentId: number;
