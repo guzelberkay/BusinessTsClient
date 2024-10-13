@@ -23,8 +23,13 @@ const endpoints = {
   ticket: "/crm/ticket",
   user: "/usermanagement/user",
   role:"/usermanagement/role",
-  employee: "/employee",
   notifications: "/notifications",
+  // HRM Endpoints
+  employee: "/employee",
+  payroll: "/payroll",
+  benefit: "/benefit",
+  performance: "/performance",
+  attendance: "/attendance",
   // FAM Endpoints
   budget: "/finance/budget",
   declaration: "/finance/declaration",
