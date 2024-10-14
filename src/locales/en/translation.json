@@ -250,7 +250,8 @@
     "viewAllNotifications": "View All Notifications",
     "close": "Close",
     "addwarehouse": "Add Warehouse",
-    "delete": "Delete"
+    "delete": "Delete",
+    "deleteAll": "Delete All"
   },
   "subscription": {
     "title": "Subscription History",

@@ -33,7 +33,6 @@ import { useTranslation } from "react-i18next";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { Client } from "@stomp/stompjs";
 
-// Notification interface
 interface Notification {
   id: number;
   title: string;
@@ -118,15 +117,23 @@ const SideBarNotifications: React.FC = () => {
     }
   };
 
-
   const handleShowUnreadToggle = () => {
     setShowUnreadOnly(!showUnreadOnly);
   };
 
-
   const handleDeleteClick = () => {
     if (selectedNotificationIds.size > 0) {
       dispatch(deleteNotification(Array.from(selectedNotificationIds))).then(() => {
+        setSelectedNotificationIds(new Set());
+        setSelectionMode(false);
+      });
+    }
+  };
+
+  const handleDeleteAllClick = () => {
+    const allNotificationIds = notificationList.map((notif) => notif.id);
+    if (allNotificationIds.length > 0) {
+      dispatch(deleteNotification(allNotificationIds)).then(() => {
         setSelectedNotificationIds(new Set());
         setSelectionMode(false);
       });
@@ -175,19 +182,18 @@ const SideBarNotifications: React.FC = () => {
   );
 
   const displayedNotifications = showUnreadOnly
-      ? filteredNotifications.filter(notif => !notif.isRead)
+      ? filteredNotifications.filter((notif) => !notif.isRead)
       : filteredNotifications;
-
 
   const handleSortChange = (event: SelectChangeEvent<string>) => {
     setSortOrder(event.target.value);
   };
 
-
   const handleClose = () => {
     setOpen(false);
     setSelectedNotification(null);
   };
+
   return (
       <Box sx={{ padding: 4, maxWidth: 900, margin: "0 auto", display: "flex", flexDirection: "column" }}>
         <Paper elevation={3} sx={{ width: "100%", padding: 4, display: "flex", flexDirection: "column", height: "calc(100vh - 200px)" }}>
@@ -224,6 +230,9 @@ const SideBarNotifications: React.FC = () => {
               </Button>
               <Button variant="contained" color="error" onClick={handleDeleteClick} disabled={selectedNotificationIds.size === 0}>
                 {t("notifications.deleteSelected")}
+              </Button>
+              <Button variant="contained" color="error" onClick={handleDeleteAllClick} disabled={notificationList.length === 0}>
+                {t("notifications.deleteAll")}
               </Button>
             </Box>
           </Box>
@@ -293,4 +302,5 @@ const SideBarNotifications: React.FC = () => {
       </Box>
   );
 };
+
 export default SideBarNotifications;
