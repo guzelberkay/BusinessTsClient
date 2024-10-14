@@ -206,7 +206,10 @@ interface IFetchCreateDeclaration {
 
 interface IFetchDeclaration {
     taxType: string;
-    netIncome: number;
+    totalIncome: number;
+    totalExpense: number;
+    startDate: Date;
+    endDate: Date;
 }
 
 export const fetchCreateDeclaration = createAsyncThunk(
@@ -214,7 +217,10 @@ export const fetchCreateDeclaration = createAsyncThunk(
     async (payload: IFetchDeclaration) => {
         const declaration = {
             taxType: payload.taxType,
-            netIncome: payload.netIncome
+            totalIncome: payload.totalIncome,
+            totalExpense: payload.totalExpense,
+            startDate: payload.startDate,
+            endDate: payload.endDate
         };
         const result = await axios.post(
             RestApis.finance_service_declaration + "/create",
@@ -229,6 +235,32 @@ export const fetchCreateDeclaration = createAsyncThunk(
     }
 );
 
+interface IFindAllDeclaration {
+    searchText: string;
+    page: number;
+    size: number;
+}
+
+export const fetchFindAllDeclaration = createAsyncThunk(
+    'finance/fetchFindAllDeclaration',
+    async (payload: IFindAllDeclaration) => {
+        const values = {
+            searchText: payload.searchText,
+            page: payload.page,
+            size: payload.size
+        };
+        const result = await axios.post(
+            RestApis.finance_service_declaration + "/find-all",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return result.data;
+    }
+);
 
 export const fetchCreateDeclarationForIncomeTax = createAsyncThunk(
     'finance/fetchCreateDeclarationForIncomeTax',
