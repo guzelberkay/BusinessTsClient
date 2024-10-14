@@ -89,7 +89,7 @@ export const uploadFile = createAsyncThunk(
 
 export const deleteFile = createAsyncThunk(
     'files/deleteFile',
-    async ({ uuid, bucketName }: { uuid: string; bucketName: string }, { rejectWithValue }) => {
+    async ({  bucketName, uuid }: {  bucketName: string ;uuid: string}, { rejectWithValue }) => {
         try {
        
             const response = await axios.delete(`${RestApis.file_service}/delete`, {
