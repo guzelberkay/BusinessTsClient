@@ -292,7 +292,7 @@ const EmployeePage = () => {
         {field: "managerName", headerName: t("stockService.managername"), flex: 1.5, headerAlign: "center"},
         {
             field: "isAccountGivenToEmployee",
-            headerName: t("stockService.isaccountgiven"),
+            headerName: t("stockService.isaccountactive"),
             flex: 1,
             headerAlign: "center",
             renderCell: (params) => (

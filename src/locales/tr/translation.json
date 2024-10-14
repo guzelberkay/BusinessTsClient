@@ -223,7 +223,8 @@
     "accountactivatedsuccesfully": "Hesap Basariyla Etkinleştirildi!",
     "youwilldeactivateaccount": "Hesabi deaktif etmek istediginizden emin misiniz?",
     "accountdeactivatedsuccesfully": "Hesap Basariyla Deaktif Edildi!",
-    "youwillactivateaccount": "Hesabı aktif etmek istediginizden emin misiniz?"
+    "youwillactivateaccount": "Hesabı aktif etmek istediginizden emin misiniz?",
+    "isaccountactive" : "Aktivasyon Durumu"
   },
   "dashboard": {
     "numberofemployees": "Çalışan Sayısı",
