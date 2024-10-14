@@ -1206,6 +1206,9 @@ const financeSlice = createSlice({
             .addCase(fetchGetAllExpenseCategories.fulfilled, (state, action: PayloadAction<IResponse>) => {
                 state.expenseList = action.payload.data;
             })
+            .addCase(fetchFindExpenseByDate.fulfilled, (state, action: PayloadAction<IResponse>) => {
+                state.expenseList = action.payload.data;
+            })
             .addCase(fetchFindAllFinancialReport.fulfilled, (state, action: PayloadAction<IResponse>) => {
                 state.financialReportList = action.payload.data;
             })
