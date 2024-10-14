@@ -55,6 +55,10 @@ const apis = {
 
   //#region HRM
   hrm_service_employee: base_url + host + Ports.hrm + profile + version + EndPoints.employee,
+  hrm_service_payroll: base_url + host + Ports.hrm + profile + version + EndPoints.payroll,
+  hrm_service_benefit: base_url + host + Ports.hrm + profile + version + EndPoints.benefit,
+  hrm_service_performance: base_url + host + Ports.hrm + profile + version + EndPoints.performance,
+  hrm_service_attendance: base_url + host + Ports.hrm + profile + version + EndPoints.attendance,
   //#endregion HRM
 
   //#region Notification

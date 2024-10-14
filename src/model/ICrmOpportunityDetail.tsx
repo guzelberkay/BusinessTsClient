@@ -1,4 +1,4 @@
-export interface ICrmOpportunity {
+export interface ICrmOpportunityDetail {
     id: number;
     memberId: number;
     customers: number[];
@@ -8,4 +8,7 @@ export interface ICrmOpportunity {
     stage: string;
     probability: bigint;
     status:string
+    firstName: string;
+    lastName: string;
+
 }

@@ -344,14 +344,17 @@
     "updated_ticket": "Bilet güncellendi!",
     "deleted-sales-activity": "Satış aktivitesi silindi!",
     "added_sales_activity": "Satış aktivitesi eklendi!",
-    "details": "Detay",
-    "opportunity_details": "Fırsat Detayları",
-    "no-name": "Bilgi yok",
-    "no-founded-customer": "Henüz bu fırsatta müşteri yok!"
+<<<<<<< HEAD
     "import": "Yükle",
     "uploadFile": "Yüklenecek Dosya",
     "close": "Kapat",
     "uploaded": "Başarıyla yüklendi!"
+=======
+    "details": "Detay",
+    "opportunity_details": "Fırsat Detayları",
+    "no-name": "Bilgi yok",
+    "no-founded-customer": "Henüz bu fırsatta müşteri yok!"
+>>>>>>> main
   },
   "hrmService": {
     "firstName": "Ad",
