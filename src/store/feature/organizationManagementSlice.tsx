@@ -378,6 +378,26 @@ export const fetchGetEmployeeHierarchy = createAsyncThunk(
     }
 );
 
+export const fetchChangeIsAccountGivenStateOfEmployee = createAsyncThunk(
+    'organization-management/fetchFindByIdEmployee',
+    async (id: number) => {
+
+
+        const result = await axios.post(
+            RestApis.organization_management_employee + "/change-is-account-given-to-employee-state?id=" + id,
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
 
 //#endregion
 
