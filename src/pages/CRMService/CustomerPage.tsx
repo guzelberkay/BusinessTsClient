@@ -6,7 +6,7 @@ import {
 } from "@mui/x-data-grid";
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle,
-    Grid,
+    Grid, Modal,
     TextField
 
 } from "@mui/material";
@@ -19,10 +19,12 @@ import {
     fetchSaveCustomer,
     fetchDeleteCustomer,
     fetchUpdateCustomer,
-    fetchFindCustomerById
+    fetchFindCustomerById, fetchUploadExcelCustomer
 } from "../../store/feature/crmSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+import {ICrmCustomer} from "../../model/ICrmCustomer.tsx";
+import * as XLSX from 'xlsx';
 
 
 const CustomerPage = () => {
@@ -50,10 +52,76 @@ const CustomerPage = () => {
     const [address, setAddress] = useState('');
 
 
+    const [customerFile, setCustomerFile] = useState<ICrmCustomer[]>([]);
+
+    const [open, setOpen] = useState(false);
+
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files && event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target?.result as ArrayBuffer);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData: ICrmCustomer[] = XLSX.utils.sheet_to_json(worksheet);
+                setCustomerFile(jsonData);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+    };
+
+    const handleSubmit = async () => {
+        setIsSaving(true);
+        if (customerFile.length > 0) {
+
+            try {
+                const response = await dispatch(fetchUploadExcelCustomer(customerFile)).unwrap();
+                console.log("try 2 deyim")
+
+                if (response.message === "Customers uploaded successfully") {
+                    Swal.fire({
+                        title: t("swal.success"),
+                        text: t("crmService.uploaded"),
+                        icon: "success",
+                    });
+                } else {
+                    console.error("API Response:", response);
+                    Swal.fire({
+                        title: t("swal.error"),
+                        text: t("crmService.not-uploaded"),
+                        icon: "error",
+                    });
+                }
+
+                setIsSaving(false);
+            } catch (error) {
+                console.error("API request failed:", error);
+                Swal.fire({
+                    title: t("swal.error"),
+                    text: t("crmService.not-uploaded"),
+                    icon: "error",
+                });
+            }
+        }
+    };
+
+    const hanleUploadModal = () => {
+        setOpen(true);
+    }
+    const handleUploadCloseModal = () => {
+        setOpen(false);
+    }
+
+
+
+
+
     useEffect(() => {
         dispatch(fetchFindAllCustomer({
             page: 0,
-            size: 100,
+            size: 500,
             searchText: searchText,
         }));
     }, [dispatch, searchText, loading, isSaving, isUpdating, isDeleting]);
@@ -275,13 +343,7 @@ const CustomerPage = () => {
                     "& .MuiDataGrid-cell": {
                         textAlign: "center",
                     },
-                    // "& .approved-row": {
-                    //     backgroundColor: "rgba(77, 148, 255,1)",
 
-                    // },
-                    // "& .unapproved-row": {
-                    //     backgroundColor: "rgba(242, 242, 242,1)",
-                    // },
 
                 }}
                 rowSelectionModel={selectedRowIds}
@@ -346,6 +408,27 @@ const CustomerPage = () => {
                         {t("crmService.delete")}
                     </Button>
                 </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
+                    <Button variant="contained" color="primary" onClick={hanleUploadModal}>
+                        {t('crmService.import')}
+                    </Button>
+                </Grid>
+
+                <Dialog open={open} onClose={handleUploadCloseModal}>
+                    <DialogTitle>{t('crmService.import')}</DialogTitle>
+                    <DialogContent>
+                        <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload}/>
+                        <label>{t('crmService.uploadFile')}</label>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleUploadCloseModal}>{t('crmService.close')}</Button>
+                        <Button onClick={() => {
+                            handleSubmit();
+                            handleUploadCloseModal();
+
+                        }}>{t('crmService.import')}</Button>
+                    </DialogActions>
+                </Dialog>
                 <Dialog open={openAddCustomerModal} onClose={() => setOpenAddCustomerModel(false)} fullWidth
                         maxWidth='sm'>
                     <DialogTitle>{isUpdating ? t('crmService.update') : t('crmService.add_customer')}</DialogTitle>
@@ -406,14 +489,16 @@ const CustomerPage = () => {
                             setPhone('');
                             setAddress('');
                         }} color="error" variant="contained">{t('crmService.cancel')}</Button>
-                        {isUpdating ? <Button onClick={() => handleUpdateCustomer()} color="primary" variant="contained"
-                                              disabled={firstName === '' || lastName === '' || email === '' || phone === '' || address === ''}>{t('crmService.update')}</Button>
+                        {isUpdating ?
+                            <Button onClick={() => handleUpdateCustomer()} color="primary" variant="contained"
+                                    disabled={firstName === '' || lastName === '' || email === '' || phone === '' || address === ''}>{t('crmService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveCustomer()} color="success" variant="contained"
                                     disabled={firstName === '' || lastName === '' || email === '' || phone === '' || address === ''}>{t('crmService.save')}</Button>}
 
 
                     </DialogActions>
+
                 </Dialog>
 
             </Grid>

@@ -339,7 +339,13 @@
     "added_ticket": "Ticket Saved Successfully!",
     "updated_ticket": "Ticket Updated Successfully!",
     "deleted-sales-activity": "Sales Activity Deleted Successfully!",
-    "added_sales_activity": "Sales Activity Saved Successfully!"
+    "added_sales_activity": "Sales Activity Saved Successfully!",
+    "import": "Import",
+    "uploadFile": "Upload File",
+    "close": "Close",
+    "uploaded": "File Uploaded Successfully!"
+
+
   },
   "hrmService": {
     "firstName": "Name",

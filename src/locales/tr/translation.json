@@ -341,7 +341,11 @@
     "added_ticket": "Bilet Başarıyla Eklendi!",
     "updated_ticket": "Bilet güncellendi!",
     "deleted-sales-activity": "Satış aktivitesi silindi!",
-    "added_sales_activity": "Satış aktivitesi eklendi!"
+    "added_sales_activity": "Satış aktivitesi eklendi!",
+    "import": "Yükle",
+    "uploadFile": "Yüklenecek Dosya",
+    "close": "Kapat",
+    "uploaded": "Başarıyla yüklendi!"
   },
   "hrmService": {
     "firstName": "Ad",
