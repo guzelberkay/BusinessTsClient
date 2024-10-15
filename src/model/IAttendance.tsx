@@ -1,7 +1,10 @@
-export interface IAttendance{
+export interface IAttendance {
     id: number;
     employeeId: number;
-    checkInDateTime: Date;
-    checkOutDateTime: Date;
+    firstName: string;
+    lastName: string;
+    date: Date;
+    checkInTime: string;  
+    checkOutTime: string;  
     status: string;
 }

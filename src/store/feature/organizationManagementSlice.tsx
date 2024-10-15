@@ -146,6 +146,7 @@ interface IfetchSaveEmployee {
     departmentId: number;
     identityNo: string;
     phoneNo: string;
+    title: string;
     name: string;
     surname: string;
     email: string;
@@ -160,12 +161,94 @@ export const fetchSaveEmployee = createAsyncThunk(
             identityNo: payload.identityNo,
             phoneNo: payload.phoneNo,
             name: payload.name,
+            title: payload.title,
             surname: payload.surname,
             email: payload.email
         };
 
         const result = await axios.post(
             RestApis.organization_management_employee + "/save",
+            usersName,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+
+interface IfetchSaveTopLevelManager {
+    departmentId: number;
+    identityNo: string;
+    phoneNo: string;
+    title: string;
+    name: string;
+    surname: string;
+    email: string;
+}
+
+export const fetchSaveTopLevelManager = createAsyncThunk(
+    'organization-management/fetchSaveTopLevelManager',
+    async (payload: IfetchSaveTopLevelManager) => {
+        const usersName = {
+
+            departmentId: payload.departmentId,
+            identityNo: payload.identityNo,
+            phoneNo: payload.phoneNo,
+            name: payload.name,
+            title: payload.title,
+            surname: payload.surname,
+            email: payload.email
+        };
+
+        const result = await axios.post(
+            RestApis.organization_management_employee + "/save-top-level-manager",
+            usersName,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+
+interface IfetchSaveSubordinate {
+    managerId: number;
+    departmentId: number;
+    identityNo: string;
+    phoneNo: string;
+    title: string;
+    name: string;
+    surname: string;
+    email: string;
+}
+
+export const fetchSaveSubordinate = createAsyncThunk(
+    'organization-management/fetchSaveSubordinate',
+    async (payload: IfetchSaveSubordinate) => {
+        const usersName = {
+            managerId: payload.managerId,
+            departmentId: payload.departmentId,
+            identityNo: payload.identityNo,
+            phoneNo: payload.phoneNo,
+            name: payload.name,
+            title: payload.title,
+            surname: payload.surname,
+            email: payload.email
+        };
+
+        const result = await axios.post(
+            RestApis.organization_management_employee + "/save-subordinate",
             usersName,
             {
                 headers: {
@@ -203,6 +286,8 @@ interface IfetchUpdateEmployee {
     managerId: number;
     departmentId: number;
     identityNo: string;
+    title: string;
+    email: string;
     phoneNo: string;
     name: string;
     surname: string;
@@ -218,7 +303,9 @@ export const fetchUpdateEmployee = createAsyncThunk(
             identityNo: payload.identityNo,
             phoneNo: payload.phoneNo,
             name: payload.name,
-            surname: payload.surname
+            surname: payload.surname,
+            email: payload.email,
+            title : payload.title
         };
 
         const result = await axios.put(
@@ -282,6 +369,45 @@ export const fetchFindByIdEmployee = createAsyncThunk(
 
     }
 );
+
+export const fetchGetEmployeeHierarchy = createAsyncThunk(
+    'organization-management/fetchGetEmployeeHierarchy',
+    async () => {
+        const result = await axios.post(
+            RestApis.organization_management_employee + "/get-employee-hierarchy",
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
+export const fetchChangeIsAccountGivenStateOfEmployee = createAsyncThunk(
+    'organization-management/fetchFindByIdEmployee',
+    async (id: number) => {
+
+
+        const result = await axios.post(
+            RestApis.organization_management_employee + "/change-is-account-given-to-employee-state?id=" + id,
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+
+    }
+);
+
 
 //#endregion
 

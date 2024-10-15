@@ -1,9 +1,11 @@
 import { Box, Button, Container, Grid, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { AppDispatch, useAppSelector } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState, useAppSelector } from '../store';
 import { fetchUpdateUser, fetchUserInformation } from '../store/feature/userSlice';
 import { fetchChangeMyPassword, fetchLoginProfileManagement } from '../store/feature/authSlice';
+import { deleteFile, fetchFile, uploadFile } from '../store/feature/fileSlice';
+import FileUploadProps from '../components/molecules/FileUploadProps';
 
 function ProfileManagement() {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,6 +19,10 @@ function ProfileManagement() {
   const [newConfirmPassword, setNewConfirmPassword] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const uuid = useSelector((state: RootState) => state.fileSlice.uuid);
+  
+  
 
   useEffect(() => {
       dispatch(fetchUserInformation());
@@ -38,6 +44,48 @@ function ProfileManagement() {
           }
       });
   };
+  useEffect(() => {
+    if (uuid) { 
+        dispatch(fetchFile(uuid))
+            .unwrap()
+            .then((blob) => {
+                const url = URL.createObjectURL(blob);
+                setImageUrl(url);
+            })
+            .catch((error) => {
+                console.error("Error fetching file:", error);
+            });
+    }
+}, [uuid, dispatch]);
+  const handleFileUpload = (files: File[]) => {
+    if (files.length > 0) {
+        dispatch(uploadFile(files[0]))
+             .catch((error) => {
+                console.error("Error uploading file:", error);
+            });
+    }
+};
+
+const handleFileDelete = ( bucketName: string,uuid: string,) => {
+  dispatch(deleteFile({  bucketName, uuid }))
+      .catch((error) => {
+          console.error("Error deleting file:", error);
+      });
+};
+
+useEffect(() => {
+    if (uuid) { 
+        dispatch(fetchFile(uuid))
+            .unwrap()
+            .then((blob) => {
+                const url = URL.createObjectURL(blob);
+                setImageUrl(url);
+            })
+            .catch((error) => {
+                console.error("Error fetching file:", error);
+            });
+    }
+}, [uuid, dispatch]);
 
   const handleNewPasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,6 +178,7 @@ function ProfileManagement() {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </Grid>
+                 
 
                 </Grid>
 
@@ -140,10 +189,28 @@ function ProfileManagement() {
                 </Box>
                 
               </form>
+
+              {imageUrl && (
+        <div>
+          
+          <img src={imageUrl} alt="Uploaded file" style={{ maxWidth: '100px', maxHeight: '100px' }} />
+        </div>
+      )}
             </Box>
 
 
+                    {/* Dosya Yükleme Bileşeni */}
+            <Box mt={4}>
+                <FileUploadProps 
+                    onFileUpload={handleFileUpload}
+                    onFileDelete={handleFileDelete}
+                    buttonText="Dosya Yükle"
+                    
+                />
+            </Box>
 
+           
+          
 
             <Box mt={4}>
               <form onSubmit={handleNewPasswordSubmit}>

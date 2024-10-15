@@ -55,6 +55,10 @@ const apis = {
 
   //#region HRM
   hrm_service_employee: base_url + host + Ports.hrm + profile + version + EndPoints.employee,
+  hrm_service_payroll: base_url + host + Ports.hrm + profile + version + EndPoints.payroll,
+  hrm_service_benefit: base_url + host + Ports.hrm + profile + version + EndPoints.benefit,
+  hrm_service_performance: base_url + host + Ports.hrm + profile + version + EndPoints.performance,
+  hrm_service_attendance: base_url + host + Ports.hrm + profile + version + EndPoints.attendance,
   //#endregion HRM
 
   //#region Notification
@@ -74,11 +78,16 @@ const apis = {
   finance_service_income: base_url + host + Ports.finance + profile + version + EndPoints.income,
   finance_service_invoice: base_url + host + Ports.finance + profile + version + EndPoints.invoice,
   finance_service_tax: base_url + host + Ports.finance + profile + version + EndPoints.tax,
+  finance_service_department: base_url + host + Ports.finance + profile + version + EndPoints.department_finance,
   //#endregion Finance
 
     //#region File
     file_service: base_url + host + Ports.file + profile + version + EndPoints.file,
      //#endregion File
+
+  //#region Caledar_and_Planning
+  calendar_and_planning_service_event: base_url + host + Ports.calendar_and_planning + profile + version + EndPoints.event,
+  //#endregion Caledar_and_Planning 
 };
 
 export default apis;

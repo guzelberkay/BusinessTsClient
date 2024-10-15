@@ -207,7 +207,7 @@ function Appbar({
         console.log("Connected to WebSocket");
 
         // Unread count'u almak için ilk abone olma
-        stompClient.subscribe("/topic/unreadNotifications", (message) => {
+        stompClient.subscribe("/topic/unreadcountNotifications", (message) => {
           const newCount = JSON.parse(message.body);
           setUnreadCount(newCount); // Sunucudan alınan yeni unread count
         });
@@ -219,12 +219,12 @@ function Appbar({
 
         // Bir bildirim okunduğunda
         stompClient.subscribe("/topic/markasread-notifications", () => {
-          setUnreadCount((prevCount) => prevCount - 1); // Unread count'u azalt
+          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Unread count'u azalt, 0'ın altına düşmesini engelle
         });
 
         // Bir bildirim silindiğinde
         stompClient.subscribe("/topic/delete-notifications", () => {
-          setUnreadCount((prevCount) => prevCount - 1); // Unread count'u azalt
+          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Unread count'u azalt, 0'ın altına düşmesini engelle
         });
       },
       onDisconnect: () => {
@@ -247,7 +247,6 @@ function Appbar({
       }
     };
   }, [dispatch]);
-
 
 
 

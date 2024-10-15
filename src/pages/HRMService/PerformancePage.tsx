@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     DataGrid,
     GridColDef,
@@ -11,18 +11,19 @@ import {
 
 } from "@mui/material";
 
-import {useDispatch} from "react-redux";
-import {AppDispatch, useAppSelector} from "../../store/index.tsx";
+import { useDispatch } from "react-redux";
+import { AppDispatch, useAppSelector } from "../../store/index.tsx";
 
 import {
-    fetchFindAllCustomer,
-    fetchSaveCustomer,
-    fetchDeleteCustomer,
-    fetchUpdateCustomer,
-    fetchFindCustomerById
-} from "../../store/feature/crmSlice.tsx";
+    fetchFindAllPerformance,
+    fetchSavePerformance,
+    fetchDeletePerformance,
+    fetchUpdatePerformance,
+    fetchFindByIdPerformance
+} from "../../store/feature/hrmSlice.tsx";
 import Swal from "sweetalert2";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import dayjs, { Dayjs } from "dayjs";
 
 
 const PerformancePage = () => {
@@ -31,7 +32,7 @@ const PerformancePage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const customers = useAppSelector((state) => state.crmSlice.customerList);
+    const performances = useAppSelector((state) => state.hrmSlice.performanceList);
     const [loading, setLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -39,19 +40,19 @@ const PerformancePage = () => {
 
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
-    const {t} = useTranslation()
+    const { t } = useTranslation()
 
     //modal
-    const [openAddCustomerModal, setOpenAddCustomerModel] = useState(false);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
+    const [openAddPerformanceModal, setOpenAddPerformanceModel] = useState(false);
+
+    const [date, setDate] = useState<Dayjs | null>(dayjs());
+    const [score, setScore] = useState(0);
+    const [feedback, setFeedback] = useState('');
+    const [employeeId, setEmployeeId] = useState(0);
 
 
     useEffect(() => {
-        dispatch(fetchFindAllCustomer({
+        dispatch(fetchFindAllPerformance({
             page: 0,
             size: 100,
             searchText: searchText,
@@ -62,96 +63,62 @@ const PerformancePage = () => {
         setSelectedRowIds(newSelectionModel as number[]);
     }
 
-    const handleOpenCustomerModal = () => {
-        setOpenAddCustomerModel(true);
+    const handleOpenPerformanceModal = () => {
+        setOpenAddPerformanceModel(true);
     }
 
-    const handleSaveCustomer = () => {
-        setIsSaving(true);
-        dispatch(fetchSaveCustomer({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phone: phone,
-            address: address
-        })).then((data) => {
-            if (data.payload.message === "Customer saved successfully") {
-                setFirstName('');
-                setLastName('');
-                setEmail('');
-                setPhone('');
-                setAddress('');
-                setOpenAddCustomerModel(false);
-                Swal.fire({
-                    title: t("swal.success"),
-                    text: t("crmService.added"),
-                    icon: "success",
-                });
-            } else {
-                Swal.fire({
-                    title: t("swal.error"),
-                    text: t("crmService.non-added"),
-                    icon: "error",
-                    confirmButtonText: t("swal.ok"),
-                });
-            }
-            setIsSaving(false);
-        }).catch((error) => {
-            setOpenAddCustomerModel(false);
-            Swal.fire({
-                title: t("swal.error"),
-                text: t("crmService.error-occurred"),
-                icon: "error",
-            });
-            setIsSaving(false);
-        });
-    }
+
     const handleOpenUpdateModal = async () => {
-        setOpenAddCustomerModel(true);
+        setOpenAddPerformanceModel(true);
         setIsUpdating(true);
 
-        dispatch(fetchFindCustomerById(selectedRowIds[0])).then((data) => {
-            setFirstName(data.payload.data.firstName);
-            setLastName(data.payload.data.lastName);
-            setEmail(data.payload.data.email);
-            setPhone(data.payload.data.phone);
-            setAddress(data.payload.data.address);
-        })
-    }
-    const handleUpdateCustomer = async () => {
-        dispatch(fetchUpdateCustomer({
-            id: selectedRowIds[0],
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phone: phone,
-            address: address
-        })).then(() => {
-            setFirstName('')
-            setLastName('')
-            setEmail('')
-            setPhone('')
-            setAddress('')
-            setOpenAddCustomerModel(false);
-            setIsUpdating(false);
-            Swal.fire({
-                title: t("swal.success"),
-                text: t("crmService.updated"),
-                icon: "success",
-            });
-            setIsUpdating(false);
-        }).catch((error) => {
-            setOpenAddCustomerModel(false);
-            setIsUpdating(false);
-            Swal.fire({
-                title: t("swal.error"),
-                text: t("crmService.error-occurred"),
-                icon: "error",
-            });
-        })
+        dispatch(fetchFindByIdPerformance(selectedRowIds[0])).then((data) => {
+
+            
+            setDate(dayjs(data.payload.data.salaryDate));
+            setScore(data.payload.data.score);
+            setFeedback(data.payload.data.feedback);
+
+
+        });
     }
 
-    const handleDeleteCustomer = async () => {
+    const handleUpdatePerformance = () => {
+        dispatch(fetchUpdatePerformance({
+            id: selectedRowIds[0],
+            employeeId: employeeId,
+            date: date?.toDate() || new Date(),
+            score: score,
+            feedback: feedback
+        })).then(() => {
+            setOpenAddPerformanceModel(false);
+            setIsUpdating(false);
+            setDate(dayjs())
+            setScore(0)
+            setFeedback('')
+            
+
+            Swal.fire({
+                title: t("swal.success"),
+                text: t("hrmService.successfullyupdated"),
+                icon: "success",
+            });
+        }).catch((error) => {
+            setOpenAddPerformanceModel(false);
+            setIsUpdating(false);
+            setDate(dayjs())
+            setScore(0)
+            setFeedback('')
+            
+            Swal.fire({
+                title: t("swal.error"),
+                text: t("hrmService.error-occurred"),
+                icon: "error",
+            });
+        });
+    };
+
+    const handleDeletePerformance = async () => {
         if (selectedRowIds.length === 0) return;
 
         setIsDeleting(true);
@@ -159,19 +126,19 @@ const PerformancePage = () => {
 
             const result = await Swal.fire({
                 title: t("swal.areyousure"),
-                text: t("crmService.deleting"),
+                text: t("hrmService.deleting"),
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: t("crmService.delete"),
-                cancelButtonText: t("crmService.cancel"),
+                confirmButtonText: t("hrmService.delete"),
+                cancelButtonText: t("hrmService.cancel"),
                 html: `<input type="checkbox" id="confirm-checkbox" />
-                   <label for="confirm-checkbox">${t("crmService.confirmDelete")}</label>`,
+                   <label for="confirm-checkbox">${t("hrmService.confirmDelete")}</label>`,
                 preConfirm: () => {
                     const popup = Swal.getPopup();
                     if (popup) {
                         const checkbox = popup.querySelector('#confirm-checkbox') as HTMLInputElement;
                         if (checkbox && !checkbox.checked) {
-                            Swal.showValidationMessage(t("crmService.checkboxRequired"));
+                            Swal.showValidationMessage(t("hrmService.checkboxRequired"));
                             return false;
                         }
                         return true;
@@ -182,14 +149,14 @@ const PerformancePage = () => {
             if (result.isConfirmed) {
                 let hasError = false;
                 for (const id of selectedRowIds) {
-                    const selectedCustomer = customers.find(
-                        (selectedCustomer) => selectedCustomer.id === id
+                    const selectedEmployee = performances.find(
+                        (selectedEmployee) => selectedEmployee.id === id
                     );
-                    if (!selectedCustomer) continue;
+                    if (!selectedEmployee) continue;
 
-                    const data = await dispatch(fetchDeleteCustomer(selectedCustomer.id));
+                    const data = await dispatch(fetchDeletePerformance(selectedEmployee.id));
 
-                    if (data.payload.message !== "Customer deleted successfully") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -203,8 +170,8 @@ const PerformancePage = () => {
 
                 if (!hasError) {
                     await Swal.fire({
-                        title: t("crmService.deleted"),
-                        text: t("crmService.successfullydeleted"),
+                        title: t("hrmService.deleted"),
+                        text: t("hrmService.successfullydeleted"),
                         icon: "success",
                     });
 
@@ -219,29 +186,30 @@ const PerformancePage = () => {
     };
 
 
+
     const columns: GridColDef[] = [
-        {field: "firstName", headerName: t("crmService.firstName"), flex: 1.5, headerAlign: "center"},
-        {field: "lastName", headerName: t("crmService.lastName"), flex: 1.5, headerAlign: "center"},
-        {field: "email", headerName: t("crmService.email"), flex: 1.5, headerAlign: "center"},
-        {field: "phone", headerName: t("crmService.phone"), flex: 1.5, headerAlign: "center"},
-        {field: "address", headerName: t("crmService.address"), flex: 1.5, headerAlign: "center"},
-        {field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1},
+        { field: "firstName", headerName: t("hrmService.firstName"), flex: 1.5, headerAlign: "center" },
+        { field: "lastName", headerName: t("hrmService.lastName"), flex: 1.5, headerAlign: "center" },
+        { field: "date", headerName: t("hrmService.date"), flex: 1.5, headerAlign: "center" },
+        { field: "score", headerName: t("hrmService.score"), flex: 1.5, headerAlign: "center" },
+        { field: "feedback", headerName: t("hrmService.feedback"), flex: 1.5, headerAlign: "center" },
+      
     ]
 
 
     return (
-        <div style={{height: "auto"}}>
+        <div style={{ height: "auto" }}>
 
             <TextField
-                label={t("crmService.searchbyname")}
+                label={t("hrmService.searchbyname")}
                 variant="outlined"
                 onChange={(event) => {
                     setSearchText(event.target.value);
                 }}
                 value={searchText}
-                style={{marginBottom: "1%", marginTop: "1%"}}
+                style={{ marginBottom: "1%", marginTop: "1%" }}
                 fullWidth
-                inputProps={{maxLength: 50}}
+                inputProps={{ maxLength: 50 }}
             />
             <h1>Performance</h1>
 
@@ -249,11 +217,11 @@ const PerformancePage = () => {
                 slots={{
                     toolbar: GridToolbar,
                 }}
-                rows={customers}
+                rows={performances}
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: {page: 1, pageSize: 5},
+                        paginationModel: { page: 1, pageSize: 5 },
                     }
                 }}
                 // getRowClassName={(params)=>
@@ -294,23 +262,7 @@ const PerformancePage = () => {
                 marginTop: '2%',
                 marginBottom: '2%'
             }}>
-                <Grid item xs={12} sm={6} md={3} lg={2}>
-                    <Button
-                        onClick={handleOpenCustomerModal}
-                        variant="contained"
-                        color="success"
-                        //startIcon={<ApproveIcon />}
-                        sx={{
-                            width: '100%',
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        {t("crmService.add")}
-                    </Button>
-                </Grid>
+               
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleOpenUpdateModal}
@@ -326,12 +278,12 @@ const PerformancePage = () => {
                             justifyContent: 'center'
                         }}
                     >
-                        {t("crmService.update")}
+                        {t("hrmService.update")}
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={handleDeleteCustomer}
+                        onClick={handleDeletePerformance}
                         variant="contained"
                         color="error"
                         disabled={isDeleting || selectedRowIds.length === 0}
@@ -344,77 +296,75 @@ const PerformancePage = () => {
                             justifyContent: 'center'
                         }}
                     >
-                        {t("crmService.delete")}
+                        {t("hrmService.delete")}
                     </Button>
                 </Grid>
-                <Dialog open={openAddCustomerModal} onClose={() => setOpenAddCustomerModel(false)} fullWidth
-                        maxWidth='sm'>
-                    <DialogTitle>{isUpdating ? t('crmService.update') : t('crmService.add_customer')}</DialogTitle>
+                <Dialog open={openAddPerformanceModal} onClose={() => setOpenAddPerformanceModel(false)} fullWidth
+                    maxWidth='sm'>
+                    <DialogTitle>{isUpdating ? t('hrmService.update') : t('hrmService.add_employee')}</DialogTitle>
                     <DialogContent>
                         <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.firstName')}
-                            name="name"
-                            value={firstName}
-                            onChange={e => setFirstName(e.target.value)}
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.date')}
+                            name="date"
+                            type="date"
+                            value={date ? date.toISOString().substring(0, 10) : ''}
+                            onChange={e => setDate(dayjs(e.target.value))}
                             required
                             fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                         <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.lastName')}
-                            name="Lastname"
-                            value={lastName}
-                            onChange={e => setLastName(e.target.value)}
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.score')}
+                            name="score"
+                            value={score !== undefined ? score : ''}
+                            onChange={e => {
+                                const value = e.target.value;
+                                setScore(value ? parseInt(value) : 0);
+                            }}
                             required
                             fullWidth
                         />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.email')}
-                            name="email"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
+                           <TextField
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.feedback')}
+                            name="feedback"
+                            value={feedback}
+                            onChange={e => setFeedback(e.target.value)}
                             required
                             fullWidth
                         />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.phone')}
-                            name="phone"
-                            value={phone}
-                            onChange={e => setPhone(e.target.value)}
-                            required
-                            fullWidth
-                        />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.address')}
-                            name="address"
-                            value={address}
-                            onChange={e => setAddress(e.target.value)}
-                            required
-                            fullWidth
-                        />
+                       
+
+
+
+
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            setOpenAddCustomerModel(false);
+                            setOpenAddPerformanceModel(false);
                             setIsUpdating(false);
-                            setFirstName('');
-                            setLastName('');
-                            setEmail('');
-                            setPhone('');
-                            setAddress('');
-                        }} color="error" variant="contained">{t('crmService.cancel')}</Button>
-                        {isUpdating ? <Button onClick={() => handleUpdateCustomer()} color="primary" variant="contained"
-                                              disabled={firstName === '' || lastName === '' || email === '' || phone === '' || address === ''}>{t('crmService.update')}</Button>
-                            :
-                            <Button onClick={() => handleSaveCustomer()} color="success" variant="contained"
-                                    disabled={firstName === '' || lastName === '' || email === '' || phone === '' || address === ''}>{t('crmService.save')}</Button>}
+                            setDate(dayjs());
+                            setScore(0)
+                            setFeedback('')
+                          
+                        }} color="error" variant="contained">{t('hrmService.cancel')}</Button>
 
-
+                        {isUpdating && (
+                            <Button
+                                onClick={() => handleUpdatePerformance()}
+                                color="primary"
+                                variant="contained"
+                                disabled={date === null || score === 0 || feedback === ''}
+                            >
+                                {t('hrmService.update')}
+                            </Button>
+                        )}
                     </DialogActions>
+
                 </Dialog>
 
             </Grid>

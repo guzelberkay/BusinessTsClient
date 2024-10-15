@@ -4,6 +4,5 @@ export interface IExpense{
     expenseDate: Date;
     amount: number;
     description: string;
-    status: string;
-    department: string;
+    departmentName: string;
 }

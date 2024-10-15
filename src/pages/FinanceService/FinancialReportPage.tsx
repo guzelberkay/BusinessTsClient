@@ -1,29 +1,35 @@
 import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../store";
+import {AppDispatch, useAppSelector} from "../../store";
 import {useTranslation} from "react-i18next";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Typography} from "@mui/material";
 import {
     fetchIncomeByMonths,
-    fetchExpenseByMonths
+    fetchExpenseByMonths, fetchFindExpenseByDate, fetchFindIncomeByDate
 } from "../../store/feature/financeSlice.tsx";
 import {Bar, Pie} from 'react-chartjs-2';
 import 'chart.js/auto';
+import {DataGrid, GridColDef} from "@mui/x-data-grid";
 
 const FinancialReportPage = () => {
     const dispatch = useDispatch<AppDispatch>();
     const {t} = useTranslation();
-    const [startDate, setStartDate] = useState<Date | null>(null);
-    const [endDate, setEndDate] = useState<Date | null>(null);
+    //startDate değişkeni: tipi Date başlangıç değeri ise 2 ocak 2024
+    const [startDate, setStartDate] = useState<Date>(new Date(2024, 0, 2));
+    //endDate değişkeni: tipi Date başlangıç değeri ise 31 aralık 2024
+    const [endDate, setEndDate] = useState<Date>(new Date(2024, 11, 31));
+    //const [endDate, setEndDate] = useState<Date | null>(null);
     const [incomeData, setIncomeData] = useState<number[]>([]);
     const [expenseData, setExpenseData] = useState<number[]>([]);
     const [monthsLabels, setMonthsLabels] = useState<string[]>([]);
     const [netIncomeData, setNetIncomeData] = useState<number[]>([]);
     const [isCalculated, setIsCalculated] = useState<boolean>(false);
+    const incomes = useAppSelector((state) => state.financeSlice.incomeList);
+    const expenses = useAppSelector((state) => state.financeSlice.expenseList);
 
     const months = (startDate: Date, endDate: Date) => {
         const result = [];
@@ -34,6 +40,25 @@ const FinancialReportPage = () => {
         }
         return result;
     };
+
+    const incomeColumns: GridColDef[] = [
+        {field: 'source', headerName: 'Source', flex: 1.5, headerAlign: "center"},
+        {field: 'amount', headerName: 'Amount (₺)', flex: 1.5, headerAlign: "center", type: 'number'},
+        {field: 'incomeDate', headerName: 'Income Date', flex: 1.5, headerAlign: "center"},
+    ];
+
+    const expenseColumns: GridColDef[] = [
+        {field: "amount", headerName: t("financeService.amounttl"), flex: 1.5, headerAlign: "center", type: "number"},
+        {field: "description", headerName: t("financeService.description"), flex: 1.5, headerAlign: "center"},
+        {field: "expenseDate", headerName: t("financeService.date"), flex: 1.5, headerAlign: "center"},
+        {field: "departmentName", headerName: t("financeService.department"), flex: 1.5, headerAlign: "center"},
+        {field: "expenseCategory", headerName: t("financeService.category"), flex: 1.5, headerAlign: "center"},
+    ];
+
+    useEffect(() => {
+            dispatch(fetchFindIncomeByDate({startDate, endDate}));
+            dispatch(fetchFindExpenseByDate({startDate, endDate}));
+    }, [dispatch]);
 
     const handleSearch = async () => {
         if (startDate && endDate) {
@@ -165,14 +190,14 @@ const FinancialReportPage = () => {
                     <DatePicker
                         label={t("financeService.startdate")}
                         value={startDate ? dayjs(startDate) : null}
-                        onChange={(newValue) => setStartDate(newValue ? newValue.toDate() : null)}
+                        onChange={(newValue) => setStartDate(newValue ? newValue.toDate() : new Date(2024, 0, 2))}
                     />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         label={t("financeService.enddate")}
                         value={endDate ? dayjs(endDate) : null}
-                        onChange={(newValue) => setEndDate(newValue ? newValue.toDate() : null)}
+                        onChange={(newValue) => setEndDate(newValue ? newValue.toDate() : new Date(2024, 11, 31))}
                         shouldDisableDate={startDate ? (date) => date.isBefore(startDate) : undefined}
                     />
                 </LocalizationProvider>
@@ -188,20 +213,76 @@ const FinancialReportPage = () => {
             )}
 
             {isCalculated && (
-                <div style={{display: 'flex', justifyContent: 'space-around', width: '60%', marginTop: 50}}>
-                    <div>
-                        <Typography variant="h6" align="center">
-                            {t('financeService.incomeVsExpense')}
-                        </Typography>
-                        <Pie data={incomeVsExpenseData} style={{maxHeight: '250px'}}/>
+                <div style={{display: 'column', justifyContent: 'space-around', width: '80%', marginTop: 50}}>
+                    <div style={{display: 'flex', justifyContent: 'space-around'}}>
+                        <div>
+                            <Typography variant="h6" align="center">
+                                {t('financeService.incomeVsExpense')}
+                            </Typography>
+                            <Pie data={incomeVsExpenseData} style={{maxHeight: '250px'}}/>
+                        </div>
+                        <div>
+                            <Typography variant="h6" align="center">
+                                {t('financeService.expenseBreakdown')}
+                            </Typography>
+                            <Pie data={expenseBreakdownData} style={{maxHeight: '250px'}}/>
+                        </div>
                     </div>
-                    <div>
-                        <Typography variant="h6" align="center">
-                            {t('financeService.expenseBreakdown')}
-                        </Typography>
-                        <Pie data={expenseBreakdownData} style={{maxHeight: '250px'}}/>
+                    <div style={{height: "auto"}}>
+                        <div style={{marginTop: 75, marginBottom: 50}}>
+                            <DataGrid
+                                rows={expenses}
+                                columns={expenseColumns}
+                                initialState={{
+                                    pagination: {
+                                        paginationModel: {page: 1, pageSize: 5},
+                                    },
+                                }}
+                                pageSizeOptions={[5, 10]}
+                                autoHeight={true}
+                                sx={{
+                                    "& .MuiDataGrid-columnHeaders": {
+                                        backgroundColor: "rgba(224, 224, 224, 1)",
+                                    },
+                                    "& .MuiDataGrid-columnHeaderTitle": {
+                                        textAlign: "center",
+                                        fontWeight: "bold",
+                                    },
+                                    "& .MuiDataGrid-cell": {
+                                        textAlign: "center",
+                                    },
+                                }}
+                            />
+                        </div>
+                        <DataGrid
+                            rows={incomes}
+                            columns={incomeColumns}
+                            initialState={{
+                                pagination: {
+                                    paginationModel: {page: 1, pageSize: 5},
+                                },
+                            }}
+                            pageSizeOptions={[5, 10]}
+                            autoHeight={true}
+                            sx={{
+                                "& .MuiDataGrid-columnHeaders": {
+                                    backgroundColor: "rgba(224, 224, 224, 1)",
+                                },
+                                "& .MuiDataGrid-columnHeaderTitle": {
+                                    textAlign: "center",
+                                    fontWeight: "bold",
+                                },
+                                "& .MuiDataGrid-cell": {
+                                    textAlign: "center",
+                                },
+                            }}
+                        />
                     </div>
                 </div>
+            )}
+
+            {incomes.length > 0 && expenses.length > 0 && (
+                <div></div>
             )}
         </div>
     );
