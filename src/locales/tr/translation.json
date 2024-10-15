@@ -254,7 +254,8 @@
     "noNotifications": "Bildirim bulunamadı",
     "viewAllNotifications": "Tüm Bildirimleri Gör",
     "close": "Kapat",
-    "delete": "Sil"
+    "delete": "Sil",
+    "deleteAll": "Tümünü Sil"
   },
   "subscription": {
     "title": "Abonelik Gecmisi",

@@ -219,12 +219,12 @@ function Appbar({
 
         // Bir bildirim okunduğunda
         stompClient.subscribe("/topic/markasread-notifications", () => {
-          setUnreadCount((prevCount) => prevCount - 1); // Unread count'u azalt
+          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Unread count'u azalt, 0'ın altına düşmesini engelle
         });
 
         // Bir bildirim silindiğinde
         stompClient.subscribe("/topic/delete-notifications", () => {
-          setUnreadCount((prevCount) => prevCount - 1); // Unread count'u azalt
+          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Unread count'u azalt, 0'ın altına düşmesini engelle
         });
       },
       onDisconnect: () => {
@@ -247,7 +247,6 @@ function Appbar({
       }
     };
   }, [dispatch]);
-
 
 
 
