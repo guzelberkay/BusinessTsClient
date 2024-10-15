@@ -26,10 +26,10 @@ function ManageRoles() {
   const [searchWord, setSerchWord] = useState(''); 
   const dispatch = useDispatch<AppDispatch>();
   const roleList: IRole[] = useAppSelector((state) => state.roleSlice.roleList);
-  const [currentPage, setCurrentPage] = useState(0);  // Mevcut sayfa
-  const [totalPages, setTotalPages] = useState(1);    // Toplam sayfa sayısı
-  const [totalElements, setTotalElements] = useState(0); // Toplam eleman sayısı
-  const [pageSize, setPageSize] = useState(5);  // Sayfa başına kullanıcı sayısı (sabitleyebilir veya değiştirebilirsiniz)
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [totalPages, setTotalPages] = useState(1);  
+  const [totalElements, setTotalElements] = useState(0); 
+  const [pageSize, setPageSize] = useState(5);  
   const [pageableRoleList, setPageableRoleList] = useState<IRole[]>([]);
 
   useEffect(() => {

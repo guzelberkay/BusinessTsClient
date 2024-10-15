@@ -36,10 +36,10 @@ function ManageUsers() {
   const userList: IUser[] = useAppSelector((state) => state.userSlice.userList);
   const [userListPageable, setUserListPageable] = useState<IUser[]>([]);
   const availableRoles: IRole[] = useAppSelector((state) => state.roleSlice.assigableRoleList);
-  const [currentPage, setCurrentPage] = useState(0);  // Mevcut sayfa
-  const [totalPages, setTotalPages] = useState(1);    // Toplam sayfa sayısı
-  const [totalElements, setTotalElements] = useState(0); // Toplam eleman sayısı
-  const [pageSize, setPageSize] = useState(5);  // Sayfa başına kullanıcı sayısı (sabitleyebilir veya değiştirebilirsiniz)
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1); 
+  const [totalElements, setTotalElements] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
   const [newUser, setNewUser] = useState({
     firstName: '',
     lastName: '',
@@ -60,13 +60,7 @@ function ManageUsers() {
     });
   }, [dispatch, currentPage, pageSize,searchTerm]);
 
-  //useEffect(() => {
-  //  dispatch(fetchUserList()).then((data) => {
-  //    if (data.payload.code === 200) {
-  //      console.log(data.payload.data);
-  //    }
-  //  });
-  //}, [dispatch]);
+
 
   
   const handlePageChange = (newPage: number) => {
