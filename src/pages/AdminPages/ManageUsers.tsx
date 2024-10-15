@@ -7,15 +7,21 @@ import {
   Tooltip,
   ListItemButton,
   FormControl,
-  Switch
+  Switch,
+  Box,
+  Pagination,
+  MenuItem,
+  Select
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { AppDispatch, useAppSelector } from '../../store';
 import { useDispatch } from 'react-redux';
-import { fetchAddRoleToUser, fetchChangeUserEmail, fetchChangeUserPassword, fetchSaveUser, fetchUpdateUserStatus, fetchUserList } from '../../store/feature/userSlice';
+import { fetchAddRoleToUser, fetchChangeUserEmail, fetchChangeUserPassword, fetchGetAllUsersPageable, fetchSaveUser, fetchUpdateUserStatus, fetchUserList } from '../../store/feature/userSlice';
 import { IUser } from '../../model/IUser';
 import { IRole } from '../../model/IRole';
 import { fetchAsiggableRoleList } from '../../store/feature/roleSlice';
+import { GroupAdd } from '@mui/icons-material';
+import { IPageableUserList } from '../../model/IPageableUserList';
 
 function ManageUsers() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,7 +34,12 @@ function ManageUsers() {
   const [newEmail, setNewEmail] = useState(''); 
   const [newPassword, setNewPassword] = useState('');
   const userList: IUser[] = useAppSelector((state) => state.userSlice.userList);
+  const [userListPageable, setUserListPageable] = useState<IUser[]>([]);
   const availableRoles: IRole[] = useAppSelector((state) => state.roleSlice.assigableRoleList);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1); 
+  const [totalElements, setTotalElements] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
   const [newUser, setNewUser] = useState({
     firstName: '',
     lastName: '',
@@ -37,18 +48,24 @@ function ManageUsers() {
     roleIds: [] || null
   });
   const dispatch = useDispatch<AppDispatch>();
-
   useEffect(() => {
-    dispatch(fetchUserList()).then((data) => {
+    dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
       if (data.payload.code === 200) {
-        console.log(data.payload.data);
+        const userData: IPageableUserList = data.payload.data;
+        setTotalPages(userData.totalPages);
+        setTotalElements(userData.totalElements);
+        setUserListPageable(userData.userList);
+        console.log('userListPageable : ',userData);
       }
     });
-  }, [dispatch]);
+  }, [dispatch, currentPage, pageSize,searchTerm]);
 
-  const filteredUsers = userList.filter(user =>
-    user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
+
+  
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   const handleOpenDialog = (userId: number) => {
     dispatch(fetchAsiggableRoleList(userId)).then((data) => {
@@ -80,7 +97,14 @@ function ManageUsers() {
     if (selectedRoleId !== null) {
       dispatch(fetchAddRoleToUser({ userId: selectedUserId, roleId: selectedRoleId })).then((data) => {
         if (data.payload.code === 200) {
-          dispatch(fetchUserList());
+          dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+            if (data.payload.code === 200) {
+              const userData: IPageableUserList = data.payload.data;
+              setTotalPages(userData.totalPages);
+              setTotalElements(userData.totalElements);
+              setUserListPageable(userData.userList);
+            }
+          })
         }
       });
     }
@@ -103,17 +127,31 @@ function ManageUsers() {
   const handleEditEmail = () => {
     dispatch(fetchChangeUserEmail({ id: selectedUserId, email: newEmail })).then((data) => {
       if (data.payload.code === 200) {
-        dispatch(fetchUserList());
+        dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+          if (data.payload.code === 200) {
+            const userData: IPageableUserList = data.payload.data;
+            setTotalPages(userData.totalPages);
+            setTotalElements(userData.totalElements);
+            setUserListPageable(userData.userList);
+          }
+        })
       }
     });
     handleCloseEditDialog(); 
   };
 
   const handleEditPassword = () => {
-    dispatch(fetchChangeUserPassword({ userId: selectedUserId, password: newPassword })).then((data) => {
+    dispatch(fetchChangeUserPassword({ userId: selectedUserId})).then((data) => {
       if (data.payload.code === 200) {
         alert(data.payload.message);
-        dispatch(fetchUserList());
+        dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+          if (data.payload.code === 200) {
+            const userData: IPageableUserList = data.payload.data;
+            setTotalPages(userData.totalPages);
+            setTotalElements(userData.totalElements);
+            setUserListPageable(userData.userList);
+          }
+        })
         setNewPassword('');
       }
     })
@@ -124,13 +162,27 @@ function ManageUsers() {
     if (user.status === 'ACTIVE') {
         dispatch(fetchUpdateUserStatus({ userId: user.id, status: 'INACTIVE' })).then((data) => {
             if (data.payload.code === 200) {
-                dispatch(fetchUserList());
+              dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+                if (data.payload.code === 200) {
+                  const userData: IPageableUserList = data.payload.data;
+                  setTotalPages(userData.totalPages);
+                  setTotalElements(userData.totalElements);
+                  setUserListPageable(userData.userList);
+                }
+              })
             }
         });
     } else {
         dispatch(fetchUpdateUserStatus({ userId: user.id, status: 'ACTIVE' })).then((data) => {
             if (data.payload.code === 200) {
-                dispatch(fetchUserList());
+              dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+                if (data.payload.code === 200) {
+                  const userData: IPageableUserList = data.payload.data;
+                  setTotalPages(userData.totalPages);
+                  setTotalElements(userData.totalElements);
+                  setUserListPageable(userData.userList);
+                }
+              })
             }
         });
     }
@@ -153,7 +205,14 @@ function ManageUsers() {
     console.log(newUser);
     dispatch(fetchSaveUser(newUser)).then((data) => {
       if (data.payload.code === 200) {
-        dispatch(fetchUserList());
+        dispatch(fetchGetAllUsersPageable({ searchText: searchTerm, page: currentPage, size: pageSize })).then((data) => {
+          if (data.payload.code === 200) {
+            const userData: IPageableUserList = data.payload.data;
+            setTotalPages(userData.totalPages);
+            setTotalElements(userData.totalElements);
+            setUserListPageable(userData.userList);
+          }
+        })
       }
     });
     handleCloseNewUserDialog();
@@ -187,7 +246,7 @@ function ManageUsers() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredUsers.map((user, index) => (
+            {userListPageable.map((user, index) => (
               <TableRow key={user.id}
               sx={{
                 backgroundColor: index % 2 === 0 ? 'action.hover' : 'background.paper', // Alternatif satır rengi
@@ -201,38 +260,68 @@ function ManageUsers() {
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.email}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.status}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-                  <Switch 
-                    checked={user.status === 'ACTIVE'}
-                    onChange={() => handleStatusChange(user)}
-                    color="success"
-                  />
+                  <Box sx={{ justifyContent: 'center', display: 'flex' }}>
+                    <Tooltip title={user.status === 'ACTIVE' ? 'Kullanıcıyı Pasifleştir' : 'Kullanıcıyı Aktifleştir'}   arrow>
+                      <Switch 
+                        checked={user.status === 'ACTIVE'}
+                        onChange={() => handleStatusChange(user)}
+                        color="success"
+                      />
+                    </Tooltip>
+                  </Box>
+                  
                 </TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>{user.userRoles.join(', ')}</TableCell>
                 <TableCell sx={{ borderRight: '1px solid rgba(224, 224, 224, 1)' }}>
-                  <Button 
-                    variant="contained" 
-                    color="primary" 
-                    style={{ marginRight: 8 }} 
-                    onClick={() => handleOpenDialog(user.id)}
-                  >
-                    Rol Ekle
-                  </Button>
-                  <Button 
-                    variant="contained" 
-                    color="secondary" 
-                    style={{ marginRight: 8 }} 
-                    startIcon={<EditIcon />}
-                    onClick={() => handleOpenEditDialog(user)} 
-                  >
-                    Düzenle
-                  </Button>
-                  
+                  <Box sx={{ justifyContent: 'center', display: 'flex' }}>
+                    <Tooltip title="Rol Ekle" arrow>
+                      <Button 
+                        variant="contained" 
+                        color="primary"  
+                        onClick={() => handleOpenDialog(user.id)}                   
+                        startIcon={<GroupAdd sx={{ marginLeft: '12px' }} />}
+                      >                    
+                      </Button>
+                    </Tooltip>
+
+                    <Tooltip title="Düzenle" arrow>
+                      <Button 
+                        sx={{ marginLeft: '5px' }}
+                        variant="contained" 
+                        color="secondary"                    
+                        startIcon={<EditIcon sx={{ marginLeft: '12px' }} />}
+                        onClick={() => handleOpenEditDialog(user)} 
+                      >
+                      </Button>
+                    </Tooltip> 
+                  </Box>                 
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+        <Pagination
+          count={totalPages}
+          page={currentPage + 1} // Pagination component 1-indexed çalışıyor
+          onChange={(event, value) => handlePageChange(value - 1)}  // 0-indexed için ayar
+          color="primary"
+        />
+        <FormControl variant="outlined" sx={{ marginBottom: 2 }}>
+            <Select 
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                setCurrentPage(0); // Sayfa boyutu değiştiğinde ilk sayfaya dön
+              }}
+            >
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+            </Select>
+          </FormControl>
+      </Box>
 
       {/* Rol Ekleme Pop-up  */}
       <Dialog open={openDialog} 
@@ -274,32 +363,26 @@ function ManageUsers() {
         </DialogActions>
       </Dialog>
 
-        {/* E-posta Düzenleme Diyaloğu */}
+        {/* Düzenleme Diyaloğu */}
         <Dialog 
           open={openEditDialog} 
           onClose={handleCloseEditDialog} 
           maxWidth="sm" 
           fullWidth 
         >
-          <DialogTitle >E-posta Düzenle</DialogTitle>
+          <DialogTitle >Kullanıcıyı Düzenle</DialogTitle>
             <DialogContent >
-              <FormControl fullWidth sx={{ marginTop: 2 }}>
+              <FormControl fullWidth sx={{ marginTop: 2  }}>
                   <TextField
                     label="Yeni E-posta"
                     variant="outlined"
                     value={newEmail}
                     onChange={(e) => setNewEmail(e.target.value)} 
                   />
-                  <Button onClick={handleEditEmail} color="primary">Yeni Maili Kaydet</Button>
+                  <Button variant='contained' onClick={handleEditEmail} color="primary" sx={{ marginTop: 2 }}>Yeni Maili Kaydet</Button>
               </FormControl>
               <FormControl fullWidth sx={{ marginTop: 2 }}>
-              <TextField
-                    label="Yeni Şifre"
-                    variant="outlined"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)} 
-                  />
-                  <Button onClick={handleEditPassword} color="primary">Yeni Şifreyi Kaydet</Button>
+                  <Button variant='contained' onClick={handleEditPassword} color="secondary">Yeni Şifre Gönder</Button>
                 </FormControl>
             </DialogContent>
           <DialogActions>

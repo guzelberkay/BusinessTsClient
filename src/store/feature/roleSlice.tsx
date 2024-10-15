@@ -133,8 +133,9 @@ export const fetchDeleteRole = createAsyncThunk(
 
 export const fetchRoleList = createAsyncThunk(
     'role/fetchRoleList',
-    async () => {
-        const result = await axios.get(RestApis.user_management_service_role+"/get-all-user-roles",
+    async (Payload:{searchText: string ,page: number, size: number}) => {
+        const result = await axios.post(RestApis.user_management_service_role+"/get-all-user-roles",
+            Payload,
             {
                 headers: {
                     'Content-Type': 'application/json',
