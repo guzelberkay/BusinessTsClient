@@ -303,7 +303,12 @@ const EmployeePage = () => {
         {field: "email", headerName: "Email", flex: 1.5, headerAlign: "center"},
         {field: "identityNo", headerName: t("stockService.identityno"), flex: 1, headerAlign: "center"},
         {field: "phoneNo", headerName: t("stockService.phoneno"), flex: 1, headerAlign: "center"},
-        {field: "managerName", headerName: t("stockService.managername"), flex: 1.2, headerAlign: "center"},
+        {field: "managerName", headerName: t("stockService.managername"), flex: 1.2, headerAlign: "center",
+            renderCell: (params) => (
+                params.value === 'No Manager'
+                    ? t('stockService.nomanager')
+                    : params.value
+            )},
         {
             field: "isAccountGivenToEmployee",
             headerName: t("stockService.isaccountactive"),

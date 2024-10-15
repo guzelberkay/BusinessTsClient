@@ -222,7 +222,8 @@
     "accountdeactivatedsuccesfully": "Account Succesfully Deactivated!",
     "youwillactivateaccount": "You want to activate account. Are you sure?",
     "isaccountactive" : "Activation State",
-    "title": "Title"
+    "title": "Title",
+    "nomanager": "No Manager"
   },
   "dashboard": {
     "numberofemployees": "Number of Employees ",
