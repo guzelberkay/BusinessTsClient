@@ -4,5 +4,7 @@ export interface IDeclaration{
     endDate: Date;
     totalIncome: number;
     totalExpense: number;
+    netIncome: number;
     totalTax: number;
+    taxType: string;
 }
