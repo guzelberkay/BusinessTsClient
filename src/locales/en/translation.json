@@ -66,7 +66,7 @@
     "oms-manager": "Manager",
     "oms-department": "Department",
     "organizationManagementModule": "Organization Management Module",
-    "oms-treeview": "Ogranization Chart"
+    "oms-treeview": "Organization Chart"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -221,7 +221,8 @@
     "youwilldeactivateaccount": "You want to deactivate account. Are you sure?",
     "accountdeactivatedsuccesfully": "Account Succesfully Deactivated!",
     "youwillactivateaccount": "You want to activate account. Are you sure?",
-    "isaccountactive" : "Activation State"
+    "isaccountactive" : "Activation State",
+    "title": "Title"
   },
   "dashboard": {
     "numberofemployees": "Number of Employees ",

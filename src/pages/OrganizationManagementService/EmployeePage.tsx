@@ -54,6 +54,7 @@ const EmployeePage = () => {
 
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
+    const [title, setTitle] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNo, setPhoneNo] = useState('');
     const [identityNo, setIdentityNo] = useState('');
@@ -138,6 +139,7 @@ const EmployeePage = () => {
             setPhoneNo(data.payload.data.phoneNo)
             setSelectedDepartmentId(data.payload.data.departmentId)
             setSelectedManagerId(data.payload.data.managerId)
+            setTitle(data.payload.data.title)
         })
     }
     const handleUpdate = async () => {
@@ -148,6 +150,7 @@ const EmployeePage = () => {
             surname: surname,
             identityNo: identityNo,
             phoneNo: phoneNo,
+            title: title,
             managerId: selectedManagerId,
             departmentId: selectedDepartmentId
         })).then((data) => {
@@ -157,6 +160,7 @@ const EmployeePage = () => {
                 setEmail('')
                 setIdentityNo('')
                 setPhoneNo('')
+                setTitle('')
                 setSelectedDepartmentId(0)
                 setSelectedManagerId(0)
                 setOpenAddEmployee(false);
@@ -173,6 +177,7 @@ const EmployeePage = () => {
                 setEmail('')
                 setIdentityNo('')
                 setPhoneNo('')
+                setTitle('')
                 setSelectedDepartmentId(0)
                 setSelectedManagerId(0)
                 setOpenAddEmployee(false);
@@ -196,6 +201,7 @@ const EmployeePage = () => {
             email: email,
             identityNo: identityNo,
             phoneNo: phoneNo,
+            title: title,
             managerId: selectedManagerId,
             departmentId: selectedDepartmentId
         }))
@@ -206,6 +212,9 @@ const EmployeePage = () => {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
+                    setTitle('')
+                    setSelectedDepartmentId(0)
+                    setSelectedManagerId(0)
                     setOpenAddEmployee(false);
                     Swal.fire({
                         title: t("swal.success"),
@@ -220,6 +229,9 @@ const EmployeePage = () => {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
+                    setTitle('')
+                    setSelectedDepartmentId(0)
+                    setSelectedManagerId(0)
                     setOpenAddEmployee(false);
                     Swal.fire({
                         title: t("swal.error"),
@@ -283,13 +295,14 @@ const EmployeePage = () => {
     };
 
     const columns: GridColDef[] = [
-        {field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center"},
-        {field: "surname", headerName: t("stockService.surname"), flex: 1.5, headerAlign: "center"},
+        {field: "name", headerName: t("authentication.name"), flex: 1, headerAlign: "center"},
+        {field: "surname", headerName: t("stockService.surname"), flex: 1, headerAlign: "center"},
+        {field: "title", headerName: t("stockService.title"), flex: 1, headerAlign: "center"},
         {field: "departmentName", headerName: t("stockService.departmentname"), flex: 1.5, headerAlign: "center"},
         {field: "email", headerName: "Email", flex: 1.5, headerAlign: "center"},
-        {field: "identityNo", headerName: t("stockService.identityno"), flex: 1.5, headerAlign: "center"},
-        {field: "phoneNo", headerName: t("stockService.phoneno"), flex: 1.5, headerAlign: "center"},
-        {field: "managerName", headerName: t("stockService.managername"), flex: 1.5, headerAlign: "center"},
+        {field: "identityNo", headerName: t("stockService.identityno"), flex: 1, headerAlign: "center"},
+        {field: "phoneNo", headerName: t("stockService.phoneno"), flex: 1, headerAlign: "center"},
+        {field: "managerName", headerName: t("stockService.managername"), flex: 1.2, headerAlign: "center"},
         {
             field: "isAccountGivenToEmployee",
             headerName: t("stockService.isaccountactive"),
@@ -581,6 +594,15 @@ const EmployeePage = () => {
                         />
                         <TextField
                             sx={{marginTop: '15px'}}
+                            label={t('stockService.title')}
+                            name="title"
+                            value={title}
+                            onChange={e => setTitle(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
                             label={t('stockService.identityno')}
                             name="identityNo"
                             value={identityNo}
@@ -613,10 +635,10 @@ const EmployeePage = () => {
                             setOpenAddEmployee(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
                         {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
-                                              disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === '' || selectedManagerId === 0 || selectedDepartmentId === 0}>{t('stockService.update')}</Button>
+                                              disabled={name === '' || surname === '' || email === '' || title === '' || identityNo === '' || phoneNo === '' || selectedManagerId === 0 || selectedDepartmentId === 0}>{t('stockService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveEmployee()} color="success" variant="contained"
-                                    disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === '' || selectedManagerId === 0 || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
+                                    disabled={name === '' || surname === '' || email === '' || title === '' || identityNo === '' || phoneNo === '' || selectedManagerId === 0 || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>

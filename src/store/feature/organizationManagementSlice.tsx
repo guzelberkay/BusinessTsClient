@@ -146,6 +146,7 @@ interface IfetchSaveEmployee {
     departmentId: number;
     identityNo: string;
     phoneNo: string;
+    title: string;
     name: string;
     surname: string;
     email: string;
@@ -160,6 +161,7 @@ export const fetchSaveEmployee = createAsyncThunk(
             identityNo: payload.identityNo,
             phoneNo: payload.phoneNo,
             name: payload.name,
+            title: payload.title,
             surname: payload.surname,
             email: payload.email
         };
@@ -184,6 +186,7 @@ interface IfetchSaveTopLevelManager {
     departmentId: number;
     identityNo: string;
     phoneNo: string;
+    title: string;
     name: string;
     surname: string;
     email: string;
@@ -198,6 +201,7 @@ export const fetchSaveTopLevelManager = createAsyncThunk(
             identityNo: payload.identityNo,
             phoneNo: payload.phoneNo,
             name: payload.name,
+            title: payload.title,
             surname: payload.surname,
             email: payload.email
         };
@@ -223,6 +227,7 @@ interface IfetchSaveSubordinate {
     departmentId: number;
     identityNo: string;
     phoneNo: string;
+    title: string;
     name: string;
     surname: string;
     email: string;
@@ -237,6 +242,7 @@ export const fetchSaveSubordinate = createAsyncThunk(
             identityNo: payload.identityNo,
             phoneNo: payload.phoneNo,
             name: payload.name,
+            title: payload.title,
             surname: payload.surname,
             email: payload.email
         };
@@ -280,6 +286,7 @@ interface IfetchUpdateEmployee {
     managerId: number;
     departmentId: number;
     identityNo: string;
+    title: string;
     phoneNo: string;
     name: string;
     surname: string;
@@ -295,7 +302,8 @@ export const fetchUpdateEmployee = createAsyncThunk(
             identityNo: payload.identityNo,
             phoneNo: payload.phoneNo,
             name: payload.name,
-            surname: payload.surname
+            surname: payload.surname,
+            title : payload.title
         };
 
         const result = await axios.put(

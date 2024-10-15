@@ -224,7 +224,8 @@
     "youwilldeactivateaccount": "Hesabi deaktif etmek istediginizden emin misiniz?",
     "accountdeactivatedsuccesfully": "Hesap Basariyla Deaktif Edildi!",
     "youwillactivateaccount": "Hesabı aktif etmek istediginizden emin misiniz?",
-    "isaccountactive" : "Aktivasyon Durumu"
+    "isaccountactive" : "Aktivasyon Durumu",
+    "title": "Ünvan"
   },
   "dashboard": {
     "numberofemployees": "Çalışan Sayısı",

@@ -11,6 +11,7 @@ export interface IEmployee {
     phoneNo: string;
     name: string;
     surname:string;
+    title:string;
     email: string;
     isAccountGivenToEmployee:boolean;
     createdAt:Date;
