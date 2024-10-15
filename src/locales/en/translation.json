@@ -345,7 +345,13 @@
     "details": "Details",
     "opportunity_details": "Opportunity Details",
     "no-name": "No Information",
-    "no-founded-customer": "No founded customer"
+    "no-founded-customer": "No founded customer",
+    "import": "Import",
+    "uploadFile": "Upload File",
+    "close": "Close",
+    "uploaded": "File Uploaded Successfully!"
+
+
   },
   "hrmService": {
     "firstName": "Name",

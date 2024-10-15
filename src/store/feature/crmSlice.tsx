@@ -172,6 +172,30 @@ export const fetchFindCustomerById = createAsyncThunk(
         return result.data;
     }
 );
+interface IFetchUploadExcelCustomer {
+    address: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+
+}
+export const fetchUploadExcelCustomer = createAsyncThunk(
+    'crm/fetchUploadExcelCustomer',
+    async (payload: IFetchUploadExcelCustomer[]) => {
+        const result = await axios.post(
+            RestApis.crm_service_customer + "/upload-excel-customer",
+            { customers: payload },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
 
 
 
