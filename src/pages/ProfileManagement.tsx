@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, useAppSelector } from '../store';
 import { fetchUpdateUser, fetchUserInformation } from '../store/feature/userSlice';
 import { fetchChangeMyPassword, fetchLoginProfileManagement } from '../store/feature/authSlice';
-import { deleteFile, fetchFile, uploadFile } from '../store/feature/fileSlice';
+import { deleteFile, fetchFile, fetchProfileImage, fetchUploadProfileImage, uploadFile } from '../store/feature/fileSlice';
 import FileUploadProps from '../components/molecules/FileUploadProps';
 const ProfileImageWrapper = styled('div')({
   position: 'relative',
@@ -64,9 +64,21 @@ function ProfileManagement() {
   const uuid = useSelector((state: RootState) => state.fileSlice.uuid);
   
   
+  
 
   useEffect(() => {
-      dispatch(fetchUserInformation());
+      dispatch(fetchUserInformation()).then((data) => {
+          if(data.payload.code==200 && data.payload.data){
+            dispatch(fetchProfileImage()).then((data) => {
+              const blob = data.payload;
+              if (blob) {
+                const url = URL.createObjectURL(blob);
+                console.log('Fotoğraf URL:', url);
+                setImageUrl(url);
+            }
+            });
+          }
+      });
   }, [dispatch]);
 
   useEffect(() => {
@@ -85,29 +97,26 @@ function ProfileManagement() {
           }
       });
   };
-  useEffect(() => {
-    if (uuid) { 
-        dispatch(fetchFile(uuid))
-            .unwrap()
-            .then((blob) => {
-                const url = URL.createObjectURL(blob);
-                setImageUrl(url);
-            })
-            .catch((error) => {
-                console.error("Error fetching file:", error);
-            });
-    }
-}, [uuid, dispatch]);
+  
   const handleFileUpload = (files: File[]) => {
     if (files.length > 0) {
-        dispatch(uploadFile(files[0]))
+        dispatch(fetchUploadProfileImage(files[0]))
              .catch((error) => {
                 console.error("Error uploading file:", error);
+            }).then(() => {
+              dispatch(fetchProfileImage()).then((data) => {
+                const blob = data.payload;
+                if (blob) {
+                  const url = URL.createObjectURL(blob);
+                  console.log('Fotoğraf URL:', url);
+                  setImageUrl(url);
+              }
+              });
             });
     }
 };
 
-useEffect(() => {
+/* useEffect(() => {
     if (uuid) { 
         dispatch(fetchFile(uuid))
             .unwrap()
@@ -120,7 +129,7 @@ useEffect(() => {
             });
     }
 }, [uuid, dispatch]);
-
+ */
   const handleNewPasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if(newPassword!=newConfirmPassword){

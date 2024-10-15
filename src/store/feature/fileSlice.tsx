@@ -17,7 +17,7 @@ interface IFileState {
 }
   
 const initialFileState: IFileState = {
-    profileImage: '',
+    profileImage: 'https://i.pinimg.com/736x/09/21/fc/0921fc87aa989330b8d403014bf4f340.jpg',
     uuid: '',
     files: [],
     isLoading: false,
@@ -184,9 +184,9 @@ export const fetchUploadProfileImage = createAsyncThunk(
 
 export const fetchProfileImage = createAsyncThunk(
     'files/fetchGetProfileImage',
-    async (authId: number, { rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${RestApis.file_service}/getProfileImage/${authId}`, {
+            const response = await axios.get(`${RestApis.file_service}/getProfileImage`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
@@ -266,8 +266,12 @@ const fileSlice = createSlice({
             })
             .addCase(fetchUploadProfileImage.fulfilled, (state, action: PayloadAction<IResponse>) => {
                 state.isLoading = false;
-                const url= URL.createObjectURL(action.payload.data);
-                state.profileImage = url; 
+                const blob = action.payload.data;
+                if (blob) {
+                    const url = URL.createObjectURL(blob);
+                    state.profileImage = url;
+                }
+                
             })
             .addCase(fetchProfileImage.pending, (state) => {
                 state.isLoading = true;
