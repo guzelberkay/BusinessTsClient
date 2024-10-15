@@ -5,7 +5,8 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    FormControl, Grid, Grid2,
+    FormControl,
+    Grid,
     IconButton,
     InputLabel,
     Select,
@@ -21,7 +22,8 @@ import {
     fetchDeleteEmployee,
     fetchFindAllDepartment,
     fetchGetEmployeeHierarchy,
-    fetchSaveSubordinate, fetchSaveTopLevelManager
+    fetchSaveSubordinate,
+    fetchSaveTopLevelManager
 } from '../../store/feature/organizationManagementSlice.tsx';
 import {AppDispatch} from '../../store';
 import {useDispatch} from 'react-redux';
@@ -31,7 +33,6 @@ import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
 import AddIcon from "@mui/icons-material/Add";
-import {selectedGridRowsSelector} from "@mui/x-data-grid";
 import {Delete} from "@mui/icons-material"; // PrimeReact Button bileşenini ekliyoruz
 
 interface CustomTreeNode extends TreeNode {
@@ -185,7 +186,6 @@ export default function SelectionDemo() {
     };
 
     const handleDelete = async () => {
-        setIsDeleting(true);
         const result = await Swal.fire({
             title: t("swal.areyousure"),
             text: t("stockService.deleting"),
@@ -205,8 +205,6 @@ export default function SelectionDemo() {
                             icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
-
-                        setIsDeleting(false);
                         return;
                     }
                 }
@@ -220,8 +218,9 @@ export default function SelectionDemo() {
                 text: t("stockService.successfullydeleted"),
                 icon: "success",
             });
+            fetchDatas();
         }
-        setIsDeleting(false);
+
     }
 
     useEffect(() => {
