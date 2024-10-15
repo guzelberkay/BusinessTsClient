@@ -5,7 +5,8 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    FormControl, Grid, Grid2,
+    FormControl,
+    Grid,
     IconButton,
     InputLabel,
     Select,
@@ -21,7 +22,8 @@ import {
     fetchDeleteEmployee,
     fetchFindAllDepartment,
     fetchGetEmployeeHierarchy,
-    fetchSaveSubordinate, fetchSaveTopLevelManager
+    fetchSaveSubordinate,
+    fetchSaveTopLevelManager
 } from '../../store/feature/organizationManagementSlice.tsx';
 import {AppDispatch} from '../../store';
 import {useDispatch} from 'react-redux';
@@ -31,7 +33,6 @@ import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
 import AddIcon from "@mui/icons-material/Add";
-import {selectedGridRowsSelector} from "@mui/x-data-grid";
 import {Delete} from "@mui/icons-material"; // PrimeReact Button bileşenini ekliyoruz
 
 interface CustomTreeNode extends TreeNode {
@@ -42,6 +43,7 @@ interface CustomTreeNode extends TreeNode {
         name: string;
         email: string;
         title: string;
+        department:string;
     };
     children?: CustomTreeNode[];
 }
@@ -61,6 +63,7 @@ export default function SelectionDemo() {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
+    const [title, setTitle] = useState('');
     const [phoneNo, setPhoneNo] = useState('');
     const [identityNo, setIdentityNo] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
@@ -92,6 +95,7 @@ export default function SelectionDemo() {
             surname: surname,
             email: email,
             identityNo: identityNo,
+            title: title,
             phoneNo: phoneNo,
             managerId: selectedEmployeeId || 0,
             departmentId: selectedDepartmentId
@@ -103,6 +107,7 @@ export default function SelectionDemo() {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
+                    setTitle('')
                     setAddSubordinateModal(false);
                     Swal.fire({
                         title: t("swal.success"),
@@ -118,6 +123,7 @@ export default function SelectionDemo() {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
+                    setTitle('')
                     setAddSubordinateModal(false);
                     Swal.fire({
                         title: t("swal.error"),
@@ -139,6 +145,7 @@ export default function SelectionDemo() {
             email: email,
             identityNo: identityNo,
             phoneNo: phoneNo,
+            title: title,
             departmentId: selectedDepartmentId
         }))
             .then((data) => {
@@ -148,6 +155,7 @@ export default function SelectionDemo() {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
+                    setTitle('')
                     setAddSubordinateModal(false);
                     Swal.fire({
                         title: t("swal.success"),
@@ -163,6 +171,7 @@ export default function SelectionDemo() {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
+                    setTitle('')
                     setAddSubordinateModal(false);
                     Swal.fire({
                         title: t("swal.error"),
@@ -177,7 +186,6 @@ export default function SelectionDemo() {
     };
 
     const handleDelete = async () => {
-        setIsDeleting(true);
         const result = await Swal.fire({
             title: t("swal.areyousure"),
             text: t("stockService.deleting"),
@@ -197,8 +205,6 @@ export default function SelectionDemo() {
                             icon: "error",
                             confirmButtonText: t("swal.ok"),
                         });
-
-                        setIsDeleting(false);
                         return;
                     }
                 }
@@ -212,8 +218,9 @@ export default function SelectionDemo() {
                 text: t("stockService.successfullydeleted"),
                 icon: "success",
             });
+            fetchDatas();
         }
-        setIsDeleting(false);
+
     }
 
     useEffect(() => {
@@ -236,9 +243,11 @@ export default function SelectionDemo() {
             {/* Kullanıcı bilgileri */}
             <img alt={node.data?.name} src={`https://robohash.org/${node.data?.name}.png?size=50x50`} className="user-avatar" />
             <div className="user-info">
-                <h4>{node.data?.name}</h4>
-                <h5>{node.data?.email}</h5>
-                <p>Department: {node.data?.title}</p>
+                <h3 style={{marginBottom: '1px'}}>{node.data?.name}</h3>
+                <h5 style={{marginBottom: '1px'}}>{node.data?.title}</h5>
+                <h5 style={{marginBottom: '1px'}}>{node.data?.department}</h5>
+                <h5 style={{marginBottom: '1px'}}>{node.data?.email}</h5>
+
             </div>
 
             {/* Seçili olan düğüme sağ üstte + butonu ekliyoruz */}
@@ -247,7 +256,7 @@ export default function SelectionDemo() {
                     <IconButton
                         color="primary"
                         size="small"
-                        style={{ position: 'absolute', top: '-10px', right: '-10px', backgroundColor: 'white' }}
+                        style={{position: 'absolute', top: '-10px', right: '-10px', backgroundColor: 'white' }}
                         onClick={() => handleOpenAddSubordinateModal()}
                     >
                         <AddIcon /> {/* + işaretini göstermek için Material UI Add ikonu */}
@@ -345,6 +354,15 @@ export default function SelectionDemo() {
                     />
                     <TextField
                         sx={{marginTop: '15px'}}
+                        label={t('stockService.title')}
+                        name="title"
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                        required
+                        fullWidth
+                    />
+                    <TextField
+                        sx={{marginTop: '15px'}}
                         label={t('stockService.identityno')}
                         name="identityNo"
                         value={identityNo}
@@ -379,11 +397,11 @@ export default function SelectionDemo() {
 
 
                     {data2.length === 0 ? <Button onClick={() => handleSaveTopLevelManager()} color="success" variant="contained"
-                                                  disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === ''  || selectedDepartmentId === 0}>{t('stockService.savemanager')}</Button>
+                                                  disabled={name === '' || surname === '' || title === '' || email === '' || identityNo === '' || phoneNo === ''  || selectedDepartmentId === 0}>{t('stockService.savemanager')}</Button>
                     :
 
                         <Button onClick={() => handleSaveEmployee()} color="success" variant="contained"
-                                disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === ''  || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
+                                disabled={name === '' || surname === '' || email === '' || title === '' || identityNo === '' || phoneNo === ''  || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
                     }
 
                 </DialogActions>

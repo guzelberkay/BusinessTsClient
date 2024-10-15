@@ -218,7 +218,15 @@
     "addmanager": "Yönetici Ekle",
     "adddepartment": "Departman Ekle",
     "addtoplevelmanager": "Üst Seviye Yönetici Ekle",
-    "savemanager": "Yöneticiyi Kaydet"
+    "savemanager": "Yöneticiyi Kaydet",
+    "yes": "Evet",
+    "accountactivatedsuccesfully": "Hesap Basariyla Etkinleştirildi!",
+    "youwilldeactivateaccount": "Hesabi deaktif etmek istediginizden emin misiniz?",
+    "accountdeactivatedsuccesfully": "Hesap Basariyla Deaktif Edildi!",
+    "youwillactivateaccount": "Hesabı aktif etmek istediginizden emin misiniz?",
+    "isaccountactive" : "Aktivasyon Durumu",
+    "title": "Ünvan",
+    "nomanager": "Yönetici Yok"
   },
   "dashboard": {
     "numberofemployees": "Çalışan Sayısı",

@@ -1,36 +1,34 @@
 import React from 'react';
-import DrawerButton, { DrawerButtonProps } from '../../atoms/DrawerButton';
+import DrawerButton, {DrawerButtonProps} from '../../atoms/DrawerButton';
 import {
-    Dashboard,
-    FormatListNumbered,
-    ProductionQuantityLimits,
-    Shop,
-    Sell,
-    SupportAgent,
-    Warehouse,
-    Category,
-    Inventory,
-    ShowChart,
-    FaceRetouchingNatural,
-    Person,
-    Loyalty,
-    People,
-    TipsAndUpdates,
-    AirplaneTicket,
-    Campaign,
-    AttachMoney,
     AccountBalance,
-    Description,
-    Assignment,
-    Receipt,
+    AirplaneTicket,
+    Apartment,
+    ArrowDownward,
+    ArrowUpward,
     Assessment,
-    MonetizationOn,
-    RequestQuote, KeyboardArrowUp, ArrowUpward, ArrowDownward,
-    Settings,
-    PersonAdd,
+    Assignment,
+    AttachMoney,
+    Campaign,
+    Category,
+    Dashboard,
+    Edit,
+    FaceRetouchingNatural,
+    FormatListNumbered,
+    Inventory,
+    Loyalty,
     ManageAccounts,
-    GroupAdd,
-    Edit, Apartment
+    People,
+    Person,
+    ProductionQuantityLimits,
+    RequestQuote,
+    Sell,
+    Settings,
+    Shop,
+    ShowChart,
+    SupportAgent, TableChart,
+    TipsAndUpdates,
+    Warehouse
 } from '@mui/icons-material';
 
 import DrawerCollapseButton, {DrawerCollapseButtonProps} from '../../atoms/DrawerCollapseButton';
@@ -96,13 +94,13 @@ export const drawerNavigations: Record<string, Button[]> = {
                 name: 'organizationManagementModule',
                 TopLevelIcon: <FormatListNumbered/>,
                 menuItems: [
-                    'oms-department', 'oms-employee', 'oms-manager',"oms-treeview"
+                    'oms-department', 'oms-employee',"oms-treeview"
                 ],
                 menuIcons: [
-                    <Apartment/>, <Person/>, <ManageAccounts/>, <ManageAccounts/>
+                    <Apartment/>, <Person/>, <TableChart/>
                 ],
                 menuNavigations: [
-                    'oms-department', 'oms-employee', 'oms-manager',"oms-treeview"
+                    'oms-department', 'oms-employee',"oms-treeview"
                 ],
             } as DrawerCollapseButtonProps,
         },
