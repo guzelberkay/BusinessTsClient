@@ -287,6 +287,7 @@ interface IfetchUpdateEmployee {
     departmentId: number;
     identityNo: string;
     title: string;
+    email: string;
     phoneNo: string;
     name: string;
     surname: string;
@@ -303,6 +304,7 @@ export const fetchUpdateEmployee = createAsyncThunk(
             phoneNo: payload.phoneNo,
             name: payload.name,
             surname: payload.surname,
+            email: payload.email,
             title : payload.title
         };
 

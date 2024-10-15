@@ -151,6 +151,7 @@ const EmployeePage = () => {
             identityNo: identityNo,
             phoneNo: phoneNo,
             title: title,
+            email: email,
             managerId: selectedManagerId,
             departmentId: selectedDepartmentId
         })).then((data) => {
@@ -624,7 +625,6 @@ const EmployeePage = () => {
                             label="Email"
                             name="email"
                             value={email}
-                            disabled={isUpdating}
                             onChange={e => setEmail(e.target.value)}
                             required
                             fullWidth
