@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, useAppSelector } from '../store';
 import { fetchUpdateUser, fetchUserInformation } from '../store/feature/userSlice';
 import { fetchChangeMyPassword, fetchLoginProfileManagement } from '../store/feature/authSlice';
-import { fetchFile, uploadFile } from '../store/feature/fileSlice';
+import { deleteFile, fetchFile, uploadFile } from '../store/feature/fileSlice';
 import FileUploadProps from '../components/molecules/FileUploadProps';
 
 function ProfileManagement() {
@@ -64,6 +64,13 @@ function ProfileManagement() {
                 console.error("Error uploading file:", error);
             });
     }
+};
+
+const handleFileDelete = ( bucketName: string,uuid: string,) => {
+  dispatch(deleteFile({  bucketName, uuid }))
+      .catch((error) => {
+          console.error("Error deleting file:", error);
+      });
 };
 
 useEffect(() => {
@@ -196,6 +203,7 @@ useEffect(() => {
             <Box mt={4}>
                 <FileUploadProps 
                     onFileUpload={handleFileUpload}
+                    onFileDelete={handleFileDelete}
                     buttonText="Dosya Yükle"
                     
                 />
