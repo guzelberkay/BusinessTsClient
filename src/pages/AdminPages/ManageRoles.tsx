@@ -3,13 +3,17 @@ import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper, TextField, Dialog, DialogTitle, DialogContent, DialogActions, FormControl,
   Switch,
   Tooltip,
-  Box
+  Box,
+  Pagination,
+  Select,
+  MenuItem
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch } from 'react-redux';
 import { fetchRoleList, fetchSaveRole, fetchUpdateRole, fetchUpdateUserRoleStatus } from '../../store/feature/roleSlice';
 import { IRole } from '../../model/IRole';
 import { AppDispatch, useAppSelector } from '../../store';
+import { IPagableRoleList } from '../../model/IPagableRoleList';
 
 function ManageRoles() {
   const [openNewRoleDialog, setOpenNewRoleDialog] = useState(false);
@@ -19,16 +23,32 @@ function ManageRoles() {
     roleDescription: '',
   });
   const [editRole, setEditRole] = useState<IRole | null>(null); 
-  const [searchQuery, setSearchQuery] = useState(''); 
+  const [searchWord, setSerchWord] = useState(''); 
   const dispatch = useDispatch<AppDispatch>();
   const roleList: IRole[] = useAppSelector((state) => state.roleSlice.roleList);
+  const [currentPage, setCurrentPage] = useState(0);  // Mevcut sayfa
+  const [totalPages, setTotalPages] = useState(1);    // Toplam sayfa sayısı
+  const [totalElements, setTotalElements] = useState(0); // Toplam eleman sayısı
+  const [pageSize, setPageSize] = useState(5);  // Sayfa başına kullanıcı sayısı (sabitleyebilir veya değiştirebilirsiniz)
+  const [pageableRoleList, setPageableRoleList] = useState<IRole[]>([]);
 
   useEffect(() => {
-    dispatch(fetchRoleList());
-  }, [dispatch]);
+    dispatch(fetchRoleList({searchText:searchWord, page: currentPage, size: pageSize})).then((data) => {
+      if(data.payload.code === 200) {
+        const roleData: IPagableRoleList = data.payload.data;
+        setTotalPages(roleData.totalPages);
+        setTotalElements(roleData.totalElements);
+        setPageableRoleList(roleData.roleList);
+        setTotalElements(roleData.totalElements);
+      }
+    });
+  }, [dispatch, currentPage, pageSize, searchWord]);
 
   const handleOpenNewRoleDialog = () => {
     setOpenNewRoleDialog(true);
+  };
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
   };
 
   const handleCloseNewRoleDialog = () => {
@@ -52,7 +72,14 @@ function ManageRoles() {
   const handleSaveNewRole = () => {
     dispatch(fetchSaveRole(newRole)).then((data) => {
       if (data.payload.code === 200) {
-        dispatch(fetchRoleList());
+        dispatch(fetchRoleList({serchText:searchWord, page: currentPage, size: pageSize})).then((data) => {
+          if(data.payload.code === 200) {
+            const roleData: IPagableRoleList = data.payload.data;
+            setTotalPages(roleData.totalPages);
+            setTotalElements(roleData.totalElements);
+            setPageableRoleList(roleData.roleList);
+          }
+        });
       }
     });
     handleCloseNewRoleDialog();
@@ -69,7 +96,14 @@ function ManageRoles() {
       console.log(updatedRole);
       dispatch(fetchUpdateRole({roleId: updatedRole.roleId, roleName: updatedRole.roleName, roleDescription: updatedRole.roleDescription})).then((data) => {
         if (data.payload.code === 200) {
-          dispatch(fetchRoleList());
+          dispatch(fetchRoleList({serchText:searchWord,page: currentPage, size: pageSize})).then((data) => {
+            if(data.payload.code === 200) {
+              const roleData: IPagableRoleList = data.payload.data;
+              setTotalPages(roleData.totalPages);
+              setTotalElements(roleData.totalElements);
+              setPageableRoleList(roleData.roleList);
+            }
+          });
         }
       });
       handleCloseEditRoleDialog();
@@ -79,13 +113,27 @@ function ManageRoles() {
     if (role.status === 'ACTIVE') {
        dispatch(fetchUpdateUserRoleStatus({ roleId: role.roleId, status: 'INACTIVE' })).then((data) => {
          if (data.payload.code === 200) {
-           dispatch(fetchRoleList());
+          dispatch(fetchRoleList({serchText:searchWord,page: currentPage, size: pageSize})).then((data) => {
+            if(data.payload.code === 200) {
+              const roleData: IPagableRoleList = data.payload.data;
+              setTotalPages(roleData.totalPages);
+              setTotalElements(roleData.totalElements);
+              setPageableRoleList(roleData.roleList);
+            }
+          });
          }
        })
     } else {
        dispatch(fetchUpdateUserRoleStatus({ roleId: role.roleId, status: 'ACTIVE' })).then((data) => {
          if (data.payload.code === 200) {
-           dispatch(fetchRoleList());
+          dispatch(fetchRoleList({serchText:searchWord,page: currentPage, size: pageSize})).then((data) => {
+            if(data.payload.code === 200) {
+              const roleData: IPagableRoleList = data.payload.data;
+              setTotalPages(roleData.totalPages);
+              setTotalElements(roleData.totalElements);
+              setPageableRoleList(roleData.roleList);
+            }
+          });
          }
        })
     }
@@ -93,9 +141,7 @@ function ManageRoles() {
   };
 
   
-  const filteredRoleList = roleList.filter((role) =>
-    role.roleName.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  
 
   return (
     <div>
@@ -107,8 +153,8 @@ function ManageRoles() {
       <TextField
         label="Rol ismine göre ara"
         variant="outlined"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        value={searchWord}
+        onChange={(e) => setSerchWord(e.target.value)}
         fullWidth
         sx={{ marginBottom: '10px' }}
       />
@@ -125,7 +171,7 @@ function ManageRoles() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredRoleList.map((role, index) => (
+            {pageableRoleList.map((role, index) => (
               <TableRow key={role.roleId}
                 sx={{
                   backgroundColor: index % 2 === 0 ? 'action.hover' : 'background.paper',
@@ -159,6 +205,27 @@ function ManageRoles() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+        <Pagination
+          count={totalPages}
+          page={currentPage + 1} // Pagination component 1-indexed çalışıyor
+          onChange={(event, value) => handlePageChange(value - 1)}  // 0-indexed için ayar
+          color="primary"
+        />
+        <FormControl variant="outlined" sx={{ marginBottom: 2 }}>
+            <Select 
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                setCurrentPage(0); // Sayfa boyutu değiştiğinde ilk sayfaya dön
+              }}
+            >
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+            </Select>
+          </FormControl>
+      </Box>
 
       {/* Yeni Rol Ekleme  */}
       <Dialog open={openNewRoleDialog} onClose={handleCloseNewRoleDialog} maxWidth="sm" fullWidth>

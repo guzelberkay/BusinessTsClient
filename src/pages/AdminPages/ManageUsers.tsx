@@ -68,9 +68,7 @@ function ManageUsers() {
   //  });
   //}, [dispatch]);
 
-  const filteredUsers = userList.filter(user =>
-    user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
