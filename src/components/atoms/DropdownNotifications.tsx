@@ -25,7 +25,7 @@ interface Notification {
   message: string;
   createdAt: string;
   isRead: boolean;
-  userId: string;
+  authId: string;
 }
 
 const DropdownNotification: React.FC = () => {
