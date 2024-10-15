@@ -186,69 +186,76 @@ function Appbar({
 
   // Okunmamış bildirim sayısını fetch eden fonksiyon
 
+  const [isFetchSuccessful, setIsFetchSuccessful] = useState(false);
+
+
   const fetchUnreadCount = async () => {
     try {
       const notifications = await dispatch(fetchGetAllUnreadNotifications()).unwrap();
       setUnreadCount(notifications.length);
-      setPrevCount(notifications.length);
-
+      setIsFetchSuccessful(true); // Eğer fetch başarılıysa true olarak ayarla
     } catch (error) {
-      console.error('Failed to fetch unread notification count:', error);
+      console.error('Okunmamış bildirim sayısını alırken hata oluştu:', error);
+      setIsFetchSuccessful(false); // Hata durumunda false olarak ayarla
     }
   };
 
   useEffect(() => {
     fetchUnreadCount(); // İlk yüklemede okunmamış bildirim sayısını al
 
+    // Sadece fetch başarılıysa WebSocket'i aktive et
+    if (!isFetchSuccessful) {
+      return; // Fetch başarısızsa WebSocket bağlantısını başlatma
+    }
+
     const stompClient = new Client({
       brokerURL: "ws://localhost:9095/ws",
       debug: (str) => console.log(str),
       onConnect: () => {
-        console.log("Connected to WebSocket");
+        console.log("WebSocket'e bağlandı");
 
-        // Unread count'u almak için ilk abone olma
+        // Okunmamış sayıyı almak için ilk abone olma
         stompClient.subscribe("/topic/unreadcountNotifications", (message) => {
           const newCount = JSON.parse(message.body);
-          setUnreadCount(newCount); // Sunucudan alınan yeni unread count
+          setUnreadCount(newCount); // Sunucudan alınan yeni okunmamış sayıyı güncelle
         });
 
         // Yeni bildirim geldiğinde çağırılacak
-        stompClient.subscribe("/topic/create-notifications", (message) => {
-          setUnreadCount((prevCount) => prevCount + 1); // Unread count'u artır
+        stompClient.subscribe("/topic/create-notifications", () => {
+          setUnreadCount((prevCount) => prevCount + 1); // Okunmamış sayıyı artır
         });
 
         // Bir bildirim okunduğunda
         stompClient.subscribe("/topic/markasread-notifications", () => {
-          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Unread count'u azalt, 0'ın altına düşmesini engelle
+          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Okunmuş sayıyı azalt, 0'ın altına düşmesini engelle
         });
 
         // Bir bildirim silindiğinde
         stompClient.subscribe("/topic/delete-notifications", () => {
-          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Unread count'u azalt, 0'ın altına düşmesini engelle
+          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Okunmuş sayıyı azalt, 0'ın altına düşmesini engelle
         });
       },
       onDisconnect: () => {
-        console.log("Disconnected from WebSocket");
+        console.log("WebSocket'ten bağlantı kesildi");
       },
       onStompError: (frame) => {
-        console.error("STOMP Error", frame);
+        console.error("STOMP Hatası", frame);
       },
       onWebSocketError: (error) => {
-        console.error("WebSocket Error", error);
+        console.error("WebSocket Hatası", error);
       },
     });
 
     stompClient.activate();
     setClient(stompClient);
 
+    // Bileşen unmounted olduğunda WebSocket'i temizle
     return () => {
       if (stompClient) {
         stompClient.deactivate();
       }
     };
-  }, [dispatch]);
-
-
+  }, [dispatch, isFetchSuccessful]);
 
   // Opens the profile menu
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
