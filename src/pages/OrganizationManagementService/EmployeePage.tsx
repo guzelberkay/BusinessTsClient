@@ -424,6 +424,7 @@ const EmployeePage = () => {
                 // }
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
+                disableRowSelectionOnClick={true}
                 onRowSelectionModelChange={handleRowSelection}
                 autoHeight={true}
                 sx={{
@@ -446,7 +447,7 @@ const EmployeePage = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
-                localeText={{
+localeText={{
                     toolbarColumns: t("dataGrid.toolbarColumns"),
                     toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
                     toolbarFilters: t("dataGrid.toolbarFilters"),

@@ -39,7 +39,7 @@ const BuyOrderPage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [buyOrders,setBuyOrders] = useState<IOrder[]>({} as IOrder[]);
+    const [buyOrders, setBuyOrders] = useState<IOrder[]>({} as IOrder[]);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
@@ -51,9 +51,9 @@ const BuyOrderPage = () => {
     const [openAddBuyOrderModal, setOpenAddBuyOrderModal] = useState(false);
     const [products, setProducts] = useState<IProduct[]>([]);
     const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
-    const [selectedSupplier,setSelectedSupplier] = useState(0);
+    const [selectedSupplier, setSelectedSupplier] = useState(0);
     const [wareHouses, setWareHouses] = useState(0);
-    const [selectedProduct,setSelectedProduct] = useState(0);
+    const [selectedProduct, setSelectedProduct] = useState(0);
     const [quantity, setQuantity] = useState(0);
 
 
@@ -74,25 +74,27 @@ const BuyOrderPage = () => {
     };
 
 
-
-
     const handleSomething = () => {
         console.log(selectedRowIds);
     };
 
     const handleOpenAddProductModal = () => {
         setOpenAddBuyOrderModal(true);
-        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllSupplier({searchText: '', page: 0, size: 1000})).then((res) => {
             setSuppliers(res.payload.data);
         })
-        dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllProduct({searchText: '', page: 0, size: 1000})).then((res) => {
             setProducts(res.payload.data);
         })
     };
 
     const handleSaveBuyOrder = async () => {
         setIsDeleting(true);
-        dispatch(fetchSaveBuyOrder({ productId: selectedProduct as any, quantity: quantity, supplierId: selectedSupplier as any})).then(() => {
+        dispatch(fetchSaveBuyOrder({
+            productId: selectedProduct as any,
+            quantity: quantity,
+            supplierId: selectedSupplier as any
+        })).then(() => {
 
             setSelectedSupplier(0);
             setSelectedProduct(0);
@@ -111,10 +113,10 @@ const BuyOrderPage = () => {
     const handleOpenUpdateModal = async () => {
         setOpenAddBuyOrderModal(true);
         setIsUpdating(true)
-        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllSupplier({searchText: '', page: 0, size: 1000})).then((res) => {
             setSuppliers(res.payload.data);
         })
-        dispatch(fetchFindAllProduct({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllProduct({searchText: '', page: 0, size: 1000})).then((res) => {
             setProducts(res.payload.data);
         })
         dispatch(fetchFindByIdOrder(selectedRowIds[0])).then((data) => {
@@ -127,7 +129,12 @@ const BuyOrderPage = () => {
     }
 
     const handleUpdate = async () => {
-        dispatch(fetchUpdateBuyOrder({id:selectedRowIds[0], productId: selectedProduct as any, quantity: quantity, supplierId: selectedSupplier as any})).then(() => {
+        dispatch(fetchUpdateBuyOrder({
+            id: selectedRowIds[0],
+            productId: selectedProduct as any,
+            quantity: quantity,
+            supplierId: selectedSupplier as any
+        })).then(() => {
             setSelectedSupplier(0);
             setSelectedProduct(0);
             setQuantity(0);
@@ -161,7 +168,7 @@ const BuyOrderPage = () => {
             try {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteOrder(selectedBuyOrder.id));
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -189,10 +196,10 @@ const BuyOrderPage = () => {
     }
 
     const columns: GridColDef[] = [
-        { field: "id", headerName: "Id", flex: 0.5, headerAlign: "center" },
-        { field: "supplierName", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center" },
-        { field: "email", headerName: "Email", flex: 1.75, headerAlign: "center" },
-        { field: "productName", headerName: t("stockService.productName"), flex: 1.5, headerAlign: "center" },
+        {field: "id", headerName: "Id", flex: 0.5, headerAlign: "center"},
+        {field: "supplierName", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center"},
+        {field: "email", headerName: "Email", flex: 1.75, headerAlign: "center"},
+        {field: "productName", headerName: t("stockService.productName"), flex: 1.5, headerAlign: "center"},
         {
             field: "unitPrice", headerName: t("stockService.unitprice"), flex: 1, headerAlign: "center",
             renderCell: (params) => {
@@ -210,8 +217,9 @@ const BuyOrderPage = () => {
                 return '$0.00'; // Return default value if not a valid number
             },
         },
-        { field: "quantity", headerName: t("stockService.quantity"), flex: 1, headerAlign: "center" },
-        { field: "total", headerName: t("stockService.total"), flex: 1, headerAlign: "center",
+        {field: "quantity", headerName: t("stockService.quantity"), flex: 1, headerAlign: "center"},
+        {
+            field: "total", headerName: t("stockService.total"), flex: 1, headerAlign: "center",
             renderCell: (params) => {
                 // Check if the value is valid
                 const value = params.value;
@@ -225,7 +233,8 @@ const BuyOrderPage = () => {
                     }).format(value);
                 }
                 return '$0.00'; // Return default value if not a valid number
-            }, },
+            },
+        },
         {
             field: "createdAt",
             headerName: t("stockService.createdat"),
@@ -240,7 +249,12 @@ const BuyOrderPage = () => {
                 return '-'; // Return default value if date is not available
             },
         },
-        { field: "status", headerName: t("stockService.status"), headerAlign: "center", flex: 1 ,renderCell: (params) => {
+        {
+            field: "status",
+            headerName: t("stockService.status"),
+            headerAlign: "center",
+            flex: 1,
+            renderCell: (params) => {
                 const value = params.value;
                 if (value === 'ACTIVE') {
                     return t("stockService.active");
@@ -251,21 +265,22 @@ const BuyOrderPage = () => {
                 if (value === 'ARRIVED') {
                     return t("stockService.arrived");
                 }
-            }},
+            }
+        },
     ];
 
 
     return (
-        <div style={{ height: "auto"}}>
+        <div style={{height: "auto"}}>
             {/*//TODO I WILL CHANGE THIS SEARCH METHOD LATER*/}
             <TextField
                 label={t("stockService.searchbyproductname")}
                 variant="outlined"
                 onChange={(event) => setSearchText(event.target.value)}
                 value={searchText}
-                style={{ marginBottom: "1%", marginTop: "1%" }}
+                style={{marginBottom: "1%", marginTop: "1%"}}
                 fullWidth
-                inputProps={{ maxLength: 50 }}
+                inputProps={{maxLength: 50}}
             />
             <DataGrid
                 slots={{
@@ -276,7 +291,7 @@ const BuyOrderPage = () => {
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: { page: 1, pageSize: 5 },
+                        paginationModel: {page: 1, pageSize: 5},
                     },
                 }}
                 // getRowClassName={(params) =>
@@ -308,6 +323,7 @@ const BuyOrderPage = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
+                disableRowSelectionOnClick={true}
                 localeText={{
                     toolbarColumns: t("dataGrid.toolbarColumns"),
                     toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
@@ -344,14 +360,26 @@ const BuyOrderPage = () => {
                 }}
             />
 
-            <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
+            <Grid container spacing={2} sx={{
+                flexGrow: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'stretch',
+                marginTop: '2%',
+                marginBottom: '2%'
+            }}>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleOpenAddProductModal}
                         variant="contained"
                         color="success"
                         //startIcon={<ApproveIcon />}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.add")}
                     </Button>
@@ -368,7 +396,13 @@ const BuyOrderPage = () => {
                         }
 
                         //startIcon={<CancelIcon/>}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.update")}
                     </Button>
@@ -380,16 +414,23 @@ const BuyOrderPage = () => {
                         color="error"
                         disabled={isDeleting || selectedRowIds.length === 0 || buyOrders.find(order => order.id === selectedRowIds[0])?.status !== "ACTIVE"}
                         //startIcon={<DeclineIcon />}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.delete")}
                     </Button>
                 </Grid>
 
-                <Dialog open={openAddBuyOrderModal} onClose={() => setOpenAddBuyOrderModal(false)} fullWidth maxWidth='sm'>
+                <Dialog open={openAddBuyOrderModal} onClose={() => setOpenAddBuyOrderModal(false)} fullWidth
+                        maxWidth='sm'>
                     <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addbuyorder')}</DialogTitle>
                     <DialogContent>
-                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                        <FormControl variant="outlined" sx={{width: '100%', marginTop: '15px'}}>
                             <InputLabel>{t('stockService.pleaseselectsupplier')}</InputLabel>
                             <Select
                                 value={selectedSupplier}
@@ -404,7 +445,7 @@ const BuyOrderPage = () => {
 
                             </Select>
                         </FormControl>
-                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                        <FormControl variant="outlined" sx={{width: '100%', marginTop: '15px'}}>
                             <InputLabel>{t('stockService.pleaseselectproduct')}</InputLabel>
                             <Select
                                 value={selectedProduct}
@@ -420,7 +461,7 @@ const BuyOrderPage = () => {
                             </Select>
                         </FormControl>
                         <TextField
-                            sx={{marginTop:'15px'}}
+                            sx={{marginTop: '15px'}}
                             label={t('stockService.quantity')}
                             name="quantity"
                             value={quantity}
@@ -438,9 +479,11 @@ const BuyOrderPage = () => {
                         <Button onClick={() => {
                             setOpenAddBuyOrderModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
-                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={selectedProduct === 0 || selectedSupplier === 0  || quantity === 0}>{t('stockService.update')}</Button>
+                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
+                                              disabled={selectedProduct === 0 || selectedSupplier === 0 || quantity === 0}>{t('stockService.update')}</Button>
                             :
-                            <Button onClick={() => handleSaveBuyOrder()} color="success" variant="contained" disabled={selectedProduct === 0 || selectedSupplier === 0 || quantity === 0}>{t('stockService.save')}</Button>
+                            <Button onClick={() => handleSaveBuyOrder()} color="success" variant="contained"
+                                    disabled={selectedProduct === 0 || selectedSupplier === 0 || quantity === 0}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>

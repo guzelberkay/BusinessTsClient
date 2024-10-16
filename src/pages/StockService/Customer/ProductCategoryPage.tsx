@@ -23,7 +23,7 @@ const ProductCategoryPage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [productCategories,setProductCategories] = useState<IProductCategory[]>([]);
+    const [productCategories, setProductCategories] = useState<IProductCategory[]>([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -103,7 +103,7 @@ const ProductCategoryPage = () => {
         })
     }
     const handleUpdate = async () => {
-        dispatch(fetchUpdateProductCategory({ id: selectedRowIds[0], name: name})).then(() => {
+        dispatch(fetchUpdateProductCategory({id: selectedRowIds[0], name: name})).then(() => {
             setName('')
             setOpenAddProductCategoryModal(false);
             Swal.fire({
@@ -138,7 +138,7 @@ const ProductCategoryPage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteProductCategory(selectedProductCategory.id));
 
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -170,21 +170,21 @@ const ProductCategoryPage = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
+        {field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center"},
     ];
 
 
     return (
-        <div style={{ height: "auto"}}>
+        <div style={{height: "auto"}}>
             {/*//TODO I WILL CHANGE THIS SEARCH METHOD LATER*/}
             <TextField
                 label={t("stockService.searchbyname")}
                 variant="outlined"
                 onChange={(event) => setSearchText(event.target.value)}
                 value={searchText}
-                style={{ marginBottom: "1%", marginTop: "1%" }}
+                style={{marginBottom: "1%", marginTop: "1%"}}
                 fullWidth
-                inputProps={{ maxLength: 50 }}
+                inputProps={{maxLength: 50}}
             />
             <DataGrid
                 slots={{
@@ -195,7 +195,7 @@ const ProductCategoryPage = () => {
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: { page: 1, pageSize: 5 },
+                        paginationModel: {page: 1, pageSize: 5},
                     },
                 }}
                 // getRowClassName={(params) =>
@@ -227,6 +227,7 @@ const ProductCategoryPage = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
+                disableRowSelectionOnClick={true}
                 localeText={{
                     toolbarColumns: t("dataGrid.toolbarColumns"),
                     toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
@@ -263,7 +264,13 @@ const ProductCategoryPage = () => {
                 }}
             />
 
-            <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
+            <Grid container spacing={2} sx={{
+                flexGrow: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'stretch',
+                marginTop: '2%',
+                marginBottom: '2%'
+            }}>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleOpenAddProductCategoryModal}
@@ -288,7 +295,13 @@ const ProductCategoryPage = () => {
                         color="primary"
                         //startIcon={<DeclineIcon />}
                         disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.update")}
                     </Button>
@@ -300,12 +313,19 @@ const ProductCategoryPage = () => {
                         color="error"
                         disabled={isDeleting || selectedRowIds.length === 0}
                         //startIcon={<CancelIcon/>}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.delete")}
                     </Button>
                 </Grid>
-                <Dialog open={openAddProductCategoryModal} onClose={() => setOpenAddProductCategoryModal(false)} fullWidth
+                <Dialog open={openAddProductCategoryModal} onClose={() => setOpenAddProductCategoryModal(false)}
+                        fullWidth
                         maxWidth='sm'>
                     <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addproductcategory')}</DialogTitle>
                     <DialogContent>

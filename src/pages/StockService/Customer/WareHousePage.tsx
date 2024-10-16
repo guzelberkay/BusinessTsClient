@@ -23,7 +23,7 @@ const WareHousePage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [wareHouses,setWareHouses] = useState<IWareHouse[]>([]);
+    const [wareHouses, setWareHouses] = useState<IWareHouse[]>([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -72,8 +72,8 @@ const WareHousePage = () => {
         setOpenAddWareHouseModal(true);
     };
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "location", headerName: t("stockService.location"), flex: 1.5, headerAlign: "center" },
+        {field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center"},
+        {field: "location", headerName: t("stockService.location"), flex: 1.5, headerAlign: "center"},
     ];
 
     const handleOpenUpdateModal = async () => {
@@ -86,7 +86,7 @@ const WareHousePage = () => {
         })
     }
     const handleUpdate = async () => {
-        dispatch(fetchUpdateWareHouse({ id: selectedRowIds[0], name: name, location: location})).then(() => {
+        dispatch(fetchUpdateWareHouse({id: selectedRowIds[0], name: name, location: location})).then(() => {
             setName('')
             setLocation('')
             setOpenAddWareHouseModal(false);
@@ -153,7 +153,7 @@ const WareHousePage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteWareHouse(selectedWarehouse.id));
 
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -169,7 +169,7 @@ const WareHousePage = () => {
                 localStorage.removeItem("token");
             }
         }
-        if (result.isConfirmed ) {
+        if (result.isConfirmed) {
             await Swal.fire({
                 title: t("stockService.deleted"),
                 text: t("stockService.successfullydeleted"),
@@ -182,15 +182,15 @@ const WareHousePage = () => {
 
 
     return (
-        <div style={{ height: "auto"}}>
+        <div style={{height: "auto"}}>
             <TextField
                 label={t("stockService.searchbyname")}
                 variant="outlined"
                 onChange={(event) => setSearchText(event.target.value)}
                 value={searchText}
-                style={{ marginBottom: "1%", marginTop: "1%" }}
+                style={{marginBottom: "1%", marginTop: "1%"}}
                 fullWidth
-                inputProps={{ maxLength: 50 }}
+                inputProps={{maxLength: 50}}
             />
             <DataGrid
                 slots={{
@@ -201,7 +201,7 @@ const WareHousePage = () => {
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: { page: 1, pageSize: 5 },
+                        paginationModel: {page: 1, pageSize: 5},
                     },
                 }}
                 // getRowClassName={(params) =>
@@ -233,6 +233,7 @@ const WareHousePage = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
+                disableRowSelectionOnClick={true}
                 localeText={{
                     toolbarColumns: t("dataGrid.toolbarColumns"),
                     toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
@@ -269,7 +270,13 @@ const WareHousePage = () => {
                 }}
             />
 
-            <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
+            <Grid container spacing={2} sx={{
+                flexGrow: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'stretch',
+                marginTop: '2%',
+                marginBottom: '2%'
+            }}>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleOpenAddSupplierModal}
@@ -294,7 +301,13 @@ const WareHousePage = () => {
                         color="primary"
                         //startIcon={<DeclineIcon />}
                         disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.update")}
                     </Button>
@@ -306,7 +319,13 @@ const WareHousePage = () => {
                         color="error"
                         disabled={isDeleting || selectedRowIds.length === 0}
                         //startIcon={<CancelIcon/>}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.delete")}
                     </Button>
@@ -340,10 +359,10 @@ const WareHousePage = () => {
                             setOpenAddWareHouseModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
                         {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
-                                              disabled={name === ''|| location === ''}>{t('stockService.update')}</Button>
+                                              disabled={name === '' || location === ''}>{t('stockService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveWarehouse()} color="success" variant="contained"
-                                    disabled={name === ''|| location === ''}>{t('stockService.save')}</Button>
+                                    disabled={name === '' || location === ''}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>
