@@ -17,7 +17,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LanguageIcon from "@mui/icons-material/Language";
 import PersonIcon from "@mui/icons-material/Person";
 import { Menu, Avatar, Divider } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {AppDispatch, RootState, useAppSelector} from "../../../store";
 import {
   toggleLanguage,
@@ -33,6 +33,8 @@ import {
 import { Client } from "@stomp/stompjs";
 import { clearToken } from "../../../store/feature/authSlice.tsx";
 import { clearRoles } from "../../../store/feature/userSlice.tsx";
+import { use } from "i18next";
+import { fetchProfileImage } from "../../../store/feature/fileSlice.tsx";
 const drawerWidth = 240;
 
 // Interface defining the props for the AppBar component
@@ -133,11 +135,7 @@ const easyStyleMenu = {
 };
 
 // Demo user information
-const demoUser = {
-  name: "Demo User",
-  role: "Manager",
-  avatar: "https://xsgames.co/randomusers/assets/avatars/male/38.jpg",
-};
+
 
 // Props interface for the Appbar component
 interface AppbarProps {
@@ -188,6 +186,10 @@ function Appbar({
 
   const [isFetchSuccessful, setIsFetchSuccessful] = useState(false);
 
+  const [imageUrl, setImageUrl] = useState<string | null>('https://i.pinimg.com/736x/09/21/fc/0921fc87aa989330b8d403014bf4f340.jpg');
+  const userName = useSelector((state: RootState) => state.userSlice.user.firstName);
+  const profileImage = useSelector((state: RootState) => state.fileSlice.profileImage);                
+ 
 
   const fetchUnreadCount = async () => {
     try {
@@ -411,11 +413,11 @@ function Appbar({
           </IconButton>
           <p>{t("navigation.notifications")}</p>
         </MenuItem>
-        <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("profile")}>
+        <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("profile-management")}>
           <IconButton size="large" color="inherit">
             <PersonIcon />
           </IconButton>
-          {t("navigation.profile")}
+          {t("navigation.profile-management")}
         </MenuItem>
         <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("account")}>
           <IconButton size="large" color="inherit">
@@ -514,8 +516,8 @@ function Appbar({
               >
                 <Badge color="secondary">
                   <Avatar
-                      src={demoUser.avatar}
-                      alt={demoUser.name}
+                      src={profileImage}
+                      alt={userName}
                       sx={{
                         width: 40,
                         height: 40,

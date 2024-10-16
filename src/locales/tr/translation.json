@@ -67,7 +67,8 @@
     "oms-manager": "Yonetici",
     "oms-department": "Departman",
     "organizationManagementModule": "Organizasyon Yonetim Modulu",
-    "oms-treeview": "Organizasyon Şeması"
+    "oms-treeview": "Organizasyon Şeması",
+    "profile-management": "profile-management"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
