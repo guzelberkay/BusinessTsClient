@@ -165,13 +165,13 @@ export const drawerNavigations: Record<string, Button[]> = {
                 name: 'hrmmodule',
                 TopLevelIcon: <FormatListNumbered/>,
                 menuItems: [
-                    'hrm-employees', 'hrm-payrolls', 'hrm-performances', 'hrm-benefits', 'hrm-attendance'
+                    'hrm-employees', 'hrm-payrolls', 'hrm-performances', 'hrm-benefits', 'hrm-attendance', 'hrm-graphics'
                 ],
                 menuIcons: [
-                    <People/>, <AttachMoney/>, <ShowChart/>, <RequestQuote/>, <Assignment/>
+                    <People/>, <AttachMoney/>, <ShowChart/>, <RequestQuote/>, <Assignment/>, <Assessment/>
                 ],
                 menuNavigations: [
-                    'employee-page', 'payroll-page', 'performance-page', 'benefit-page', 'attandance-page'
+                    'employee-page', 'payroll-page', 'performance-page', 'benefit-page', 'attandance-page', 'graphics-page'
                 ],
             } as DrawerCollapseButtonProps,
         },

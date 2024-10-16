@@ -43,6 +43,7 @@ export const EmployeePage = lazy(() => import('../pages/HRMService/EmployeePage.
 export const AttendancePage = lazy(() => import('../pages/HRMService/AttendancePage.tsx'));
 export const BenefitPage = lazy(() => import('../pages/HRMService/BenefitPage.tsx'));
 export const PayrollPage = lazy(() => import('../pages/HRMService/PayrollPage.tsx'));
+export const GraphicsPage = lazy(() => import('../pages/HRMService/GraphicsPage.tsx'));
 export const PerformancePage = lazy(() => import('../pages/HRMService/PerformancePage.tsx'));
 
 export const BuyOrderPage = lazy(() => import('../pages/StockService/Customer/BuyOrderPage.tsx'));
@@ -246,6 +247,10 @@ export default function Router() {
                 {
                     path: 'payroll-page',
                     element: <PrivateRoute element={<PayrollPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'HRMM']}/>,
+                },
+                {
+                    path: 'graphics-page',
+                    element: <PrivateRoute element={<GraphicsPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'HRMM']}/>,
                 },
                 {
                     path: 'performance-page',
