@@ -43,7 +43,7 @@ interface CustomTreeNode extends TreeNode {
         name: string;
         email: string;
         title: string;
-        department:string;
+        department: string;
     };
     children?: CustomTreeNode[];
 }
@@ -85,7 +85,6 @@ export default function SelectionDemo() {
         })
 
     };
-
 
 
     const handleSaveEmployee = async () => {
@@ -194,23 +193,23 @@ export default function SelectionDemo() {
             confirmButtonText: t("stockService.yesdeleteit"),
             cancelButtonText: t("stockService.cancel"),
         });
-            try {
-                if (result.isConfirmed) {
-                    const data = await dispatch(fetchDeleteEmployee(selectedEmployeeId));
+        try {
+            if (result.isConfirmed) {
+                const data = await dispatch(fetchDeleteEmployee(selectedEmployeeId));
 
-                    if (data.payload.message !== "Success") {
-                        await Swal.fire({
-                            title: t("swal.error"),
-                            text: data.payload.message,
-                            icon: "error",
-                            confirmButtonText: t("swal.ok"),
-                        });
-                        return;
-                    }
+                if (data.payload.message !== "Success") {
+                    await Swal.fire({
+                        title: t("swal.error"),
+                        text: data.payload.message,
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+                    return;
                 }
-            } catch (error) {
-                localStorage.removeItem("token");
             }
+        } catch (error) {
+            localStorage.removeItem("token");
+        }
 
         if (result.isConfirmed) {
             await Swal.fire({
@@ -225,7 +224,7 @@ export default function SelectionDemo() {
 
     useEffect(() => {
         fetchDatas();
-    }, [dispatch, isSaving ,isUpdating,isDeleting]);
+    }, [dispatch, isSaving, isUpdating, isDeleting]);
 
     const fetchDatas = () => {
         setLoading(true);
@@ -239,15 +238,15 @@ export default function SelectionDemo() {
     }
 
     const nodeTemplate = (node: CustomTreeNode) => (
-        <div className="user-card" style={{ position: 'relative' }}>
+        <div className="user-card"  style={{position: 'relative'}}>
             {/* Kullanıcı bilgileri */}
-            <img alt={node.data?.name} src={`https://robohash.org/${node.data?.name}.png?size=50x50`} className="user-avatar" />
+            <img alt={node.data?.name} src={`https://robohash.org/${node.data?.name}.png?size=50x50`}
+                 className="user-avatar"/>
             <div className="user-info">
-                <h3 style={{marginBottom: '1px'}}>{node.data?.name}</h3>
-                <h5 style={{marginBottom: '1px'}}>{node.data?.title}</h5>
-                <h5 style={{marginBottom: '1px'}}>{node.data?.department}</h5>
-                <h5 style={{marginBottom: '1px'}}>{node.data?.email}</h5>
-
+                <div style={{marginTop: '10px', marginBottom: '10px', fontWeight: 'bold'}}>{node.data?.name}</div>
+                <div style={{marginBottom: '5px', fontWeight: 'normal', fontStyle: 'italic'}}>{node.data?.title}</div>
+                <div style={{marginBottom: '5px', fontWeight: 'normal', fontStyle: 'italic'}}>{node.data?.department}</div>
+                <div style={{marginBottom: '5px', fontWeight: 'normal', fontStyle: 'italic'}}>{node.data?.email}</div>
             </div>
 
             {/* Seçili olan düğüme sağ üstte + butonu ekliyoruz */}
@@ -256,20 +255,20 @@ export default function SelectionDemo() {
                     <IconButton
                         color="primary"
                         size="small"
-                        style={{position: 'absolute', top: '-10px', right: '-10px', backgroundColor: 'white' }}
+                        style={{position: 'absolute', top: '-10px', right: '-10px', backgroundColor: 'white'}}
                         onClick={() => handleOpenAddSubordinateModal()}
                     >
-                        <AddIcon /> {/* + işaretini göstermek için Material UI Add ikonu */}
+                        <AddIcon/> {/* + işaretini göstermek için Material UI Add ikonu */}
                     </IconButton>
 
                     {/* Sol üst köşeye silme butonu ekliyoruz */}
                     <IconButton
                         color="primary"
                         size="small"
-                        style={{ position: 'absolute', top: '-10px', left: '-10px', backgroundColor: 'white' }}
+                        style={{position: 'absolute', top: '-10px', left: '-10px', backgroundColor: 'white'}}
                         onClick={() => handleDelete()}
                     >
-                        <Delete /> {/* Çöp kutusu simgesini göstermek için Material UI Delete ikonu */}
+                        <Delete/> {/* Çöp kutusu simgesini göstermek için Material UI Delete ikonu */}
                     </IconButton>
                 </>
             )}
@@ -285,7 +284,7 @@ export default function SelectionDemo() {
     return (
         <div className="card overflow-x-auto">
             {/* Yükleniyor durumunu ve data2de data var mı yok mu kontrol ediyoruz. Yoksa toplevelmanager oluşturmak için buton koyuldu. */}
-            {loading  || data2.length === 0 ? (
+            {loading || data2.length === 0 ? (
                 <Grid
                     container
                     spacing={0}
@@ -296,7 +295,7 @@ export default function SelectionDemo() {
                     <Grid item>
                         <Button
                             onClick={() => handleOpenAddSubordinateModal()}
-                            sx={{ marginTop: '15px', textAlign: 'center' }}
+                            sx={{marginTop: '15px', textAlign: 'center'}}
                             color="success"
                             variant="contained"
                         >
@@ -396,12 +395,13 @@ export default function SelectionDemo() {
                     }} color="error" variant="contained">{t('stockService.cancel')}</Button>
 
 
-                    {data2.length === 0 ? <Button onClick={() => handleSaveTopLevelManager()} color="success" variant="contained"
-                                                  disabled={name === '' || surname === '' || title === '' || email === '' || identityNo === '' || phoneNo === ''  || selectedDepartmentId === 0}>{t('stockService.savemanager')}</Button>
-                    :
+                    {data2.length === 0 ?
+                        <Button onClick={() => handleSaveTopLevelManager()} color="success" variant="contained"
+                                disabled={name === '' || surname === '' || title === '' || email === '' || identityNo === '' || phoneNo === '' || selectedDepartmentId === 0}>{t('stockService.savemanager')}</Button>
+                        :
 
                         <Button onClick={() => handleSaveEmployee()} color="success" variant="contained"
-                                disabled={name === '' || surname === '' || email === '' || title === '' || identityNo === '' || phoneNo === ''  || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
+                                disabled={name === '' || surname === '' || email === '' || title === '' || identityNo === '' || phoneNo === '' || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
                     }
 
                 </DialogActions>
