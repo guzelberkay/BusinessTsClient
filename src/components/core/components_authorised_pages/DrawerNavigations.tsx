@@ -28,7 +28,9 @@ import {
     ShowChart,
     SupportAgent, TableChart,
     TipsAndUpdates,
-    Warehouse
+    Warehouse,
+    Mail,
+    DataThresholding
 } from '@mui/icons-material';
 
 import DrawerCollapseButton, {DrawerCollapseButtonProps} from '../../atoms/DrawerCollapseButton';
@@ -144,13 +146,14 @@ export const drawerNavigations: Record<string, Button[]> = {
                 name: 'customermodule',
                 TopLevelIcon: <FormatListNumbered/>,
                 menuItems: [
-                    'crm-customers', 'crm-marketing-campaign', 'crm-opportunity', 'crm-sales-activity', 'crm-ticket'
+                    'crm-customers', 'crm-marketing-campaign', 'crm-opportunity', 'crm-ticket', 'crm-activities','crm-send-email'
+
                 ],
                 menuIcons: [
-                    <People/>, <Campaign/>, <TipsAndUpdates/>, <Shop/>, <AirplaneTicket/>
+                    <People/>, <Campaign/>, <TipsAndUpdates/>,<AirplaneTicket/>,<DataThresholding/>,<Mail/>
                 ],
                 menuNavigations: [
-                    'customer', 'marketing-campaign', 'opportunity', 'sales-activity', 'tickets'
+                    'customer', 'marketing-campaign', 'opportunity','tickets','activities', 'send-email'
                 ],
             } as DrawerCollapseButtonProps,
         },

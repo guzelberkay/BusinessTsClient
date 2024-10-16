@@ -4,7 +4,7 @@ import axios from "axios";
 import {ICrmCustomer} from "../../model/ICrmCustomer";
 import {ICrmMarketingCampaign} from "../../model/ICrmMarketingCampaign.tsx";
 import {ICrmOpportunity} from "../../model/ICrmOpportunity.tsx";
-import {ICrmSalesActivity} from "../../model/ICrmSalesActivity.tsx";
+import {ICrmActivity} from "../../model/ICrmActivity.tsx";
 import {ICrmTicket} from "../../model/ICrmTicket.tsx";
 import {IResponse} from "../../model/IResponse";
 import {ICrmOpportunityDetail} from "../../model/ICrmOpportunityDetail";
@@ -14,7 +14,7 @@ interface ICrmState {
     customerList: ICrmCustomer[]
     marketingCampaignList: ICrmMarketingCampaign[]
     opportunityList: ICrmOpportunity[]
-    salesActivityList: ICrmSalesActivity[]
+    activitiesList: ICrmActivity[]
     ticketList: ICrmTicket[]
     opportunityDetail: ICrmOpportunityDetail[]
 }
@@ -23,7 +23,7 @@ const initialCrmState: ICrmState = {
     customerList: [],
     marketingCampaignList: [],
     opportunityList: [],
-    salesActivityList: [],
+    activitiesList: [],
     ticketList: [],
     opportunityDetail: [],
 }
@@ -196,8 +196,54 @@ export const fetchUploadExcelCustomer = createAsyncThunk(
         return result.data;
     }
 );
+interface IFetchSendingEmailExternalSourceCustomer {
+    email: string;
+}
+export const fetchSendingEmailExternalSourceCustomer = createAsyncThunk(
+    'crm/fetchSendingEmailExternalSourceCustomer',
+    async (payload: IFetchSendingEmailExternalSourceCustomer) => {
+        const result = await axios.post(
+            RestApis.crm_service_customer + "/send-email-external-source-customer",
+            { email: payload.email },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    });
+interface IFetchSaveExternalCustomer {
+    firstName : string;
+    lastName : string;
+    email : string;
+    phone : string;
+    address : string;
+}
+export const fetchSaveExternalCustomer = createAsyncThunk(
+    'crm/fetchSaveExternalCustomer',
+    async (payload: IFetchSaveExternalCustomer) => {
+        const values = {
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            email: payload.email,
+            phone: payload.phone,
+            address: payload.address
+        };
 
-
+        const result = await axios.post(
+            RestApis.crm_service_customer + "/save-external-source-customer",
+            values,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    });
 
 //# endregion Customer Operations
 
@@ -502,98 +548,24 @@ export const fetchGetDetailsOpportunity = createAsyncThunk(
 
 //# endregion Opportunity Operations
 //# SalesActivity Operations
-interface IFetchSaveSalesActivity {
-    opportunityId: number;
-    type: string;
-    date: Date;
-    notes: string;
 
-}
 
-export const fetchSaveSalesActivity = createAsyncThunk(
-    'crm/fetchSalesActivityList',
-    async (payload: IFetchSaveSalesActivity) => {
-        const values = {
-            opportunityId: payload.opportunityId,
-            type: payload.type,
-            date: payload.date,
-            notes: payload.notes,
 
-        };
 
-        const result = await axios.post(
-            RestApis.crm_service_sales_activity + "/save",
-            values,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ` + localStorage.getItem('token')
-                }
-            }
-        );
-        return result.data;
-    }
-);
-
-interface IFetchUpdateSalesActivity {
-    id: number;
-    type: string;
-    date: Date;
-    notes: string;
-}
-
-export const fetchUpdateSalesActivity = createAsyncThunk(
-    'crm/fetchUpdateSalesActivity',
-    async (payload: IFetchUpdateSalesActivity) => {
-        const values = {
-            id: payload.id,
-            type: payload.type,
-            date: payload.date,
-            notes: payload.notes
-        };
-
-        const result = await axios.put(
-            RestApis.crm_service_sales_activity + "/update",
-            values,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ` + localStorage.getItem('token')
-                }
-            }
-        );
-        return result.data;
-    }
-);
-export const fetchDeleteSalesActivity = createAsyncThunk(
-    'crm/fetchDeleteSalesActivity',
-    async (id: number) => {
-        const result = await axios.delete(
-            RestApis.crm_service_sales_activity + "/delete?id=" + id,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ` + localStorage.getItem('token')
-                }
-            }
-        );
-        return result.data;
-    }
-);
-
-interface IFetchFindAllSalesActivity {
+interface IFetchFindAllActivities {
     page: number;
     size: number;
-    searchText: string
+    searchText: string;
+
 }
 
-export const fetchFindAllSalesActivity = createAsyncThunk(
-    'crm/fetchSalesActivityList',
-    async (payload: IFetchFindAllSalesActivity) => {
+export const fetchFindAllActivities = createAsyncThunk(
+    'crm/fetchActivityList',
+    async (payload: IFetchFindAllActivities) => {
         const values = {page: payload.page, size: payload.size, searchText: payload.searchText};
 
         const result = await axios.post(
-            RestApis.crm_service_sales_activity + "/find-all",
+            RestApis.crm_service_activities + "/find-all",
             values,
             {
                 headers: {
@@ -609,7 +581,7 @@ export const fetchFindSalesActivityById = createAsyncThunk(
     'crm/fetchSalesActivityById',
     async (id: number) => {
         const result = await axios.post(
-            RestApis.crm_service_sales_activity + "/find-by-id?id=" + id, null,
+            RestApis.crm_service_activities + "/find-by-id?id=" + id, null,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -777,8 +749,8 @@ const crmSlice = createSlice({
         builder.addCase(fetchFindAllOpportunity.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.opportunityList = action.payload.data;
         })
-        builder.addCase(fetchFindAllSalesActivity.fulfilled, (state, action: PayloadAction<IResponse>) => {
-            state.salesActivityList = action.payload.data;
+        builder.addCase(fetchFindAllActivities.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            state.activitiesList = action.payload.data;
         })
         builder.addCase(fetchFindAllTicket.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.ticketList = action.payload.data;

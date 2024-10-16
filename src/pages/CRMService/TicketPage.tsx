@@ -6,7 +6,7 @@ import {
 } from "@mui/x-data-grid";
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle,
-    Grid,
+    Grid, IconButton,
     TextField
 
 } from "@mui/material";
@@ -26,6 +26,7 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import Swal from "sweetalert2";
 import {useNavigate} from "react-router-dom";
 import dayjs, {Dayjs} from "dayjs";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const TicketPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
@@ -194,6 +195,13 @@ const TicketPage = () => {
         {field: "createdDate", headerName: t("crmService.created_date"), headerAlign: "center", flex: 1},
         {field: "closedDate", headerName: t("crmService.closed_date"), headerAlign: "center", flex: 1},
         {field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1},
+        {
+            field: "details", headerName: t("crmService.details"), flex: 1.5, headerAlign: "center", renderCell: (params) => (
+                <IconButton >
+                    <VisibilityIcon />
+                </IconButton>
+            ),
+        },
 
     ];
 

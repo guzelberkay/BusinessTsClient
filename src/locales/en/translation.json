@@ -43,8 +43,9 @@
     "crm-customers": "Costumer List",
     "crm-marketing-campaign": "Marketing Campaigns",
     "crm-opportunity": "Opportunities",
-    "crm-sales-activity": "Sales Activities",
+    "crm-activities": "Activities",
     "crm-ticket": "Tickets",
+    "crm-send-email": "Send Email",
     "stock-customer": "Customers",
     "stockmodule": "Stock Module",
     "financemodule": "Finance Module",
@@ -129,7 +130,8 @@
     "passwordSuccesfullyChanged": "Password Succesfully Changed",
     "failedChangePassword": "Failed to Change Password",
     "infoSentEmailForPasswordReset": "Password reset email has been sent.",
-    "unsubscribe": "You can use the relevant services until the end of the subscription period."
+    "unsubscribe": "You can use the relevant services until the end of the subscription period.",
+    "sent": "Sent!"
   },
   "stockService": {
     "changeautoordermode": "Change Auto Order",
@@ -358,7 +360,14 @@
     "import": "Import",
     "uploadFile": "Upload File",
     "close": "Close",
-    "uploaded": "File Uploaded Successfully!"
+    "uploaded": "File Uploaded Successfully!",
+    "added_successfully": "Added Successfully!",
+    "fill_your_details_and_rate_us": "Fill your details and rate us!",
+    "please_rate_your_experience": "Please rate your experience",
+    "sendEmail": "Send Email",
+    "send": "Send",
+    "code": "Code",
+    "upload": "Upload"
 
 
   },
