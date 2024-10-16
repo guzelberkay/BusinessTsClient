@@ -50,7 +50,7 @@ const SupplierPage = () => {
         ).then(data => {
             setSuppliers(data.payload.data);
         })
-    }, [dispatch, searchText,  isSaving,isUpdating, isDeleting]);
+    }, [dispatch, searchText, isSaving, isUpdating, isDeleting]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
@@ -100,7 +100,7 @@ const SupplierPage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteSupplier(selectedSupplier.id));
 
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -128,7 +128,14 @@ const SupplierPage = () => {
     }
 
     const handleUpdate = async () => {
-        dispatch(fetchUpdateSupplier({ id: selectedRowIds[0], name: name, surname: surname, contactInfo: contactInfo, address: address, notes: notes})).then(() => {
+        dispatch(fetchUpdateSupplier({
+            id: selectedRowIds[0],
+            name: name,
+            surname: surname,
+            contactInfo: contactInfo,
+            address: address,
+            notes: notes
+        })).then(() => {
             setName('')
             setSurname('')
             setEmail('')
@@ -252,6 +259,7 @@ const SupplierPage = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
+                disableRowSelectionOnClick={true}
                 localeText={{
                     toolbarColumns: t("dataGrid.toolbarColumns"),
                     toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
@@ -319,7 +327,13 @@ const SupplierPage = () => {
                         color="primary"
                         //startIcon={<DeclineIcon />}
                         disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.update")}
                     </Button>
@@ -331,7 +345,13 @@ const SupplierPage = () => {
                         color="error"
                         disabled={isDeleting || selectedRowIds.length === 0}
                         //startIcon={<CancelIcon/>}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.delete")}
                     </Button>
@@ -402,10 +422,10 @@ const SupplierPage = () => {
                             setOpenAddSupplierModal(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
                         {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
-                                              disabled={name === ''|| surname === '' || contactInfo === '' || address === '' || notes === ''}>{t('stockService.update')}</Button>
+                                              disabled={name === '' || surname === '' || contactInfo === '' || address === '' || notes === ''}>{t('stockService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveSupplier()} color="success" variant="contained"
-                                    disabled={name === ''|| surname === '' || email === '' || contactInfo === '' || address === '' || notes === ''}>{t('stockService.save')}</Button>
+                                    disabled={name === '' || surname === '' || email === '' || contactInfo === '' || address === '' || notes === ''}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar } from "@mui/x-data-grid";
+import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar} from "@mui/x-data-grid";
 import {
     Button,
     Dialog,
@@ -48,18 +48,17 @@ const ProductPage = () => {
     const [isUpdating, setIsUpdating] = useState(false);
 
 
-
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const {t} = useTranslation()
 
     //MODAL
     const [openAddProductModal, setOpenAddProductModel] = useState(false);
     const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
-    const [selectedSupplier,setSelectedSupplier] = useState(0);
+    const [selectedSupplier, setSelectedSupplier] = useState(0);
     const [wareHouses, setWareHouses] = useState<IWareHouse[]>([]);
-    const [selectedWarehouse,setSelectedWareHouse] = useState(0);
+    const [selectedWarehouse, setSelectedWareHouse] = useState(0);
     const [productCategories, setProductCategories] = useState<IProductCategory[]>([]);
-    const [selectedProductCategory,setSelectedProductCategory] = useState(0);
+    const [selectedProductCategory, setSelectedProductCategory] = useState(0);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
@@ -74,7 +73,7 @@ const ProductPage = () => {
                 searchText: searchText,
             })
         )
-    }, [dispatch, searchText, loading, isActivating,isUpdating, isDeleting]);
+    }, [dispatch, searchText, loading, isActivating, isUpdating, isDeleting]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
@@ -83,20 +82,29 @@ const ProductPage = () => {
 
     const handleOpenAddProductModal = () => {
         setOpenAddProductModel(true);
-        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllSupplier({searchText: '', page: 0, size: 1000})).then((res) => {
             setSuppliers(res.payload.data);
         })
-        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllWareHouse({searchText: '', page: 0, size: 1000})).then((res) => {
             setWareHouses(res.payload.data);
         })
-        dispatch(fetchFindAllProductCategory({searchText:'',page: 0, size: 1000})).then((res) => {
+        dispatch(fetchFindAllProductCategory({searchText: '', page: 0, size: 1000})).then((res) => {
             setProductCategories(res.payload.data);
         })
     };
 
     const handleSaveProduct = async () => {
         setLoading(true);
-        dispatch(fetchSaveProduct({productCategoryId:selectedProductCategory as any,supplierId:selectedSupplier as any,wareHouseId:selectedWarehouse as any,name,description,price,stockCount,minimumStockLevel})).then(() => {
+        dispatch(fetchSaveProduct({
+            productCategoryId: selectedProductCategory as any,
+            supplierId: selectedSupplier as any,
+            wareHouseId: selectedWarehouse as any,
+            name,
+            description,
+            price,
+            stockCount,
+            minimumStockLevel
+        })).then(() => {
             setName('');
             setDescription('');
             setPrice(0);
@@ -120,13 +128,13 @@ const ProductPage = () => {
     const handleOpenUpdateModal = async () => {
         setOpenAddProductModel(true);
         setIsUpdating(true)
-        dispatch(fetchFindAllSupplier({searchText:'',page: 0, size: 100})).then((res) => {
+        dispatch(fetchFindAllSupplier({searchText: '', page: 0, size: 100})).then((res) => {
             setSuppliers(res.payload.data);
         })
-        dispatch(fetchFindAllWareHouse({searchText:'',page: 0, size: 100})).then((res) => {
+        dispatch(fetchFindAllWareHouse({searchText: '', page: 0, size: 100})).then((res) => {
             setWareHouses(res.payload.data);
         })
-        dispatch(fetchFindAllProductCategory({searchText:'',page: 0, size: 100})).then((res) => {
+        dispatch(fetchFindAllProductCategory({searchText: '', page: 0, size: 100})).then((res) => {
             setProductCategories(res.payload.data);
         })
         dispatch(fetchFindByIdProduct(selectedRowIds[0])).then((data) => {
@@ -144,7 +152,17 @@ const ProductPage = () => {
     }
 
     const handleUpdate = () => {
-        dispatch(fetchUpdateProduct({id:selectedRowIds[0], productCategoryId:selectedProductCategory as any,supplierId:selectedSupplier as any,wareHouseId:selectedWarehouse as any,name,description,price,stockCount,minimumStockLevel})).then(() => {
+        dispatch(fetchUpdateProduct({
+            id: selectedRowIds[0],
+            productCategoryId: selectedProductCategory as any,
+            supplierId: selectedSupplier as any,
+            wareHouseId: selectedWarehouse as any,
+            name,
+            description,
+            price,
+            stockCount,
+            minimumStockLevel
+        })).then(() => {
             setName('');
             setDescription('');
             setPrice(0);
@@ -186,7 +204,7 @@ const ProductPage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteProduct(selectedProduct.id));
 
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -214,11 +232,11 @@ const ProductPage = () => {
     }
 
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "supplierName", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center" },
-        { field: "wareHouseName", headerName: t("stockService.warehouse"), flex: 1.5, headerAlign: "center" },
-        { field: "productCategoryName", headerName: t("stockService.productcategory"), flex: 1, headerAlign: "center" },
-        { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
+        {field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center"},
+        {field: "supplierName", headerName: t("stockService.suppliername"), flex: 1.5, headerAlign: "center"},
+        {field: "wareHouseName", headerName: t("stockService.warehouse"), flex: 1.5, headerAlign: "center"},
+        {field: "productCategoryName", headerName: t("stockService.productcategory"), flex: 1, headerAlign: "center"},
+        {field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center"},
         {
             field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
             renderCell: (params) => {
@@ -237,16 +255,22 @@ const ProductPage = () => {
             },
         },
 
-        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 0.75, headerAlign: "center" },
-        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 0.75 },
-        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 ,renderCell: (params) => {
+        {field: "stockCount", headerName: t("stockService.stockcount"), flex: 0.75, headerAlign: "center"},
+        {field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 0.75},
+        {
+            field: "isAutoOrderEnabled",
+            headerName: t("stockService.autoorder"),
+            headerAlign: "center",
+            flex: 1,
+            renderCell: (params) => {
                 const value = params.value;
                 if (value === true) {
                     return t("stockService.open");
                 } else {
                     return t("stockService.close");
                 }
-            }}
+            }
+        }
     ];
 
     const handleChangeAutoOrderMode = async () => {
@@ -270,7 +294,7 @@ const ProductPage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchChangeAutoOrderModeOfProduct(selectedProduct.id));
 
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -299,15 +323,15 @@ const ProductPage = () => {
         setLoading(false);
     };
     return (
-        <div style={{ height: "auto"}}>
+        <div style={{height: "auto"}}>
             <TextField
                 label={t("stockService.searchbyname")}
                 variant="outlined"
                 onChange={(event) => setSearchText(event.target.value)}
                 value={searchText}
-                style={{ marginBottom: "1%", marginTop: "1%" }}
+                style={{marginBottom: "1%", marginTop: "1%"}}
                 fullWidth
-                inputProps={{ maxLength: 50 }}
+                inputProps={{maxLength: 50}}
             />
             <DataGrid
                 slots={{
@@ -317,7 +341,7 @@ const ProductPage = () => {
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: { page: 1, pageSize: 5 },
+                        paginationModel: {page: 1, pageSize: 5},
                     },
                 }}
                 getRowClassName={(params) =>
@@ -349,6 +373,7 @@ const ProductPage = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
+                disableRowSelectionOnClick={true}
                 localeText={{
                     toolbarColumns: t("dataGrid.toolbarColumns"),
                     toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
@@ -386,14 +411,26 @@ const ProductPage = () => {
 
             />
 
-            <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
+            <Grid container spacing={2} sx={{
+                flexGrow: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'stretch',
+                marginTop: '2%',
+                marginBottom: '2%'
+            }}>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleOpenAddProductModal}
                         variant="contained"
                         color="success"
                         //startIcon={<ApproveIcon />}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.add")}
                     </Button>
@@ -405,7 +442,13 @@ const ProductPage = () => {
                         color="info"
                         disabled={loading || selectedRowIds.length > 1 || selectedRowIds.length === 0}
                         //startIcon={<DeclineIcon />}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.update")}
                     </Button>
@@ -417,7 +460,13 @@ const ProductPage = () => {
                         color="error"
                         disabled={isDeleting || selectedRowIds.length === 0}
                         //startIcon={<CancelIcon/>}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.delete")}
                     </Button>
@@ -429,17 +478,24 @@ const ProductPage = () => {
                         color="warning"
                         disabled={loading || selectedRowIds.length === 0}
                         //startIcon={<DeclineIcon />}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.changeautoordermode")}
                     </Button>
                 </Grid>
 
 
-                <Dialog open={openAddProductModal} onClose={() => setOpenAddProductModel(false)} fullWidth maxWidth='sm'>
+                <Dialog open={openAddProductModal} onClose={() => setOpenAddProductModel(false)} fullWidth
+                        maxWidth='sm'>
                     <DialogTitle>{isUpdating ? t('stockService.update') : t('stockService.addproduct')}</DialogTitle>
                     <DialogContent>
-                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                        <FormControl variant="outlined" sx={{width: '100%', marginTop: '15px'}}>
                             <InputLabel>{t('stockService.pleaseselectsupplier')}</InputLabel>
                             <Select
                                 value={selectedSupplier}
@@ -454,7 +510,7 @@ const ProductPage = () => {
 
                             </Select>
                         </FormControl>
-                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                        <FormControl variant="outlined" sx={{width: '100%', marginTop: '15px'}}>
                             <InputLabel>{t('stockService.pleaseselectwarehouse')}</InputLabel>
                             <Select
                                 value={selectedWarehouse}
@@ -469,7 +525,7 @@ const ProductPage = () => {
 
                             </Select>
                         </FormControl>
-                        <FormControl variant="outlined" sx={{ width: '100%' , marginTop:'15px' }}>
+                        <FormControl variant="outlined" sx={{width: '100%', marginTop: '15px'}}>
                             <InputLabel>{t('stockService.pleaseselectcategory')}</InputLabel>
                             <Select
                                 value={selectedProductCategory}
@@ -485,7 +541,7 @@ const ProductPage = () => {
                             </Select>
                         </FormControl>
                         <TextField
-                            sx={{marginTop:'15px'}}
+                            sx={{marginTop: '15px'}}
                             label={t('stockService.productname')}
                             name="name"
                             value={name}
@@ -494,7 +550,7 @@ const ProductPage = () => {
                             fullWidth
                         />
                         <TextField
-                            sx={{marginTop:'15px'}}
+                            sx={{marginTop: '15px'}}
                             label={t('stockService.description')}
                             name="description"
                             value={description}
@@ -503,7 +559,7 @@ const ProductPage = () => {
                             fullWidth
                         />
                         <TextField
-                            sx={{marginTop:'15px'}}
+                            sx={{marginTop: '15px'}}
                             label={t('stockService.price')}
                             name="price"
                             value={price}
@@ -517,7 +573,7 @@ const ProductPage = () => {
                             fullWidth
                         />
                         <TextField
-                            sx={{marginTop:'15px'}}
+                            sx={{marginTop: '15px'}}
                             label={t('stockService.stockcount')}
                             name="stockCount"
                             value={stockCount}
@@ -531,7 +587,7 @@ const ProductPage = () => {
                             fullWidth
                         />
                         <TextField
-                            sx={{marginTop:'15px'}}
+                            sx={{marginTop: '15px'}}
                             label={t('stockService.minstocklevel')}
                             name="minStockLevel"
                             value={minimumStockLevel}
@@ -549,9 +605,11 @@ const ProductPage = () => {
                         <Button onClick={() => {
                             setOpenAddProductModel(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
-                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained" disabled={selectedSupplier === null || selectedWarehouse === null || selectedProductCategory === null || name === '' || description === '' || price === 0 || stockCount === 0 || minimumStockLevel === 0}>{t('stockService.update')}</Button>
-                        :
-                            <Button onClick={() => handleSaveProduct()} color="success" variant="contained" disabled={selectedSupplier === null || selectedWarehouse === null || selectedProductCategory === null || name === '' || description === '' || price === 0 || stockCount === 0 || minimumStockLevel === 0}>{t('stockService.save')}</Button>
+                        {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
+                                              disabled={selectedSupplier === null || selectedWarehouse === null || selectedProductCategory === null || name === '' || description === '' || price === 0 || stockCount === 0 || minimumStockLevel === 0}>{t('stockService.update')}</Button>
+                            :
+                            <Button onClick={() => handleSaveProduct()} color="success" variant="contained"
+                                    disabled={selectedSupplier === null || selectedWarehouse === null || selectedProductCategory === null || name === '' || description === '' || price === 0 || stockCount === 0 || minimumStockLevel === 0}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>
