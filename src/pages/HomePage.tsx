@@ -1,8 +1,7 @@
-//SUBJECT TO CHANGE
-import {useEffect} from "react";
-import {useTranslation} from "react-i18next";
-import {AppDispatch} from "../store/index"
-import {useDispatch} from "react-redux";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { AppDispatch } from "../store/index";
+import { useDispatch } from "react-redux";
 import {
     fetchFindAllProduct,
     fetchFindAllProductCategory,
@@ -10,50 +9,61 @@ import {
     fetchFindAllSupplier,
     fetchFindAllWareHouse
 } from "../store/feature/stockSlice";
-import {
-    Container, Grid2, Typography, Button, Grid
-} from "@mui/material";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import localImage1 from '../images/resim.jpg';
+import localImage2 from '../images/unnamed.jpg';
+import localImage3 from '../images/unnamed2.png';
 
 function HomePage() {
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const dispatch = useDispatch<AppDispatch>();
 
-    //TO TEST DATAS WILL DELETE IT LATER
-    useEffect(() => {
-        dispatch(fetchFindAllProduct({page: 0, size: 10, searchText: ''})).then((res) => console.log(res.payload.data));
-        dispatch(fetchFindAllProductCategory({
-            page: 0,
-            size: 10,
-            searchText: ''
-        })).then((res) => console.log(res.payload.data));
-        dispatch(fetchFindAllWareHouse({
-            page: 0,
-            size: 10,
-            searchText: ''
-        })).then((res) => console.log(res.payload.data));
-        dispatch(fetchFindAllSupplier({
-            page: 0,
-            size: 10,
-            searchText: ''
-        })).then((res) => console.log(res.payload.data));
-        dispatch(fetchFindAllStockMovement({
-            page: 0,
-            size: 10,
-            searchText: ''
-        })).then((res) => console.log(res.payload.data));
+    const images = [
+        'https://blog.inkaik.com/wp-content/uploads/2024/02/Insan-Kaynaklari-Alaninda-Gelecegin-Meslekleri-ve-Trendleri-scaled.jpg',
+        localImage1,
+        localImage2,
+        localImage3
+    ];
 
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+    };
 
-    }, []);
     return (
-        <Container  sx={{height: "100vh", backgroundColor: "red"}}>
-            <Grid2 container justifyContent="center">
-                <Typography variant="h6">{t('greetings.welcome')} </Typography>
-            </Grid2>
-            <Grid2 container justifyContent="center">
-                <Typography variant="h3">{t('greetings.test')} </Typography>
-            </Grid2>
-        </Container>
-    )
+        <div style={{ margin: 0, padding: 0, height: '100vh', overflow: 'hidden' }}>
+            <Slider {...settings} style={{ height: '100%' }}>
+                {images.map((img, index) => (
+                    <div 
+                        key={index} 
+                        style={{ 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            alignItems: 'center', 
+                            height: '100%', 
+                        }}
+                    >
+                        <img 
+                            src={img} 
+                            alt={`slide ${index}`} 
+                            style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                objectFit: 'cover' 
+                            }} 
+                        />
+                    </div>
+                ))}
+            </Slider>
+        </div>
+    );
 }
 
 export default HomePage;
