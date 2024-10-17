@@ -57,7 +57,7 @@ export const fetchGetAllNotifications = createAsyncThunk(
     async () => {
         try {
             const token = localStorage.getItem('token'); // authId'yi localStorage'dan al
-            const response = await fetch(`${RestApis.notification_service}/getnotificationforuserid?token=${token}`, {
+            const response = await fetch(`${RestApis.notification_service}/getallnotifications?token=${token}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,6 +75,7 @@ export const fetchGetAllNotifications = createAsyncThunk(
             return data as Notification[];
         } catch (error) {
             console.error('Failed to fetch notifications:', error);
+
             throw error;
         }
     }
@@ -112,28 +113,44 @@ export const fetchGetAllUnreadNotifications = createAsyncThunk(
 // Mark notification as read
 export const markNotificationAsRead = createAsyncThunk(
     'notifications/markNotificationAsRead',
-    async (id: number) => {
+    async (id: number, { rejectWithValue }) => {
         try {
-            const token = localStorage.getItem('token'); // authId'yi localStorage'dan al
-            const response = await fetch(`${RestApis.notification_service}/read?token=${token}notificationId=${id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`, // authId'yi header'da gönder
-                },
-            });
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('No authentication token found.');
+            }
+
+            const response = await fetch(
+                `${RestApis.notification_service}/read?token=${token}&notificationId=${id}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                }
+            );
 
             if (!response.ok) {
                 const errorData = await response.text();
-                throw new Error(`Network response was not ok: ${errorData}`);
+                throw new Error(`Failed to mark notification as read: ${errorData}`);
             }
+
             return id;
         } catch (error) {
             console.error('Failed to mark notification as read:', error);
-            throw error;
+
+            // Hatanın tipi 'unknown' olduğu için tür dönüşümü yapıyoruz
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);  // 'Error' türündeki hata mesajı
+            } else {
+                return rejectWithValue(String(error));  // Bilinmeyen hata türleri için string'e çevir
+            }
         }
     }
 );
+
+
 
 // Delete notifications
 export const deleteNotification = createAsyncThunk(
@@ -142,7 +159,8 @@ export const deleteNotification = createAsyncThunk(
         try {
             const token = localStorage.getItem('token'); // authId'yi localStorage'dan al
 
-                const response = await fetch(`${RestApis.notification_service}/delete?${token}`, {
+
+                const response = await fetch(`${RestApis.notification_service}/delete?token=${token}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
