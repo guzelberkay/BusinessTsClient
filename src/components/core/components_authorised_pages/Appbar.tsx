@@ -186,7 +186,7 @@ function Appbar({
 
   const [isFetchSuccessful, setIsFetchSuccessful] = useState(false);
 
-  const [imageUrl, setImageUrl] = useState<string | null>('https://i.pinimg.com/736x/09/21/fc/0921fc87aa989330b8d403014bf4f340.jpg');
+  
   const userName = useSelector((state: RootState) => state.userSlice.user.firstName);
   const profileImage = useSelector((state: RootState) => state.fileSlice.profileImage);                
  
@@ -361,7 +361,7 @@ function Appbar({
           onClose={handleMenuClose}
           PaperProps={easyStyleMenu}
       >
-        <MenuItem onClick={() => handlePageElementChangeRenderMenu("profile")}>
+        <MenuItem onClick={() => handlePageElementChangeRenderMenu("profile-management")}>
           {t("navigation.profile")}
         </MenuItem>
         <MenuItem onClick={() => handlePageElementChangeRenderMenu("account")}>
