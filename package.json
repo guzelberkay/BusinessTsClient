@@ -20,7 +20,7 @@
     "@mui/x-data-grid": "^7.16.0",
     "@mui/x-data-grid-generator": "^7.19.0",
     "@mui/x-data-grid-pro": "^7.19.0",
-    "@mui/x-date-pickers": "^7.18.0",
+    "@mui/x-date-pickers": "^7.20.0",
     "@reduxjs/toolkit": "^2.2.7",
     "@stomp/stompjs": "^7.0.0",
     "apexcharts": "^3.53.0",

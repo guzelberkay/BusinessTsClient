@@ -17,13 +17,17 @@ import { AppDispatch, useAppSelector } from "../../store/index.tsx";
 import {
     fetchFindAllEmployee,
     fetchSaveEmployee,
+    fetchSavePayroll,
+    fetchSaveBenefit,
+    fetchSaveAttendance,
+    fetchSavePerformance,
     fetchDeleteEmployee,
     fetchUpdateEmployee,
     fetchFindByIdEmployee
 } from "../../store/feature/hrmSlice.tsx";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
-import dayjs, {Dayjs} from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 
 const EmployeePage = () => {
@@ -31,7 +35,7 @@ const EmployeePage = () => {
     const [searchText, setSearchText] = useState('');
 
     const dispatch = useDispatch<AppDispatch>();
-    //const token = useAppSelector((state) => state.auth.token);
+
     const employees = useAppSelector((state) => state.hrmSlice.employeeList);
     const [loading, setLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -42,7 +46,7 @@ const EmployeePage = () => {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
     const { t } = useTranslation()
 
-    //modal
+
     const [openAddEmployeeModal, setOpenAddEmployeeModel] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -50,9 +54,32 @@ const EmployeePage = () => {
     const [department, setDepartment] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [gender, setGender] = useState('');
+    const [birthDate, setBirthDate] = useState<Dayjs | null>(dayjs());
     const [hireDate, setHireDate] = useState<Dayjs | null>(dayjs());
     const [salary, setSalary] = useState(0);
 
+    const [openAddPayrollModal, setOpenAddPayrollModal] = useState(false);
+    const [grossSalary, setGrossSalary] = useState<number>(0);
+    const [deductions, setDeductions] = useState<number>(0);
+    const [netSalary, setNetSalary] = useState<number>(0);
+    const [salaryDate, setSalaryDate] = useState<Dayjs | null>(dayjs());
+
+    const [openAddBenefitModal, setOpenAddBenefitModal] = useState(false);
+    const [type, setType] = useState('');
+    const [amount, setAmount] = useState(0);
+    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+    const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
+
+    const [openAddPerformanceModal, setOpenAddPerformanceModal] = useState(false);
+    const [date, setDate] = useState<Dayjs | null>(dayjs());
+    const [score, setScore] = useState(0);
+    const [feedback, setFeedback] = useState('');
+
+    const [openAddAttendanceModal, setOpenAddAttendanceModal] = useState(false);
+    const [attendanceDate, setAttendanceDate] = useState<Dayjs | null>(dayjs());
+    const [checkInTime, setCheckInTime] = useState('');
+    const [checkOutTime, setCheckOutTime] = useState('');
 
     useEffect(() => {
         dispatch(fetchFindAllEmployee({
@@ -69,6 +96,131 @@ const EmployeePage = () => {
     const handleOpenEmployeeModal = () => {
         setOpenAddEmployeeModel(true);
     }
+    const handleOpenPayrollModal = () => {
+        setOpenAddPayrollModal(true);
+    };
+    const handleOpenBenefitModal = () => {
+        setOpenAddBenefitModal(true);
+    };
+    const handleOpenPerformanceModal = () => {
+        setOpenAddPerformanceModal(true);
+    };
+    const handleOpenAttendanceModal = () => {
+        setOpenAddAttendanceModal(true);
+    };
+
+    const handleSaveAttendance = () => {
+        dispatch(fetchSaveAttendance({
+            employeeId: selectedRowIds[0],
+            date: attendanceDate?.toDate() || new Date(),
+            checkInTime: checkInTime,
+            checkOutTime: checkOutTime
+        })).then((data) => {
+            setOpenAddAttendanceModal(false);
+            setCheckInTime('');
+            setCheckOutTime('');
+            setAttendanceDate(dayjs());
+            Swal.fire({
+                title: t("swal.success"),
+                text: t("hrmService.added_attendance"),
+                icon: "success",
+            });
+        }).catch((error) => {
+            setOpenAddAttendanceModal(false);
+            Swal.fire({
+                title: t("swal.error"),
+                text: t("hrmService.non-added"),
+                icon: "error",
+                confirmButtonText: t("swal.ok"),
+            });
+        });
+    }
+
+    const handleSavePerformance = () => {
+        dispatch(fetchSavePerformance({
+            employeeId: selectedRowIds[0],
+            date: date?.toDate() || new Date(),
+            score: score,
+            feedback: feedback
+        })).then((data) => {
+            setOpenAddPerformanceModal(false);
+            setScore(0);
+            setFeedback('');
+            setDate(dayjs());
+            Swal.fire({
+                title: t("swal.success"),
+                text: t("hrmService.added_performance"),
+                icon: "success",
+            });
+        }).catch((error) => {
+            setOpenAddPerformanceModal(false);
+            Swal.fire({
+                title: t("swal.error"),
+                text: t("hrmService.non-added"),
+                icon: "error",
+                confirmButtonText: t("swal.ok"),
+            });
+        });
+    }
+
+    const handleSaveBenefit = () => {
+        dispatch(fetchSaveBenefit({
+            employeeId: selectedRowIds[0],
+            type: type,
+            amount: amount,
+            startDate: startDate?.toDate() || new Date(),
+            endDate: endDate?.toDate() || new Date()
+        })).then((data) => {
+            setOpenAddBenefitModal(false);
+            setAmount(0);
+            setType('');
+            setStartDate(dayjs());
+            setEndDate(dayjs());
+            Swal.fire({
+                title: t("swal.success"),
+                text: t("hrmService.added_benefit"),
+                icon: "success",
+            });
+        }).catch((error) => {
+            setOpenAddBenefitModal(false);
+            Swal.fire({
+                title: t("swal.error"),
+                text: t("hrmService.non-added"),
+                icon: "error",
+                confirmButtonText: t("swal.ok"),
+            });
+        });
+    }
+
+    const handleSavePayroll = () => {
+        dispatch(fetchSavePayroll({
+            employeeId: selectedRowIds[0],
+            salaryDate: salaryDate?.toDate() || new Date(),
+            grossSalary: grossSalary,
+            deductions: deductions,
+            netSalary: netSalary
+        })).then((data) => {
+            setOpenAddPayrollModal(false);
+            setGrossSalary(0);
+            setDeductions(0);
+            setNetSalary(0);
+            setSalaryDate(dayjs());
+            Swal.fire({
+                title: t("swal.success"),
+                text: t("hrmService.added_payroll"),
+                icon: "success",
+            });
+        }).catch((error) => {
+            setOpenAddPayrollModal(false);
+            Swal.fire({
+                title: t("swal.error"),
+                text: t("hrmService.non-added"),
+                icon: "error",
+                confirmButtonText: t("swal.ok"),
+            });
+        });
+    }
+
 
     const handleSaveEmployee = () => {
         setIsSaving(true);
@@ -79,6 +231,8 @@ const EmployeePage = () => {
             department: department,
             email: email,
             phone: phone,
+            birthDate: birthDate?.toDate() || new Date(),
+            gender: gender,
             hireDate: hireDate?.toDate() || new Date(),
             salary: salary
         })).then((data) => {
@@ -89,6 +243,8 @@ const EmployeePage = () => {
                 setDepartment('');
                 setEmail('');
                 setPhone('');
+                setBirthDate(dayjs());
+                setGender('');
                 setHireDate(dayjs());
                 setSalary(0);
                 setOpenAddEmployeeModel(false);
@@ -127,11 +283,13 @@ const EmployeePage = () => {
             setDepartment(data.payload.data.department);
             setEmail(data.payload.data.email);
             setPhone(data.payload.data.phone);
-            setHireDate(dayjs(data.payload.data.hireDate)); 
+            setBirthDate(dayjs(data.payload.data.birthDate));
+            setGender(data.payload.data.gender);
+            setHireDate(dayjs(data.payload.data.hireDate));
             setSalary(data.payload.data.salary);
         });
     }
-    
+
     const handleUpdateEmployee = () => {
         dispatch(fetchUpdateEmployee({
             id: selectedRowIds[0],
@@ -141,6 +299,8 @@ const EmployeePage = () => {
             department: department,
             email: email,
             phone: phone,
+            birthDate: birthDate?.toDate() || new Date(),
+            gender: gender,
             hireDate: hireDate?.toDate() || new Date(),
             salary: salary
         })).then(() => {
@@ -152,6 +312,8 @@ const EmployeePage = () => {
             setDepartment('')
             setEmail('')
             setPhone('')
+            setBirthDate(dayjs())
+            setGender('')
             setHireDate(dayjs())
             setSalary(0)
             Swal.fire({
@@ -170,6 +332,8 @@ const EmployeePage = () => {
             setDepartment('')
             setEmail('')
             setPhone('')
+            setBirthDate(dayjs())
+            setGender('')
             setHireDate(dayjs())
             setSalary(0)
             Swal.fire({
@@ -255,6 +419,8 @@ const EmployeePage = () => {
         { field: "department", headerName: t("hrmService.department"), flex: 1.5, headerAlign: "center" },
         { field: "email", headerName: t("hrmService.email"), flex: 1.5, headerAlign: "center" },
         { field: "phone", headerName: t("hrmService.phone"), flex: 1.5, headerAlign: "center" },
+        { field: "birthDate", headerName: t("hrmService.birthDate"), flex: 1.5, headerAlign: "center" },
+        { field: "gender", headerName: t("hrmService.gender"), flex: 1.5, headerAlign: "center" },
         { field: "hireDate", headerName: t("hrmService.hireDate"), flex: 1.5, headerAlign: "center" },
         { field: "salary", headerName: t("hrmService.salary"), flex: 1.5, headerAlign: "center" },
         { field: "status", headerName: t("hrmService.status"), headerAlign: "center", flex: 1 },
@@ -275,7 +441,7 @@ const EmployeePage = () => {
                 fullWidth
                 inputProps={{ maxLength: 50 }}
             />
-            <h1>Employee</h1>
+            <h1>{t("hrmService.employees")}</h1>
 
             <DataGrid
                 slots={{
@@ -288,11 +454,7 @@ const EmployeePage = () => {
                         paginationModel: { page: 1, pageSize: 5 },
                     }
                 }}
-                // getRowClassName={(params)=>
-                //     params.row.isExpenditureApproved
-                //         ? "approved-row"
-                //         : "unapproved-row"
-                // }
+
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
@@ -308,16 +470,44 @@ const EmployeePage = () => {
                     "& .MuiDataGrid-cell": {
                         textAlign: "center",
                     },
-                    // "& .approved-row": {
-                    //     backgroundColor: "rgba(77, 148, 255,1)",
 
-                    // },
-                    // "& .unapproved-row": {
-                    //     backgroundColor: "rgba(242, 242, 242,1)",
-                    // },
 
                 }}
                 rowSelectionModel={selectedRowIds}
+                localeText={{
+                    toolbarColumns: t("dataGrid.toolbarColumns"),
+                    toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
+                    toolbarFilters: t("dataGrid.toolbarFilters"),
+                    toolbarFiltersLabel: t("dataGrid.toolbarFiltersLabel"),
+                    toolbarDensity: t("dataGrid.toolbarDensity"),
+                    toolbarDensityLabel: t("dataGrid.toolbarDensityLabel"),
+                    toolbarDensityStandard: t("dataGrid.toolbarDensityStandard"),
+                    toolbarDensityComfortable: t("dataGrid.toolbarDensityComfortable"),
+                    columnsManagementSearchTitle: t("dataGrid.columnsManagementSearchTitle"),
+                    columnsManagementShowHideAllText: t("dataGrid.columnsManagementShowHideAllText"),
+                    toolbarDensityCompact: t("dataGrid.toolbarDensityCompact"),
+                    toolbarExport: t("dataGrid.toolbarExport"),
+                    toolbarExportLabel: t("dataGrid.toolbarExportLabel"),
+                    toolbarExportCSV: t("dataGrid.toolbarExportCSV"),
+                    toolbarExportPrint: t("dataGrid.toolbarExportPrint"),
+                    noRowsLabel: t("dataGrid.noRowsLabel"),
+                    noResultsOverlayLabel: t("dataGrid.noResultsOverlayLabel"),
+                    footerRowSelected: (count) =>
+                        count !== 1
+                            ? `${count.toLocaleString()} ${t("dataGrid.footerRowSelected")}`
+                            : `${count.toLocaleString()} ${t("dataGrid.footerRowSelected")}`,
+                    footerTotalRows: t("dataGrid.footerTotalRows"),
+                    columnMenuLabel: t("dataGrid.columnMenuLabel"),
+                    columnMenuShowColumns: t("dataGrid.columnMenuShowColumns"),
+                    columnMenuFilter: t("dataGrid.columnMenuFilter"),
+                    columnMenuHideColumn: t("dataGrid.columnMenuHideColumn"),
+                    columnMenuUnsort: t("dataGrid.columnMenuUnsort"),
+                    columnMenuSortAsc: t("dataGrid.columnMenuSortAsc"),
+                    columnMenuSortDesc: t("dataGrid.columnMenuSortDesc"),
+                    MuiTablePagination: {
+                        labelRowsPerPage: t("dataGrid.labelRowsPerPage")
+                    }
+                }}
             />
             <Grid container spacing={2} sx={{
                 flexGrow: 1,
@@ -326,12 +516,12 @@ const EmployeePage = () => {
                 marginTop: '2%',
                 marginBottom: '2%'
             }}>
-                <Grid item xs={12} sm={6} md={3} lg={2}>
+                <Grid item xs={1.5} >
                     <Button
                         onClick={handleOpenEmployeeModal}
                         variant="contained"
                         color="success"
-                        //startIcon={<ApproveIcon />}
+
                         sx={{
                             width: '100%',
                             height: '100%',
@@ -340,10 +530,10 @@ const EmployeePage = () => {
                             justifyContent: 'center'
                         }}
                     >
-                        {t("hrmService.add")}
+                        {t("hrmService.add_employee")}
                     </Button>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} lg={2}>
+                <Grid item xs={1.5}>
                     <Button
                         onClick={handleOpenUpdateModal}
                         variant="contained"
@@ -361,13 +551,13 @@ const EmployeePage = () => {
                         {t("hrmService.update")}
                     </Button>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} lg={2}>
+                <Grid item xs={1.5}>
                     <Button
                         onClick={handleDeleteEmployee}
                         variant="contained"
                         color="error"
                         disabled={isDeleting || selectedRowIds.length === 0}
-                        //startIcon={<CancelIcon/>}
+
                         sx={{
                             width: '100%',
                             height: '100%',
@@ -379,6 +569,94 @@ const EmployeePage = () => {
                         {t("hrmService.delete")}
                     </Button>
                 </Grid>
+
+                <Grid item xs={1.5}>
+                    <Button
+                        onClick={handleOpenPayrollModal}
+                        variant="contained"
+                        color="warning"
+                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
+                        sx={{
+                            backgroundColor: '#FFC107',
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            '&:hover': {
+                                backgroundColor: '#FFB300',
+                            },
+                        }}
+                    >
+                        {t("hrmService.add_payroll")}
+                    </Button>
+                </Grid>
+                <Grid item xs={1.5}>
+                    <Button
+                        onClick={handleOpenPerformanceModal}
+                        variant="contained"
+                        color="warning"
+                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
+                        sx={{
+                            backgroundColor: '#FFC107',
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            '&:hover': {
+                                backgroundColor: '#FFB300',
+                            },
+                        }}
+                    >
+                        {t("hrmService.add_performance")}
+                    </Button>
+                </Grid>
+                <Grid item xs={1.5} >
+                    <Button
+                        onClick={handleOpenBenefitModal}
+                        variant="contained"
+                        color="warning"
+                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
+                        sx={{
+                            backgroundColor: '#FFC107',
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            '&:hover': {
+                                backgroundColor: '#FFB300',
+                            },
+                        }}
+                    >
+                        {t("hrmService.add_benefit")}
+                    </Button>
+                </Grid>
+                <Grid item xs={1.5} >
+                    <Button
+                        onClick={handleOpenAttendanceModal}
+                        variant="contained"
+                        color="warning"
+                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
+                        sx={{
+                            backgroundColor: '#FFC107',
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            '&:hover': {
+                                backgroundColor: '#FFB300',
+                            },
+                        }}
+                    >
+                        {t("hrmService.add_attendance")}
+                    </Button>
+                </Grid>
+
+
+                 
                 <Dialog open={openAddEmployeeModal} onClose={() => setOpenAddEmployeeModel(false)} fullWidth
                     maxWidth='sm'>
                     <DialogTitle>{isUpdating ? t('hrmService.update') : t('hrmService.add_employee')}</DialogTitle>
@@ -439,6 +717,28 @@ const EmployeePage = () => {
                         />
                         <TextField
                             sx={{ marginTop: '15px' }}
+                            label={t('hrmService.birthDate')}
+                            name="BirthDate"
+                            type="date"
+                            value={birthDate ? birthDate.toISOString().substring(0, 10) : ''}
+                            onChange={e => setBirthDate(dayjs(e.target.value))}
+                            required
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <TextField
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.gender')}
+                            name="Gender"
+                            value={gender}
+                            onChange={e => setGender(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{ marginTop: '15px' }}
                             label={t('hrmService.hireDate')}
                             name="HireDate"
                             type="date"
@@ -454,21 +754,14 @@ const EmployeePage = () => {
                             sx={{ marginTop: '15px' }}
                             label={t('hrmService.salary')}
                             name="Salary"
-                            value={salary !== undefined ? salary : ''} // salary tanımlıysa değerini, değilse boş bırak
+                            value={salary !== undefined ? salary : ''}
                             onChange={e => {
                                 const value = e.target.value;
-                                setSalary(value ? parseInt(value) : 0); // Boşsa 0, değilse sayıyı al
+                                setSalary(value ? parseInt(value) : 0);
                             }}
                             required
                             fullWidth
                         />
-
-
-
-
-
-
-
 
                     </DialogContent>
                     <DialogActions>
@@ -481,19 +774,230 @@ const EmployeePage = () => {
                             setDepartment('');
                             setEmail('');
                             setPhone('');
+                            setBirthDate(dayjs());
+                            setGender('');
                             setHireDate(dayjs());
                             setSalary(0);
                         }} color="error" variant="contained">{t('hrmService.cancel')}</Button>
-                        {isUpdating ? 
-                        <Button onClick={() => handleUpdateEmployee()} color="primary" variant="contained"
-                            disabled={firstName === '' || lastName === '' || position === '' || department === '' || email === '' || phone === '' || hireDate === null || salary === 0}>{t('hrmService.update')}</Button>
+                        {isUpdating ?
+                            <Button onClick={() => handleUpdateEmployee()} color="primary" variant="contained"
+                                disabled={firstName === '' || lastName === '' || position === '' || department === '' || email === '' || phone === '' || birthDate === null || gender === '' || hireDate === null || salary === 0}>{t('hrmService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveEmployee()} color="success" variant="contained"
-                                disabled={firstName === '' || lastName === '' || position === '' || department === '' || email === '' || phone === '' || hireDate === null || salary === 0}>{t('hrmService.save')}</Button>}
+                                disabled={firstName === '' || lastName === '' || position === '' || department === '' || email === '' || phone === '' ||gender === '' ||  hireDate === null || salary === 0}>{t('hrmService.save')}</Button>}
 
 
                     </DialogActions>
                 </Dialog>
+
+
+
+                <Dialog open={openAddPayrollModal} onClose={() => setOpenAddPayrollModal(false)} fullWidth
+                    maxWidth='sm'>
+                    <DialogTitle>{isUpdating ? t('hrmService.save') : t('hrmService.add_payroll')}</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            label={t('hrmService.grossSalary')}
+                            type="number"
+                            value={grossSalary}
+                            onChange={(e) => setGrossSalary(parseFloat(e.target.value))}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            label={t('hrmService.deductions')}
+                            type="number"
+                            value={deductions}
+                            onChange={(e) => setDeductions(parseFloat(e.target.value))}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            label={t('hrmService.netSalary')}
+                            type="number"
+                            value={netSalary}
+                            onChange={(e) => setNetSalary(parseFloat(e.target.value))}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            label={t('hrmService.salaryDate')}
+                            type="date"
+                            value={salaryDate ? salaryDate.format('YYYY-MM-DD') : ''}
+                            onChange={(e) => setSalaryDate(dayjs(e.target.value))}
+                            fullWidth
+                            margin="normal"
+                        />
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setOpenAddPayrollModal(false);
+                            setIsUpdating(false);
+                            setGrossSalary(0);
+                            setDeductions(0);
+                            setNetSalary(0);
+                            setSalaryDate(dayjs());
+                        }} color="error" variant="contained">{t('hrmService.cancel')}</Button>
+
+                        <Button onClick={() => handleSavePayroll()} color="success" variant="contained"
+                            disabled={grossSalary === 0 || deductions === 0 || netSalary === 0 || salaryDate === null}>{t('hrmService.save')}</Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog open={openAddBenefitModal} onClose={() => setOpenAddBenefitModal(false)} fullWidth
+                    maxWidth='sm'>
+                    <DialogTitle>{isUpdating ? t('hrmService.save') : t('hrmService.add_benefit')}</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            label={t('hrmService.startDate')}
+                            type="date"
+                            value={startDate ? startDate.format('YYYY-MM-DD') : ''}
+                            onChange={(e) => setStartDate(dayjs(e.target.value))}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            label={t('hrmService.endDate')}
+                            type="date"
+                            value={endDate ? endDate.format('YYYY-MM-DD') : ''}
+                            onChange={(e) => setEndDate(dayjs(e.target.value))}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.type')}
+                            name="name"
+                            value={type}
+                            onChange={e => setType(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            label={t('hrmService.amount')}
+                            type="number"
+                            value={amount}
+                            onChange={(e) => setAmount(parseFloat(e.target.value))}
+                            fullWidth
+                            margin="normal"
+                        />
+
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setOpenAddBenefitModal(false);
+                            setIsUpdating(false);
+                            setStartDate(dayjs());
+                            setEndDate(dayjs());
+                            setAmount(0);
+                            setType('');
+                        }} color="error" variant="contained">{t('hrmService.cancel')}</Button>
+
+                        <Button onClick={() => handleSaveBenefit()} color="success" variant="contained"
+                            disabled={startDate === null || endDate === null || amount === 0 || type === ''}>{t('hrmService.save')}</Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog open={openAddPerformanceModal} onClose={() => setOpenAddPerformanceModal(false)} fullWidth
+                    maxWidth='sm'>
+                    <DialogTitle>{isUpdating ? t('hrmService.save') : t('hrmService.add_performance')}</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            label={t('hrmService.date')}
+                            type="date"
+                            value={date ? date.format('YYYY-MM-DD') : ''}
+                            onChange={(e) => setDate(dayjs(e.target.value))}
+                            fullWidth
+                            margin="normal"
+                        />
+
+                        <TextField
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.feedback')}
+                            name="name"
+                            value={feedback}
+                            onChange={e => setFeedback(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            label={t('hrmService.score')}
+                            type="number"
+                            value={score}
+                            onChange={(e) => setScore(parseFloat(e.target.value))}
+                            fullWidth
+                            margin="normal"
+                        />
+
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setOpenAddPerformanceModal(false);
+                            setIsUpdating(false);
+                            setDate(dayjs());
+                            setFeedback('');
+                            setScore(0);
+                        }} color="error" variant="contained">{t('hrmService.cancel')}</Button>
+
+                        <Button onClick={() => handleSavePerformance()} color="success" variant="contained"
+                            disabled={date === null || feedback === '' || score === 0}>{t('hrmService.save')}</Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog open={openAddAttendanceModal} onClose={() => setOpenAddAttendanceModal(false)} fullWidth
+                    maxWidth='sm'>
+                    <DialogTitle>{isUpdating ? t('hrmService.save') : t('hrmService.add_attendance')}</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            label={t('hrmService.date')}
+                            type="date"
+                            value={attendanceDate ? attendanceDate.format('YYYY-MM-DD') : ''}
+                            onChange={(e) => setAttendanceDate(dayjs(e.target.value))}
+                            fullWidth
+                            margin="normal"
+                        />
+
+                        <TextField
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.checkInTime')}
+                            name="checkInTime"
+                            value={checkInTime || '00:00:00'}
+                            onChange={e => {
+                                setCheckInTime(e.target.value);
+                            }}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{ marginTop: '15px' }}
+                            label={t('hrmService.checkOutTime')}
+                            name="checkOutTime"
+                            value={checkOutTime || '00:00:00'}
+                            onChange={e => setCheckOutTime(e.target.value)}
+                            required
+                            fullWidth
+                        />
+
+
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            setOpenAddAttendanceModal(false);
+                            setIsUpdating(false);
+                            setAttendanceDate(dayjs());
+                            setCheckInTime('');
+                            setCheckOutTime('');
+                        }} color="error" variant="contained">{t('hrmService.cancel')}</Button>
+
+                        <Button onClick={() => handleSaveAttendance()} color="success" variant="contained"
+                            disabled={attendanceDate === null || checkInTime === '' || checkOutTime === ''}>{t('hrmService.save')}</Button>
+                    </DialogActions>
+                </Dialog>
+
 
             </Grid>
         </div>
