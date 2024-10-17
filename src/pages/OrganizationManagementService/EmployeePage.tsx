@@ -48,6 +48,7 @@ const EmployeePage = () => {
     //MODAL
     const [openAddCustomerModal, setOpenAddEmployee] = useState(false);
     const [employees, setEmployees] = useState<IEmployee[]>([]);
+    const [modalEmployees, setModalEmployees] = useState<IEmployee[]>([]);
     const [selectedManagerId, setSelectedManagerId] = useState(0);
     const [departments, setDepartments] = useState<IDepartment[]>([]);
     const [selectedDepartmentId, setSelectedDepartmentId] = useState(0);
@@ -99,8 +100,8 @@ const EmployeePage = () => {
         dispatch(
             fetchFindAllEmployee({
                 page: 0,
-                size: 10000,
-                searchText: '',
+                size: 100,
+                searchText: searchText,
             })
         ).then(data => {
             setEmployees(data.payload.data);
@@ -128,7 +129,7 @@ const EmployeePage = () => {
                 searchText: '',
             })
         ).then(data => {
-            setEmployees(data.payload.data);
+            setModalEmployees(data.payload.data);
         })
 
         dispatch(fetchFindByIdEmployee(selectedRowIds[0])).then((data) => {
@@ -573,7 +574,7 @@ localeText={{
                                 }
 
                             >
-                                {Object.values(employees).map(manager => (
+                                {Object.values(modalEmployees).map(manager => (
                                     <MenuItem key={manager.id} value={manager.id}>
                                         {manager.name + " " + manager.surname}
                                     </MenuItem>

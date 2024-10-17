@@ -18,6 +18,11 @@ interface IHrmState  {
     employeeList:IEmployee[]
     payrollList:IPayroll[]
     performanceList:IPerformance[]
+    birthDateList: BirthDateResponseDTO[];
+    departmentScoreList: DepartmentScoreResponseDTO[];
+    numberOfMen: number;
+    departmentEmployeeCount: IDepartmentEmployeeCount; 
+    numberOfWomen: number;
 }
 
 const initialHrmState:IHrmState = {
@@ -25,7 +30,13 @@ const initialHrmState:IHrmState = {
     benefitList:[],
     employeeList:[],
     payrollList:[],
+    birthDateList: [],
+    departmentScoreList: [],
+    numberOfMen: 0,
+    numberOfWomen: 0,
+    departmentEmployeeCount: {},
     performanceList:[]
+    
 }
 
 
@@ -37,6 +48,8 @@ interface IfetchSaveEmployee{
     department:string;
     email:string;
     phone:string;
+    birthDate:Date;
+    gender:string;
     hireDate:Date;
     salary:number;
     
@@ -52,6 +65,8 @@ export const fetchSaveEmployee = createAsyncThunk(
             department: payload.department,
             email: payload.email,
             phone: payload.phone,
+            birthDate: payload.birthDate,
+            gender: payload.gender,
             hireDate: payload.hireDate,
             salary: payload.salary
         };
@@ -77,6 +92,8 @@ interface IfetchUpdateEmployee{
     department:string;
     email:string;
     phone:string;
+    birthDate:Date;
+    gender:string;
     hireDate:Date;
     salary:number;
     
@@ -92,6 +109,8 @@ export const fetchUpdateEmployee = createAsyncThunk(
             department: payload.department,
             email: payload.email,
             phone: payload.phone,
+            birthDate: payload.birthDate,
+            gender: payload.gender,
             hireDate: payload.hireDate,
             salary: payload.salary
         };
@@ -165,6 +184,86 @@ export const fetchDeleteEmployee = createAsyncThunk(
         return result.data;
     }
 )
+
+export const fetchNumberOfEmployeeMen = createAsyncThunk(
+    'hrm/fetchNumberOfEmployeeMen',
+    async () => {
+        const result = await axios.post(
+            RestApis.hrm_service_employee + "/number-men",
+            null, 
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token'),
+                },
+            }
+        );
+        return result.data; 
+    }
+);
+export const fetchNumberOfEmployeeWomen = createAsyncThunk(
+    'hrm/fetchNumberOfEmployeeWomen',
+    async () => {
+        const result = await axios.post(
+            RestApis.hrm_service_employee + "/number-women",
+            null, 
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token'),
+                },
+            }
+        );
+        return result.data; 
+    }
+);
+
+interface IDepartmentEmployeeCount {
+    [departmentName: string]: number; 
+}
+
+export const fetchNumberOfEmployeesInDepartments = createAsyncThunk(
+    'hrm/fetchNumberOfEmployeesInDepartments',
+    async () => {
+        const result = await axios.post(
+            RestApis.hrm_service_employee + "/number-departments",
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token'),
+                },
+            }
+        );
+        return result.data;
+    }
+);
+interface BirthDateResponseDTO{
+    
+    firstName:string;
+    lastName:string;
+    birthDate:string;
+   
+    
+}
+
+export const fetchUpcomingBirthdays = createAsyncThunk(
+    'hrm/fetchUpcomingBirthdays',
+    async () => {
+        const result = await axios.post<BirthDateResponseDTO[]>(
+            RestApis.hrm_service_employee + "/birthdate-list",
+            null,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
 //#region Attendance
 interface IfetchSaveAttendance{
     employeeId:number;
@@ -663,6 +762,28 @@ export const fetchFindAllPerformance = createAsyncThunk(
     }
 );
 
+interface DepartmentScoreResponseDTO{
+    department: string;
+    averageScore: number;
+
+    
+}
+export const fetchDepartmentAverageScores = createAsyncThunk(
+    'hrm/fetchDepartmentAverageScores',
+    async () => {
+        const result = await axios.post(
+            RestApis.hrm_service_performance + "/department-score", 
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ` + localStorage.getItem('token')
+                }
+            }
+        );
+        return result.data;
+    }
+);
+
 
 const hrmSlice = createSlice({
     name: 'hrm',
@@ -687,6 +808,22 @@ const hrmSlice = createSlice({
         });
         builder.addCase(fetchFindAllAttendance.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.attendanceList = action.payload.data;
+        });
+        builder.addCase(fetchNumberOfEmployeeMen.fulfilled, (state, action: PayloadAction<number>) => {
+            state.numberOfMen = action.payload; 
+        });
+        builder.addCase(fetchNumberOfEmployeeWomen.fulfilled, (state, action: PayloadAction<number>) => {
+            state.numberOfWomen = action.payload; 
+        });
+        builder.addCase(fetchNumberOfEmployeesInDepartments.fulfilled, (state, action: PayloadAction<IDepartmentEmployeeCount>) => {
+            state.departmentEmployeeCount = action.payload; 
+            
+        });
+        builder.addCase(fetchUpcomingBirthdays.fulfilled, (state, action: PayloadAction<BirthDateResponseDTO[]>) => {
+            state.birthDateList = action.payload; 
+        });
+        builder.addCase(fetchDepartmentAverageScores.fulfilled, (state, action: PayloadAction<DepartmentScoreResponseDTO[]>) => {
+            state.departmentScoreList = action.payload; 
         });
       
       

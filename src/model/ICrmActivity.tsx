@@ -1,5 +1,5 @@
-export interface ICrmSalesActivity{
-    id: number;
+export interface ICrmActivity {
+    id: string;
     memberId: number;
     opportunityId: number;
     type: string;
