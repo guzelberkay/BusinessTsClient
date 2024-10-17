@@ -34,7 +34,7 @@ import { Client } from "@stomp/stompjs";
 import { clearToken } from "../../../store/feature/authSlice.tsx";
 import { clearRoles } from "../../../store/feature/userSlice.tsx";
 import { use } from "i18next";
-import { fetchProfileImage } from "../../../store/feature/fileSlice.tsx";
+import { clearProfileImage, fetchProfileImage } from "../../../store/feature/fileSlice.tsx";
 const drawerWidth = 240;
 
 // Interface defining the props for the AppBar component
@@ -313,6 +313,7 @@ function Appbar({
   const handleLogout = () => {
     dispatch(clearRoles());
     dispatch(clearToken());
+    dispatch(clearProfileImage())
     navigate('/login');
   }
 

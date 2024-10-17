@@ -214,6 +214,9 @@ const fileSlice = createSlice({
         setProfileImage: (state, action) => {
             state.profileImage = action.payload; 
         },
+        clearProfileImage: (state) => {
+            state.profileImage = 'https://i.pinimg.com/736x/09/21/fc/0921fc87aa989330b8d403014bf4f340.jpg'; 
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -290,5 +293,5 @@ const fileSlice = createSlice({
 });
 
 
-export const { resetError, setProfileImage } = fileSlice.actions;
+export const { resetError, setProfileImage,clearProfileImage } = fileSlice.actions;
 export default fileSlice.reducer;
