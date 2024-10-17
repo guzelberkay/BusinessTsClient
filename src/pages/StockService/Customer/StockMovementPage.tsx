@@ -358,6 +358,7 @@ const StockMovementPage = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
+                disableRowSelectionOnClick={true}
                 localeText={{
                     toolbarColumns: t("dataGrid.toolbarColumns"),
                     toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),

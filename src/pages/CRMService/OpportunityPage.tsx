@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     DataGrid,
     GridColDef,
@@ -7,22 +7,34 @@ import {
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle,
     Grid,
-    TextField
+    InputLabel,
+    Slider,
+    SliderValueLabel,
+    TextField,
+    Toolbar,
+    IconButton
 
 } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
-import {useDispatch} from "react-redux";
-import {AppDispatch, useAppSelector} from "../../store";
+import { useDispatch } from "react-redux";
+import { AppDispatch, useAppSelector } from "../../store";
 import {
     fetchFindAllOpportunity,
     fetchSaveOpportunity,
     fetchUpdateOpportunity,
     fetchFindOpportunityById,
-    fetchDeleteOpportunity, fetchUpdateCustomer, fetchFindCustomerById, fetchDeleteCustomer
+    fetchDeleteOpportunity,
+    fetchGetDetailsOpportunity,
+    fetchFindAllCustomerForOpportunity,
+    fetchSaveCustomerOpportunity
 } from "../../store/feature/crmSlice.tsx";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ICrmOpportunity } from "../../model/ICrmOpportunity.tsx";
+import { ICrmOpportunityDetail } from "../../model/ICrmOpportunityDetail.tsx";
+
 
 const OpportunityPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
@@ -30,6 +42,8 @@ const OpportunityPage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const opportunities = useAppSelector((state) => state.crmSlice.opportunityList);
+    const opportunityDetail = useAppSelector((state) => state.crmSlice.opportunityDetail);
+    const costumers = useAppSelector((state) => state.crmSlice.customerList);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -37,7 +51,7 @@ const OpportunityPage = () => {
     const [isSaving, setIsSaving] = useState(false);
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
-    const {t} = useTranslation();
+    const { t } = useTranslation();
 
     // modal
     const [openAddOpportunityModal, setOpenAddOpportunityModal] = useState(false);
@@ -45,13 +59,16 @@ const OpportunityPage = () => {
     const [description, setDescription] = useState('');
     const [value, setValue] = useState(0);
     const [stage, setStage] = useState('');
-    const [probability, setProbability] = useState(0);
+    const [probability, setProbability] = useState(0.0);
     const [status, setStatus] = useState('');
-    const navigate = useNavigate();
 
-    const goToSavePage = () => {
-        navigate("/opportunity/save");
-    }
+    const [openDetailsPopup, setOpenDetailsPopup] = useState(false);
+    const [selectedOpportunity, setSelectedOpportunity] = useState<ICrmOpportunity | ICrmOpportunityDetail>(null);
+    const [openCustomerListPopup, setOpenCustomerListPopup] = useState(false);
+
+
+    const [selectedRowIdsCustomer, setSelectedRowIdsCustomer] = useState<number[]>([]);
+
 
 
     useEffect(() => {
@@ -60,11 +77,165 @@ const OpportunityPage = () => {
             size: 100,
             searchText: searchText,
         }));
-    }, [dispatch, searchText, loading, isActivating, isUpdating, isDeleting]);
+    }, [dispatch, searchText, loading, isActivating, isSaving, isUpdating, isDeleting]);
+
+    useEffect(() => {
+        dispatch(fetchFindAllCustomerForOpportunity({
+            page: 0,
+            size: 100,
+            searchText: searchText,
+        }));
+    }, [dispatch, searchText, loading, isSaving, isUpdating, isDeleting]);
 
     const handleRowSelection = (newSelectionModel: GridRowSelectionModel) => {
         setSelectedRowIds(newSelectionModel as number[]);
     }
+    const handleRowSelectionCustomer = (newSelectionModel2: GridRowSelectionModel) => {
+        setSelectedRowIdsCustomer(newSelectionModel2 as number[]);
+    }
+
+    const handleDetailsClick = () => {
+        if (!selectedRowIds[0]) {
+            console.error("Geçerli bir ID bulunamadı");
+            return;
+        }
+
+        dispatch(fetchGetDetailsOpportunity(selectedRowIds[0]))
+            .then((data) => {
+                setSelectedOpportunity(data.payload.data);
+                setOpenDetailsPopup(true);
+            })
+            .catch((error) => {
+                console.error("Hata:", error);
+            });
+    };
+
+    // const handleCloseDetailsPopup = () => {
+    //     setOpenDetailsPopup(false);
+    //     setSelectedOpportunity(null);
+    // };
+
+    const handleOpenOpportunityModal = () => {
+        setOpenAddOpportunityModal(true);
+    }
+
+
+    const handleCustomerListClick = () => {
+        dispatch(fetchFindAllCustomerForOpportunity({ searchText: '', page: 0, size: 1000 }));
+        setOpenCustomerListPopup(true);
+    }
+
+    const handleSaveOpportunity = () => {
+        setIsSaving(true);  // Kaydetme işlemi başladığında isSaving true yapılır
+        dispatch(fetchSaveOpportunity({
+            name: name,
+            description: description,
+            value: value,
+            stage: stage,
+            probability: probability
+        })).then((data) => {
+            if (data.payload.message === "Opportunity saved successfully") {
+    
+                setName('');
+                setDescription('');
+                setValue(0);
+                setStage('');
+                setProbability(0.0);
+                setOpenAddOpportunityModal(false);
+                
+   
+                Swal.fire({
+                    title: t("swal.success"),
+                    text: t("crmService.added_opportunity"),
+                    icon: "success",
+                }).then(() => {
+                    setIsSaving(false); 
+                });
+            } else {
+                Swal.fire({
+                    title: t("swal.error"),
+                    text: t("crmService.non-added"),
+                    icon: "error",
+                    confirmButtonText: t("swal.ok"),
+                }).then(() => {
+                    setIsSaving(false); 
+                });
+            }
+        }).catch((error) => {
+
+            setOpenAddOpportunityModal(false);
+            Swal.fire({
+                title: t("swal.error"),
+                text: t("crmService.error-occurred"),
+                icon: "error",
+            }).then(() => {
+                setIsSaving(false);
+            });
+        });
+    };
+    
+
+    const handleSaveCustomerFromOpportunity = () => {
+        if (selectedRowIdsCustomer.length === 0) return;
+
+        setIsUpdating(true);
+
+        const saveOpportunityPromises = [];
+
+        for (const id of selectedRowIdsCustomer) {
+            const selectedCustomer = costumers.find(
+                (selectedCustomer) => selectedCustomer.id === id
+            );
+
+            if (!selectedCustomer) continue;
+
+            saveOpportunityPromises.push(
+                dispatch(fetchSaveCustomerOpportunity({
+                    id: selectedRowIds[0],
+                    customers: selectedRowIdsCustomer
+                }))
+            );
+        }
+
+
+        setSelectedRowIdsCustomer([]);
+
+        Promise.all(saveOpportunityPromises)
+            .then((responses) => {
+                let successCount = 0;
+                responses.forEach((data) => {
+                    if (data.payload?.message === "Opportunity saved successfully") {
+                        successCount++;
+                    }
+                });
+
+                if (successCount === selectedRowIdsCustomer.length) {
+                    Swal.fire({
+                        title: t("swal.success"),
+                        text: t("crmService.added"),
+                        icon: "success",
+                    });
+                } else {
+                    Swal.fire({
+                        title: t("swal.error"),
+                        text: t("crmService.non-added"),
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+                }
+
+                setIsUpdating(false);
+            })
+            .catch((error) => {
+                Swal.fire({
+                    title: t("swal.error"),
+                    text: t("crmService.error-occurred"),
+                    icon: "error",
+                });
+                setIsUpdating(false);
+            });
+    };
+
     const handleOpenUpdateModal = async () => {
         setOpenAddOpportunityModal(true);
         setIsUpdating(true);
@@ -90,7 +261,7 @@ const OpportunityPage = () => {
             setDescription('')
             setValue(0)
             setStage('')
-            setProbability(0)
+            setProbability(0.0)
             setOpenAddOpportunityModal(false);
             setIsUpdating(false);
             Swal.fire({
@@ -177,17 +348,35 @@ const OpportunityPage = () => {
     };
 
 
+
+    const customerColumns: GridColDef[] = [
+        { field: "firstName", headerName: t("crmService.firstName"), flex: 1.5, headerAlign: "center" },
+        { field: "lastName", headerName: t("crmService.lastName"), flex: 1.5, headerAlign: "center" },
+        { field: "email", headerName: t("crmService.email"), flex: 1.5, headerAlign: "center" },
+        { field: "phone", headerName: t("crmService.phone"), flex: 1.5, headerAlign: "center" },
+        { field: "address", headerName: t("crmService.address"), flex: 1.5, headerAlign: "center" },
+
+    ]
+
+
     const columns: GridColDef[] = [
-        {field: "name", headerName: t("crmService.name"), flex: 1.5, headerAlign: "center"},
-        {field: "description", headerName: t("crmService.description"), flex: 1.5, headerAlign: "center"},
-        {field: "value", headerName: t("crmService.value"), flex: 1.5, headerAlign: "center"},
-        {field: "stage", headerName: t("crmService.stage"), flex: 1.5, headerAlign: "center"},
-        {field: "probability", headerName: t("crmService.probability"), flex: 1.5, headerAlign: "center"},
-        {field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1},
+        {
+            field: "details", headerName: t("crmService.details"), flex: 1.5, headerAlign: "center", renderCell: (params) => (
+                <IconButton onClick={handleDetailsClick}>
+                    <VisibilityIcon />
+                </IconButton>
+            ),
+        },
+        { field: "name", headerName: t("crmService.name"), flex: 1.5, headerAlign: "center" },
+        { field: "description", headerName: t("crmService.description"), flex: 1.5, headerAlign: "center" },
+        { field: "value", headerName: t("crmService.value"), flex: 1.5, headerAlign: "center" },
+        { field: "stage", headerName: t("crmService.stage"), flex: 1.5, headerAlign: "center" },
+        { field: "probability", headerName: t("crmService.probability"), flex: 1.5, headerAlign: "center" },
+        { field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1 },
     ]
 
     return (
-        <div style={{height: "auto"}}>
+        <div style={{ height: "auto" }}>
 
             <TextField
                 label={t("crmService.searchbyname")}
@@ -196,27 +385,19 @@ const OpportunityPage = () => {
                     setSearchText(event.target.value);
                 }}
                 value={searchText}
-                style={{marginBottom: "1%", marginTop: "1%"}}
+                style={{ marginBottom: "1%", marginTop: "1%" }}
                 fullWidth
-                inputProps={{maxLength: 50}}
+                inputProps={{ maxLength: 50 }}
             />
 
             <DataGrid
-                slots={{
-                    toolbar: GridToolbar,
-                }}
                 rows={opportunities}
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: {page: 1, pageSize: 5},
+                        paginationModel: { page: 1, pageSize: 5 },
                     }
                 }}
-                // getRowClassName={(params)=>
-                //     params.row.isExpenditureApproved
-                //         ? "approved-row"
-                //         : "unapproved-row"
-                // }
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
@@ -232,14 +413,6 @@ const OpportunityPage = () => {
                     "& .MuiDataGrid-cell": {
                         textAlign: "center",
                     },
-                    // "& .approved-row": {
-                    //     backgroundColor: "rgba(77, 148, 255,1)",
-
-                    // },
-                    // "& .unapproved-row": {
-                    //     backgroundColor: "rgba(242, 242, 242,1)",
-                    // },
-
                 }}
                 rowSelectionModel={selectedRowIds}
             />
@@ -252,7 +425,7 @@ const OpportunityPage = () => {
             }}>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
-                        onClick={goToSavePage}
+                        onClick={handleOpenOpportunityModal}
                         variant="contained"
                         color="success"
                         //startIcon={<ApproveIcon />}
@@ -303,12 +476,89 @@ const OpportunityPage = () => {
                         {t("crmService.delete")}
                     </Button>
                 </Grid>
+                <Grid item xs={12} sm={6} md={3} lg={2}>
+                    <Button
+                        onClick={handleCustomerListClick}
+                        variant="contained"
+                        color="primary"
+
+                        disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        {t("crmService.add_customer")}
+                    </Button>
+                </Grid>
+                <Dialog open={openCustomerListPopup} onClose={() => setOpenCustomerListPopup(false)} fullWidth maxWidth='sm'>
+                    <DialogTitle style={{ textAlign: "center", fontWeight: "bold", backgroundColor: "rgba(61,155,255,1)" }} >{t("crmService.customer_list")}</DialogTitle>
+                    <DialogContent>
+                        <DataGrid
+                            rows={costumers}
+                            columns={customerColumns}
+                            pageSizeOptions={[5, 10]}
+                            checkboxSelection
+                            onRowSelectionModelChange={handleRowSelectionCustomer}
+                            autoHeight
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => { handleSaveCustomerFromOpportunity(); setOpenCustomerListPopup(false); setOpenDetailsPopup(false) }} color="success" variant="contained">
+                            {t("crmService.add")}
+                        </Button>
+                        <Button onClick={() => { setOpenCustomerListPopup(false); setOpenDetailsPopup(false) }} color="error" variant="contained">
+                            {t("crmService.cancel")}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={openDetailsPopup} onClose={() => setOpenDetailsPopup(false)} fullWidth maxWidth='sm'>
+                    <DialogTitle style={{ textAlign: "center", fontWeight: "bold", backgroundColor: "rgba(61,155,255,1)" }} >
+                        {t("crmService.details")}
+                    </DialogTitle>
+                    <DialogContent>
+                        {selectedOpportunity ? (
+                            <div>
+                                <h2>{t("crmService.opportunity_details")}</h2>
+                                <p><strong>{t("crmService.name")}:</strong> {selectedOpportunity.name}</p>
+                                <p><strong>{t("crmService.description")}:</strong> {selectedOpportunity.description}</p>
+                                <p><strong>{t("crmService.value")}:</strong> {selectedOpportunity.value}</p>
+                                <p><strong>{t("crmService.stage")}:</strong> {selectedOpportunity.stage}</p>
+                                <p><strong>{t("crmService.probability")}:</strong> {selectedOpportunity.probability !== undefined ? selectedOpportunity.probability.toString() : "N/A"}</p>
+
+                                <h2>{t("crmService.customer")}:</h2>
+                                {selectedOpportunity.customers && selectedOpportunity.customers.length > 0 ? (
+                                    selectedOpportunity.customers.map((customer, index) => (
+                                        <div key={index}>
+                                            <p>
+                                            <strong>{t("crmService.firstName")} {t("crmService.lastName")} :</strong> {customer.firstName || t("crmService.no-name")} {customer.lastName || t("crmService.no-name")}
+                                            </p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>{t("crmService.no-founded-customer")}</p>
+                                )}
+                            </div>
+                        ) : (
+                            <p>{t("crmService.loading")}</p>
+                        )}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setOpenDetailsPopup(false)} color="primary" variant="contained">
+                            {t("crmService.cancel")}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
                 <Dialog open={openAddOpportunityModal} onClose={() => setOpenAddOpportunityModal(false)} fullWidth
-                        maxWidth='lg'>
+                    maxWidth='lg'>
                     <DialogTitle>{isUpdating ? t('crmService.update') : t('crmService.add_opportunity')}</DialogTitle>
                     <DialogContent>
                         <TextField
-                            sx={{marginTop: '15px'}}
+                            sx={{ marginTop: '15px' }}
                             label={t('crmService.name')}
                             name="name"
                             value={name}
@@ -317,7 +567,7 @@ const OpportunityPage = () => {
                             fullWidth
                         />
                         <TextField
-                            sx={{marginTop: '15px'}}
+                            sx={{ marginTop: '15px' }}
                             label={t('crmService.description')}
                             name="description"
                             value={description}
@@ -326,7 +576,7 @@ const OpportunityPage = () => {
                             fullWidth
                         />
                         <TextField
-                            sx={{marginTop: '15px'}}
+                            sx={{ marginTop: '15px' }}
                             label={t('crmService.value')}
                             name="value"
                             value={value}
@@ -335,23 +585,26 @@ const OpportunityPage = () => {
                             fullWidth
                         />
                         <TextField
-                            sx={{marginTop: '15px'}}
+                            sx={{ marginTop: '15px' }}
                             label={t('crmService.stage')}
                             name="stage"
                             value={stage}
-                            onChange={e => setStage(e.target.value)}
+                            onChange={e => setStage(e.target?.value)}
                             required
                             fullWidth
                         />
-                        <TextField
-                            sx={{marginTop: '15px'}}
-                            label={t('crmService.probability')}
-                            name="probability"
-                            value={probability}
-                            onChange={e => setProbability(parseInt(e.target.value))}
-                            required
-                            fullWidth
-                        />
+                        <Grid item xs={12}>
+                            <InputLabel sx={{ marginTop: '15px' }}>{t('crmService.probability')}</InputLabel>
+                            <Slider
+                                name="probability"
+                                value={probability}
+                                onChange={e => setProbability(e.target?.value)}
+                                aria-labelledby="continuous-slider"
+                                valueLabelDisplay="auto"
+                                min={0}
+                                max={100}
+                            />
+                        </Grid>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
@@ -363,9 +616,12 @@ const OpportunityPage = () => {
                             setStage('');
                             setProbability(0);
                         }} color="error" variant="contained">{t('crmService.cancel')}</Button>
-                        {
+                        {isUpdating ?
                             <Button onClick={() => handleUpdateOpportunity()} color="success" variant="contained"
-                                    disabled={name === '' || description === '' || value === 0 || stage === '' || probability === 0}>{t('crmService.update')}</Button>}
+                                disabled={name === '' || description === '' || value === 0 || stage === '' || probability === 0}>{t('crmService.update')}</Button>
+                            :
+                            <Button onClick={() => handleSaveOpportunity()} color="success" variant="contained"
+                                disabled={name === '' || description === '' || value === 0 || stage === '' || probability === 0}>{t('crmService.save')}</Button>}
 
 
                     </DialogActions>
@@ -375,5 +631,6 @@ const OpportunityPage = () => {
 
         </div>
     );
+
 }
 export default OpportunityPage;

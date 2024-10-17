@@ -12,7 +12,6 @@ import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.
 import OpportunityPage from "../pages/CRMService/OpportunityPage.tsx";
 import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
 import TicketPage from "../pages/CRMService/TicketPage.tsx";
-import OpportunitySavePage from "../pages/CRMService/OpportunitySavePage.tsx";
 import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
 import IncomePage from "../pages/FinanceService/IncomePage.tsx";
@@ -52,7 +51,6 @@ export const WareHousePage = lazy(() => import('../pages/StockService/Customer/W
 export const ProductCategoryPage = lazy(() => import('../pages/StockService/Customer/ProductCategoryPage.tsx'));
 export const StockMovementPage = lazy(() => import('../pages/StockService/Customer/StockMovementPage.tsx'));
 export const OMSEmployeePage = lazy(() => import('../pages/OrganizationManagementService/EmployeePage.tsx'));
-export const OMSManagerPage = lazy(() => import('../pages/OrganizationManagementService/ManagerPage.tsx'));
 export const OMSDepartmentPage = lazy(() => import('../pages/OrganizationManagementService/DepartmentPage.tsx'));
 export const OMSTreeView = lazy(() => import('../pages/OrganizationManagementService/TreeView.tsx'));
 export const DashBoard = lazy(() => import('../pages/DashBoard'));
@@ -273,10 +271,6 @@ export default function Router() {
                     element: <PrivateRoute element={<TicketPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
                 },
                 {
-                    path: '/opportunity/save',
-                    element: <PrivateRoute element={<OpportunitySavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
-                },
-                {
                     path: '/sales-activity/save',
                     element: <PrivateRoute element={<SalesActivitySavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
                 },
@@ -358,10 +352,6 @@ export default function Router() {
                 {
                     path: 'oms-employee',
                     element: <PrivateRoute element={<OMSEmployeePage/>} roles={['MEMBER']}/>,
-                },
-                {
-                    path: 'oms-manager',
-                    element: <PrivateRoute element={<OMSManagerPage/>} roles={['MEMBER']}/>,
                 },
                 {
                     path: 'oms-department',

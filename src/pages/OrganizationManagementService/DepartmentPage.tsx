@@ -229,6 +229,7 @@ const ManagerPage = () => {
                 // }
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
+                disableRowSelectionOnClick={true}
                 onRowSelectionModelChange={handleRowSelection}
                 autoHeight={true}
                 sx={{

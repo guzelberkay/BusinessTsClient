@@ -6,6 +6,7 @@ import {
     DialogContent,
     DialogTitle,
     FormControl,
+    Grid,
     IconButton,
     InputLabel,
     Select,
@@ -18,9 +19,11 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import {
+    fetchDeleteEmployee,
     fetchFindAllDepartment,
     fetchGetEmployeeHierarchy,
-    fetchSaveSubordinate
+    fetchSaveSubordinate,
+    fetchSaveTopLevelManager
 } from '../../store/feature/organizationManagementSlice.tsx';
 import {AppDispatch} from '../../store';
 import {useDispatch} from 'react-redux';
@@ -29,7 +32,8 @@ import {IDepartment} from "../../model/OrganizationManagementService/IDepartment
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
-import AddIcon from "@mui/icons-material/Add"; // PrimeReact Button bileşenini ekliyoruz
+import AddIcon from "@mui/icons-material/Add";
+import {Delete} from "@mui/icons-material"; // PrimeReact Button bileşenini ekliyoruz
 
 interface CustomTreeNode extends TreeNode {
     type?: string;
@@ -39,6 +43,7 @@ interface CustomTreeNode extends TreeNode {
         name: string;
         email: string;
         title: string;
+        department: string;
     };
     children?: CustomTreeNode[];
 }
@@ -58,6 +63,7 @@ export default function SelectionDemo() {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
+    const [title, setTitle] = useState('');
     const [phoneNo, setPhoneNo] = useState('');
     const [identityNo, setIdentityNo] = useState('');
     const [isDeleting, setIsDeleting] = useState(false);
@@ -80,67 +86,6 @@ export default function SelectionDemo() {
 
     };
 
-    /*const handleOpenUpdateModal = async () => {
-        setAddSubordinateModal(true);
-        setIsUpdating(true)
-
-        dispatch(fetchFindByIdEmployee(selectedRowIds[0])).then((data) => {
-            setName(data.payload.data.name)
-            setSurname(data.payload.data.surname)
-            setEmail(data.payload.data.email)
-            setIdentityNo(data.payload.data.identityNo)
-            setPhoneNo(data.payload.data.phoneNo)
-            setSelectedDepartmentId(data.payload.data.department.id)
-            setSelectedManagerId(data.payload.data.manager.id)
-        })
-    }
-    const handleUpdate = async () => {
-        setIsUpdating(true)
-        dispatch(fetchUpdateEmployee({
-            id: selectedRowIds[0],
-            name: name,
-            surname: surname,
-            identityNo: identityNo,
-            phoneNo: phoneNo,
-            managerId: selectedManagerId,
-            departmentId: selectedDepartmentId
-        })).then((data) => {
-            if (data.payload.message === "Success") {
-                setName('')
-                setSurname('')
-                setEmail('')
-                setIdentityNo('')
-                setPhoneNo('')
-                setSelectedDepartmentId(0)
-                setSelectedManagerId(0)
-                setAddSubordinateModal(false);
-                Swal.fire({
-                    title: t("stockService.updated"),
-                    text: t("stockService.successfullyupdated"),
-                    icon: "success",
-                });
-                setIsUpdating(false)
-            } else {
-
-                setName('')
-                setSurname('')
-                setEmail('')
-                setIdentityNo('')
-                setPhoneNo('')
-                setSelectedDepartmentId(0)
-                setSelectedManagerId(0)
-                setAddSubordinateModal(false);
-                Swal.fire({
-                    title: t("swal.error"),
-                    text: data.payload.message,
-                    icon: "error",
-                    confirmButtonText: t("swal.ok"),
-                });
-                setIsUpdating(false)
-            }
-        })
-
-    }*/
 
     const handleSaveEmployee = async () => {
         setIsSaving(true)
@@ -149,6 +94,7 @@ export default function SelectionDemo() {
             surname: surname,
             email: email,
             identityNo: identityNo,
+            title: title,
             phoneNo: phoneNo,
             managerId: selectedEmployeeId || 0,
             departmentId: selectedDepartmentId
@@ -160,6 +106,7 @@ export default function SelectionDemo() {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
+                    setTitle('')
                     setAddSubordinateModal(false);
                     Swal.fire({
                         title: t("swal.success"),
@@ -175,6 +122,7 @@ export default function SelectionDemo() {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
+                    setTitle('')
                     setAddSubordinateModal(false);
                     Swal.fire({
                         title: t("swal.error"),
@@ -188,8 +136,55 @@ export default function SelectionDemo() {
             })
     };
 
-   /* const handleDelete = async () => {
-        setIsDeleting(true);
+    const handleSaveTopLevelManager = async () => {
+        setIsSaving(true)
+        dispatch(fetchSaveTopLevelManager({
+            name: name,
+            surname: surname,
+            email: email,
+            identityNo: identityNo,
+            phoneNo: phoneNo,
+            title: title,
+            departmentId: selectedDepartmentId
+        }))
+            .then((data) => {
+                if (data.payload.message === "Success") {
+                    setName('')
+                    setSurname('')
+                    setEmail('')
+                    setIdentityNo('')
+                    setPhoneNo('')
+                    setTitle('')
+                    setAddSubordinateModal(false);
+                    Swal.fire({
+                        title: t("swal.success"),
+                        text: t("stockService.successfullyadded"),
+                        icon: "success",
+                    });
+                    setIsSaving(false)
+                    fetchDatas();
+                } else {
+
+                    setName('')
+                    setSurname('')
+                    setEmail('')
+                    setIdentityNo('')
+                    setPhoneNo('')
+                    setTitle('')
+                    setAddSubordinateModal(false);
+                    Swal.fire({
+                        title: t("swal.error"),
+                        text: data.payload.message,
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+                    setIsSaving(false)
+                    fetchDatas();
+                }
+            })
+    };
+
+    const handleDelete = async () => {
         const result = await Swal.fire({
             title: t("swal.areyousure"),
             text: t("stockService.deleting"),
@@ -198,45 +193,38 @@ export default function SelectionDemo() {
             confirmButtonText: t("stockService.yesdeleteit"),
             cancelButtonText: t("stockService.cancel"),
         });
-        for (let id of selectedRowIds) {
-            const selectedCustomer = employees.find(
-                (selectedCustomer) => selectedCustomer.id === id
-            );
-            if (!selectedCustomer) continue;
-            try {
-                if (result.isConfirmed) {
-                    const data = await dispatch(fetchDeleteEmployee(selectedCustomer.id));
+        try {
+            if (result.isConfirmed) {
+                const data = await dispatch(fetchDeleteEmployee(selectedEmployeeId));
 
-                    if (data.payload.message !== "Success") {
-                        await Swal.fire({
-                            title: t("swal.error"),
-                            text: data.payload.message,
-                            icon: "error",
-                            confirmButtonText: t("swal.ok"),
-                        });
-                        setSelectedRowIds([]);
-                        setIsDeleting(false);
-                        return;
-                    }
+                if (data.payload.message !== "Success") {
+                    await Swal.fire({
+                        title: t("swal.error"),
+                        text: data.payload.message,
+                        icon: "error",
+                        confirmButtonText: t("swal.ok"),
+                    });
+                    return;
                 }
-            } catch (error) {
-                localStorage.removeItem("token");
             }
+        } catch (error) {
+            localStorage.removeItem("token");
         }
+
         if (result.isConfirmed) {
             await Swal.fire({
                 title: t("stockService.deleted"),
                 text: t("stockService.successfullydeleted"),
                 icon: "success",
             });
+            fetchDatas();
         }
-        setSelectedRowIds([]);
-        setIsDeleting(false);
-    }*/
+
+    }
 
     useEffect(() => {
         fetchDatas();
-    }, [dispatch, isSaving ,isUpdating]);
+    }, [dispatch, isSaving, isUpdating, isDeleting]);
 
     const fetchDatas = () => {
         setLoading(true);
@@ -250,38 +238,71 @@ export default function SelectionDemo() {
     }
 
     const nodeTemplate = (node: CustomTreeNode) => (
-        <div className="user-card" style={{ position: 'relative' }}>
+        <div className="user-card"  style={{position: 'relative'}}>
             {/* Kullanıcı bilgileri */}
-            <img alt={node.data?.name} src={`https://robohash.org/${node.data?.name}.png?size=50x50`} className="user-avatar" />
+            <img alt={node.data?.name} src={`https://robohash.org/${node.data?.name}.png?size=50x50`}
+                 className="user-avatar"/>
             <div className="user-info">
-                <h4>{node.data?.name}</h4>
-                <h5>{node.data?.email}</h5>
-                <p>Department: {node.data?.title}</p>
+                <div style={{marginTop: '10px', marginBottom: '10px', fontWeight: 'bold'}}>{node.data?.name}</div>
+                <div style={{marginBottom: '5px', fontWeight: 'normal', fontStyle: 'italic'}}>{node.data?.title}</div>
+                <div style={{marginBottom: '5px', fontWeight: 'normal', fontStyle: 'italic'}}>{node.data?.department}</div>
+                <div style={{marginBottom: '5px', fontWeight: 'normal', fontStyle: 'italic'}}>{node.data?.email}</div>
             </div>
 
             {/* Seçili olan düğüme sağ üstte + butonu ekliyoruz */}
             {selection && selection.data?.name === node.data?.name && (
-                <IconButton
-                    color="primary"
-                    size="small"
-                    style={{ position: 'absolute', top: '-10px', right: '-10px' , backgroundColor: 'white',}}
-                    onClick={() => handleOpenAddSubordinateModal()}
-                >
-                    <AddIcon /> {/* + işaretini göstermek için Material UI Add ikonu */}
-                </IconButton>
+                <>
+                    <IconButton
+                        color="primary"
+                        size="small"
+                        style={{position: 'absolute', top: '-10px', right: '-10px', backgroundColor: 'white'}}
+                        onClick={() => handleOpenAddSubordinateModal()}
+                    >
+                        <AddIcon/> {/* + işaretini göstermek için Material UI Add ikonu */}
+                    </IconButton>
+
+                    {/* Sol üst köşeye silme butonu ekliyoruz */}
+                    <IconButton
+                        color="primary"
+                        size="small"
+                        style={{position: 'absolute', top: '-10px', left: '-10px', backgroundColor: 'white'}}
+                        onClick={() => handleDelete()}
+                    >
+                        <Delete/> {/* Çöp kutusu simgesini göstermek için Material UI Delete ikonu */}
+                    </IconButton>
+                </>
             )}
         </div>
     );
+
     const handleSelectionChange = (e: OrganizationChartSelectionChangeEvent) => {
-        setSelection(e.data as CustomTreeNode || null); // Sadece bir düğüm seçilebilir
-        setSelectedEmployeeId(selection?.data?.id || 0)
+        const selectedNode = e.data as CustomTreeNode || null;
+        setSelection(selectedNode); // Seçimi güncelliyoruz
+        setSelectedEmployeeId(selectedNode?.data?.id || selectedEmployeeId); // Güncel seçimden id alıyoruz
     };
 
     return (
         <div className="card overflow-x-auto">
-            {/* Yükleniyor durumunu kontrol ediyoruz */}
-            {loading ? (
-                <p>Loading...</p>
+            {/* Yükleniyor durumunu ve data2de data var mı yok mu kontrol ediyoruz. Yoksa toplevelmanager oluşturmak için buton koyuldu. */}
+            {loading || data2.length === 0 ? (
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <Grid item>
+                        <Button
+                            onClick={() => handleOpenAddSubordinateModal()}
+                            sx={{marginTop: '15px', textAlign: 'center'}}
+                            color="success"
+                            variant="contained"
+                        >
+                            {t('stockService.addtoplevelmanager')}
+                        </Button>
+                    </Grid>
+                </Grid>
             ) : (
                 // Veri yüklendikten sonra OrganizationChart bileşenini render ediyoruz
                 <OrganizationChart
@@ -302,7 +323,7 @@ export default function SelectionDemo() {
                         <Select
                             value={selectedDepartmentId}
                             onChange={event => setSelectedDepartmentId((Number)(event.target.value))}
-                            label="Product Categories"
+                            label="Departments"
                         >
                             {Object.values(departments).map(department => (
                                 <MenuItem key={department.id} value={department.id}>
@@ -327,6 +348,15 @@ export default function SelectionDemo() {
                         name="surname"
                         value={surname}
                         onChange={e => setSurname(e.target.value)}
+                        required
+                        fullWidth
+                    />
+                    <TextField
+                        sx={{marginTop: '15px'}}
+                        label={t('stockService.title')}
+                        name="title"
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
                         required
                         fullWidth
                     />
@@ -364,9 +394,15 @@ export default function SelectionDemo() {
                         setAddSubordinateModal(false), setIsUpdating(false)
                     }} color="error" variant="contained">{t('stockService.cancel')}</Button>
 
-                        <Button onClick={() => handleSaveEmployee()} color="success" variant="contained"
-                                disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === ''  || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
 
+                    {data2.length === 0 ?
+                        <Button onClick={() => handleSaveTopLevelManager()} color="success" variant="contained"
+                                disabled={name === '' || surname === '' || title === '' || email === '' || identityNo === '' || phoneNo === '' || selectedDepartmentId === 0}>{t('stockService.savemanager')}</Button>
+                        :
+
+                        <Button onClick={() => handleSaveEmployee()} color="success" variant="contained"
+                                disabled={name === '' || surname === '' || email === '' || title === '' || identityNo === '' || phoneNo === '' || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
+                    }
 
                 </DialogActions>
             </Dialog>

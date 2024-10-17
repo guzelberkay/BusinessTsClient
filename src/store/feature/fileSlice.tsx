@@ -9,6 +9,7 @@ interface IFile {
 }
   
 interface IFileState {
+    profileImage: string;
     uuid: string;
     files: IFile[];
     isLoading: boolean;
@@ -16,6 +17,7 @@ interface IFileState {
 }
   
 const initialFileState: IFileState = {
+    profileImage: 'https://i.pinimg.com/736x/09/21/fc/0921fc87aa989330b8d403014bf4f340.jpg',
     uuid: '',
     files: [],
     isLoading: false,
@@ -89,7 +91,7 @@ export const uploadFile = createAsyncThunk(
 
 export const deleteFile = createAsyncThunk(
     'files/deleteFile',
-    async ({ uuid, bucketName }: { uuid: string; bucketName: string }, { rejectWithValue }) => {
+    async ({  bucketName, uuid }: {  bucketName: string ;uuid: string}, { rejectWithValue }) => {
         try {
        
             const response = await axios.delete(`${RestApis.file_service}/delete`, {
@@ -155,6 +157,50 @@ export const fetchFile = createAsyncThunk(
     }
 );
 
+export const fetchUploadProfileImage = createAsyncThunk(
+    'files/uploadProfileImage',
+    async (file: File, { rejectWithValue }) => {
+        const formData = new FormData();
+        const mimeType = file.type; 
+        const extension = getExtensionByMimeType(mimeType);
+        const enum2 = getEnumByMimeType(mimeType);
+        formData.append('file', file);
+        formData.append('contentType', enum2);
+        formData.append('token', localStorage.getItem('token') || '');
+
+        try {
+            const response = await axios.post(`${RestApis.file_service}/uploadProfileImage`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue('Profil resmi yüklenirken bir hata oluştu.');
+        }
+    }
+);
+
+export const fetchProfileImage = createAsyncThunk(
+    'files/fetchGetProfileImage',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`${RestApis.file_service}/getProfileImage`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                responseType: 'blob', 
+            });
+            return response.data; 
+        } catch (error) {
+            return rejectWithValue('Profil resmi alınırken bir hata oluştu.');
+        }
+    }
+);
+
+
+
 
 
 
@@ -214,7 +260,27 @@ const fileSlice = createSlice({
             .addCase(fetchFile.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload as string; 
-            });
+            })
+            .addCase(fetchUploadProfileImage.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchUploadProfileImage.fulfilled, (state, action: PayloadAction<IResponse>) => {
+                state.isLoading = false;
+                const blob = action.payload.data;
+                if (blob) {
+                    const url = URL.createObjectURL(blob);
+                    state.profileImage = url;
+                }
+                
+            })
+            .addCase(fetchProfileImage.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchProfileImage.fulfilled, (state, action) => {
+                state.isLoading = false;
+               
+                
+            })
     },
 });
 

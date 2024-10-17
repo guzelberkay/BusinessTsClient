@@ -66,7 +66,8 @@
     "oms-manager": "Manager",
     "oms-department": "Department",
     "organizationManagementModule": "Organization Management Module",
-    "oms-treeview": "Ogranization Chart"
+    "oms-treeview": "Organization Chart",
+    "profile-management": "profile-management"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",
@@ -213,7 +214,17 @@
     "pleaseselectmanager": "Please Select Manager",
     "addemployee": "Add Employee",
     "addmanager": "Add Manager",
-    "adddepartment": "Add Department"
+    "adddepartment": "Add Department",
+    "addtoplevelmanager": "Add Top Level Manager",
+    "savemanager": "Save Manager",
+    "yes": "Yes",
+    "accountactivatedsuccesfully": "Account Succesfully Activated!",
+    "youwilldeactivateaccount": "You want to deactivate account. Are you sure?",
+    "accountdeactivatedsuccesfully": "Account Succesfully Deactivated!",
+    "youwillactivateaccount": "You want to activate account. Are you sure?",
+    "isaccountactive" : "Activation State",
+    "title": "Title",
+    "nomanager": "No Manager"
   },
   "dashboard": {
     "numberofemployees": "Number of Employees ",
@@ -250,7 +261,8 @@
     "viewAllNotifications": "View All Notifications",
     "close": "Close",
     "addwarehouse": "Add Warehouse",
-    "delete": "Delete"
+    "delete": "Delete",
+    "deleteAll": "Delete All"
   },
   "subscription": {
     "title": "Subscription History",
@@ -299,7 +311,7 @@
     "budget": "Budget $",
     "value": "Value",
     "stage": "Stage",
-    "probability": "Probability",
+    "probability": "Probability (%)",
     "search-by-type": "Search by Type",
     "type": "Type",
     "date": "Date",
@@ -339,7 +351,17 @@
     "added_ticket": "Ticket Saved Successfully!",
     "updated_ticket": "Ticket Updated Successfully!",
     "deleted-sales-activity": "Sales Activity Deleted Successfully!",
-    "added_sales_activity": "Sales Activity Saved Successfully!"
+    "added_sales_activity": "Sales Activity Saved Successfully!",
+    "details": "Details",
+    "opportunity_details": "Opportunity Details",
+    "no-name": "No Information",
+    "no-founded-customer": "No founded customer",
+    "import": "Import",
+    "uploadFile": "Upload File",
+    "close": "Close",
+    "uploaded": "File Uploaded Successfully!"
+
+
   },
   "hrmService": {
     "firstName": "Name",
@@ -366,6 +388,16 @@
     "searchbyname": "Search by Name",
     "add": "ADD",
     "save": "SAVE",
+    "date": "Date",
+    "score": "Score",
+    "feedback": "Feedback",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "type": "Type",
+    "amount": "Amount",
+    "checkInTime": "Check In  Time",
+    "checkOutTime": "Check Out Time",
+
     "add_employee": "Add employee",
     "salaryDate": "Salary Date",
     "grossSalary": "Gross Salary",
@@ -375,7 +407,7 @@
   },
   "financeService": {
     "searchbydepartment": "Search by Department",
-    "budgetsuccesfullyadded": "Budget Succesfully Added",
+    "budgetsuccesfullyadded": "Budget Added",
     "add": "ADD",
     "department": "Department",
     "description": "Description",
@@ -387,15 +419,15 @@
     "yesdeleteit": "Yes, delete it!",
     "cancel": "CANCEL",
     "deleted": "Deleted!",
-    "budgetdeleted": "Budget Deleted Succesfully",
-    "budgetsuccesfullyupdated": "Budget Succesfully Updated",
+    "budgetdeleted": "Budget Deleted",
+    "budgetsuccesfullyupdated": "Budget Updated",
     "updated": "Updated!",
     "update": "UPDATE",
     "searchbysource": "Search by Source",
-    "incomesuccesfullyupdated": "Income Succesfully Updated",
+    "incomesuccesfullyupdated": "Income Updated",
     "incomedate": "Date",
     "source": "Source",
-    "incomesuccesfullyadded": "Income Succesfully Added",
+    "incomesuccesfullyadded": "Income Added",
     "startdate": "Start Date",
     "enddate": "End Date",
     "vat": "VAT",
@@ -425,7 +457,9 @@
     "incomeVsExpense": "Income vs Expense",
     "expenseBreakdown": "Expense Breakdown",
     "totalIncome": "Total Income",
-    "totalExpenses": "Total Expenses"
+    "totalExpenses": "Total Expenses",
+    "details": "Details",
+    "expensesuccesfullyadded": "Expense Added"
   },
   "dataGrid": {
     "toolbarColumns": "Columns",

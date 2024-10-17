@@ -67,8 +67,7 @@
     "oms-manager": "Yonetici",
     "oms-department": "Departman",
     "organizationManagementModule": "Organizasyon Yonetim Modulu",
-    "oms-treeview": "Organizasyon Şeması",
-    "profile-management": "profile-management"
+    "oms-treeview": "Organizasyon Şeması"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
@@ -219,15 +218,7 @@
     "addmanager": "Yönetici Ekle",
     "adddepartment": "Departman Ekle",
     "addtoplevelmanager": "Üst Seviye Yönetici Ekle",
-    "savemanager": "Yöneticiyi Kaydet",
-    "yes": "Evet",
-    "accountactivatedsuccesfully": "Hesap Basariyla Etkinleştirildi!",
-    "youwilldeactivateaccount": "Hesabi deaktif etmek istediginizden emin misiniz?",
-    "accountdeactivatedsuccesfully": "Hesap Basariyla Deaktif Edildi!",
-    "youwillactivateaccount": "Hesabı aktif etmek istediginizden emin misiniz?",
-    "isaccountactive" : "Aktivasyon Durumu",
-    "title": "Ünvan",
-    "nomanager": "Yönetici Yok"
+    "savemanager": "Yöneticiyi Kaydet"
   },
   "dashboard": {
     "numberofemployees": "Çalışan Sayısı",
@@ -263,8 +254,7 @@
     "noNotifications": "Bildirim bulunamadı",
     "viewAllNotifications": "Tüm Bildirimleri Gör",
     "close": "Kapat",
-    "delete": "Sil",
-    "deleteAll": "Tümünü Sil"
+    "delete": "Sil"
   },
   "subscription": {
     "title": "Abonelik Gecmisi",
@@ -357,7 +347,7 @@
     "details": "Detay",
     "opportunity_details": "Fırsat Detayları",
     "no-name": "Bilgi yok",
-    "no-founded-customer": "Henüz bu fırsatta müşteri yok!",
+    "no-founded-customer": "Henüz bu fırsatta müşteri yok!"
     "import": "Yükle",
     "uploadFile": "Yüklenecek Dosya",
     "close": "Kapat",

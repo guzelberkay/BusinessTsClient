@@ -1,11 +1,51 @@
-import { Box, Button, Container, Grid, TextField } from '@mui/material';
+import { Box, Button, Container, Grid, IconButton, styled, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, useAppSelector } from '../store';
 import { fetchUpdateUser, fetchUserInformation } from '../store/feature/userSlice';
 import { fetchChangeMyPassword, fetchLoginProfileManagement } from '../store/feature/authSlice';
-import { fetchFile, uploadFile } from '../store/feature/fileSlice';
+import { deleteFile, fetchFile, fetchProfileImage, fetchUploadProfileImage, uploadFile } from '../store/feature/fileSlice';
 import FileUploadProps from '../components/molecules/FileUploadProps';
+const ProfileImageWrapper = styled('div')({
+  position: 'relative',
+  width: '150px',
+  height: '150px',
+  borderRadius: '50%',
+  overflow: 'hidden',
+  border: '2px solid #ddd',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  '&:hover .overlay': {
+    opacity: 1,
+  },
+});
+
+const ProfileImage = styled('img')({
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+});
+
+const Overlay = styled('div')({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  color: '#fff',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  opacity: 0,
+  transition: 'opacity 0.3s',
+});
+
+const HiddenInput = styled('input')({
+  display: 'none',
+});
 
 function ProfileManagement() {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,12 +60,25 @@ function ProfileManagement() {
   const [password, setPassword] = useState<string>('');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const uuid = useSelector((state: RootState) => state.fileSlice.uuid);
+  
   
   
 
   useEffect(() => {
-      dispatch(fetchUserInformation());
+      dispatch(fetchUserInformation()).then((data) => {
+          if(data.payload.code==200 && data.payload.data){
+            dispatch(fetchProfileImage()).then((data) => {
+              const blob = data.payload;
+              if (blob) {
+                const url = URL.createObjectURL(blob);
+                console.log('Fotoğraf URL:', url);
+                setImageUrl(url);
+            }
+            });
+          }
+      });
   }, [dispatch]);
 
   useEffect(() => {
@@ -44,29 +97,26 @@ function ProfileManagement() {
           }
       });
   };
-  useEffect(() => {
-    if (uuid) { 
-        dispatch(fetchFile(uuid))
-            .unwrap()
-            .then((blob) => {
-                const url = URL.createObjectURL(blob);
-                setImageUrl(url);
-            })
-            .catch((error) => {
-                console.error("Error fetching file:", error);
-            });
-    }
-}, [uuid, dispatch]);
+  
   const handleFileUpload = (files: File[]) => {
     if (files.length > 0) {
-        dispatch(uploadFile(files[0]))
+        dispatch(fetchUploadProfileImage(files[0]))
              .catch((error) => {
                 console.error("Error uploading file:", error);
+            }).then(() => {
+              dispatch(fetchProfileImage()).then((data) => {
+                const blob = data.payload;
+                if (blob) {
+                  const url = URL.createObjectURL(blob);
+                  console.log('Fotoğraf URL:', url);
+                  setImageUrl(url);
+              }
+              });
             });
     }
 };
 
-useEffect(() => {
+/* useEffect(() => {
     if (uuid) { 
         dispatch(fetchFile(uuid))
             .unwrap()
@@ -79,7 +129,7 @@ useEffect(() => {
             });
     }
 }, [uuid, dispatch]);
-
+ */
   const handleNewPasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if(newPassword!=newConfirmPassword){
@@ -134,12 +184,49 @@ useEffect(() => {
         </Container>
     );
 }
+const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  if (event.target.files && event.target.files.length > 0) {
+    const file = event.target.files[0];
+    if(file.type === 'application/pdf'){
+      alert('PDF dosyaları desteklenmiyor')
+      return;
+    }
+    handleFileUpload([file]);
+    
+  }
+};
 
 
   return (
         <>
         
         <Container maxWidth="sm">
+          {/* Profil resim işlemi */}
+          <Box mt={4} >
+            <Grid container spacing={3} justifyContent="center">
+              <Grid item xs={12} display="flex" justifyContent="center">
+                <ProfileImageWrapper  onClick={() => document.getElementById('profile-image-upload')?.click()}>
+                  {imageUrl ? (
+                    <ProfileImage src={imageUrl} alt="Profil Resmi" />
+                  ) : (
+                    <ProfileImage src="https://i.pinimg.com/736x/09/21/fc/0921fc87aa989330b8d403014bf4f340.jpg" alt="Profil Resmi" />
+                  )}
+                  <Overlay className="overlay">
+                    <span>Değiştir</span>
+                  </Overlay>
+                </ProfileImageWrapper>
+                
+                {/* Gizli dosya yükleme input'u */}
+                <HiddenInput
+                  accept="image/*"
+                  id="profile-image-upload"
+                  type="file"
+                  onChange={handleFileChange}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+
             <Box mt={4}>
               <form onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
@@ -183,23 +270,11 @@ useEffect(() => {
                 
               </form>
 
-              {imageUrl && (
-        <div>
-          
-          <img src={imageUrl} alt="Uploaded file" style={{ maxWidth: '100px', maxHeight: '100px' }} />
-        </div>
-      )}
+              
             </Box>
 
 
-                    {/* Dosya Yükleme Bileşeni */}
-            <Box mt={4}>
-                <FileUploadProps 
-                    onFileUpload={handleFileUpload}
-                    buttonText="Dosya Yükle"
                     
-                />
-            </Box>
 
            
           

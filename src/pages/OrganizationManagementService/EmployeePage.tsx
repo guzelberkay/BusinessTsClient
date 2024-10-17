@@ -10,6 +10,7 @@ import {
     Grid,
     InputLabel,
     Select,
+    Switch,
     TextField
 } from "@mui/material";
 
@@ -19,16 +20,15 @@ import {AppDispatch} from "../../store";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import {
+    fetchChangeIsAccountGivenStateOfEmployee,
     fetchDeleteEmployee,
     fetchFindAllDepartment,
     fetchFindAllEmployee,
-    fetchFindAllManager,
     fetchFindByIdEmployee,
     fetchSaveEmployee,
     fetchUpdateEmployee
 } from "../../store/feature/organizationManagementSlice.tsx"
 import {IEmployee} from "../../model/OrganizationManagementService/IEmployee.tsx";
-import {IManager} from "../../model/OrganizationManagementService/IManager.tsx";
 import {IDepartment} from "../../model/OrganizationManagementService/IDepartment.tsx";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -40,7 +40,6 @@ const EmployeePage = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [employees, setEmployees] = useState<IEmployee[]>([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -48,13 +47,14 @@ const EmployeePage = () => {
 
     //MODAL
     const [openAddCustomerModal, setOpenAddEmployee] = useState(false);
-    const [managers, setManagers] = useState<IManager[]>([]);
+    const [employees, setEmployees] = useState<IEmployee[]>([]);
     const [selectedManagerId, setSelectedManagerId] = useState(0);
     const [departments, setDepartments] = useState<IDepartment[]>([]);
     const [selectedDepartmentId, setSelectedDepartmentId] = useState(0);
 
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
+    const [title, setTitle] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNo, setPhoneNo] = useState('');
     const [identityNo, setIdentityNo] = useState('');
@@ -92,6 +92,10 @@ const EmployeePage = () => {
             setDepartments(data.payload.data);
         })
 
+        handleFetchDataset()
+    };
+
+    const handleFetchDataset = () => {
         dispatch(
             fetchFindAllEmployee({
                 page: 0,
@@ -99,9 +103,9 @@ const EmployeePage = () => {
                 searchText: '',
             })
         ).then(data => {
-            setManagers(data.payload.data);
+            setEmployees(data.payload.data);
         })
-    };
+    }
 
     const handleOpenUpdateModal = async () => {
         setOpenAddEmployee(true);
@@ -124,7 +128,7 @@ const EmployeePage = () => {
                 searchText: '',
             })
         ).then(data => {
-            setManagers(data.payload.data);
+            setEmployees(data.payload.data);
         })
 
         dispatch(fetchFindByIdEmployee(selectedRowIds[0])).then((data) => {
@@ -135,6 +139,7 @@ const EmployeePage = () => {
             setPhoneNo(data.payload.data.phoneNo)
             setSelectedDepartmentId(data.payload.data.departmentId)
             setSelectedManagerId(data.payload.data.managerId)
+            setTitle(data.payload.data.title)
         })
     }
     const handleUpdate = async () => {
@@ -145,6 +150,8 @@ const EmployeePage = () => {
             surname: surname,
             identityNo: identityNo,
             phoneNo: phoneNo,
+            title: title,
+            email: email,
             managerId: selectedManagerId,
             departmentId: selectedDepartmentId
         })).then((data) => {
@@ -154,6 +161,7 @@ const EmployeePage = () => {
                 setEmail('')
                 setIdentityNo('')
                 setPhoneNo('')
+                setTitle('')
                 setSelectedDepartmentId(0)
                 setSelectedManagerId(0)
                 setOpenAddEmployee(false);
@@ -170,6 +178,7 @@ const EmployeePage = () => {
                 setEmail('')
                 setIdentityNo('')
                 setPhoneNo('')
+                setTitle('')
                 setSelectedDepartmentId(0)
                 setSelectedManagerId(0)
                 setOpenAddEmployee(false);
@@ -193,6 +202,7 @@ const EmployeePage = () => {
             email: email,
             identityNo: identityNo,
             phoneNo: phoneNo,
+            title: title,
             managerId: selectedManagerId,
             departmentId: selectedDepartmentId
         }))
@@ -203,6 +213,9 @@ const EmployeePage = () => {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
+                    setTitle('')
+                    setSelectedDepartmentId(0)
+                    setSelectedManagerId(0)
                     setOpenAddEmployee(false);
                     Swal.fire({
                         title: t("swal.success"),
@@ -217,6 +230,9 @@ const EmployeePage = () => {
                     setEmail('')
                     setIdentityNo('')
                     setPhoneNo('')
+                    setTitle('')
+                    setSelectedDepartmentId(0)
+                    setSelectedManagerId(0)
                     setOpenAddEmployee(false);
                     Swal.fire({
                         title: t("swal.error"),
@@ -280,15 +296,103 @@ const EmployeePage = () => {
     };
 
     const columns: GridColDef[] = [
-        {field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center"},
-        {field: "surname", headerName: t("stockService.surname"), flex: 1.5, headerAlign: "center"},
+        {field: "name", headerName: t("authentication.name"), flex: 1, headerAlign: "center"},
+        {field: "surname", headerName: t("stockService.surname"), flex: 1, headerAlign: "center"},
+        {field: "title", headerName: t("stockService.title"), flex: 1, headerAlign: "center"},
         {field: "departmentName", headerName: t("stockService.departmentname"), flex: 1.5, headerAlign: "center"},
         {field: "email", headerName: "Email", flex: 1.5, headerAlign: "center"},
-        {field: "identityNo", headerName: t("stockService.identityno"), flex: 1.5, headerAlign: "center"},
-        {field: "phoneNo", headerName: t("stockService.phoneno"), flex: 1.5, headerAlign: "center"},
-        {field: "managerName", headerName: t("stockService.managername"), flex: 1.5, headerAlign: "center"},
+        {field: "identityNo", headerName: t("stockService.identityno"), flex: 1, headerAlign: "center"},
+        {field: "phoneNo", headerName: t("stockService.phoneno"), flex: 1, headerAlign: "center"},
+        {field: "managerName", headerName: t("stockService.managername"), flex: 1.2, headerAlign: "center",
+            renderCell: (params) => (
+                params.value === 'No Manager'
+                    ? t('stockService.nomanager')
+                    : params.value
+            )},
+        {
+            field: "isAccountGivenToEmployee",
+            headerName: t("stockService.isaccountactive"),
+            flex: 1,
+            headerAlign: "center",
+            renderCell: (params) => (
+                <Switch
+                    checked={params.value}
+                    onClick={(event) => event.stopPropagation()}  // Prevents row selection
+                    onChange={() => handleSwitchChange(params.value, params.row.id)}
+                    color="primary"
+                />
+            )
+        },
     ];
 
+    const handleSwitchChange = async ( value: boolean, id: number) => {
+
+        if (!value) {
+            const result = await Swal.fire({
+                title: t("swal.areyousure"),
+                text: t("stockService.youwillactivateaccount"),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: t("stockService.yes"),
+                cancelButtonText: t("stockService.cancel"),
+            });
+
+            if (result.isConfirmed) {
+                dispatch(fetchChangeIsAccountGivenStateOfEmployee(id)).then((data) => {
+
+                    if (data.payload.message === "Success") {
+                        Swal.fire({
+                            title: t("swal.success"),
+                            text: t("stockService.accountactivatedsuccesfully"),
+                            icon: "success",
+                        });
+                        handleFetchDataset()
+                    } else {
+                        Swal.fire({
+                            title: t("swal.error"),
+                            text: data.payload.message,
+                            icon: "error",
+                            confirmButtonText: t("swal.ok"),
+                        });
+                    }
+
+                })
+            }
+
+        } else {
+            const result = await Swal.fire({
+                title: t("swal.areyousure"),
+                text: t("stockService.youwilldeactivateaccount"),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: t("stockService.yes"),
+                cancelButtonText: t("stockService.cancel"),
+            });
+
+            if (result.isConfirmed) {
+                dispatch(fetchChangeIsAccountGivenStateOfEmployee(id)).then((data) => {
+
+                    if (data.payload.message === "Success") {
+                        Swal.fire({
+                            title: t("swal.success"),
+                            text: t("stockService.accountdeactivatedsuccesfully"),
+                            icon: "success",
+                        });
+                        handleFetchDataset()
+                    } else {
+                        Swal.fire({
+                            title: t("swal.error"),
+                            text: data.payload.message,
+                            icon: "error",
+                            confirmButtonText: t("swal.ok"),
+                        });
+                    }
+
+                })
+            }
+        }
+
+    }
 
     return (
         <div style={{height: "auto"}}>
@@ -320,6 +424,7 @@ const EmployeePage = () => {
                 // }
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
+                disableRowSelectionOnClick={true}
                 onRowSelectionModelChange={handleRowSelection}
                 autoHeight={true}
                 sx={{
@@ -342,7 +447,7 @@ const EmployeePage = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
-                localeText={{
+localeText={{
                     toolbarColumns: t("dataGrid.toolbarColumns"),
                     toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
                     toolbarFilters: t("dataGrid.toolbarFilters"),
@@ -447,7 +552,7 @@ const EmployeePage = () => {
                             <Select
                                 value={selectedDepartmentId}
                                 onChange={event => setSelectedDepartmentId((Number)(event.target.value))}
-                                label="Product Categories"
+                                label="Departments"
                             >
                                 {Object.values(departments).map(department => (
                                     <MenuItem key={department.id} value={department.id}>
@@ -462,9 +567,13 @@ const EmployeePage = () => {
                             <Select
                                 value={selectedManagerId}
                                 onChange={event => setSelectedManagerId((Number)(event.target.value))}
-                                label="Product Categories"
+                                label="Managers"
+                                disabled={
+                                    selectedManagerId === -1
+                                }
+
                             >
-                                {Object.values(managers).map(manager => (
+                                {Object.values(employees).map(manager => (
                                     <MenuItem key={manager.id} value={manager.id}>
                                         {manager.name + " " + manager.surname}
                                     </MenuItem>
@@ -492,6 +601,15 @@ const EmployeePage = () => {
                         />
                         <TextField
                             sx={{marginTop: '15px'}}
+                            label={t('stockService.title')}
+                            name="title"
+                            value={title}
+                            onChange={e => setTitle(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                        <TextField
+                            sx={{marginTop: '15px'}}
                             label={t('stockService.identityno')}
                             name="identityNo"
                             value={identityNo}
@@ -513,7 +631,6 @@ const EmployeePage = () => {
                             label="Email"
                             name="email"
                             value={email}
-                            disabled={isUpdating}
                             onChange={e => setEmail(e.target.value)}
                             required
                             fullWidth
@@ -524,10 +641,10 @@ const EmployeePage = () => {
                             setOpenAddEmployee(false), setIsUpdating(false)
                         }} color="error" variant="contained">{t('stockService.cancel')}</Button>
                         {isUpdating ? <Button onClick={() => handleUpdate()} color="success" variant="contained"
-                                              disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === '' || selectedManagerId === 0 || selectedDepartmentId === 0}>{t('stockService.update')}</Button>
+                                              disabled={name === '' || surname === '' || email === '' || title === '' || identityNo === '' || phoneNo === '' || selectedManagerId === 0 || selectedDepartmentId === 0}>{t('stockService.update')}</Button>
                             :
                             <Button onClick={() => handleSaveEmployee()} color="success" variant="contained"
-                                    disabled={name === '' || surname === '' || email === '' || identityNo === '' || phoneNo === '' || selectedManagerId === 0 || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
+                                    disabled={name === '' || surname === '' || email === '' || title === '' || identityNo === '' || phoneNo === '' || selectedManagerId === 0 || selectedDepartmentId === 0}>{t('stockService.save')}</Button>
                         }
 
                     </DialogActions>

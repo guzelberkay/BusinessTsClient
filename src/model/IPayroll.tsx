@@ -5,7 +5,7 @@ export interface IPayroll{
     lastName: string;
     salaryDate: Date;
     grossSalary: number;
-    deduction: number;
+    deductions: number;
     netSalary: number;
     status: string;
 }
