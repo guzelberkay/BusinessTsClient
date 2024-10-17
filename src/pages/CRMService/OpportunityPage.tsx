@@ -63,7 +63,7 @@ const OpportunityPage = () => {
     const [status, setStatus] = useState('');
 
     const [openDetailsPopup, setOpenDetailsPopup] = useState(false);
-    const [selectedOpportunity, setSelectedOpportunity] = useState<ICrmOpportunity | ICrmOpportunityDetail>(null);
+    const [selectedOpportunity, setSelectedOpportunity] = useState<ICrmOpportunity | ICrmOpportunityDetail>();
     const [openCustomerListPopup, setOpenCustomerListPopup] = useState(false);
 
 
@@ -360,6 +360,13 @@ const OpportunityPage = () => {
 
 
     const columns: GridColDef[] = [
+
+        { field: "name", headerName: t("crmService.name"), flex: 1.5, headerAlign: "center" },
+        { field: "description", headerName: t("crmService.description"), flex: 1.5, headerAlign: "center" },
+        { field: "value", headerName: t("crmService.value"), flex: 1.5, headerAlign: "center" },
+        { field: "stage", headerName: t("crmService.stage"), flex: 1.5, headerAlign: "center" },
+        { field: "probability", headerName: t("crmService.probability"), flex: 1.5, headerAlign: "center" },
+        { field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1 },
         {
             field: "details", headerName: t("crmService.details"), flex: 1.5, headerAlign: "center", renderCell: (params) => (
                 <IconButton onClick={handleDetailsClick}>
@@ -367,12 +374,6 @@ const OpportunityPage = () => {
                 </IconButton>
             ),
         },
-        { field: "name", headerName: t("crmService.name"), flex: 1.5, headerAlign: "center" },
-        { field: "description", headerName: t("crmService.description"), flex: 1.5, headerAlign: "center" },
-        { field: "value", headerName: t("crmService.value"), flex: 1.5, headerAlign: "center" },
-        { field: "stage", headerName: t("crmService.stage"), flex: 1.5, headerAlign: "center" },
-        { field: "probability", headerName: t("crmService.probability"), flex: 1.5, headerAlign: "center" },
-        { field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1 },
     ]
 
     return (
@@ -531,7 +532,7 @@ const OpportunityPage = () => {
 
                                 <h2>{t("crmService.customer")}:</h2>
                                 {selectedOpportunity.customers && selectedOpportunity.customers.length > 0 ? (
-                                    selectedOpportunity.customers.map((customer, index) => (
+                                    selectedOpportunity.customers.map((customer:any, index) => (
                                         <div key={index}>
                                             <p>
                                             <strong>{t("crmService.firstName")} {t("crmService.lastName")} :</strong> {customer.firstName || t("crmService.no-name")} {customer.lastName || t("crmService.no-name")}
@@ -598,7 +599,11 @@ const OpportunityPage = () => {
                             <Slider
                                 name="probability"
                                 value={probability}
-                                onChange={e => setProbability(e.target?.value)}
+                                onChange={(e, newValue) => {
+                                    if (typeof newValue === 'number') {
+                                        setProbability(newValue);
+                                    }
+                                }}
                                 aria-labelledby="continuous-slider"
                                 valueLabelDisplay="auto"
                                 min={0}

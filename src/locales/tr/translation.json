@@ -41,8 +41,9 @@
     "crm-customers": "Musteriler",
     "crm-marketing-campaign": "Pazarlama Kampanyaları",
     "crm-opportunity": "Fırsatlar",
-    "crm-sales-activity": "Satış Aktiviteleri",
+    "crm-activities": "Aktiviteler",
     "crm-ticket": "Biletler",
+    "crm-send-email": "E-posta Gonder",
     "success": "Basarili",
     "supplier": "Tedarikci",
     "subscription": "Abonelik",
@@ -132,7 +133,8 @@
     "passwordSuccesfullyChanged": "Şifreniz başarıyla değiştirildi.",
     "failedChangePassword": "Şifre değiştirilemedi.",
     "infoSentEmailForPasswordReset": "Şifre sıfırlama e-postası gönderildi.",
-    "unsubscribe": "İlgili hizmetleri abonelik süresinin sonuna kadar kullanabilirsiniz."
+    "unsubscribe": "İlgili hizmetleri abonelik süresinin sonuna kadar kullanabilirsiniz.",
+    "sent": "Gönderildi!"
   },
   "stockService": {
     "changeautoordermode": "Oto. Sipariş Modunu Değiştir",
@@ -363,7 +365,14 @@
     "import": "Yükle",
     "uploadFile": "Yüklenecek Dosya",
     "close": "Kapat",
-    "uploaded": "Başarıyla yüklendi!"
+    "uploaded": "Başarıyla yüklendi!",
+    "added_successfully": "Başarıyla kaydedildi!",
+    "fill_your_details_and_rate_us": "Formu doldurun ve bizi puanlayın!",
+    "please_rate_your_experience": "Deneyiminizi puanlayın",
+    "sendEmail": "E-posta gönder",
+    "send": "Gönder",
+    "code": "Kodu",
+    "upload": "Dosyadan veri yükle"
   },
   "hrmService": {
     "firstName": "Ad",
