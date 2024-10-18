@@ -211,6 +211,12 @@ const fileSlice = createSlice({
         resetError: (state) => {
             state.error = null;
         },
+        setProfileImage: (state, action) => {
+            state.profileImage = action.payload; 
+        },
+        clearProfileImage: (state) => {
+            state.profileImage = 'https://i.pinimg.com/736x/09/21/fc/0921fc87aa989330b8d403014bf4f340.jpg'; 
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -264,12 +270,14 @@ const fileSlice = createSlice({
             .addCase(fetchUploadProfileImage.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(fetchUploadProfileImage.fulfilled, (state, action: PayloadAction<IResponse>) => {
+            .addCase(fetchUploadProfileImage.fulfilled, (state, action) => {
                 state.isLoading = false;
-                const blob = action.payload.data;
+                const blob = action.payload;
                 if (blob) {
                     const url = URL.createObjectURL(blob);
+                    console.log('Fotoğraf URL45:', url);
                     state.profileImage = url;
+                    console.log('state.profileImage: ',state.profileImage);
                 }
                 
             })
@@ -285,5 +293,5 @@ const fileSlice = createSlice({
 });
 
 
-export const { resetError } = fileSlice.actions;
+export const { resetError, setProfileImage,clearProfileImage } = fileSlice.actions;
 export default fileSlice.reducer;

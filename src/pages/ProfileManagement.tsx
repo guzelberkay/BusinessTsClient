@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, useAppSelector } from '../store';
 import { fetchUpdateUser, fetchUserInformation } from '../store/feature/userSlice';
 import { fetchChangeMyPassword, fetchLoginProfileManagement } from '../store/feature/authSlice';
-import { deleteFile, fetchFile, fetchProfileImage, fetchUploadProfileImage, uploadFile } from '../store/feature/fileSlice';
+import { deleteFile, fetchFile, fetchProfileImage, fetchUploadProfileImage, uploadFile, setProfileImage } from '../store/feature/fileSlice';
 import FileUploadProps from '../components/molecules/FileUploadProps';
 const ProfileImageWrapper = styled('div')({
   position: 'relative',
@@ -62,6 +62,7 @@ function ProfileManagement() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const uuid = useSelector((state: RootState) => state.fileSlice.uuid);
+  const profileImage = useSelector((state: RootState) => state.fileSlice.profileImage);
   
   
   
@@ -73,8 +74,9 @@ function ProfileManagement() {
               const blob = data.payload;
               if (blob) {
                 const url = URL.createObjectURL(blob);
-                console.log('Fotoğraf URL:', url);
+                console.log('Fotoğraf URL pm:', url);
                 setImageUrl(url);
+                dispatch(setProfileImage(url));
             }
             });
           }
@@ -102,15 +104,16 @@ function ProfileManagement() {
     if (files.length > 0) {
         dispatch(fetchUploadProfileImage(files[0]))
              .catch((error) => {
-                console.error("Error uploading file:", error);
+                console.error("Error uploading file:", error);                
             }).then(() => {
               dispatch(fetchProfileImage()).then((data) => {
                 const blob = data.payload;
                 if (blob) {
                   const url = URL.createObjectURL(blob);
-                  console.log('Fotoğraf URL:', url);
                   setImageUrl(url);
-              }
+                  dispatch(setProfileImage(url));
+                  console.log('profile ımage :', profileImage);
+              }             
               });
             });
     }
