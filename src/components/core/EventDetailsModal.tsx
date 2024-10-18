@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, Typography, Button, TextField, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close'; // Close ikonu için import
+import CloseIcon from '@mui/icons-material/Close'; 
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { fetchDeleteEvent } from '../../store/feature/eventSlice';
 
-// Event data interface
+
 export interface EventData {
-    id?: string; // Etkinlik ID'si
+    id?: string; 
     title?: string;
-    startTime?: string | Date; // Burada Date türü eklendi
-    endTime?: string | Date;   // Burada Date türü eklendi
+    startTime?: string | Date; 
+    endTime?: string | Date;   
 }
 
-// Props interface for the EventDetailsModal
+
 interface EventDetailsModalProps {
     isOpen: boolean;
     onClose: () => void;
-    eventData: EventData | null; // eventData null olabilir
-    onUpdateEvent: (eventData: EventData) => void; // Etkinliği güncellemek için bir callback
+    eventData: EventData | null; 
+    onUpdateEvent: (eventData: EventData) => void; 
 }
 
-// Style for the modal box
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -45,24 +45,24 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({ isOpen, onClose, 
         if (eventData) {
             setTitle(eventData.title || '');
 
-            // UTC tarihini yerel zamana dönüştürmek
+           
             const startDate = new Date(eventData.startTime as string);
             const endDate = new Date(eventData.endTime as string);
 
-            // Yerel tarih formatına çevirme
+            
             const localStartDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000));
             const localEndDate = new Date(endDate.getTime() - (endDate.getTimezoneOffset() * 60000));
 
-            // Yerel zamana çevirme
-            setStartTime(localStartDate.toISOString().slice(0, 16)); // ISO formatından datetime-local formatına
-            setEndTime(localEndDate.toISOString().slice(0, 16)); // ISO formatından datetime-local formatına
+            
+            setStartTime(localStartDate.toISOString().slice(0, 16)); 
+            setEndTime(localEndDate.toISOString().slice(0, 16)); 
         }
     }, [eventData]);
 
     const handleUpdate = () => {
-        if (eventData?.id) { // eventData mevcutsa
+        if (eventData?.id) { 
             onUpdateEvent({
-                id: eventData.id, // id'yi ekliyoruz
+                id: eventData.id, 
                 title,
                 startTime,
                 endTime,

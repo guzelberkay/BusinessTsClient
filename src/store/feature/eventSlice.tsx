@@ -66,7 +66,7 @@ export const fetchUpdateEvent = createAsyncThunk(
 
 export const fetchDeleteEvent = createAsyncThunk(
     'event/fetchDeleteEvent',
-    async (payload: { token: string; id: string }) => {  // id parametresi eklendi
+    async (payload: { token: string; id: string }) => {  
         const result = await axios.put(`${RestApis.calendar_and_planning_service_event}/delete-event`,
             payload,{
             headers: {
@@ -139,52 +139,52 @@ const eventSlice = createSlice({
         .addCase(fetchUpdateEvent.pending, (state) => {
             state.isLoading = true;
         })
-        // fetchUpdateEvent - Fulfilled
+        
         .addCase(fetchUpdateEvent.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.isLoading = false;
             console.log("Event updated successfully:", action.payload);
-            // Event'i başarıyla güncelledikten sonra eventList'i güncelleyebilirsiniz
+            
         })
-        // fetchUpdateEvent - Rejected
+        
         .addCase(fetchUpdateEvent.rejected, (state, action) => {
             state.isLoading = false;
             console.error("Failed to update event:", action.error.message);
         })
-        // fetchDeleteEvent - Pending
+        
         .addCase(fetchDeleteEvent.pending, (state) => {
             state.isLoading = true;
         })
-        // fetchDeleteEvent - Fulfilled
+        
         .addCase(fetchDeleteEvent.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.isLoading = false;
             console.log("Event deleted successfully:", action.payload);
-            // Silinen event'i state.eventList'ten çıkarabilirsiniz
+            
         })
-        // fetchDeleteEvent - Rejected
+        
         .addCase(fetchDeleteEvent.rejected, (state, action) => {
             state.isLoading = false;
             console.error("Failed to delete event:", action.error.message);
         })
-        // fetchSaveEvent - Pending
+        
         .addCase(fetchSaveEvent.pending, (state) => {
             state.isLoading = true;
         })
-        // fetchSaveEvent - Fulfilled
+        
         .addCase(fetchSaveEvent.fulfilled, (state, action: PayloadAction<IResponse>) => {
             state.isLoading = false;
             console.log("Event saved successfully:", action.payload);
-            // Yeni event'i eventList'e ekleyebilirsiniz
-            state.eventList.push(action.payload.data); // Örneğin
+            
+            state.eventList.push(action.payload.data); 
         })
-        // fetchSaveEvent - Rejected
+        
         .addCase(fetchSaveEvent.rejected, (state, action) => {
             state.isLoading = false;
             console.error("Failed to save event:", action.error.message);
         })
-        // fetchGetEventById - Fulfilled
+        
         .addCase(fetchGetEventById.fulfilled, (state, action: PayloadAction<IResponse>) => {
             console.log("Fetched event by ID:", action.payload);
-            // Bu ID'ye ait event'in bilgilerini alabilirsiniz
+            
         });
 },
 });

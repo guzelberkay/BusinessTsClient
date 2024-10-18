@@ -16,11 +16,11 @@ interface SelectedDateEventModalProps {
   onClose: () => void;
   start: string;
   end: string;
-  onCreateEvent: (title: string, start: string, end: string) => void; // Yeni prop
+  onCreateEvent: (title: string, start: string, end: string) => void; 
 }
 
 const SelectedDateEventModal: React.FC<SelectedDateEventModalProps> = ({ open, onClose, start, end, onCreateEvent }) => {
-  const [title, setTitle] = useState<string>(''); // Başlık durumu
+  const [title, setTitle] = useState<string>(''); 
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -29,7 +29,7 @@ const SelectedDateEventModal: React.FC<SelectedDateEventModalProps> = ({ open, o
         <IconButton
           aria-label="close"
           onClick={onClose}
-          style={{ position: 'absolute', right: 8, top: 8 }} // Kapatma butonunu konumlandır
+          style={{ position: 'absolute', right: 8, top: 8 }} 
         >
           <CloseIcon />
         </IconButton>
@@ -41,8 +41,8 @@ const SelectedDateEventModal: React.FC<SelectedDateEventModalProps> = ({ open, o
           variant="outlined"
           fullWidth
           value={title}
-          onChange={(e) => setTitle(e.target.value)} // Başlık güncelleme
-          sx={{ mb: 2 }} // Alt boşluk
+          onChange={(e) => setTitle(e.target.value)} 
+          sx={{ mb: 2 }} 
         />
         <Typography variant="body1" component="div">
           Başlangıç Tarihi: {start}
@@ -55,11 +55,11 @@ const SelectedDateEventModal: React.FC<SelectedDateEventModalProps> = ({ open, o
         <Button
           variant="contained"
           onClick={() => {
-            onCreateEvent(title, start, end); // Etkinlik oluşturma fonksiyonu
-            setTitle(''); // Başlığı sıfırla
-            onClose(); // Modalı kapat
+            onCreateEvent(title, start, end); 
+            setTitle(''); 
+            onClose(); 
           }}
-          disabled={!title} // Başlık boşsa butonu devre dışı bırak
+          disabled={!title} 
         >
           Etkinlik Oluştur
         </Button>

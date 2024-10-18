@@ -43,7 +43,7 @@ function Calendar() {
   };
 
   const handleCreateEventFromModal = async (title: string, start: string, end: string) => {
-    const startTime = new Date(start + 'Z'); // UTC'ye ayarlamak için 'Z' ekliyoruz
+    const startTime = new Date(start + 'Z'); 
     const endTime = new Date(end + 'Z');
 
     if (title) {
@@ -57,7 +57,7 @@ function Calendar() {
   };
 
   const handleEventSubmit = async (eventData: { title: string; startTime: string; endTime: string; allDay: boolean }) => {
-    const startTime = new Date(eventData.startTime + 'Z'); // UTC'ye ayarlamak için 'Z' ekliyoruz
+    const startTime = new Date(eventData.startTime + 'Z'); 
     const endTime = new Date(eventData.endTime + 'Z');
 
     await dispatch(fetchSaveEvent({
@@ -86,30 +86,30 @@ function Calendar() {
   };
 
   const handleUpdateEvent = async (eventData: EventData) => {
-    // id'nin tanımlı olup olmadığını kontrol edin
+   
     if (!eventData.id) {
         console.error("Event ID bulunamadı, güncelleme yapılamadı.");
-        return; // id tanımlı değilse fonksiyonu sonlandır
+        return; 
     }
 
     const updatedEvent: IFetchUpdateEvent = {
-        token: localStorage.getItem('token') || '', // Token'ı localStorage'dan alıyoruz
-        id: eventData.id, // Güncellenen event'in ID'si
-        title: eventData.title || '', // Varsayılan boş dize
-        startTime: new Date(eventData.startTime as string + 'Z'), // Tarih formatı
-        endTime: new Date(eventData.endTime as string + 'Z'), // Tarih formatı
+        token: localStorage.getItem('token') || '', 
+        id: eventData.id, 
+        title: eventData.title || '', 
+        startTime: new Date(eventData.startTime as string + 'Z'), 
+        endTime: new Date(eventData.endTime as string + 'Z'), 
     };
 
     try {
         const response = await dispatch(fetchUpdateEvent(updatedEvent)).unwrap();
-        // Güncelleme başarılıysa event listesi güncellenir
+        
         const updatedEventList: IEvent[] = eventList.map(event =>
             event.id === eventData.id 
                 ? { 
                     ...event, 
                     title: updatedEvent.title,
-                    startTime: updatedEvent.startTime.toISOString(), // Burada tarih formatını string'e çeviriyoruz
-                    endTime: updatedEvent.endTime.toISOString(), // Burada tarih formatını string'e çeviriyoruz
+                    startTime: updatedEvent.startTime.toISOString(), 
+                    endTime: updatedEvent.endTime.toISOString(), 
                 } 
                 : event
         );

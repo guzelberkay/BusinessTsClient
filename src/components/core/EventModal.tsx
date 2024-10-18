@@ -10,7 +10,7 @@ import {
   IconButton,
   Alert,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close'; // Import Close icon
+import CloseIcon from '@mui/icons-material/Close'; 
 
 interface EventModalProps {
   open: boolean;
@@ -23,26 +23,26 @@ const EventModal: React.FC<EventModalProps> = ({ open, onClose, onSubmit }) => {
   const [startTime, setStartTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
   const [allDay, setAllDay] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null); // To track form errors
+  const [error, setError] = useState<string | null>(null); 
 
   const handleSubmit = () => {
-    // Validate fields
+   
     if (!title || !startTime || !endTime) {
       setError('Lütfen tüm alanları doldurun.');
       return;
     }
 
-    // Validate that startTime is before endTime
+    
     if (new Date(startTime) >= new Date(endTime)) {
       setError('Bitiş tarihi, başlangıç tarihinden sonra olmalıdır.');
       return;
     }
 
-    // No errors, proceed with form submission
+    
     setError(null);
     onSubmit({ title, startTime, endTime, allDay });
     resetForm();
-    onClose(); // Close the modal after successful submit
+    onClose(); 
   };
 
   const resetForm = () => {
@@ -59,13 +59,13 @@ const EventModal: React.FC<EventModalProps> = ({ open, onClose, onSubmit }) => {
         <IconButton
           aria-label="close"
           onClick={onClose}
-          style={{ position: 'absolute', right: 8, top: 8 }} // Position the close button
+          style={{ position: 'absolute', right: 8, top: 8 }} 
         >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        {error && <Alert severity="error">{error}</Alert>} {/* Show error if present */}
+        {error && <Alert severity="error">{error}</Alert>} 
         <label style={{ fontSize: '14px',color:'#091057' }}>Başlık</label>
         <TextField
           autoFocus
