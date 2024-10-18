@@ -11,6 +11,7 @@ import {
     TextField,
     Button,
     Paper,
+    Grid,
 } from '@mui/material';
 
 interface ChatMessage {
@@ -117,56 +118,60 @@ const SupporterChat: React.FC = () => {
     };
 
     return (
-        <Box sx={{ width: '100%', maxWidth: 600, margin: '0 auto', bgcolor: 'background.paper' }}>
+        <Box sx={{ width: '100%', maxWidth: 1200, margin: '0 auto', bgcolor: 'background.paper' }}>
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6">Temsilci Chat</Typography>
                 </Toolbar>
             </AppBar>
             <Paper sx={{ display: 'flex', flexDirection: 'column', gap: 2, padding: 2, height: '70vh', overflowY: 'auto' }}>
-                {userMessages.map((user) => (
-                    <Box key={user.userId} sx={{ bgcolor: 'background.default', borderRadius: 1, padding: 2, boxShadow: 2 }}>
-                        <Typography variant="h6" sx={{ marginBottom: 1 }}>Kullanıcı ID: {user.userId}</Typography>
-                        <List sx={{ maxHeight: 300, overflowY: 'auto', marginBottom: 2 }}>
-                            {user.messages.map((msg) => (
-                                <ListItem
-                                    key={msg.id}
-                                    sx={{
-                                        justifyContent: msg.senderRole === 'SUPPORTER' ? 'flex-end' : 'flex-start',
-                                    }}
-                                >
-                                    <ListItemText
-                                        primary={msg.message}
-                                        secondary={formatTimestamp(msg.timestamp)}
-                                        sx={{
-                                            bgcolor: msg.senderRole === 'SUPPORTER' ? '#d1e7dd' : '#cfe2ff',
-                                            borderRadius: 1,
-                                            padding: 1,
-                                            maxWidth: '75%', 
-                                            overflowWrap: 'break-word', 
-                                            whiteSpace: 'normal', 
-                                            alignSelf: msg.senderRole === 'SUPPORTER' ? 'flex-start' : 'flex-end',
-                                            textAlign: msg.senderRole === 'SUPPORTER' ? 'right' : 'left',
-                                        }}
+                <Grid container spacing={2}>
+                    {userMessages.map((user) => (
+                        <Grid item xs={12} md={6} lg={4} key={user.userId}>
+                            <Box sx={{ bgcolor: 'background.default', borderRadius: 1, padding: 2, boxShadow: 2 }}>
+                                <Typography variant="h6" sx={{ marginBottom: 1 }}>Kullanıcı ID: {user.userId}</Typography>
+                                <List sx={{ maxHeight: 300, overflowY: 'auto', marginBottom: 2 }}>
+                                    {user.messages.map((msg) => (
+                                        <ListItem
+                                            key={msg.id}
+                                            sx={{
+                                                justifyContent: msg.senderRole === 'SUPPORTER' ? 'flex-end' : 'flex-start',
+                                            }}
+                                        >
+                                            <ListItemText
+                                                primary={msg.message}
+                                                secondary={formatTimestamp(msg.timestamp)}
+                                                sx={{
+                                                    bgcolor: msg.senderRole === 'SUPPORTER' ? '#d1e7dd' : '#cfe2ff',
+                                                    borderRadius: 1,
+                                                    padding: 1,
+                                                    maxWidth: '75%', 
+                                                    overflowWrap: 'break-word', 
+                                                    whiteSpace: 'normal', 
+                                                    alignSelf: msg.senderRole === 'SUPPORTER' ? 'flex-start' : 'flex-end',
+                                                    textAlign: msg.senderRole === 'SUPPORTER' ? 'right' : 'left',
+                                                }}
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <TextField
+                                        variant="outlined"
+                                        fullWidth
+                                        placeholder="Cevabınızı yazın..."
+                                        value={user.replyMessage}
+                                        onChange={(e) => handleReplyChange(user.userId, e.target.value)}
+                                        sx={{ mr: 1 }}
                                     />
-                                </ListItem>
-                            ))}
-                        </List>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <TextField
-                                variant="outlined"
-                                fullWidth
-                                placeholder="Cevabınızı yazın..."
-                                value={user.replyMessage}
-                                onChange={(e) => handleReplyChange(user.userId, e.target.value)}
-                                sx={{ mr: 1 }}
-                            />
-                            <Button variant="contained" color="primary" onClick={() => sendReply(user.userId)}>
-                                Gönder
-                            </Button>
-                        </Box>
-                    </Box>
-                ))}
+                                    <Button variant="contained" color="primary" onClick={() => sendReply(user.userId)}>
+                                        Gönder
+                                    </Button>
+                                </Box>
+                            </Box>
+                        </Grid>
+                    ))}
+                </Grid>
             </Paper>
         </Box>
     );

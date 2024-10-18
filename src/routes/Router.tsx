@@ -191,6 +191,12 @@ export default function Router() {
             )
         },
 
+        {
+            path: 'supporter-chat',
+            element: <PrivateRoute element={<SupporterChat/>} roles={['SUPPORTER']}/>,
+        }
+        ,
+
         // Routes that use the PostAuthTemplate layout
         {
             element: (
@@ -372,11 +378,7 @@ export default function Router() {
                     path: 'invoices',
                     element: <PrivateRoute element={<InvoicePage/>} roles={['ADMIN', 'SUPER_ADMIN', 'FAM']}/>,
                 },
-                {
-                    path: 'supporter-chat',
-                    element: <PrivateRoute element={<SupporterChat/>} roles={['SUPPORTER']}/>,
-                }
-                ,
+                
                 {
                     path: 'oms-employee',
                     element: <PrivateRoute element={<OMSEmployeePage/>} roles={['MEMBER']}/>,
