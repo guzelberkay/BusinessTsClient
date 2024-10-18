@@ -45,14 +45,13 @@ const ProductByMinStockLevelPage = () => {
     };
 
 
-
     const handleSomething = () => {
         console.log(selectedRowIds);
     };
 
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center" },
+        {field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center"},
+        {field: "description", headerName: t("stockService.description"), flex: 1.5, headerAlign: "center"},
         {
             field: "price", headerName: t("stockService.price"), flex: 1, headerAlign: "center",
             renderCell: (params) => {
@@ -71,16 +70,22 @@ const ProductByMinStockLevelPage = () => {
             },
         },
 
-        { field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center" },
-        { field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5 },
-        { field: "isAutoOrderEnabled", headerName: t("stockService.autoorder"), headerAlign: "center", flex: 1 ,renderCell: (params) => {
+        {field: "stockCount", headerName: t("stockService.stockcount"), flex: 1, headerAlign: "center"},
+        {field: "minimumStockLevel", headerName: t("stockService.minstockcount"), headerAlign: "center", flex: 1.5},
+        {
+            field: "isAutoOrderEnabled",
+            headerName: t("stockService.autoorder"),
+            headerAlign: "center",
+            flex: 1,
+            renderCell: (params) => {
                 const value = params.value;
                 if (value === true) {
                     return t("stockService.open");
                 } else {
                     return t("stockService.close");
                 }
-            }},
+            }
+        },
 
 
     ];
@@ -104,7 +109,7 @@ const ProductByMinStockLevelPage = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchChangeAutoOrderModeOfProduct(selectedProduct.id));
 
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -132,15 +137,15 @@ const ProductByMinStockLevelPage = () => {
     };
 
     return (
-        <div style={{ height: "auto"}}>
+        <div style={{height: "auto"}}>
             <TextField
                 label={t("stockService.searchbyname")}
                 variant="outlined"
                 onChange={(event) => setSearchText(event.target.value)}
                 value={searchText}
-                style={{ marginBottom: "1%", marginTop: "1%" }}
+                style={{marginBottom: "1%", marginTop: "1%"}}
                 fullWidth
-                inputProps={{ maxLength: 50 }}
+                inputProps={{maxLength: 50}}
             />
             <DataGrid
                 slots={{
@@ -150,7 +155,7 @@ const ProductByMinStockLevelPage = () => {
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: { page: 1, pageSize: 5 },
+                        paginationModel: {page: 1, pageSize: 5},
                     },
                 }}
                 // getRowClassName={(params) =>
@@ -182,6 +187,7 @@ const ProductByMinStockLevelPage = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
+                disableRowSelectionOnClick={true}
                 localeText={{
                     toolbarColumns: t("dataGrid.toolbarColumns"),
                     toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
@@ -218,7 +224,13 @@ const ProductByMinStockLevelPage = () => {
                 }}
             />
 
-            <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
+            <Grid container spacing={2} sx={{
+                flexGrow: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'stretch',
+                marginTop: '2%',
+                marginBottom: '2%'
+            }}>
                 {/*<Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleSomething}
@@ -238,7 +250,13 @@ const ProductByMinStockLevelPage = () => {
                         color="info"
                         disabled={loading || selectedRowIds.length === 0}
                         //startIcon={<DeclineIcon />}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.changeautoordermode")}
                     </Button>

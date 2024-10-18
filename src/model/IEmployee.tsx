@@ -7,6 +7,8 @@ export interface IEmployee{
     department: string;
     email: string;
     phone: string;
+    birthDate: Date;
+    gender: string;
     hireDate: Date;
     salary: number;
     status: string;

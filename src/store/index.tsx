@@ -10,7 +10,8 @@ import {
     subscriptionSlice,
     roleSlice,
     projectSlice,
-    organizationManagementSlice
+    organizationManagementSlice,
+    chatSlice
 } from "./feature";
 
 
@@ -36,6 +37,7 @@ const store = configureStore({
         roleSlice: roleSlice,
         projectSlice: projectSlice,
         organizationManagement:organizationManagementSlice,
+        chatSlice: chatSlice,
         event: eventSlice
     },
 });

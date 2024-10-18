@@ -9,6 +9,7 @@ interface IFile {
 }
   
 interface IFileState {
+    profileImage: string;
     uuid: string;
     files: IFile[];
     isLoading: boolean;
@@ -16,6 +17,7 @@ interface IFileState {
 }
   
 const initialFileState: IFileState = {
+    profileImage: 'https://i.pinimg.com/736x/09/21/fc/0921fc87aa989330b8d403014bf4f340.jpg',
     uuid: '',
     files: [],
     isLoading: false,
@@ -155,6 +157,50 @@ export const fetchFile = createAsyncThunk(
     }
 );
 
+export const fetchUploadProfileImage = createAsyncThunk(
+    'files/uploadProfileImage',
+    async (file: File, { rejectWithValue }) => {
+        const formData = new FormData();
+        const mimeType = file.type; 
+        const extension = getExtensionByMimeType(mimeType);
+        const enum2 = getEnumByMimeType(mimeType);
+        formData.append('file', file);
+        formData.append('contentType', enum2);
+        formData.append('token', localStorage.getItem('token') || '');
+
+        try {
+            const response = await axios.post(`${RestApis.file_service}/uploadProfileImage`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue('Profil resmi yüklenirken bir hata oluştu.');
+        }
+    }
+);
+
+export const fetchProfileImage = createAsyncThunk(
+    'files/fetchGetProfileImage',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`${RestApis.file_service}/getProfileImage`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                responseType: 'blob', 
+            });
+            return response.data; 
+        } catch (error) {
+            return rejectWithValue('Profil resmi alınırken bir hata oluştu.');
+        }
+    }
+);
+
+
+
 
 
 
@@ -165,6 +211,12 @@ const fileSlice = createSlice({
         resetError: (state) => {
             state.error = null;
         },
+        setProfileImage: (state, action) => {
+            state.profileImage = action.payload; 
+        },
+        clearProfileImage: (state) => {
+            state.profileImage = 'https://i.pinimg.com/736x/09/21/fc/0921fc87aa989330b8d403014bf4f340.jpg'; 
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -214,10 +266,32 @@ const fileSlice = createSlice({
             .addCase(fetchFile.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload as string; 
-            });
+            })
+            .addCase(fetchUploadProfileImage.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchUploadProfileImage.fulfilled, (state, action) => {
+                state.isLoading = false;
+                const blob = action.payload;
+                if (blob) {
+                    const url = URL.createObjectURL(blob);
+                    console.log('Fotoğraf URL45:', url);
+                    state.profileImage = url;
+                    console.log('state.profileImage: ',state.profileImage);
+                }
+                
+            })
+            .addCase(fetchProfileImage.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchProfileImage.fulfilled, (state, action) => {
+                state.isLoading = false;
+               
+                
+            })
     },
 });
 
 
-export const { resetError } = fileSlice.actions;
+export const { resetError, setProfileImage,clearProfileImage } = fileSlice.actions;
 export default fileSlice.reducer;

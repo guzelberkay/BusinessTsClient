@@ -5,8 +5,9 @@ import {
     GridRowSelectionModel, GridToolbar,
 } from "@mui/x-data-grid";
 import {
+    Box,
     Button, Dialog, DialogActions, DialogContent, DialogTitle,
-    Grid, Modal,
+    Grid, IconButton, Input, Modal,
     TextField
 
 } from "@mui/material";
@@ -19,12 +20,15 @@ import {
     fetchSaveCustomer,
     fetchDeleteCustomer,
     fetchUpdateCustomer,
-    fetchFindCustomerById, fetchUploadExcelCustomer
+    fetchFindCustomerById, fetchUploadExcelCustomer, fetchSendingEmailExternalSourceCustomer
 } from "../../store/feature/crmSlice.tsx";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import {ICrmCustomer} from "../../model/ICrmCustomer.tsx";
 import * as XLSX from 'xlsx';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {Folder} from "@mui/icons-material";
+
 
 
 const CustomerPage = () => {
@@ -55,6 +59,7 @@ const CustomerPage = () => {
     const [customerFile, setCustomerFile] = useState<ICrmCustomer[]>([]);
 
     const [open, setOpen] = useState(false);
+
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
@@ -113,6 +118,8 @@ const CustomerPage = () => {
     const handleUploadCloseModal = () => {
         setOpen(false);
     }
+
+
 
 
 
@@ -294,6 +301,13 @@ const CustomerPage = () => {
         {field: "phone", headerName: t("crmService.phone"), flex: 1.5, headerAlign: "center"},
         {field: "address", headerName: t("crmService.address"), flex: 1.5, headerAlign: "center"},
         {field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1},
+        {
+            field: "details", headerName: t("crmService.details"), flex: 1.5, headerAlign: "center", renderCell: (params) => (
+                <IconButton >
+                    <VisibilityIcon />
+                </IconButton>
+            ),
+        },
     ]
 
 
@@ -323,11 +337,6 @@ const CustomerPage = () => {
                         paginationModel: {page: 1, pageSize: 5},
                     }
                 }}
-                // getRowClassName={(params)=>
-                //     params.row.isExpenditureApproved
-                //         ? "approved-row"
-                //         : "unapproved-row"
-                // }
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onRowSelectionModelChange={handleRowSelection}
@@ -409,9 +418,12 @@ const CustomerPage = () => {
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
-                    <Button variant="contained" color="primary" onClick={hanleUploadModal}>
-                        {t('crmService.import')}
-                    </Button>
+                    <Box display="flex" alignItems="center">
+                        <IconButton onClick={hanleUploadModal} sx={{ width: 40, height: 40 }}>
+                            <Folder sx={{ fontSize: 40 }} />
+                        </IconButton>
+                        <label style={{ marginLeft: 10 }}>{t('crmService.upload')}</label>
+                    </Box>
                 </Grid>
 
                 <Dialog open={open} onClose={handleUploadCloseModal}>
@@ -429,6 +441,8 @@ const CustomerPage = () => {
                         }}>{t('crmService.import')}</Button>
                     </DialogActions>
                 </Dialog>
+
+
                 <Dialog open={openAddCustomerModal} onClose={() => setOpenAddCustomerModel(false)} fullWidth
                         maxWidth='sm'>
                     <DialogTitle>{isUpdating ? t('crmService.update') : t('crmService.add_customer')}</DialogTitle>

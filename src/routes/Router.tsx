@@ -10,7 +10,7 @@ import Profile from "../pages/Profile";
 import SupplierOrderPage from "../pages/StockService/Supplier/SupplierOrderPage.tsx";
 import CustomerPageStock from "../pages/StockService/Customer/CustomerPageStock.tsx";
 import OpportunityPage from "../pages/CRMService/OpportunityPage.tsx";
-import SalesActivityPage from "../pages/CRMService/SalesActivityPage.tsx";
+import ActivityPage from "../pages/CRMService/ActivityPage.tsx";
 import TicketPage from "../pages/CRMService/TicketPage.tsx";
 import ProfileManagement from "../pages/ProfileManagement.tsx";
 import BudgetPage from "../pages/FinanceService/BudgetPage.tsx";
@@ -23,7 +23,6 @@ import FinancialReportPage from "../pages/FinanceService/FinancialReportPage.tsx
 import UserChat from "../pages/UserChat.tsx";
 import InvoicePage from "../pages/FinanceService/InvoicePage.tsx";
 import SupporterChat from "../pages/SupporterChat.tsx";
-import SalesActivitySavePage from "../pages/CRMService/SalesActivitySavePage.tsx";
 import TicketSavePage from "../pages/CRMService/TicketSavePage.tsx";
 
 
@@ -37,11 +36,15 @@ export const ProductPage = lazy(() => import('../pages/StockService/Customer/Pro
 export const AnalyticsDash = lazy(() => import('../pages/AnalyticsDash'));
 export const CustomerPage = lazy(() => import('../pages/CRMService/CustomerPage.tsx'));
 export const MarketingCampaignPage = lazy(() => import('../pages/CRMService/MarketingCampaignPage.tsx'));
+export const CustomerSaveFromLink = lazy(() => import('../pages/CRMService/CustomerSaveFromLinkPage.tsx'));
+export const CustomerSendEmail = lazy(() => import('../pages/CRMService/CustomerSendEmailPage.tsx'));
+export const ThankYouPage = lazy(() => import('../pages/CRMService/ThankYouPage.tsx'));
 export const ProductByMinStockLevelPage = lazy(() => import('../pages/StockService/Customer/ProductByMinStockLevelPage.tsx'));
 export const EmployeePage = lazy(() => import('../pages/HRMService/EmployeePage.tsx'));
 export const AttendancePage = lazy(() => import('../pages/HRMService/AttendancePage.tsx'));
 export const BenefitPage = lazy(() => import('../pages/HRMService/BenefitPage.tsx'));
 export const PayrollPage = lazy(() => import('../pages/HRMService/PayrollPage.tsx'));
+export const GraphicsPage = lazy(() => import('../pages/HRMService/GraphicsPage.tsx'));
 export const PerformancePage = lazy(() => import('../pages/HRMService/PerformancePage.tsx'));
 
 export const BuyOrderPage = lazy(() => import('../pages/StockService/Customer/BuyOrderPage.tsx'));
@@ -167,6 +170,33 @@ export default function Router() {
                 </PreAuthTemplate>
             ),
         },
+        {
+            path: 'customer-save-from-link',
+            element:(
+                <Suspense>
+                    <Suspense fallback={<Loader/>}>
+                        <CustomerSaveFromLink/>
+                    </Suspense>
+                </Suspense>
+
+            ),
+        },
+        {
+            path: 'thank-you',
+            element: (
+                <Suspense>
+                    <Suspense fallback={<Loader/>}>
+                        <ThankYouPage/>
+                    </Suspense>
+                </Suspense>
+            )
+        },
+
+        {
+            path: 'supporter-chat',
+            element: <PrivateRoute element={<SupporterChat/>} roles={['SUPPORTER']}/>,
+        }
+        ,
 
         
 
@@ -249,6 +279,10 @@ export default function Router() {
                     element: <PrivateRoute element={<PayrollPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'HRMM']}/>,
                 },
                 {
+                    path: 'graphics-page',
+                    element: <PrivateRoute element={<GraphicsPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'HRMM']}/>,
+                },
+                {
                     path: 'performance-page',
                     element: <PrivateRoute element={<PerformancePage/>} roles={['ADMIN', 'SUPER_ADMIN', 'HRMM']}/>,
                 },
@@ -266,20 +300,20 @@ export default function Router() {
                     element: <PrivateRoute element={<OpportunityPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
                 },
                 {
-                    path: 'sales-activity',
-                    element: <PrivateRoute element={<SalesActivityPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
+                    path: 'activities',
+                    element: <PrivateRoute element={<ActivityPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
                 },
                 {
                     path: 'tickets',
                     element: <PrivateRoute element={<TicketPage/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
                 },
                 {
-                    path: '/sales-activity/save',
-                    element: <PrivateRoute element={<SalesActivitySavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
-                },
-                {
                     path: '/ticket/save',
                     element: <PrivateRoute element={<TicketSavePage />} roles={['ADMIN','SUPER_ADMIN','CRMM']} />,
+                },
+                {
+                    path: 'send-email',
+                    element: <PrivateRoute element={<CustomerSendEmail/>} roles={['ADMIN', 'SUPER_ADMIN', 'CRMM']}/>,
                 },
                 {
                     path: 'test',
@@ -347,11 +381,7 @@ export default function Router() {
                     path: 'invoices',
                     element: <PrivateRoute element={<InvoicePage/>} roles={['ADMIN', 'SUPER_ADMIN', 'FAM']}/>,
                 },
-                {
-                    path: 'supporter-chat',
-                    element: <PrivateRoute element={<SupporterChat/>} roles={['SUPPORTER']}/>,
-                }
-                ,
+                
                 {
                     path: 'oms-employee',
                     element: <PrivateRoute element={<OMSEmployeePage/>} roles={['MEMBER']}/>,

@@ -24,7 +24,7 @@ const CustomerPageStock = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     //const token = useAppSelector((state) => state.auth.token);
-    const [customers,setCustomers] = useState<ICustomer[]>([]);
+    const [customers, setCustomers] = useState<ICustomer[]>([]);
     const [loading, setLoading] = useState(false);
     const [isActivating, setIsActivating] = useState(false);
 
@@ -84,7 +84,14 @@ const CustomerPageStock = () => {
         })
     }
     const handleUpdate = async () => {
-        dispatch(fetchUpdateCustomer({ id: selectedRowIds[0], name: name, surname: surname, email: email, identityNo: identityNo, phoneNo: phoneNo })).then((data) => {
+        dispatch(fetchUpdateCustomer({
+            id: selectedRowIds[0],
+            name: name,
+            surname: surname,
+            email: email,
+            identityNo: identityNo,
+            phoneNo: phoneNo
+        })).then((data) => {
             if (data.payload.message === "Success") {
                 setName('')
                 setSurname('')
@@ -179,7 +186,7 @@ const CustomerPageStock = () => {
                 if (result.isConfirmed) {
                     const data = await dispatch(fetchDeleteCustomer(selectedCustomer.id));
 
-                    if (data.payload.message !=="Success") {
+                    if (data.payload.message !== "Success") {
                         await Swal.fire({
                             title: t("swal.error"),
                             text: data.payload.message,
@@ -211,24 +218,24 @@ const CustomerPageStock = () => {
     };
 
     const columns: GridColDef[] = [
-        { field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center" },
-        { field: "surname", headerName: t("stockService.surname"), flex: 1.5, headerAlign: "center" },
-        { field: "identityNo", headerName: t("stockService.identityno"), flex: 1.5, headerAlign: "center" },
-        { field: "phoneNo", headerName: t("stockService.phoneno"), flex: 1.5, headerAlign: "center" },
-        { field: "email", headerName: "Email", flex: 1.5, headerAlign: "center" },
+        {field: "name", headerName: t("authentication.name"), flex: 1.5, headerAlign: "center"},
+        {field: "surname", headerName: t("stockService.surname"), flex: 1.5, headerAlign: "center"},
+        {field: "identityNo", headerName: t("stockService.identityno"), flex: 1.5, headerAlign: "center"},
+        {field: "phoneNo", headerName: t("stockService.phoneno"), flex: 1.5, headerAlign: "center"},
+        {field: "email", headerName: "Email", flex: 1.5, headerAlign: "center"},
     ];
 
 
     return (
-        <div style={{ height: "auto"}}>
+        <div style={{height: "auto"}}>
             <TextField
                 label={t("stockService.searchbyname")}
                 variant="outlined"
                 onChange={(event) => setSearchText(event.target.value)}
                 value={searchText}
-                style={{ marginBottom: "1%", marginTop: "1%" }}
+                style={{marginBottom: "1%", marginTop: "1%"}}
                 fullWidth
-                inputProps={{ maxLength: 50 }}
+                inputProps={{maxLength: 50}}
             />
             <DataGrid
                 slots={{
@@ -239,7 +246,7 @@ const CustomerPageStock = () => {
                 columns={columns}
                 initialState={{
                     pagination: {
-                        paginationModel: { page: 1, pageSize: 5 },
+                        paginationModel: {page: 1, pageSize: 5},
                     },
                 }}
                 // getRowClassName={(params) =>
@@ -271,6 +278,7 @@ const CustomerPageStock = () => {
 
                 }}
                 rowSelectionModel={selectedRowIds}
+                disableRowSelectionOnClick={true}
                 localeText={{
                     toolbarColumns: t("dataGrid.toolbarColumns"),
                     toolbarColumnsLabel: t("dataGrid.toolbarColumnsLabel"),
@@ -307,7 +315,13 @@ const CustomerPageStock = () => {
                 }}
             />
 
-            <Grid container spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-start', alignItems: 'stretch', marginTop: '2%', marginBottom: '2%' }}>
+            <Grid container spacing={2} sx={{
+                flexGrow: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'stretch',
+                marginTop: '2%',
+                marginBottom: '2%'
+            }}>
                 <Grid item xs={12} sm={6} md={3} lg={2}>
                     <Button
                         onClick={handleOpenCustomerModal}
@@ -332,7 +346,13 @@ const CustomerPageStock = () => {
                         color="primary"
                         //startIcon={<DeclineIcon />}
                         disabled={selectedRowIds.length > 1 || selectedRowIds.length === 0}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.update")}
                     </Button>
@@ -344,7 +364,13 @@ const CustomerPageStock = () => {
                         color="error"
                         disabled={isDeleting || selectedRowIds.length === 0}
                         //startIcon={<CancelIcon/>}
-                        sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
                         {t("stockService.delete")}
                     </Button>

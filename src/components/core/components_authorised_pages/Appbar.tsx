@@ -17,7 +17,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LanguageIcon from "@mui/icons-material/Language";
 import PersonIcon from "@mui/icons-material/Person";
 import { Menu, Avatar, Divider } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {AppDispatch, RootState, useAppSelector} from "../../../store";
 import {
   toggleLanguage,
@@ -33,6 +33,8 @@ import {
 import { Client } from "@stomp/stompjs";
 import { clearToken } from "../../../store/feature/authSlice.tsx";
 import { clearRoles } from "../../../store/feature/userSlice.tsx";
+import { use } from "i18next";
+import { clearProfileImage, fetchProfileImage } from "../../../store/feature/fileSlice.tsx";
 const drawerWidth = 240;
 
 // Interface defining the props for the AppBar component
@@ -133,11 +135,7 @@ const easyStyleMenu = {
 };
 
 // Demo user information
-const demoUser = {
-  name: "Demo User",
-  role: "Manager",
-  avatar: "https://xsgames.co/randomusers/assets/avatars/male/38.jpg",
-};
+
 
 // Props interface for the Appbar component
 interface AppbarProps {
@@ -186,69 +184,80 @@ function Appbar({
 
   // Okunmamış bildirim sayısını fetch eden fonksiyon
 
+  const [isFetchSuccessful, setIsFetchSuccessful] = useState(false);
+
+  
+  const userName = useSelector((state: RootState) => state.userSlice.user.firstName);
+  const profileImage = useSelector((state: RootState) => state.fileSlice.profileImage);                
+ 
+
   const fetchUnreadCount = async () => {
     try {
       const notifications = await dispatch(fetchGetAllUnreadNotifications()).unwrap();
       setUnreadCount(notifications.length);
-      setPrevCount(notifications.length);
-
+      setIsFetchSuccessful(true); // Eğer fetch başarılıysa true olarak ayarla
     } catch (error) {
-      console.error('Failed to fetch unread notification count:', error);
+      console.error('Okunmamış bildirim sayısını alırken hata oluştu:', error);
+      setIsFetchSuccessful(false); // Hata durumunda false olarak ayarla
     }
   };
 
   useEffect(() => {
     fetchUnreadCount(); // İlk yüklemede okunmamış bildirim sayısını al
 
+    // Sadece fetch başarılıysa WebSocket'i aktive et
+    if (!isFetchSuccessful) {
+      return; // Fetch başarısızsa WebSocket bağlantısını başlatma
+    }
+
     const stompClient = new Client({
       brokerURL: "ws://localhost:9095/ws",
       debug: (str) => console.log(str),
       onConnect: () => {
-        console.log("Connected to WebSocket");
+        console.log("WebSocket'e bağlandı");
 
-        // Unread count'u almak için ilk abone olma
+        // Okunmamış sayıyı almak için ilk abone olma
         stompClient.subscribe("/topic/unreadcountNotifications", (message) => {
           const newCount = JSON.parse(message.body);
-          setUnreadCount(newCount); // Sunucudan alınan yeni unread count
+          setUnreadCount(newCount); // Sunucudan alınan yeni okunmamış sayıyı güncelle
         });
 
         // Yeni bildirim geldiğinde çağırılacak
-        stompClient.subscribe("/topic/create-notifications", (message) => {
-          setUnreadCount((prevCount) => prevCount + 1); // Unread count'u artır
+        stompClient.subscribe("/topic/create-notifications", () => {
+          setUnreadCount((prevCount) => prevCount + 1); // Okunmamış sayıyı artır
         });
 
         // Bir bildirim okunduğunda
         stompClient.subscribe("/topic/markasread-notifications", () => {
-          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Unread count'u azalt, 0'ın altına düşmesini engelle
+          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Okunmuş sayıyı azalt, 0'ın altına düşmesini engelle
         });
 
         // Bir bildirim silindiğinde
         stompClient.subscribe("/topic/delete-notifications", () => {
-          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Unread count'u azalt, 0'ın altına düşmesini engelle
+          setUnreadCount((prevCount) => Math.max(prevCount - 1, 0)); // Okunmuş sayıyı azalt, 0'ın altına düşmesini engelle
         });
       },
       onDisconnect: () => {
-        console.log("Disconnected from WebSocket");
+        console.log("WebSocket'ten bağlantı kesildi");
       },
       onStompError: (frame) => {
-        console.error("STOMP Error", frame);
+        console.error("STOMP Hatası", frame);
       },
       onWebSocketError: (error) => {
-        console.error("WebSocket Error", error);
+        console.error("WebSocket Hatası", error);
       },
     });
 
     stompClient.activate();
     setClient(stompClient);
 
+    // Bileşen unmounted olduğunda WebSocket'i temizle
     return () => {
       if (stompClient) {
         stompClient.deactivate();
       }
     };
-  }, [dispatch]);
-
-
+  }, [dispatch, isFetchSuccessful]);
 
   // Opens the profile menu
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -304,6 +313,7 @@ function Appbar({
   const handleLogout = () => {
     dispatch(clearRoles());
     dispatch(clearToken());
+    dispatch(clearProfileImage())
     navigate('/login');
   }
 
@@ -352,7 +362,7 @@ function Appbar({
           onClose={handleMenuClose}
           PaperProps={easyStyleMenu}
       >
-        <MenuItem onClick={() => handlePageElementChangeRenderMenu("profile")}>
+        <MenuItem onClick={() => handlePageElementChangeRenderMenu("profile-management")}>
           {t("navigation.profile")}
         </MenuItem>
         <MenuItem onClick={() => handlePageElementChangeRenderMenu("account")}>
@@ -404,11 +414,11 @@ function Appbar({
           </IconButton>
           <p>{t("navigation.notifications")}</p>
         </MenuItem>
-        <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("profile")}>
+        <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("profile-management")}>
           <IconButton size="large" color="inherit">
             <PersonIcon />
           </IconButton>
-          {t("navigation.profile")}
+          {t("navigation.profile-management")}
         </MenuItem>
         <MenuItem onClick={() => handlePageElementChangeRenderMobileMenu("account")}>
           <IconButton size="large" color="inherit">
@@ -507,8 +517,8 @@ function Appbar({
               >
                 <Badge color="secondary">
                   <Avatar
-                      src={demoUser.avatar}
-                      alt={demoUser.name}
+                      src={profileImage}
+                      alt={userName}
                       sx={{
                         width: 40,
                         height: 40,

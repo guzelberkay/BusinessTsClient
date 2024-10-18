@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {DataGrid, GridColDef, GridRowSelectionModel, GridToolbar} from "@mui/x-data-grid";
 import {
-    Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField
+    Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField
 } from "@mui/material";
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
@@ -18,6 +18,7 @@ import {
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
     import dayjs, {Dayjs} from "dayjs";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const MarketingCampaignPage = () => {
     const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
@@ -232,6 +233,13 @@ const MarketingCampaignPage = () => {
                         {field: "endDate", headerName: t("crmService.endDate"), flex: 1.5, headerAlign: "center"},
                         {field: "budget", headerName: t("crmService.budget"), flex: 1.5, headerAlign: "center"},
                         {field: "status", headerName: t("crmService.status"), headerAlign: "center", flex: 1},
+                        {
+                            field: "details", headerName: t("crmService.details"), flex: 1.5, headerAlign: "center", renderCell: (params) => (
+                                <IconButton >
+                                    <VisibilityIcon />
+                                </IconButton>
+                            ),
+                        },
                     ]}
                     pageSizeOptions={[5, 10]}
                     checkboxSelection

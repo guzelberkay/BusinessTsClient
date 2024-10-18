@@ -19,7 +19,7 @@ const endpoints = {
   customer: "/crm/customer",
   marketing_campaign: "/crm/marketing-campaign",
   opportunity: "/crm/opportunity",
-  sales_activity: "/crm/sales-activity",
+  activities: "/crm/activities",
   ticket: "/crm/ticket",
   user: "/usermanagement/user",
   role:"/usermanagement/role",
