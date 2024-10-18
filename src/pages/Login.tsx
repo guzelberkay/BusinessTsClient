@@ -19,6 +19,7 @@ import { fetchUserRoles } from '../store/feature/userSlice';
 import Swal from 'sweetalert2';
 import PasswordResetPopup from '../components/core/PasswordResetPopup';
 import { fetchCheckSubscription } from '../store/feature/subscriptionSlice';
+import { fetchProfileImage, setProfileImage } from '../store/feature/fileSlice';
 
 export function Login() {
     const navigate = useNavigate();
@@ -81,6 +82,14 @@ export function Login() {
                             else if (roles.includes('SUPPORTER')) {
                                 navigate('/supporter-chat');
                             }
+                        }).then(() => {
+                            dispatch(fetchProfileImage()).then((data) => {
+                                const blob = data.payload;
+                                  if (blob) {
+                                    const url = URL.createObjectURL(blob);                                
+                                    dispatch(setProfileImage(url));
+                                }
+                            })
                         });
                     })    
                 } else {

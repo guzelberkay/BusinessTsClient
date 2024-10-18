@@ -9,6 +9,7 @@ import financeSlice from "./financeSlice.tsx";
 import roleSlice from "./roleSlice.tsx";
 import projectSlice from "./projectSlice.tsx";
 import organizationManagementSlice from "./organizationManagementSlice.tsx";
+import chatSlice from "./chatSlice.tsx";
 
 
 export {
@@ -22,5 +23,6 @@ export {
     financeSlice,
     roleSlice,
     projectSlice,
-    organizationManagementSlice
+    organizationManagementSlice,
+    chatSlice
 };
