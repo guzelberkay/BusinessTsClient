@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Stomp } from '@stomp/stompjs';
+import { addMessage, clearMessages, setCurrentToken } from '../store/feature/chatSlice'; 
+import { useDispatch, useSelector } from 'react-redux';
 import {
     Box,
     Typography,
@@ -12,6 +14,7 @@ import {
     Button,
     Paper,
 } from '@mui/material';
+import { AppDispatch, RootState } from '../store'; 
 
 interface ChatMessage {
     id: number;
@@ -22,28 +25,39 @@ interface ChatMessage {
 }
 
 const UserChat: React.FC = () => {
-    const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [newMessage, setNewMessage] = useState<string>('');
     const clientRef = useRef<ReturnType<typeof Stomp.over> | null>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
     const token = localStorage.getItem('token');
+    const dispatch = useDispatch<AppDispatch>();
+
+    const messages = useSelector((state: RootState) => state.chatSlice.messages);
+    const currentToken = useSelector((state: RootState) => state.chatSlice.currentToken);
 
     useEffect(() => {
-        clientRef.current = Stomp.over(new WebSocket('ws://localhost:9088/ws'));
+        if (token !== currentToken) {
+            dispatch(clearMessages()); 
+            dispatch(setCurrentToken(token)); 
+        }
 
+        clientRef.current = Stomp.over(new WebSocket('ws://localhost:9088/ws'));
         clientRef.current.connect({}, (frame: string) => {
             console.log('Connected: ' + frame);
 
-            
             clientRef.current?.subscribe('/topic/messages', (stompMessage) => {
                 const chatMessage: ChatMessage = JSON.parse(stompMessage.body);
-                setMessages((prevMessages) => [...prevMessages, chatMessage]);
+                dispatch(addMessage(chatMessage)); 
             });
         });
 
         return () => {
             clientRef.current?.disconnect();
         };
-    }, []);
+    }, [dispatch, token, currentToken]);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
 
     const sendMessage = () => {
         if (newMessage && token && clientRef.current) {
@@ -63,14 +77,14 @@ const UserChat: React.FC = () => {
     };
 
     return (
-        <Box sx={{ width: '100%', maxWidth: 600, margin: '0 auto', bgcolor: 'background.paper' }}>
+        <Paper sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6">Kullanıcı Chat</Typography>
+                    <Typography variant="h6">Canlı Destek</Typography>
                 </Toolbar>
             </AppBar>
-            <Paper sx={{ display: 'flex', flexDirection: 'column', gap: 2, padding: 2, height: '70vh', overflowY: 'auto' }}>
-                <List sx={{ maxHeight: 300, overflowY: 'auto', marginBottom: 2 }}>
+            <Box sx={{ flexGrow: 1, overflowY: 'auto', padding: 2 }}>
+                <List>
                     {messages.map((msg) => (
                         <ListItem
                             key={msg.id}
@@ -85,31 +99,31 @@ const UserChat: React.FC = () => {
                                     bgcolor: msg.senderRole === 'USER' ? '#d1e7dd' : '#cfe2ff',
                                     borderRadius: 1,
                                     padding: 1,
-                                    maxWidth: '75%', 
-                                    overflowWrap: 'break-word', 
-                                    whiteSpace: 'normal', 
-                                    alignSelf: msg.senderRole === 'USER' ? 'flex-end' : 'flex-start',
+                                    maxWidth: '75%',
+                                    overflowWrap: 'break-word',
+                                    whiteSpace: 'normal',
                                     textAlign: msg.senderRole === 'USER' ? 'right' : 'left',
                                 }}
                             />
                         </ListItem>
                     ))}
+                    <div ref={messagesEndRef} />
                 </List>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <TextField
-                        variant="outlined"
-                        fullWidth
-                        placeholder="Mesajınızı yazın..."
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        sx={{ mr: 1 }}
-                    />
-                    <Button variant="contained" color="primary" onClick={sendMessage}>
-                        Gönder
-                    </Button>
-                </Box>
-            </Paper>
-        </Box>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', padding: 1, borderTop: '1px solid #ccc' }}>
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    placeholder="Mesajınızı yazın..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    sx={{ mr: 1 }}
+                />
+                <Button variant="contained" color="primary" onClick={sendMessage}>
+                    Gönder
+                </Button>
+            </Box>
+        </Paper>
     );
 };
 
