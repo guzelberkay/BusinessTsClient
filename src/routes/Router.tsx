@@ -66,6 +66,7 @@ export const Subscription = lazy(() => import('../pages/SubscriptionService/Subs
 export const SubscriptionHistory = lazy(() => import('../pages/SubscriptionService/SubscriptionHistory'));
 export const AddEditPlan = lazy(() => import('../pages/SubscriptionService/AddEditPlan'));
 export const CreateProjectPage = lazy(() => import('../pages/ProjectService/CreateProject'));
+export const Calendar = lazy(() => import('../pages/Calendar'));
 // For testing purposes (with delay) 
 const TestPage = lazy(() => delay(1000).then(() => import('../pages/TestPage')));
 
@@ -196,6 +197,8 @@ export default function Router() {
             element: <PrivateRoute element={<SupporterChat/>} roles={['SUPPORTER']}/>,
         }
         ,
+
+        
 
         // Routes that use the PostAuthTemplate layout
         {
@@ -391,7 +394,12 @@ export default function Router() {
                 {
                     path: 'oms-treeview',
                     element: <PrivateRoute element={<OMSTreeView/>} roles={['MEMBER']}/>,
-                }
+                },
+                {
+                    path: 'calendar',
+                    element: <PrivateRoute element={<Calendar/>} roles={['MEMBER']}/>,
+                },
+                
             ]
         }
     ]);

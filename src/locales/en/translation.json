@@ -69,7 +69,8 @@
     "oms-department": "Department",
     "organizationManagementModule": "Organization Management Module",
     "oms-treeview": "Organization Chart",
-    "profile-management": "profile-management"
+    "profile-management": "profile-management",
+    "calendar" : "Calendar"
   },
   "authentication": {
     "alreadyHaveAnAccount": "Already have an account?",

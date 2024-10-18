@@ -34,6 +34,8 @@ import {
 } from '@mui/icons-material';
 
 import DrawerCollapseButton, {DrawerCollapseButtonProps} from '../../atoms/DrawerCollapseButton';
+import Calendar from '../../../pages/Calendar';
+import { CalendarIcon } from '@mui/x-date-pickers';
 
 // Define types for button configurations
 export type Button =
@@ -127,6 +129,11 @@ export const drawerNavigations: Record<string, Button[]> = {
             type: 'button',
             component: DrawerButton,
             props: {name: 'profile', icon: <Person/>, navigation: 'profile-management'} as DrawerButtonProps,
+        },
+        {
+            type: 'button',
+            component: DrawerButton,
+            props: {name: 'calendar', icon: <CalendarIcon/>, navigation: 'calendar'} as DrawerButtonProps,
         }
     ],
 

@@ -18,6 +18,7 @@ import {
 import {useSelector} from "react-redux";
 import notificationSlice from "./feature/notificationSlice";
 import fileSlice from "./feature/fileSlice";
+import eventSlice from "./feature/eventSlice";
 
 
 
@@ -36,7 +37,8 @@ const store = configureStore({
         roleSlice: roleSlice,
         projectSlice: projectSlice,
         organizationManagement:organizationManagementSlice,
-        chatSlice: chatSlice
+        chatSlice: chatSlice,
+        event: eventSlice
     },
 });
 
