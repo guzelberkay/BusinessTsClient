@@ -156,6 +156,15 @@ const SideBarNotifications: React.FC = () => {
       });
     }
   };
+  const handleDeleteAllClick = () => {
+    const allNotificationIds = notificationList.map((notif) => notif.id);
+    if (allNotificationIds.length > 0) {
+      dispatch(deleteNotification(allNotificationIds)).then(() => {
+        setSelectedNotificationIds(new Set());
+        setSelectionMode(false);
+      });
+    }
+  };
 
   const sortedNotifications = [...notificationList].sort((a, b) => {
     switch (sortOrder) {
@@ -177,6 +186,7 @@ const SideBarNotifications: React.FC = () => {
   const displayedNotifications = showUnreadOnly
       ? filteredNotifications.filter(notif => !notif.isRead)
       : filteredNotifications;
+
 
 
   const handleSortChange = (event: SelectChangeEvent<string>) => {
@@ -224,6 +234,9 @@ const SideBarNotifications: React.FC = () => {
               </Button>
               <Button variant="contained" color="error" onClick={handleDeleteClick} disabled={selectedNotificationIds.size === 0}>
                 {t("notifications.deleteSelected")}
+              </Button>
+              <Button variant="contained" color="error" onClick={handleDeleteAllClick} disabled={notificationList.length === 0}>
+                {t("notifications.deleteAll")}
               </Button>
             </Box>
           </Box>
